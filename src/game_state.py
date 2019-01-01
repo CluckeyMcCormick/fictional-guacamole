@@ -5,7 +5,7 @@ class GameState(object):
     like a menu or a particular mode of play.
 
     Pyglet has certain core functions - detecting key presses & releases, 
-    drawing the screen - that are tied to the window-decorated functions
+    drawing the screen - that are tied to the event handling functions
     (@window.event). In addition, Pyglet doesn't have a core loop outside of
     the draw method; instead, we need to schedule our own logic with
     *schedule_interval* and *schedule*.
@@ -13,13 +13,11 @@ class GameState(object):
     The game state architecture (should) fix these issues. Each state will be
     responsible for:
 
-        * it's own draw method
-
-        * it's own key press method
-
-        * it's own key release method 
-
         * scheduling and closing it's own functions
+
+        * managing it's own draw method
+
+        * resolving it's own input
 
     See:
 
@@ -29,16 +27,21 @@ class GameState(object):
     def __init__(self, window):
         super(GameState, self).__init__()
         self.window = window
-        # Push the event handlers
-        self.window.push_handlers(self)
         
-    def state_start(self):
+    def start(self):
         """
         Once the state has been set to **this** GameState, this function is
         called. Ideally, this should be where the various logic functions for
         your GameState are scheduled.
         """
-        pass
+        # Push these event handlers
+        # Try and do this last; pushing handlers too early can cause a race
+        # condition (far as I can tell) 
+        self.window.push_handlers(
+            self.on_draw, self.on_key_press, self.on_key_release,
+            self.on_mouse_motion, self.on_mouse_press, self.on_mouse_release,
+            self.on_mouse_drag
+        )
 
     def on_draw(self):
         """
@@ -124,10 +127,22 @@ class GameState(object):
         """
         pass
 
-    def state_stop(self):
+    def stop(self):
         """
         Before the state is changed from **this** state, this function is
         called. Ideally, this is where cleanup from the previous state should
         be performed.
         """
+        # Remove the object's event handlers
+        # BE CAREFUL - IF YOU PUSHED ADDITIONAL EVENTS, AND DON'T POP THEM,
+        # THIS CODE WILL CAUSE PROBLEMS
+        self.window.pop_handlers()
         pass
+
+    def issue_switch_state(self, new_state):
+        """
+        Issues a state switch event, which the engine will then handle.
+        Always has to be the same, so I figured we can save time by
+        providing this method
+        """
+        self.window.dispatch_event('switch_state', new_state)
