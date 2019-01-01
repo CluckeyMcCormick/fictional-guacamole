@@ -8,3 +8,9 @@ The project can be run with the following command:
 ```bash
 python3 src/main.py
 ```
+
+If running using pipenv:
+
+```bash
+pipenv run python3 src/main.py
+```
