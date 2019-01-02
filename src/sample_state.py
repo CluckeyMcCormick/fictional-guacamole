@@ -3,13 +3,16 @@ import game_state
 
 class AState(game_state.GameState):
     """docstring for AState"""
+
+    image_string = "A.png"
+
     def __init__(self, window):
         super(AState, self).__init__(window)
         self.batch = pyglet.graphics.Batch()
         self.fps_display = pyglet.window.FPSDisplay(self.window)
 
         # Load the image, set the anchor to the middle
-        self.image = pyglet.resource.image("A.png")
+        self.image = pyglet.resource.image(self.image_string)
         self.image.anchor_x = self.image.width // 2
         self.image.anchor_y = self.image.height // 2
 
@@ -33,8 +36,24 @@ class AState(game_state.GameState):
 
     def on_key_press(self, symbol, modifiers):
         if symbol == pyglet.window.key.Z:
-            self.is_spin = not self.is_spin 
+            self.is_spin = not self.is_spin
+
+        if symbol == pyglet.window.key.P:
+            new_state = CircleState(self.window)
+            self.issue_switch_state(new_state)
             
     def spin_sprite(self, dt):
         if self.is_spin:
             self.sprite.rotation = (self.sprite.rotation + (dt * 200)) % 360
+
+class CircleState(AState):
+
+    image_string = "circle.png"
+
+    def on_key_press(self, symbol, modifiers):
+        if symbol == pyglet.window.key.Z:
+            self.is_spin = not self.is_spin
+
+        if symbol == pyglet.window.key.P:
+            new_state = AState(self.window)
+            self.issue_switch_state(new_state)

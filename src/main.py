@@ -8,10 +8,17 @@ window = pyglet.window.Window(width=1000, height=600)
 pyglet.resource.path.append('../assets/')
 pyglet.resource.reindex()
 
+# Make sure the window is ready to handle switch state events
+window.register_event_type('switch_state')
+
 current_state = sample_state.AState(window)
 
 @window.event
 def switch_state(new_state):
+    
+    # Ensure we are changing the correct state
+    global current_state
+
     # Stop the current state
     current_state.stop()
     # Switch to a new state
