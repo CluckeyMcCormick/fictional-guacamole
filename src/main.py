@@ -1,36 +1,33 @@
 
 import pyglet
+import sample_state
 
 window = pyglet.window.Window(width=1000, height=600)
-batch = pyglet.graphics.Batch()
-fps_display = pyglet.window.FPSDisplay(window)
 
 # Set where we'll be loading assets from
 pyglet.resource.path.append('../assets/')
 pyglet.resource.reindex()
 
-# Load the image, set the anchor to the middle
-image = pyglet.resource.image("A.png")
-image.anchor_x = image.width // 2
-image.anchor_y = image.height // 2
+# Make sure the window is ready to handle switch state events
+window.register_event_type('switch_state')
 
-# Place the image anchor in the middle of the image
-x = window.width  // 2
-y = window.height // 2
-# Create a sprite
-sprite = pyglet.sprite.Sprite(image, x=x, y=y, batch=batch)
-
-# Spin the sprite
-def spin_sprite(dt):
-    sprite.rotation = (sprite.rotation + (dt * 200)) % 360
+current_state = sample_state.AState(window)
 
 @window.event
-def on_draw():
-    window.clear()
-    batch.draw()
-    fps_display.draw()
+def switch_state(new_state):
+    
+    # Ensure we are changing the correct state
+    global current_state
+
+    # Stop the current state
+    current_state.stop()
+    # Switch to a new state
+    current_state = new_state
+    # Start the new state
+    current_state.start()
 
 if __name__ == '__main__':
     print("Main is running!")
-    pyglet.clock.schedule_interval(spin_sprite, 1/60.0)
+    state = sample_state.AState(window)
+    state.start()
     pyglet.app.run()
