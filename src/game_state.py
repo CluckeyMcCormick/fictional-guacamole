@@ -1,4 +1,6 @@
 
+import pyglet
+
 class GameState(object):
     """
     The GameState represents an isolatable, swappable state in the simulation;
@@ -25,9 +27,31 @@ class GameState(object):
 
     """
     def __init__(self, window):
+        """
+        The __init__ function should only be used for very basic, lightweight
+        setup. Ideally, it should just be saving the variables that were passed
+        in, and that's it.
+        """
+
         super(GameState, self).__init__()
         self.window = window
-        
+    
+    ###
+    #
+    # Required Functions
+    #
+    ###
+
+    def load(self):
+        """
+        This is function is called repeatedly by a LoadState until it returns
+        True. The idea is that you can use the repeated calls to load the state
+        gradually, rather than just loading everything at once and locking up
+        the program. Of course, you could also just load everything at once and
+        lock up the program.
+        """
+        return True
+
     def start(self):
         """
         Once the state has been set to **this** GameState, this function is
@@ -42,6 +66,33 @@ class GameState(object):
             self.on_mouse_motion, self.on_mouse_press, self.on_mouse_release,
             self.on_mouse_drag
         )
+
+
+    def stop(self):
+        """
+        Before the state is changed from **this** state, this function is
+        called. Ideally, this is where cleanup from the previous state should
+        be performed.
+        """
+        # Remove the object's event handlers
+        # BE CAREFUL - IF YOU PUSHED ADDITIONAL EVENTS, AND DON'T POP THEM,
+        # THIS CODE WILL CAUSE PROBLEMS
+        self.window.pop_handlers()
+        pass
+
+    def issue_switch_state(self, new_state):
+        """
+        Issues a state switch event, which the engine will then handle.
+        Always has to be the same, so I figured we can save time by
+        providing this method
+        """
+        self.window.dispatch_event('switch_state', new_state)
+
+    ###
+    #
+    # Event Handlers
+    #
+    ###
 
     def on_draw(self):
         """
@@ -127,22 +178,51 @@ class GameState(object):
         """
         pass
 
+
+class LoadState(object):
+    """
+    A state to load other states - for loading screens and the like. 
+
+    Try and keep this as lightweight as possible; these loading screens don't
+    get loading screens.
+    """
+
+    def __init__(self, window, state_to_load):
+        super(LoadState, self).__init__()
+        self.window = window
+        self.state_to_load = state_to_load
+
+    def start(self):
+        """
+        Once the state has been set to **this** GameState, this function is
+        called. Ideally, this should be where the various logic functions for
+        your GameState are scheduled.
+        """
+        # Schedule the load process
+        pyglet.clock.schedule_interval(self.interval_load, 1/60.0)
+        
+        self.window.push_handlers(self.on_draw)
+
     def stop(self):
-        """
-        Before the state is changed from **this** state, this function is
-        called. Ideally, this is where cleanup from the previous state should
-        be performed.
-        """
-        # Remove the object's event handlers
-        # BE CAREFUL - IF YOU PUSHED ADDITIONAL EVENTS, AND DON'T POP THEM,
-        # THIS CODE WILL CAUSE PROBLEMS
-        self.window.pop_handlers()
         pass
 
-    def issue_switch_state(self, new_state):
+    def interval_load(self, dt):
+        # If our state finishes loading
+        if self.state_to_load.load():
+            # Unschedule this load function
+            pyglet.clock.unschedule(self.interval_load)
+            # Switch the states
+            self.window.dispatch_event('switch_state', self.state_to_load)
+        
+    ###
+    #
+    # Event Handlers
+    #
+    ###
+
+    def on_draw(self):
         """
-        Issues a state switch event, which the engine will then handle.
-        Always has to be the same, so I figured we can save time by
-        providing this method
+        This is where the window should be cleared and the batches should be 
+        redrawn.
         """
-        self.window.dispatch_event('switch_state', new_state)
+        pass

@@ -22,12 +22,21 @@ class AState(game_state.GameState):
         # Create a sprite
         self.sprite = pyglet.sprite.Sprite(self.image, x=x, y=y, batch=self.batch)
 
+    def load(self):
+        return False
+
     def start(self):
         self.is_spin = True
         pyglet.clock.schedule_interval(self.spin_sprite, 1/60.0)
 
         # Call the super, to push the handlers 
         super(AState, self).start()
+
+    def stop(self):
+        pyglet.clock.unschedule(self.spin_sprite)
+
+        # Call the super, pull the handlers 
+        super(AState, self).stop()
 
     def on_draw(self):
         self.window.clear()
