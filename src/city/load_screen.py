@@ -33,6 +33,9 @@ class CircleLoadScreen(game_state.LoadState):
     def stop(self):
         pyglet.clock.unschedule(self.spin_sprite)
 
+        # Call the super, pop the handlers 
+        super(CircleLoadScreen, self).stop()
+
     def spin_sprite(self, dt):
         if self.is_spin:
             self.sprite.rotation = (self.sprite.rotation + (dt * 200)) % 360

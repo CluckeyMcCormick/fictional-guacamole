@@ -2,7 +2,7 @@
 import pyglet
 
 import sample_state
-import pop_in
+import city
 
 window = pyglet.window.Window(width=1000, height=600)
 
@@ -13,13 +13,13 @@ pyglet.resource.reindex()
 # Make sure the window is ready to handle switch state events
 window.register_event_type('switch_state')
 
-current_state = pop_in.load_screen.CircleLoadScreen(
-    window, sample_state.AState(window)
+current_state = city.load_screen.CircleLoadScreen(
+    window, city.city_state.CityState(window, 16, 16)#65, 45)
 )
 
 @window.event
 def switch_state(new_state):
-    
+
     # Ensure we are changing the correct state
     global current_state
 
@@ -31,6 +31,5 @@ def switch_state(new_state):
     current_state.start()
 
 if __name__ == '__main__':
-    print("Main is running!")
     current_state.start()
     pyglet.app.run()

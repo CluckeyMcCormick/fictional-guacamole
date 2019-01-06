@@ -191,6 +191,7 @@ class LoadState(object):
         super(LoadState, self).__init__()
         self.window = window
         self.state_to_load = state_to_load
+        self._loaded = False
 
     def start(self):
         """
@@ -204,15 +205,23 @@ class LoadState(object):
         self.window.push_handlers(self.on_draw)
 
     def stop(self):
-        pass
+        # Remove the object's event handlers
+        # BE CAREFUL - IF YOU PUSHED ADDITIONAL EVENTS, AND DON'T POP THEM,
+        # THIS CODE WILL CAUSE PROBLEMS
+        self.window.pop_handlers()
 
     def interval_load(self, dt):
+        if self._loaded:
+            return
+
         # If our state finishes loading
         if self.state_to_load.load():
             # Unschedule this load function
             pyglet.clock.unschedule(self.interval_load)
             # Switch the states
             self.window.dispatch_event('switch_state', self.state_to_load)
+
+            self._loaded = True
         
     ###
     #
