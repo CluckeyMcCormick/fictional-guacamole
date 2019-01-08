@@ -27,14 +27,8 @@ class CircleLoadScreen(game_state.LoadState):
         self.is_spin = True
         pyglet.clock.schedule_interval(self.spin_sprite, 1/60.0)
 
-        # Call the super, to push the handlers 
-        super(CircleLoadScreen, self).start()
-
     def stop(self):
         pyglet.clock.unschedule(self.spin_sprite)
-
-        # Call the super, pop the handlers 
-        super(CircleLoadScreen, self).stop()
 
     def spin_sprite(self, dt):
         if self.is_spin:

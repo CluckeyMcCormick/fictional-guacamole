@@ -14,7 +14,7 @@ pyglet.resource.reindex()
 window.register_event_type('switch_state')
 
 current_state = city.load_screen.CircleLoadScreen(
-    window, city.city_state.CityState(window, 16, 16)#65, 45)
+    window, city.city_state.CityState(window, 65, 45) #16, 16)
 )
 
 @window.event
@@ -25,11 +25,14 @@ def switch_state(new_state):
 
     # Stop the current state
     current_state.stop()
+    current_state._stop()
     # Switch to a new state
     current_state = new_state
     # Start the new state
+    current_state._start()
     current_state.start()
 
 if __name__ == '__main__':
+    current_state._start()
     current_state.start()
     pyglet.app.run()

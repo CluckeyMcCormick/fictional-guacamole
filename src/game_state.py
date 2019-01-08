@@ -52,21 +52,34 @@ class GameState(object):
         """
         return True
 
-    def start(self):
+    def _start(self):
         """
-        Once the state has been set to **this** GameState, this function is
-        called. Ideally, this should be where the various logic functions for
-        your GameState are scheduled.
+        A "private" start - just pushes the handlers, including the on_draw.
         """
         # Push these event handlers
-        # Try and do this last; pushing handlers too early can cause a race
-        # condition (far as I can tell) 
         self.window.push_handlers(
             self.on_draw, self.on_key_press, self.on_key_release,
             self.on_mouse_motion, self.on_mouse_press, self.on_mouse_release,
             self.on_mouse_drag
         )
 
+    def start(self):
+        """
+        Once the state has been set to **this** GameState, this function is
+        called. Ideally, this should be where the various logic functions for
+        your GameState are scheduled.
+        """
+        pass
+
+    def _stop(self):
+        """
+        A "private" stop - pops one layer of handlers: the ones pushed in the
+        private start.
+        """
+        # Remove the object's event handlers
+        # CAUTION: Make sure you pop any custom handlers so that this code pops
+        # the correct ones
+        self.window.pop_handlers()
 
     def stop(self):
         """
@@ -74,10 +87,6 @@ class GameState(object):
         called. Ideally, this is where cleanup from the previous state should
         be performed.
         """
-        # Remove the object's event handlers
-        # BE CAREFUL - IF YOU PUSHED ADDITIONAL EVENTS, AND DON'T POP THEM,
-        # THIS CODE WILL CAUSE PROBLEMS
-        self.window.pop_handlers()
         pass
 
     def issue_switch_state(self, new_state):
@@ -193,26 +202,37 @@ class LoadState(object):
         self.state_to_load = state_to_load
         self._loaded = False
 
+    def _start(self):
+        """
+        A "private" start - pushes the handlers, schedule the load
+        """
+        # Schedule the load process
+        pyglet.clock.schedule_interval(self.interval_load, 1/1000.0)
+        
+        self.window.push_handlers(self.on_draw)
+
     def start(self):
         """
         Once the state has been set to **this** GameState, this function is
         called. Ideally, this should be where the various logic functions for
         your GameState are scheduled.
         """
-        # Schedule the load process
-        pyglet.clock.schedule_interval(self.interval_load, 1/60.0)
-        
-        self.window.push_handlers(self.on_draw)
+        pass
 
-    def stop(self):
+    def _stop(self):
+        """
+        A "private" stop - pops one layer of handlers: the ones pushed in the
+        private start.
+        """
         # Remove the object's event handlers
-        # BE CAREFUL - IF YOU PUSHED ADDITIONAL EVENTS, AND DON'T POP THEM,
-        # THIS CODE WILL CAUSE PROBLEMS
+        # CAUTION: Make sure you pop any custom handlers so that this code pops
+        # the correct ones
         self.window.pop_handlers()
 
+    def stop(self):
+        pass
+
     def interval_load(self, dt):
-        if self._loaded:
-            return
 
         # If our state finishes loading
         if self.state_to_load.load():
