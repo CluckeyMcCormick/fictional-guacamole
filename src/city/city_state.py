@@ -1,8 +1,20 @@
 
 import pyglet
 import random
+import numpy
+from ctypes import c_byte
 
 import game_state
+
+from .world_maker import WorldMaker
+
+
+choice_index = [
+    (1,  1), (5,  1), (9,  1), (13, 1),
+    (17, 1), (21, 1), (25, 1), (29, 1)
+]
+
+WORKERS = 8
 
 class CityState(game_state.GameState):
 
@@ -10,37 +22,47 @@ class CityState(game_state.GameState):
         super(CityState, self).__init__(window)
         self.batch = pyglet.graphics.Batch()
 
-        self.initial = False
         self.x_len = x_len
         self.y_len = y_len
-        self.valid_values = [
-            (4,4), (4,5), (4,6), (4,7),
-            (5,4), (5,5), (5,6), (5,7),
-            (6,4), (6,5), (6,6), (6,7),
-            (7,4), (7,5), (7,6), (7,7),
-        ]
+
+        self.load_state = 0
 
     def load(self):
-        if not self.initial:
-            self.city_grid = [ [None] * self.y_len for _ in range(self.x_len) ] 
+        if self.load_state == 0:
+            #pyglet.resource.reindex()
             self.terrain_image = pyglet.image.load('terrain.png')
             self.terrain_grid = pyglet.image.ImageGrid(
-                self.terrain_image, 32, 12
+                self.terrain_image, rows=32, columns=12
             )
             self.x_val = 0
             self.y_val = 0
-            self.initial = True
+            self.load_state += 1
 
-        choice = self.terrain_grid[ random.choice(self.valid_values) ]
-        self.city_grid[self.x_val][self.y_val] = pyglet.sprite.Sprite(choice, x=self.x_val * 16, y=self.y_val * 16, batch=self.batch)
+        elif self.load_state == 1:
+            self.wm = WorldMaker(self.x_len, self.y_len, WORKERS)
+            self.wm.build()
+            self.load_state += 1
 
-        self.x_val += 1
+        elif self.load_state == 2:
+            raw = self.wm.is_done()
+            if raw:
+                self.raw_world = raw
+                print( len(raw), self.x_len, self.y_len, self.x_len * self.y_len )
+                a = numpy.frombuffer( raw.get_obj(), dtype=c_byte )
+                self.shaped_world = a.reshape( (self.x_len, self.y_len) )
+                self.load_state += 1
 
-        if self.x_val == self.x_len:
-            self.x_val = 0
-            self.y_val += 1
+        elif self.load_state == 3:
+            self.city_grid = [[None for _ in range(self.y_len)] for _ in range(self.x_len)]
+            for x in range(self.x_len):
+                for y in range(self.y_len):
+                    world_val = self.shaped_world[x, y]
+                    choice_tuple = choice_index[ world_val ]
+                    choice = self.terrain_grid[ choice_tuple ]
+                    self.city_grid[x][y] = pyglet.sprite.Sprite(choice, x=x * 16, y=y * 16, batch=self.batch)
+            self.load_state += 1
 
-        if self.y_val == self.y_len:
+        else:
             return True
 
     def on_draw(self):

@@ -12,3 +12,4 @@ verify_ssl = true
 [packages]
 
 pyglet = "*"
+numpy = "*"
