@@ -1,19 +1,20 @@
 
 import pyglet
 
-import sample_state
+import load_screens 
 import city
 
 window = pyglet.window.Window(width=1000, height=600)
 
 # Set where we'll be loading assets from
 pyglet.resource.path.append('../assets/')
+pyglet.resource.path.append('../../assets/')
 pyglet.resource.reindex()
 
 # Make sure the window is ready to handle switch state events
 window.register_event_type('switch_state')
 
-current_state = city.load_screen.CircleLoadScreen(
+current_state = load_screens.CircleLoadScreen(
     window, city.city_state.CityState(window, 65, 45) #16, 16)
 )
 
