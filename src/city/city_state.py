@@ -7,32 +7,34 @@ from ctypes import c_byte
 import game_state
 
 from .world_maker import WorldMaker
-
-
-choice_index = [
-    (1,  1), (5,  1), (9,  1), (13, 1),
-    (17, 1), (21, 1), (25, 1), (29, 1)
-]
+from .fly_cam import FlyCamera
 
 WORKERS = 8
 
 class CityState(game_state.GameState):
 
-    def __init__(self, window, x_len, y_len):
+    def __init__(self, window, x_len, y_len, use16=False):
         super(CityState, self).__init__(window)
         self.batch = pyglet.graphics.Batch()
+        self.labels = pyglet.graphics.Batch()
 
         self.x_len = x_len
         self.y_len = y_len
 
         self.load_state = 0
+        self.use16 = use16
 
     def load(self):
         if self.load_state == 0:
             #pyglet.resource.reindex()
-            self.terrain_image = pyglet.image.load('terrain.png')
+            if self.use16:
+                self.terrain_image = pyglet.image.load('terrain_sampler16.png')
+            else:
+                self.terrain_image = pyglet.image.load('terrain_sampler32.png')
+            #self.terrain_image = pyglet.image.load('terrain.png')
             self.terrain_grid = pyglet.image.ImageGrid(
-                self.terrain_image, rows=32, columns=12
+                self.terrain_image, rows=8, columns=1
+                #self.terrain_image, rows=32, columns=12
             )
             self.x_val = 0
             self.y_val = 0
@@ -52,19 +54,91 @@ class CityState(game_state.GameState):
                 self.shaped_world = a.reshape( (self.x_len, self.y_len) )
                 self.load_state += 1
 
-        elif self.load_state == 3:
-            self.city_grid = [[None for _ in range(self.y_len)] for _ in range(self.x_len)]
-            for x in range(self.x_len):
-                for y in range(self.y_len):
-                    world_val = self.shaped_world[x, y]
-                    choice_tuple = choice_index[ world_val ]
-                    choice = self.terrain_grid[ choice_tuple ]
-                    self.city_grid[x][y] = pyglet.sprite.Sprite(choice, x=x * 16, y=y * 16, batch=self.batch)
-            self.load_state += 1
-
         else:
             return True
+
+    def start(self):
+        mins = (0,0)
+        if self.use16:
+            tile_size = 16
+        else:
+            tile_size = 32
+        maxs = (self.x_len * tile_size, self.y_len * tile_size)
+        view_area = (256, 256) #self.window.get_size()
+        view_offset = (32, 32) #(-16, -16)
+        margin_size = 128
+        view_start = (0, 0)
+
+        self.camera = FlyCamera(mins, maxs, view_area, margin_size, tile_size, view_offset=view_offset, view_start=view_start )
+
+        self.window.push_handlers(
+            self.camera.on_key_press, self.camera.on_key_release
+        )
+
+        pyglet.clock.schedule_interval(self.process_and_cull, 1/60.0)
+
+        self.active_tiles = set()
+        self.tile_sprites = {}
+
+        visible = self.camera.get_visible_tiles()
+
+        for spot in visible:
+
+            # Otherwise, make the sprite for it
+            x, y = spot
+
+            choice = self.terrain_grid[ (self.shaped_world[x, y], 0) ]
+
+            # Save the information
+            if self.use16:
+                self.tile_sprites[spot] = pyglet.sprite.Sprite(choice, x=x * 16, y=y * 16, batch=self.batch)
+            else:
+                self.tile_sprites[spot] = pyglet.sprite.Sprite(choice, x=x * 32, y=y * 32, batch=self.batch)
+            self.active_tiles.add( spot )
+
+    def process_and_cull(self, dt):
+
+        self.camera.move_camera(dt)
+
+        #
+        # The following code segment, which concerns culling and creating tile
+        # sprites is a direct borrow of code from the _update_sprite_set
+        # function in tile.py from the cocos2d Python package. 
+        #
+        # See LICENSE.cocos for the complete license.
+        #
+
+        # Get the visible tiles
+
+        visible = self.camera.get_visible_tiles()
+
+        for spot in visible:
+
+            # Otherwise, make the sprite for it
+            x, y = spot
+
+            choice = self.terrain_grid[ (self.shaped_world[x, y], 0) ]
+
+            # Save the information
+            if self.use16:
+                self.tile_sprites[spot] = pyglet.sprite.Sprite(choice, x=x * 16, y=y * 16, batch=self.batch)
+            else:
+                self.tile_sprites[spot] = pyglet.sprite.Sprite(choice, x=x * 32, y=y * 32, batch=self.batch)
+            self.active_tiles.add( spot )
+
+        for spot in list(self.active_tiles):
+            if spot not in visible:
+                self.tile_sprites[spot].delete()
+                self.active_tiles.remove(spot)
+                del self.tile_sprites[spot]
+        # End cocos licensed section
+
+
+    def stop(self):
+        pyglet.clock.unschedule(self.camera.move_camera)
+        self.window.pop_handlers()
 
     def on_draw(self):
         self.window.clear()
         self.batch.draw()
+        self.labels.draw()

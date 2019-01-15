@@ -15,7 +15,7 @@ pyglet.resource.reindex()
 window.register_event_type('switch_state')
 
 current_state = load_screens.CircleLoadScreen(
-    window, city.city_state.CityState(window, 65, 45) #16, 16)
+    window, city.city_state.CityState(window, 128, 128)#1024, 1024) #16, 16)
 )
 
 @window.event
