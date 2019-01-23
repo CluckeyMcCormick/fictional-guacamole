@@ -7,12 +7,12 @@ from ctypes import c_byte
 import game_state
 
 from .world_maker import WorldMaker
-from . import fly_cam
+from . import tile_cam
 
 WORKERS = 8
 
-X_DEBUG = True
-Y_DEBUG = False
+X_DEBUG = False #True
+Y_DEBUG = True
 
 class CityState(game_state.GameState):
 
@@ -66,13 +66,19 @@ class CityState(game_state.GameState):
             tile_size = 16
         else:
             tile_size = 32
-        maxs = (self.x_len * tile_size, self.y_len * tile_size)
-        view_area = (256, 256) #self.window.get_size()
-        view_offset = (32, 32) #(-16, -16)
-        margin_size = 5#128
-        view_start = (0, 0)
+        maxs = (self.x_len, self.y_len)
+        margin = 4
+        self.view_offset_x = 96
+        self.view_offset_y = 96
+        #self.view_offset_x = -32
+        #self.view_offset_y = -32
+        view_x, view_y = self.window.get_size()
+        print("view", view_x, view_y)
+        view_area = (view_x + ( abs(self.view_offset_x) * 2), view_y + ( abs(self.view_offset_y) * 2))
+        view_area = (473, 337) 
+        view_start = (0, 0)#(50, 50)
 
-        self.camera = fly_cam.DiffCamera(mins, maxs, view_area, margin_size, tile_size, view_offset=view_offset, view_start=view_start )
+        self.camera = tile_cam.DiffCamera(mins, maxs, view_area, margin, tile_size)
 
         self.window.push_handlers(
             self.camera.on_key_press, self.camera.on_key_release
@@ -90,24 +96,46 @@ class CityState(game_state.GameState):
             # Otherwise, make the sprite for it
             x, y = spot
 
+            # If we're outta bounds, then don't make this sprite
+            if not ( 0 <= x < self.x_len and 0 <= y < self.y_len):
+                continue
+
             choice = self.terrain_grid[ (self.shaped_world[x, y], 0) ]
 
             # Save the information
             if self.use16:
                 if X_DEBUG:
-                    self.tile_sprites[spot] = pyglet.text.Label(str(x), x=x * 16, y=y * 16, font_size=4, batch=self.batch)
+                    self.tile_sprites[spot] = pyglet.text.Label(
+                        str(x), x=(x * 16) + self.view_offset_x, y=(y * 16) + self.view_offset_y, 
+                        font_size=4, batch=self.batch
+                    )
                 elif Y_DEBUG:
-                    self.tile_sprites[spot] = pyglet.text.Label(str(x), x=x * 16, y=y * 16, font_size=4, batch=self.batch)
+                    self.tile_sprites[spot] = pyglet.text.Label(
+                        str(y), x=(x * 16) + self.view_offset_x, y=(y * 16) + self.view_offset_y,
+                        font_size=4, batch=self.batch
+                    )
                 else:
-                    self.tile_sprites[spot] = pyglet.sprite.Sprite(choice, x=x * 16, y=y * 16, batch=self.batch)
+                    self.tile_sprites[spot] = pyglet.sprite.Sprite(
+                        choice, x=(x * 16) + self.view_offset_x, y=(y * 16) + self.view_offset_y,
+                        batch=self.batch
+                    )
             else:
                 
                 if X_DEBUG:
-                    self.tile_sprites[spot] = pyglet.text.Label(str(x), x=x * 32, y=y * 32, font_size=8, batch=self.batch)
-                elif X_DEBUG:
-                    self.tile_sprites[spot] = pyglet.text.Label(str(x), x=x * 32, y=y * 32, font_size=8, batch=self.batch)
+                    self.tile_sprites[spot] = pyglet.text.Label(
+                        str(x), x=(x * 32) + self.view_offset_x, y=(y * 32) + self.view_offset_y, 
+                        font_size=8, batch=self.batch
+                    )
+                elif Y_DEBUG:
+                    self.tile_sprites[spot] = pyglet.text.Label(
+                        str(y), x=(x * 32) + self.view_offset_x, y=(y * 32) + self.view_offset_y, 
+                        font_size=8, batch=self.batch
+                    )
                 else:
-                    self.tile_sprites[spot] = pyglet.sprite.Sprite(choice, x=x * 32, y=y * 32, batch=self.batch)
+                    self.tile_sprites[spot] = pyglet.sprite.Sprite(
+                        choice, x=(x * 32) + self.view_offset_x, y=(y * 32) + self.view_offset_y, 
+                        batch=self.batch
+                    )
 
             self.active_tiles.add( spot )
 
@@ -129,6 +157,11 @@ class CityState(game_state.GameState):
 
         make_set, cull_set = self.camera.get_tile_diff()
 
+        if make_set and cull_set:
+            print("\tDT:", dt)
+
+        doubled = False
+
         for spot in make_set:
 
             # Otherwise, make the sprite for it
@@ -141,25 +174,46 @@ class CityState(game_state.GameState):
             # If this tile is already visible, skip it
             if spot in self.active_tiles:
                 print( "\t\tDoubled:", spot )
+                doubled = True
                 continue
 
             choice = self.terrain_grid[ (self.shaped_world[x, y], 0) ]
 
+
+            # Save the information
             if self.use16:
                 if X_DEBUG:
-                    self.tile_sprites[spot] = pyglet.text.Label(str(x), x=x * 16, y=y * 16, font_size=4, batch=self.batch)
+                    self.tile_sprites[spot] = pyglet.text.Label(
+                        str(x), x=(x * 16) + self.view_offset_x, y=(y * 16) + self.view_offset_y, 
+                        font_size=4, batch=self.batch
+                    )
                 elif Y_DEBUG:
-                    self.tile_sprites[spot] = pyglet.text.Label(str(x), x=x * 16, y=y * 16, font_size=4, batch=self.batch)
+                    self.tile_sprites[spot] = pyglet.text.Label(
+                        str(y), x=(x * 16) + self.view_offset_x, y=(y * 16) + self.view_offset_y,
+                        font_size=4, batch=self.batch
+                    )
                 else:
-                    self.tile_sprites[spot] = pyglet.sprite.Sprite(choice, x=x * 16, y=y * 16, batch=self.batch)
+                    self.tile_sprites[spot] = pyglet.sprite.Sprite(
+                        choice, x=(x * 16) + self.view_offset_x, y=(y * 16) + self.view_offset_y,
+                        batch=self.batch
+                    )
             else:
                 
                 if X_DEBUG:
-                    self.tile_sprites[spot] = pyglet.text.Label(str(x), x=x * 32, y=y * 32, font_size=8, batch=self.batch)
-                elif X_DEBUG:
-                    self.tile_sprites[spot] = pyglet.text.Label(str(x), x=x * 32, y=y * 32, font_size=8, batch=self.batch)
+                    self.tile_sprites[spot] = pyglet.text.Label(
+                        str(x), x=(x * 32) + self.view_offset_x, y=(y * 32) + self.view_offset_y, 
+                        font_size=8, batch=self.batch
+                    )
+                elif Y_DEBUG:
+                    self.tile_sprites[spot] = pyglet.text.Label(
+                        str(y), x=(x * 32) + self.view_offset_x, y=(y * 32) + self.view_offset_y, 
+                        font_size=8, batch=self.batch
+                    )
                 else:
-                    self.tile_sprites[spot] = pyglet.sprite.Sprite(choice, x=x * 32, y=y * 32, batch=self.batch)
+                    self.tile_sprites[spot] = pyglet.sprite.Sprite(
+                        choice, x=(x * 32) + self.view_offset_x, y=(y * 32) + self.view_offset_y, 
+                        batch=self.batch
+                    )
 
             self.active_tiles.add( spot )
         
@@ -172,6 +226,9 @@ class CityState(game_state.GameState):
                 self.tile_sprites.pop(spot)
         
         # End cocos licensed section
+
+        if doubled:
+            print("@" * 5)
 
     def stop(self):
         pyglet.clock.unschedule(self.camera.move_camera)
