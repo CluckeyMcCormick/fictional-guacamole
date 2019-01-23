@@ -9,7 +9,7 @@ CAMERA_VELOCITY = 500
 class TileCamera(object):
     """
         Operates our "camera" by tracking relevant variables and calling 
-        glTranslatef
+        glTranslatef.
 
         glTranslatef works kind of strangely, you have to think in terms of the
         direction you want to "drag" the screen. 
@@ -27,18 +27,22 @@ class TileCamera(object):
         As a result of all this, you may see that some of the polarities in the
         following functions are a bit counterintuitive. Just keep the 
         "dragging" metaphor in mind.
+
+        Just a note - at this time, changing the size of the view window is not
+        supported!
     """
     def __init__(self, min_vals, max_vals, view_area, margin_size, tile_size):
         """
         Initializes the camera.
 
-        Inputs:
+        Arguments:
 
-        min_vals: tuple containing the map's minimum x and y values, in tiles
-        max_vals: tuple containing the map's max x and y values, in tiles
-        view_area: tuple expressing the length (x size) and height (y size) of
-                        the camera's viewing area. Measured in pixels.
-        view_start: tuple expressing the camera's start location, in pixels
+        min_vals -- tuple containing the map's minimum x and y values, in tiles
+        max_vals -- tuple containing the map's max x and y values, in tiles
+        view_area -- tuple expressing the length (x size) and height (y size) of
+                     the camera's viewing area. Measured in pixels.
+        margin_size -- tuple expressing the camera's blank space margin, in tiles
+        tile_size -- size of each tile, expressed in pixels
         """
         super(TileCamera, self).__init__()
 
@@ -74,10 +78,12 @@ class TileCamera(object):
 
     @property
     def margin(self):
+        """The margin size, in tiles."""
         return self._tmargin
 
     @margin.setter
     def margin(self, value):
+        """Sets the margin size. Requires a positive value."""
         # If the new value is negative
         if (value < 0):
             raise ValueError("Margin not be negative - tx:[%d] ty[%d]".format(value))
@@ -99,10 +105,12 @@ class TileCamera(object):
 
     @property
     def minimum(self):
+        """Returns the minimum, in tile size, as a (x, y) tuple."""
         return (self._tx_min, self._ty_min)
 
     @minimum.setter
     def minimum(self, value):
+        """Sets the minimum, in tile size. Requires a (x, y) tuple."""
         new_tx_min, new_ty_min = value
         # If either value is negative
         if (new_tx_min < 0 or new_ty_min < 0):
@@ -125,10 +133,12 @@ class TileCamera(object):
 
     @property
     def maximum(self):
+        """Returns the maximum, in tile size, as a (x, y) tuple."""
         return (self._tx_max, self._ty_max)
 
     @maximum.setter
     def maximum(self, value):
+        """Sets the maximum, in tile size. Requires a (x, y) tuple."""
         new_tx_max, new_ty_max = value
         # If either value is negative
         if (new_tx_max < 0 or new_ty_max < 0):
@@ -151,19 +161,42 @@ class TileCamera(object):
 
     @property
     def position(self):
-        return (self._vpx, self._vpy)
-
-    def set_position(self, value):
         """
-        Sets the camera's position.
+        Returns the pixel position as a (x, y) tuple.
+
+        The X and Y values are appropriately shifted by the pixel size of the
+        margin.
+        """
+        margin_shift = self._tmargin * self.tile_size
+        return (self._vpx - margin_shift, self._vpy - margin_shift)
+
+    def set_position(self, value, add_margin=True):
+        """
+        Sets the camera's position and translates the view to the specified
+        location.
 
         The camera's position is it's lower-left location. We use the location
         information in discerning what tiles are visible to the player.
 
-        This method moves the camera by translating the view to the specified
-        location.
+        This method will not allow the camera to go out-of-bounds, and will cap
+        any values at the camera's limits.
+
+        Arguments:
+
+        value -- A (x, y) position tuple. Measured in pixels.
+
+        Keyword arguments:
+
+        add_margin -- If True, the the pixel size of margin will be added into
+                      [value] before calculations have begun.
         """
         new_vpx, new_vpy = value
+
+        margin_p = self.tile_size * self._tmargin
+
+        if add_margin:
+            new_vpx += margin_p
+            new_vpy += margin_p
 
         x_lower_lim = self._tx_min * self.tile_size
         x_upper_lim = self._tx_max + (self._tmargin * 2)
@@ -202,8 +235,6 @@ class TileCamera(object):
         # Translate
         gl.glTranslatef(trans_x, trans_y, 0) 
 
-        print("WXYZ: ", self._vpx, self._vpy)
-
     #
     # This function is mostly derived from the get_in_region function, located
     # in tile.py from the cocos2d Python package. 
@@ -216,44 +247,51 @@ class TileCamera(object):
         that can be found there-in.
         """
 
-        left = max(0, self._vpx) // self.tile_size
-        right = min(self._tx_max * self.tile_size, self._vpx + self._vp_len)
-        right = right // self.tile_size
+        left = int(self._vpx / self.tile_size)
+        right = int((self._vpx + self._vp_len) / self.tile_size)
 
-        bottom = max(0, self._vpy ) // self.tile_size
-        top = min(self._ty_max * self.tile_size, self._vpy + self._vp_height)
-        top = top // self.tile_size
+        bottom = int(self._vpy / self.tile_size)
+
+        top = int( (self._vpy + self._vp_height) / self.tile_size)
 
         # Return the list of coordinates onscreen, minus the margin
         return [ (x - self._tmargin, y  - self._tmargin)
-            for x in range( int(left), int(right) )
-            for y in range( int(bottom), int(top) )
+            for x in range( left, right + 1 ) # + 1 to include our current tile
+            for y in range( bottom, top  + 1) # + 1 to include our current tile
         ]
     # End cocos licensed section
 
     def get_border_positions(self):
         """
-        Gets the
+        Gets the pixel positions of the left, right, bottom, and top borders.
+
+        Returns a tuple of two tuples: ( left, right, bottom, top )
         """
 
+        margin_shift = self._tmargin * self.tile_size
+
         return (
-            (self._vpx, self._vpx + self._vp_len), 
-            (self._vpy, self._vpy + self._vp_height)
+            self._vpx - margin_shift, self._vpx - margin_shift + self._vp_len, 
+            self._vpy - margin_shift, self._vpy - margin_shift + self._vp_height
         )
 
     def move_camera(self, dt):
         """
         Moves the camera using the given time difference and the camera's
-        current velocity
+        current velocity.
         """
         trans_x = self._x_velo * dt
         trans_y = self._y_velo * dt
 
         if not (trans_x == trans_y == 0):
-            self.set_position( (self._vpx + trans_x, self._vpy + trans_y) )
+            self.set_position( (self._vpx + trans_x, self._vpy + trans_y), add_margin=False )
  
     def move_camera_by_pixels(self, pix_dx, pix_dy):
-        self.set_position( (self._vpx + pix_dx, self._vpy + pix_dy) )
+        """
+        This function moves the camera by the specified number of pixels.
+        Mostly meant for use by outside classes.
+        """
+        self.set_position( (self._vpx + pix_dx, self._vpy + pix_dy), add_margin=False )
 
     def on_key_press(self, symbol, modifiers):
         if symbol == key.W:
@@ -294,38 +332,43 @@ class TileCamera(object):
 
 class DiffCamera(TileCamera):
     """
-        Operates our "camera" by tracking relevant variables and calling 
-        glTranslatef
-
-        glTranslatef works kind of strangely, you have to think in terms of the
-        direction you want to "drag" the screen. 
-
-        For example, you would normally think of moving up on the y_axis as
-        "up". Let's say you want to move "up" by 5. glTranslateF looks at this
-        as moving everything down 5 - i.e. such that a pixel that was at 12 is
-        now at 7. So to move the screen "up" by 5, we'd have to drag it "down"
-        by 5. 
-
-        That would look like:
-
-            glTranslatef(0, -5, 0)
-
-        As a result of all this, you may see that some of the polarities in the
-        following functions are a bit counterintuitive. Just keep the 
-        "dragging" metaphor in mind.
+    A variant of TileCamera that tracks it's position changes. At anytime, we
+    can get two lists of tiles to both make and to cull.
     """
     def __init__(self, min_vals, max_vals, view_area, margin_size, tile_size):
+        """
+        Initializes the camera.
+
+        Arguments:
+
+        min_vals -- tuple containing the map's minimum x and y values, in tiles
+        max_vals -- tuple containing the map's max x and y values, in tiles
+        view_area -- tuple expressing the length (x size) and height (y size) of
+                     the camera's viewing area. Measured in pixels.
+        margin_size -- tuple expressing the camera's blank space margin, in tiles
+        tile_size -- size of each tile, expressed in pixels
+        """
         super(DiffCamera, self).__init__(min_vals, max_vals, 
             view_area, margin_size, tile_size
         )
-
+        # Create our X axis borders
         self.left_border = CameraBorder(self._vpx, 0, self.tile_size, True)
         self.bottom_border = CameraBorder(self._vpy, 0, self.tile_size, True)
 
+        # Create our Y axis borders
         self.right_border = CameraBorder(self._vpx, self._vp_len, self.tile_size, False)
         self.top_border = CameraBorder(self._vpy, self._vp_height, self.tile_size, False)
 
     def diff_reset(self):
+        """
+        Resets the diff tracking mechanisms so that they "forget" the old
+        position.
+
+        This method is intended for when the camera moves in a non-continous
+        manner - for example, if we were to manually jump the camera to a
+        certain position.
+        """
+
         self.left_border.apply_change(self._vpx)
         self.left_border.reset()
         self.right_border.apply_change(self._vpx)
@@ -336,8 +379,32 @@ class DiffCamera(TileCamera):
         self.top_border.apply_change(self._vpy)
         self.top_border.reset()
 
-    def set_position(self, new_pos, reset=False):
-        super(DiffCamera, self).set_position(new_pos)
+    def set_position(self, new_pos, add_margin=True, reset=False):
+        """
+        Sets the camera's position and translates the view to the specified
+        location.
+
+        The camera's position is it's lower-left location. We use the location
+        information in discerning what tiles are visible to the player.
+
+        This method will not allow the camera to go out-of-bounds, and will cap
+        any values at the camera's limits.
+
+        Arguments:
+
+        new_pos -- A (x, y) position tuple. Measured in pixels.
+
+        Keyword arguments:
+
+        add_margin -- If True, the the pixel size of margin will be added into
+                      [value] before calculations have begun.
+
+        reset -- If True, the method will call diff_reset after moving the
+                 camera. Only intended for when the camera is moving in a 
+                 non-continous manner - for example, if we were to manually 
+                 jump the camera to a certain position.
+        """
+        super(DiffCamera, self).set_position(new_pos, add_margin=add_margin)
         if reset:
             self.diff_reset()
         else:
@@ -347,8 +414,26 @@ class DiffCamera(TileCamera):
             self.top_border.apply_change(self._vpy)
 
     def get_tile_diff(self, reset=True):
+        """
+        Produces a tuple, containing two collections: a make collection, and a
+        cull collection. The tuple is (make, cull).
 
-        # Step 2: If the movement didn't break any of our targets
+        Each entry in either collection is an (x, y) tuple, shifted to exclude
+        the margin. This means the values can be anywhere from [tile_min - 
+        t_margin] to [tile_max + t_margin] (inclusive).
+
+        Returns a make set/list and a cull set/list. Either one may be empty if
+        there are no tiles to make / cull, respectively.
+
+        Keyword arguments:
+
+        reset -- If True, the method will reset those borders that reported
+                 their changes. This will allow you to avoid unecessary 
+                 repeated tiles on subsequent calls.
+
+        """
+
+        # Step 1: If the movement didn't break any of our targets
         if( not self.left_border.has_change() and 
             not self.bottom_border.has_change() and
             not self.right_border.has_change() and
@@ -357,11 +442,11 @@ class DiffCamera(TileCamera):
             # Then back out
             return [], []
 
-        # Step 4: set some necessary variables
+        # Step 2: set some necessary variables
         make_tiles = set()
         cull_tiles = set()
 
-        # Step 5: construct the ranges
+        # Step 3: construct the ranges
         # In order to construct the "new" and "old" sets, we need to know the
         # the borders of both and what our borders should be for the other axis
         #
@@ -388,11 +473,11 @@ class DiffCamera(TileCamera):
         #
         # If we have a make on left
         if self.left_border.has_make():
-            x_make_range = self.left_border.get_make_range()
+            x_make_range = self.left_border.make_range
             left_change = True
         # Otherwise, if we have a make on right, make on right
         elif self.right_border.has_make():
-            x_make_range = self.right_border.get_make_range()
+            x_make_range = self.right_border.make_range
             right_change = True
 
         #
@@ -400,11 +485,11 @@ class DiffCamera(TileCamera):
         #
         # If we have a cull on left
         if self.left_border.has_cull():
-            x_cull_range = self.left_border.get_cull_range()
+            x_cull_range = self.left_border.cull_range
             left_change = True
         # Otherwise, if we have a cull on right, cull on right
         elif self.right_border.has_cull():
-            x_cull_range = self.right_border.get_cull_range()
+            x_cull_range = self.right_border.cull_range
             right_change = True
 
         #
@@ -412,11 +497,11 @@ class DiffCamera(TileCamera):
         #
         # If we have a make on bottom
         if self.bottom_border.has_make():
-            y_make_range = self.bottom_border.get_make_range()
+            y_make_range = self.bottom_border.make_range
             bottom_change = True
         # If we have a make on top
         elif self.top_border.has_make():
-            y_make_range = self.top_border.get_make_range()
+            y_make_range = self.top_border.make_range
             top_change = True
 
         #
@@ -424,28 +509,25 @@ class DiffCamera(TileCamera):
         #
         # If we have a make on bottom
         if self.bottom_border.has_cull():
-            y_cull_range = self.bottom_border.get_cull_range()
+            y_cull_range = self.bottom_border.cull_range
             bottom_change = True
         # If we have a make on top
         elif self.top_border.has_cull():
-            y_cull_range = self.top_border.get_cull_range()
+            y_cull_range = self.top_border.cull_range
             top_change = True
 
         mc_x_range = range( 
-            self.left_border.get_current_tile(),
-            self.right_border.get_current_tile() + 1
+            self.left_border.current_tile,
+            self.right_border.current_tile + 1
         )
 
         mc_y_range = range( 
-            self.bottom_border.get_current_tile(),
-            self.top_border.get_current_tile() + 1
+            self.bottom_border.current_tile,
+            self.top_border.current_tile + 1
         )
 
-        print("& " * 5, x_make_range, x_cull_range, mc_y_range)
-        print("# " * 5, y_make_range, y_cull_range, mc_x_range)
-        print("vpx/y", self._vpx, self._vpy)
         #
-        # Step 5: Using the ranges we just determined, build the cull and 
+        # Step 4: Using the ranges we just determined, build the cull and 
         #         make sets 
 
         # Create the make and cull sets for x 
@@ -464,38 +546,64 @@ class DiffCamera(TileCamera):
             for x in mc_x_range:
                 cull_tiles.add( (x - self._tmargin, y - self._tmargin) )
 
-        # Step 3: If we're going to get the tile diff, reset the diff
-        if left_change:
-            self.left_border.reset()
-        if right_change:
-            self.right_border.reset()
-        if bottom_change:
-            self.bottom_border.reset()
-        if top_change:
-            self.top_border.reset()
-
-
-        print("~" * 15)
+        #
+        # Step 5: If we're going to reset, only reset those that changed
+        #
+        if reset:
+            if left_change:
+                self.left_border.reset()
+            if right_change:
+                self.right_border.reset()
+            if bottom_change:
+                self.bottom_border.reset()
+            if top_change:
+                self.top_border.reset()
 
         return make_tiles, cull_tiles
 
-
 class CameraBorder(object):
-    """docstring for CameraBorder"""
+    """
+    Tracks the "border" or "edge" of a camera. Allows each border to
+    independently track when a make or cull is required, as well as provide the
+    tiles that would need to be culled or listed.
+    """
     def __init__(self, pixel_pos, offset, tile_size, is_near):
+        """
+
+        Initializes the camera border.
+
+        Arguments:
+
+        p_pos -- The current "position" of the camera
+         
+        offset -- The offset of the border from the position. This is for right
+                  and top borders.
+     
+        tile_size -- The tile_size of the associated camera.
+    
+        is_near -- Is this border near (left & bottom), instead of far (top &
+                   right)? The make and cull behavior changes depending on
+                   which it is.
+        """
         super(CameraBorder, self).__init__()
-        # The current "position" of the camera
+
         self.p_pos = pixel_pos
-        # The offset of the border from the position
         self.offset = offset
-        # The associated tile_size of the camera
         self.tile_size = tile_size
-        # Is this border near (left & bottom), instead of far (top & right)
         self.is_near = is_near
 
+        # Initial reset
         self.reset()
 
     def reset(self):
+        """
+        Causes the border to reset/re-orient itself. This entails setting the
+        current position to the "old" position, then recalculating the distance
+        before a make and a cull.
+
+        Ideally, this should be called whenever we process the cull and make
+        lists.
+        """
         # 1. Current position becomes the old position
         self.old_p_pos = self.p_pos
         # 2. Calculate the current tile
@@ -521,9 +629,15 @@ class CameraBorder(object):
         self.make_dist -= self.p_pos + self.offset
 
     def apply_change(self, new_pos):
+        """
+        Sets the current position to the new position.
+        """
         self.p_pos = new_pos
 
     def has_make(self):
+        """
+        Reports whether tiles need to be made on this border.
+        """
         diff = self.p_pos - self.old_p_pos
 
         # If we're in a near tile,
@@ -535,6 +649,9 @@ class CameraBorder(object):
             return diff >= self.make_dist
 
     def has_cull(self):
+        """
+        Reports whether tiles need to be culled on this border.
+        """
         diff = self.p_pos - self.old_p_pos
 
         # If we're in a near tile,
@@ -546,44 +663,64 @@ class CameraBorder(object):
             return diff < self.cull_dist
 
     def has_change(self):
+        """
+        Reports whether the border requires either a make or a cull.
+        """
         return self.has_make() or self.has_cull()
 
-    def get_make_range(self):
-        make_range = []
+    @property
+    def make_range(self):
+        """
+        Returns a range object of tiles to make. 
 
-        tile = int( (self.p_pos + self.offset) / self.tile_size)
-        old_tile = int( (self.old_p_pos + self.offset) / self.tile_size)
+        The range needs to be iterated through with another range in order to
+        actually produce any usable (x, y) tuples.
+        """
+        make_range = []
 
         # If this is a near boundary
         if self.is_near:
             # The the current tile < old_tile
-            make_range = range( tile, old_tile )
+            make_range = range( self.tile, self.old_tile )
         # Otherwise, it must be a far boundary
         else:
             # Then the current tile > old_tile
-            make_range = range( tile, old_tile, -1 )
+            make_range = range( self.tile, self.old_tile, -1 )
 
         return make_range
 
-    def get_cull_range(self):
-        cull_range = []
+    @property
+    def cull_range(self):
+        """
+        Returns a range object of tiles to cull. 
 
-        tile = int( (self.p_pos + self.offset) / self.tile_size)
-        old_tile = int( (self.old_p_pos + self.offset) / self.tile_size)
+        The range needs to be iterated through with another range in order to
+        actually produce any usable (x, y) tuples.
+        """
+        cull_range = []
 
         # If this is a near boundary
         if self.is_near:
             # The the current tile > old_tile
-            cull_range = range( old_tile, tile )
+            cull_range = range( self.old_tile, self.tile )
         # Otherwise, it must be a far boundary
         else:
             # Then the current tile < old_tile
-            cull_range = range( old_tile, tile, -1 )
+            cull_range = range( self.old_tile, self.tile, -1 )
 
         return cull_range
 
-    def get_old_tile(self):
+    @property
+    def old_tile(self):
+        """
+        Gets what the border considers to be the "old" tile - it's last
+        position.
+        """
         return int( (self.old_p_pos + self.offset) / self.tile_size)
 
-    def get_current_tile(self):
+    @property
+    def current_tile(self):
+        """
+        Gets the current tile position.
+        """
         return int( (self.p_pos + self.offset) / self.tile_size)

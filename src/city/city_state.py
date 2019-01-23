@@ -12,7 +12,7 @@ from . import tile_cam
 WORKERS = 8
 
 X_DEBUG = False #True
-Y_DEBUG = True
+Y_DEBUG = False #True
 
 class CityState(game_state.GameState):
 
@@ -70,12 +70,12 @@ class CityState(game_state.GameState):
         margin = 4
         self.view_offset_x = 96
         self.view_offset_y = 96
-        #self.view_offset_x = -32
-        #self.view_offset_y = -32
+        self.view_offset_x = -32
+        self.view_offset_y = -32
         view_x, view_y = self.window.get_size()
         print("view", view_x, view_y)
         view_area = (view_x + ( abs(self.view_offset_x) * 2), view_y + ( abs(self.view_offset_y) * 2))
-        view_area = (473, 337) 
+        #view_area = (473, 337) 
         view_start = (0, 0)#(50, 50)
 
         self.camera = tile_cam.DiffCamera(mins, maxs, view_area, margin, tile_size)
@@ -156,9 +156,6 @@ class CityState(game_state.GameState):
         # End cocos licensed section
 
         make_set, cull_set = self.camera.get_tile_diff()
-
-        if make_set and cull_set:
-            print("\tDT:", dt)
 
         doubled = False
 

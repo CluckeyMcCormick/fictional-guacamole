@@ -1,4 +1,4 @@
 from . import (
     city_state,
-    fly_cam
+    tile_cam
 )
