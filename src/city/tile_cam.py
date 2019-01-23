@@ -516,6 +516,13 @@ class DiffCamera(TileCamera):
             y_cull_range = self.top_border.cull_range
             top_change = True
 
+        # FIXME: When dx == dy != 0, this code has a tendency to not cull tiles
+        #        in the corner areas. For testing, this is really only ever
+        #        producing one or two tile that don't get culled, which is very
+        #        negligible performance wise. Ergo, I'll get around to fixing
+        #        it later. I suspect that these two ranges would need
+        #        adjustment.
+
         mc_x_range = range( 
             self.left_border.current_tile,
             self.right_border.current_tile + 1
@@ -525,6 +532,7 @@ class DiffCamera(TileCamera):
             self.bottom_border.current_tile,
             self.top_border.current_tile + 1
         )
+        # End FIXME
 
         #
         # Step 4: Using the ranges we just determined, build the cull and 
