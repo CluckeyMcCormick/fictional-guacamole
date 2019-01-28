@@ -6,8 +6,7 @@ import numpy
 from ctypes import c_byte, c_bool
 
 from game_state import LoadingStatus
-from .world_maker import build_world
-from . import tile_cam
+from . import tile_cam, world_maker, world_data
 
 DEFAULT_WORKERS = 8
 # Timed at 01:07 for a 512 x 512 (Dirty Start)
@@ -71,10 +70,7 @@ def start_build(dt, city_state):
     """
     workers = DEFAULT_WORKERS
     
-    # Make the world object, shape it for convenience
-    city_state.world_raw = mp.Array(c_byte, city_state.x_len * city_state.y_len)
-    a = numpy.frombuffer( city_state.world_raw.get_obj(), dtype=c_byte )
-    city_state.shaped_world = a.reshape( (city_state.x_len, city_state.y_len) )
+    city_state.world_data = world_data.WorldData(city_state.x_len, city_state.y_len)
 
     # Starts the worker processes for building the world
     complete = [ mp.Value(c_bool, False) for _ in range(workers) ]
@@ -95,8 +91,8 @@ def start_build(dt, city_state):
             orders = (x_step * i, x_step * (i + 1))
 
         p = mp.Process(
-            target=build_world, 
-            args=(city_state.world_raw, complete[i], orders, sizes)
+            target=world_maker.build_world, 
+            args=(city_state.world_data.terrain_raw, complete[i], orders, sizes)
         )
         # Store the process
         procs[i] = p
@@ -182,7 +178,7 @@ def sprite_build(dt, city_state, current=0):
         x = t_num % city_state.x_len
         y = t_num // city_state.x_len
         
-        choice_index = (city_state.shaped_world[x, y], 0)
+        choice_index = (city_state.world_data.terrain_shaped[x, y], 0)
         choice = city_state.terrain_grid[ choice_index ]
 
         sprite = None

@@ -28,8 +28,7 @@ class CityState(game_state.GameState):
         # These will be set by the load chain
         self.terrain_image = None
         self.terrain_grid = None
-        self.world_raw = None
-        self.shaped_world = None
+        self.world_data = None
         self.tile_sprites = None
         self.camera = None
 
