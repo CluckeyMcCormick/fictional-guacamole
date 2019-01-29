@@ -8,7 +8,6 @@ from ctypes import c_byte, c_bool
 from game_state import LoadingStatus
 from . import tile_cam, world_maker, world_data
 
-DEFAULT_WORKERS = 8
 # Timed at 01:07 for a 512 x 512 (Dirty Start)
 #MAX_SPRITES_MADE = 5000
 # Timed at 01:07 for a 512 x 512 (Clean Start)
@@ -68,60 +67,58 @@ def start_build(dt, city_state):
     """
     Divys up the world and starts the world painting process.
     """
-    workers = DEFAULT_WORKERS
     
-    city_state.world_data = world_data.WorldData(city_state.x_len, city_state.y_len)
+    # Create the basic world items
+    wd = world_data.WorldData(city_state.x_len, city_state.y_len)
+    # Save them in city state
+    city_state.world_data = wd
 
-    # Starts the worker processes for building the world
-    complete = [ mp.Value(c_bool, False) for _ in range(workers) ]
-    procs = [None for _ in range(workers)]
-
-    # How many x-columns will each process be responsible for?
-    x_step = city_state.x_len // workers
-    # What's the size of the world?
+    # The sizes of each side of the CityState world
     sizes = (city_state.x_len, city_state.y_len)
 
-    # For each worker process
-    for i in range(workers):
-        # If we're on the last iteration, do last
-        if i == workers - 1:
-            orders = (x_step * i, city_state.x_len)
-        # Otherwise, divy up the world
-        else:
-            orders = (x_step * i, x_step * (i + 1))
+    # Has the world been made yet?
+    complete = mp.Value(c_bool, False)
 
-        p = mp.Process(
-            target=world_maker.build_world, 
-            args=(city_state.world_data.terrain_raw, complete[i], orders, sizes)
-        )
-        # Store the process
-        procs[i] = p
+    # The build process will need all of our raw arrays
+    raw_arr = [
+        wd.terrain_raw, 
+        wd.detail_raw,
+        wd.struct_raw, 
+        wd.average_raw
+    ]
 
-        p.start()
+    # The process that will manage the world building
+    proc = mp.Process(
+        target=world_maker.build_world, 
+        args=(raw_arr, complete, sizes)
+    )
+
+    proc.start()
 
     # Schedules check_build
-    pyglet.clock.schedule_once(check_build, 0, city_state, complete, procs)
+    pyglet.clock.schedule_once(check_build, 0, city_state, complete, proc)
 
 #
 # Step Three: Check whether the worldbuilding is done
 #
-def check_build(dt, city_state, complete, procs):
+def check_build(dt, city_state, complete, proc):
     """
     Checks the values in the [complete] array to see if our processes in the 
     [procs] array have finished. 
     """
-    # Checks each worker process to see if we're finished
-    for val in complete:
-        if not val:
-            # If we aren't, reschedules itself
-            pyglet.clock.schedule_once(
-                check_build, 0, 
-                city_state, complete, procs
-            )
-            return
+    # Since complete is a multiprocessing Value object, we have to get the
+    # value manually.
+    if not complete.value:
+        # If we aren't finished yet, reschedules itself
+        pyglet.clock.schedule_once(
+            check_build, 0, 
+            city_state, complete, proc
+        )
+        return
+    
     # Otherwise, joins the processes
-    for p in procs:
-        p.join()
+    print("Joining!")
+    proc.join()
 
     pyglet.clock.schedule_once(make_camera, 0, city_state)
 

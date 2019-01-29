@@ -4,7 +4,6 @@ import numpy
 # Only need these two items from ctypes, and they come with prefixes
 from ctypes import c_byte
 
-
 # In order to save time on rendering tiles, we divide the map up into squares.
 # We then assign each square the most common terrain tile type there-in.
 # These squares are of size AVERAGE_ZONE_LEN x AVERAGE_ZONE_LEN.
