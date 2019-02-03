@@ -3,5 +3,6 @@ from . import (
     tile_cam,
     load_chain,
     world_data,
-    world_maker
+    world_maker,
+    terrain_painter
 )
