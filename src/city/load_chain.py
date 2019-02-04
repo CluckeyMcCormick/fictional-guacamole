@@ -6,7 +6,8 @@ import numpy
 from ctypes import c_byte, c_bool
 
 from game_state import LoadingStatus
-from . import tile_cam, world_maker, world_data
+
+from . import tile_cam, world
 
 # Timed at 01:07 for a 512 x 512 (Dirty Start)
 #MAX_SPRITES_MADE = 5000
@@ -49,10 +50,17 @@ def load_textures(dt, city_state):
     """
     Loads the various textures that city_state will need.
     """
+    #
     if city_state.use16:
-        city_state.terrain_image = pyglet.image.load('terrain_sampler16.png')
+        file = pyglet.resource.file("terrain_sampler16.png")
     else:
-        city_state.terrain_image = pyglet.image.load('terrain_sampler32.png')
+        file = pyglet.resource.file("terrain_primary.png")
+
+    # Load the image using the specified file.
+    # For some reason, loading using pyglet.resource.image creates a pixel
+    # bleed when we break up the image into an ImageGrid - even if atlas=False
+    # So we grab the file first
+    city_state.terrain_image = pyglet.image.load("terrain_primary.png", file=file)
 
     city_state.terrain_grid = pyglet.image.ImageGrid(
         city_state.terrain_image, rows=8, columns=1
@@ -69,7 +77,7 @@ def start_build(dt, city_state):
     """
     
     # Create the basic world items
-    wd = world_data.WorldData(city_state.x_len, city_state.y_len)
+    wd = world.data.WorldData(city_state.x_len, city_state.y_len)
     # Save them in city state
     city_state.world_data = wd
 
@@ -89,7 +97,7 @@ def start_build(dt, city_state):
 
     # The process that will manage the world building
     proc = mp.Process(
-        target=world_maker.build_world, 
+        target=world.maker.build_world, 
         args=(raw_arr, complete, sizes)
     )
 

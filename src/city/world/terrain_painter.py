@@ -6,6 +6,8 @@ from ctypes import c_byte
 
 import noise
 
+from .assets.terrain_primary import PrimaryKey
+
 def make_voroni_points(sizes, points):
 
     x_size, y_size = sizes
@@ -14,7 +16,7 @@ def make_voroni_points(sizes, points):
     voronis = []
 
     for i in range(points):
-        choice = random.choice( [2, 4] )
+        choice = random.choice( [PrimaryKey.DIRT, PrimaryKey.STONE] )
         x = random.randint(0, x_size - 1)
         y = random.randint(0, y_size - 1)
 
@@ -73,30 +75,19 @@ def perlin(world_raw, orders, sizes, scale, octaves, persistence, lacunarity, ba
             choice = 0
             
             if value < -0.4:
-                choice = 4 # Stone
+                choice = PrimaryKey.STONE 
 
-            elif value < -0.3:
-                choice = 2 # Dirt
+            elif value < -0.35:
+                choice = PrimaryKey.DIRT
 
-            elif value < 0.3:
-                choice = 1 # Grass
+            elif value < 0.35:
+                choice = PrimaryKey.GRASS
 
             elif value < 0.4:
-                choice = 2 # Water
+                choice = PrimaryKey.DIRT 
 
             elif value < 1.0:
-                choice = 4 # Ice
-
-            """
-            if 0.1 < value < 0.5:
-                choice = 1
-            elif -0.3 < value <= 0.1:
-                choice = 2
-            elif -0.7 < value <= -0.3:
-                choice = 3
-            elif value <= -0.7:
-                choice = 4
-            """
+                choice = PrimaryKey.STONE
 
             # Set the current tile to the closest point type
             shaped_world[x, y] = choice
@@ -110,4 +101,4 @@ def stochastic(world_raw, orders, sizes):
 
     for x in range(first, limit):
         for y in range(y_size):
-            shaped_world[x, y] = random.randint(0, 7)
+            shaped_world[x, y] = random.randint(PrimaryKey.SNOW, PrimaryKey.LOW_STONE + 1)

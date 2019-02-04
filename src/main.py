@@ -7,8 +7,8 @@ import city
 window = pyglet.window.Window(width=1000, height=600)
 
 # Set where we'll be loading assets from
-pyglet.resource.path.append('../assets/')
-pyglet.resource.path.append('../../assets/')
+pyglet.resource.path.append('@city.world.assets')
+pyglet.resource.path.append('@load_screens.assets')
 pyglet.resource.reindex()
 
 # Make sure the window is ready to handle switch state events
