@@ -1,6 +1,7 @@
 from . import (
+	assets,
     data,
     maker,
     terrain_painter,
-    assets
+    tile_set
 )

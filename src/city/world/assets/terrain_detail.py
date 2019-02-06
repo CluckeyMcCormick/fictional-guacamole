@@ -1,6 +1,37 @@
+
+import pyglet
 import enum
 
-class EdgeKey(enum.Enum):
+from .terrain_primary import PrimaryKey
+
+# terrain_detail.png is organized into squares. Currently, that's a detail
+# square and an edge square. Each square is of N x N.
+# IMAGE_SECTION_TILE_SIZE is N.
+IMAGE_SECTION_TILE_SIZE = 4
+
+# How many tiles is terrain_detail.png, left to right?
+IMAGE_TILE_WIDTH = IMAGE_SECTION_TILE_SIZE * 2
+# How many tiles is terrain_detail.png, top to bottom?
+IMAGE_TILE_HEIGHT = IMAGE_SECTION_TILE_SIZE * 8
+
+IMAGE_PATH = "terrain_detail.png"
+
+def load():
+    file = pyglet.resource.file(IMAGE_PATH)
+
+    # Load the image using the specified file.
+    # For some reason, loading using pyglet.resource.image creates a pixel
+    # bleed when we break up the image into an ImageGrid - even if atlas=False
+    # So we grab the file first
+    image = pyglet.image.load(IMAGE_PATH, file=file)
+
+    grid = pyglet.image.ImageGrid(
+        image, rows=IMAGE_TILE_HEIGHT, columns=IMAGE_TILE_WIDTH
+    )
+
+    return image, grid, [EdgeKey, DetailKey], IMAGE_PATH
+
+class PrototypeEdgeKey(enum.Enum):
     """
     The indices for each edge in the Terrain Detail tile set. Since these are
     the same for each primary terrain type (unlike the rest of the detail set),
@@ -26,12 +57,34 @@ class EdgeKey(enum.Enum):
     TOP_EDGE_B = (3, 10)
     UPPER_RIGHT_INNER = (3, 11)
 
-    def __init__(self, y, x):
-        self.y = y
-        self.x = x
+"""
+Manually annotating each of the edge pieces would be annoying, as they're all
+more or less duplicates (unlike the regular detail pieces). 
 
-    def get_adjusted(self, primary_key):
-        return (self.y + (primary_key * 4), self.x)
+Our solution? Generate an enum on the fly!
+"""
+
+edge_key_dict = {}
+
+# Iterate through of the primary terrain types
+for prime_name, prime_mem in PrimaryKey.__members__.items():
+    # Iterate through of the edge types
+    for edge_name, edge_mem in PrototypeEdgeKey.__members__.items():
+        # Create a new edge type by combining the primary name and edge name
+        string = prime_name + "_" + edge_name
+        y, x = edge_mem.value
+        mult = prime_mem.value
+
+        # Create the Enum entry
+        edge_key_dict[string] = (y + (mult * IMAGE_SECTION_TILE_SIZE), x)
+
+"""
+#
+#   This enum is just like PrototypeEdgeKey, but with primary tile names appended
+#   in front of the edge name.
+#
+"""
+EdgeKey = enum.Enum('EdgeKey', edge_key_dict)
 
 class DetailKey(enum.Enum):
     """

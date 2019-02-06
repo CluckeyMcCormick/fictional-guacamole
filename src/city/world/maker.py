@@ -19,7 +19,7 @@ DEFAULT_CHOICE = 1
 
 BASE = 0
 
-def build_world(raw_arr, complete_val, sizes):
+def build_world(raw_arr, complete_val, sizes, primary_ts, detail_ts):
 
     scale = 100.0
     octaves = 6
@@ -27,7 +27,7 @@ def build_world(raw_arr, complete_val, sizes):
     lacunarity = 2.0
 
     ex_args = [ scale, octaves, persistence, lacunarity, BASE ]
-    perform_work(terrain_painter.perlin, raw_arr[0], sizes, extra_args=ex_args)
+    perform_work(terrain_painter.perlin, raw_arr[0], sizes, primary_ts, extra_args=ex_args)
 
     # Since this a mp.Value object, we have to manually change 
     # the Value.value's value. Ooof.
@@ -36,7 +36,7 @@ def build_world(raw_arr, complete_val, sizes):
 # ~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~
 
-def perform_work(func, raw_world, lens, extra_args=[]):
+def perform_work(func, raw_world, sizes, tile_set, extra_args=[]):
     """
     Divies up the given world into DEFAULT_WORKERS chunks, then calls func on
     each chunk (as it's own process)
@@ -47,7 +47,7 @@ def perform_work(func, raw_world, lens, extra_args=[]):
     procs = [None for _ in range(workers)]
 
     # Get the x_len and y_len, but dump the y_len since we don't need it
-    x_len, _ = lens
+    x_len, _ = sizes
 
     # How many x-columns will each process be responsible for?
     x_step = x_len // workers
@@ -61,7 +61,7 @@ def perform_work(func, raw_world, lens, extra_args=[]):
         else:
             orders = (x_step * i, x_step * (i + 1))
 
-        args = [raw_world, orders, lens]
+        args = [raw_world, orders, sizes, tile_set]
         args.extend(extra_args)
 
         p = mp.Process(

@@ -50,21 +50,14 @@ def load_textures(dt, city_state):
     """
     Loads the various textures that city_state will need.
     """
-    #
-    if city_state.use16:
-        file = pyglet.resource.file("terrain_sampler16.png")
-    else:
-        file = pyglet.resource.file("terrain_primary.png")
 
-    # Load the image using the specified file.
-    # For some reason, loading using pyglet.resource.image creates a pixel
-    # bleed when we break up the image into an ImageGrid - even if atlas=False
-    # So we grab the file first
-    city_state.terrain_image = pyglet.image.load("terrain_primary.png", file=file)
+    # Get the load methods for our tile sheets
+    primary_load = world.assets.terrain_primary.load
+    detail_load = world.assets.terrain_detail.load
 
-    city_state.terrain_grid = pyglet.image.ImageGrid(
-        city_state.terrain_image, rows=8, columns=1
-    )
+    # Create the TileSet objects
+    city_state.terrain_primary = world.tile_set.TileSet(primary_load)
+    city_state.terrain_detail = world.tile_set.TileSet(detail_load)
 
     pyglet.clock.schedule_once(start_build, 0, city_state)
 
@@ -95,10 +88,16 @@ def start_build(dt, city_state):
         wd.average_raw
     ]
 
+    # Get the primary tileset
+    primary_ts = city_state.terrain_primary.get_picklable()
+
+    # Get the secondary tileset
+    detail_ts = city_state.terrain_detail.get_picklable()
+
     # The process that will manage the world building
     proc = mp.Process(
         target=world.maker.build_world, 
-        args=(raw_arr, complete, sizes)
+        args=(raw_arr, complete, sizes, primary_ts, detail_ts)
     )
 
     proc.start()
@@ -183,8 +182,8 @@ def sprite_build(dt, city_state, current=0):
         x = t_num % city_state.x_len
         y = t_num // city_state.x_len
         
-        choice_index = (city_state.world_data.terrain_shaped[x, y], 0)
-        choice = city_state.terrain_grid[ choice_index ]
+        designate = city_state.world_data.terrain_shaped[x, y]
+        choice = city_state.terrain_primary.get_tile_designate(designate)
 
         sprite = None
 

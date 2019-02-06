@@ -8,7 +8,7 @@ import noise
 
 from .assets.terrain_primary import PrimaryKey
 
-def make_voroni_points(sizes, points):
+def make_voroni_points(sizes, points, choice_list):
 
     x_size, y_size = sizes
 
@@ -16,7 +16,7 @@ def make_voroni_points(sizes, points):
     voronis = []
 
     for i in range(points):
-        choice = random.choice( [PrimaryKey.DIRT, PrimaryKey.STONE] )
+        choice = random.choice( choice_list )
         x = random.randint(0, x_size - 1)
         y = random.randint(0, y_size - 1)
 
@@ -28,7 +28,7 @@ def make_voroni_points(sizes, points):
 # at least some of this algorithm (especially the math.hypot part)
 # https://rosettacode.org/wiki/Voronoi_diagram#Python
 
-def voroni(world_raw, orders, sizes, points, max_dist, default_choice):
+def voroni(world_raw, orders, sizes, tile_set, points, max_dist, default):
     _, y_size = sizes
     first, limit = orders
 
@@ -39,7 +39,7 @@ def voroni(world_raw, orders, sizes, points, max_dist, default_choice):
         for y in range(y_size):
             # Find the closest point
             closest_dist = math.inf
-            closest_choice = default_choice
+            closest_choice = default
 
             # For each point...
             for coord, choice in points:
@@ -52,10 +52,10 @@ def voroni(world_raw, orders, sizes, points, max_dist, default_choice):
                     closest_choice = choice
             
             # Set the current tile to the closest point type
-            shaped_world[x, y] = closest_choice
+            shaped_world[x, y] = tile_set.get_designate(closest_choice)
 
 # Cred: https://medium.com/@yvanscher/playing-with-perlin-noise-generating-realistic-archipelagos-b59f004d8401
-def perlin(world_raw, orders, sizes, scale, octaves, persistence, lacunarity, base):
+def perlin(world_raw, orders, sizes, tile_set, scale, octaves, persistence, lacunarity, base):
     x_size, y_size = sizes
     first, limit = orders
 
@@ -72,7 +72,7 @@ def perlin(world_raw, orders, sizes, scale, octaves, persistence, lacunarity, ba
                 repeatx=x_size, repeaty=y_size, base=base
             )
 
-            choice = 0
+            choice = PrimaryKey.GRASS
             
             if value < -0.4:
                 choice = PrimaryKey.STONE 
@@ -90,9 +90,9 @@ def perlin(world_raw, orders, sizes, scale, octaves, persistence, lacunarity, ba
                 choice = PrimaryKey.STONE
 
             # Set the current tile to the closest point type
-            shaped_world[x, y] = choice
+            shaped_world[x, y] = tile_set.get_designate(choice)
 
-def stochastic(world_raw, orders, sizes):
+def stochastic(world_raw, orders, sizes, tile_set):
     _, y_size = sizes
     first, limit = orders
 
@@ -101,4 +101,5 @@ def stochastic(world_raw, orders, sizes):
 
     for x in range(first, limit):
         for y in range(y_size):
-            shaped_world[x, y] = random.randint(PrimaryKey.SNOW, PrimaryKey.LOW_STONE + 1)
+            choice = random.choice( list(PrimaryKey) )
+            shaped_world[x, y] = tile_set.get_designate(choice)
