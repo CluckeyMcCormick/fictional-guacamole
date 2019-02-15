@@ -15,22 +15,23 @@ Y_DEBUG = False #True
 
 class CityState(game_state.GameState):
 
-    def __init__(self, window, x_len, y_len, use16=False):
+    def __init__(self, window, x_len, y_len):
         super(CityState, self).__init__(window)
-        self.batch = pyglet.graphics.Batch()
+        self.world_batch = pyglet.graphics.Batch()
+        self.detail_batch = pyglet.graphics.Batch()
         self.labels = pyglet.graphics.Batch()
 
         self.x_len = x_len
         self.y_len = y_len
 
-        self.use16 = use16
-
         # These will be set by the load chain
-        self.terrain_image = None
-        self.terrain_grid = None
+        self.terrain_primary = None
+        self.terrain_detail = None
         self.world_data = None
-        self.tile_sprites = None
         self.camera = None
+
+        self.world_sprites = None
+        self.detail_sprites = None
 
         self.view_offset_x = 0
         self.view_offset_y = 0
@@ -75,5 +76,6 @@ class CityState(game_state.GameState):
 
     def on_draw(self):
         self.window.clear()
-        self.batch.draw()
+        self.world_batch.draw()
+        self.detail_batch.draw()
         self.labels.draw()

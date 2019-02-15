@@ -26,7 +26,7 @@ def load():
     image = pyglet.image.load(IMAGE_PATH, file=file)
 
     grid = pyglet.image.ImageGrid(
-        image, rows=IMAGE_TILE_HEIGHT, columns=IMAGE_TILE_WIDTH
+        image, rows=IMAGE_TILE_HEIGHT, columns=IMAGE_TILE_WIDTH,
     )
 
     return image, grid, [EdgeKey, DetailKey], IMAGE_PATH
@@ -37,25 +37,25 @@ class PrototypeEdgeKey(enum.Enum):
     the same for each primary terrain type (unlike the rest of the detail set),
     we keep them separate.
     """
-    LOWER_LEFT_INNER = (0, 8)
-    BOTTOM_EDGE_A = (0, 9)
-    BOTTOM_EDGE_B = (0, 10)
-    LOWER_RIGHT_INNER = (0, 11)
+    LOWER_LEFT_INNER = (0, 4)
+    BOTTOM_EDGE_A = (0, 5)
+    BOTTOM_EDGE_B = (0, 6)
+    LOWER_RIGHT_INNER = (0, 7)
 
-    LEFT_EDGE_A = (1, 8)
-    LOWER_LEFT_OUTER = (1, 9)
-    LOWER_RIGHT_OUTER = (1, 10)
-    RIGHT_EDGE_A = (1, 11)
+    LEFT_EDGE_A = (1, 4)
+    LOWER_LEFT_OUTER = (1, 5)
+    LOWER_RIGHT_OUTER = (1, 6)
+    RIGHT_EDGE_A = (1, 7)
 
-    LEFT_EDGE_B = (2, 8)
-    UPPER_LEFT_OUTER = (2, 9)
-    UPPER_RIGHT_OUTER = (2, 10)
-    RIGHT_EDGE_B = (2, 11)
+    LEFT_EDGE_B = (2, 4)
+    UPPER_LEFT_OUTER = (2, 5)
+    UPPER_RIGHT_OUTER = (2, 6)
+    RIGHT_EDGE_B = (2, 7)
 
-    UPPER_LEFT_INNER = (3, 8)
-    TOP_EDGE_A = (3, 9)
-    TOP_EDGE_B = (3, 10)
-    UPPER_RIGHT_INNER = (3, 11)
+    UPPER_LEFT_INNER = (3, 4)
+    TOP_EDGE_A = (3, 5)
+    TOP_EDGE_B = (3, 6)
+    UPPER_RIGHT_INNER = (3, 7)
 
 """
 Manually annotating each of the edge pieces would be annoying, as they're all
@@ -92,6 +92,9 @@ class DetailKey(enum.Enum):
     tileset provides the primary version for each terrain type that we then
     layer over with detail tiles.
     """
+    # Special value - skips the current detail; doesn't render it.
+    NONE = (-1, -1)
+
     #
     # SNOW
     #

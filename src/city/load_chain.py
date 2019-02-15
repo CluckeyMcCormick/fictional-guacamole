@@ -8,6 +8,7 @@ from ctypes import c_byte, c_bool
 from game_state import LoadingStatus
 
 from . import tile_cam, world
+from .world.assets.terrain_detail import DetailKey
 
 # Timed at 01:07 for a 512 x 512 (Dirty Start)
 #MAX_SPRITES_MADE = 5000
@@ -138,10 +139,7 @@ def make_camera(dt, city_state):
     rendering.
     """
     mins = (0,0)
-    if city_state.use16:
-        tile_size = 16
-    else:
-        tile_size = 32
+    tile_size = 32
     maxs = (city_state.x_len, city_state.y_len)
     margin = 4
     city_state.view_offset_x = -32
@@ -155,7 +153,9 @@ def make_camera(dt, city_state):
     city_state.camera = tile_cam.TileCamera(mins, maxs, view_area, margin, tile_size)
 
     # Create the empty tile array
-    city_state.tile_sprites = [ [None for _ in range(city_state.y_len)] for _ in range(city_state.x_len)]
+    city_state.world_sprites = [ [None for _ in range(city_state.y_len)] for _ in range(city_state.x_len)]
+    # Create the empty detail array
+    city_state.detail_sprites = [ [None for _ in range(city_state.y_len * 2)] for _ in range(city_state.x_len * 2)]
 
     # Schedules check_build
     pyglet.clock.schedule_once(sprite_build, 0, city_state)
@@ -190,33 +190,54 @@ def sprite_build(dt, city_state, current=0):
         #if current < MAX_SPRITES_MADE:
             #print(x, y)
 
-        if city_state.use16:
-            sprite = pyglet.sprite.Sprite( choice,
-                x=(x * 16) + city_state.view_offset_x,
-                y=(y * 16) + city_state.view_offset_y,
-                batch=city_state.batch
-            )
-        elif X_DEBUG:
+        if X_DEBUG:
             sprite = pyglet.text.Label( str(x), 
                 x=(x * 32) + city_state.view_offset_x,
                 y=(y * 32) + city_state.view_offset_y, 
-                font_size=8, batch=city_state.batch
+                font_size=8, batch=city_state.world_batch
             )
         elif Y_DEBUG:
             sprite = pyglet.text.Label( str(y), 
                 x=(x * 32) + city_state.view_offset_x,
                 y=(y * 32) + city_state.view_offset_y, 
-                font_size=8, batch=city_state.batch
+                font_size=8, batch=city_state.world_batch
             )
         else:
             sprite = pyglet.sprite.Sprite( choice, 
                 x=(x * 32) + city_state.view_offset_x,
                 y=(y * 32) + city_state.view_offset_y, 
-                batch=city_state.batch
+                batch=city_state.world_batch
             )
             #print( "[%d, %d]" % (sprite.x, sprite.y) )
 
-        city_state.tile_sprites[x][y] = sprite
+        city_state.world_sprites[x][y] = sprite
+
+        det_x = x * 2
+        det_y = y * 2
+
+        for i in range(4):
+            x_adj = i % 2
+            y_adj = i // 2
+
+            designate = city_state.world_data.detail_shaped[x * 2 + x_adj, y * 2 + y_adj]
+
+            enum = city_state.terrain_detail.get_enum(designate)
+            # If it's the blank option, skip!
+            if enum == DetailKey.NONE:
+                continue
+            choice = city_state.terrain_detail.get_tile_designate(designate)
+
+            sprite_x = int(((det_x + x_adj) * 16) + city_state.view_offset_x)
+            sprite_y = int(((det_y + y_adj) * 16) + city_state.view_offset_y)
+
+            sprite = pyglet.sprite.Sprite( choice, 
+                x=sprite_x,
+                y=sprite_y, 
+                batch=city_state.detail_batch
+            )
+
+            city_state.detail_sprites[det_x + x_adj][det_y + y_adj] = sprite
+
 
     # If we still have more sprites to render...
     if current + MAX_SPRITES_MADE < maximum:
