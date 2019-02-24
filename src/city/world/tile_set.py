@@ -57,14 +57,7 @@ class TileSet(object):
         return self.get_tile_enum(enum)
 
     def get_tile_enum(self, enum):
-        # TODO: This is some awful temp code, we need to standardize how we
-        # address the image grid
-        try:
-            return self._grid_dict[enum.image_path][enum.value]
-        except:
-            y, x = enum.value
-            new_slice = (y * 8) + x
-            return self._grid_dict[enum.image_path][61]#[new_slice]
+        return self._grid_dict[enum.image_path][enum.value]
         
     def get_designate(self, enum):
         return self._enum_dict[enum]
