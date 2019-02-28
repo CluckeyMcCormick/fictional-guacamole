@@ -1,5 +1,25 @@
 
-from pyglet import gl, graphics
+from pyglet import gl, graphics, sprite
+
+class TileGroup(sprite.SpriteGroup):
+    """
+    Shared Tile rendering group. Derived from SpriteGroup, but only passes in
+    the sprite-default blend modes. If you're looking to use custom blend modes
+    then use pyglet.graphics.SpriteGroup .
+    """
+    def __init__(self, texture, parent=None):
+        """
+        Create a Tile group.
+
+        Inputs:
+
+        texture: The texture for this group.
+        
+        parent: Optional parent group.
+        """
+        super(TileGroup, self).__init__(
+            texture, gl.GL_SRC_ALPHA, gl.GL_ONE_MINUS_SRC_ALPHA, parent
+        )
 
 class RepeatingTextureTile(object):
     """
@@ -35,9 +55,9 @@ class RepeatingTextureTile(object):
         (and four overall).
 
         tex_group: a pyglet.graphics.Group object. Ideally, this should be a
-        pyglet.graphics.TextureGroup object, since this is where we grab our 
-        texture from. As long as the appropriate texture is set somewhere in
-        the group hierarchy, it should work.
+        TileGroup object, since this is where we grab our  texture from. As 
+        long as the appropriate texture is set somewhere in the group
+        hierarchy, it should work.
 
         batch: a pyglet.graphics.Batch object. This will be the object's batch.
         """
@@ -88,9 +108,9 @@ class RepeatingTextureTile(object):
         (and four overall).
 
         tex_group: a pyglet.graphics.Group object. Ideally, this should be a
-        pyglet.graphics.TextureGroup object, since this is where we grab our 
-        texture from. As long as the appropriate texture is set somewhere in
-        the group hierarchy, it should work.
+        TileGroup object, since this is where we grab our  texture from. As 
+        long as the appropriate texture is set somewhere in the group
+        hierarchy, it should work.
         """
         if pos is not None or sizes is not None:     
             if pos is not None:
@@ -138,9 +158,9 @@ class RepeatingTextureTile(object):
         )
         self.batch = new_batch
 
-class BasicTile(RepeatingTextureTile):
+class SizableTile(RepeatingTextureTile):
     """
-    A derivative of RepeatingTextureTile. Calculates the texture step, so that
+    A variation on RepeatingTextureTile. Calculates the texture step, so that
     you don't have to.
     """
     def __init__(self, pos, sizes, tex_group, batch):
@@ -156,9 +176,9 @@ class BasicTile(RepeatingTextureTile):
         tile.
 
         tex_group: a pyglet.graphics.Group object. Ideally, this should be a
-        pyglet.graphics.TextureGroup object, since this is where we grab our 
-        texture from. As long as the appropriate texture is set somewhere in
-        the group hierarchy, it should work.
+        TileGroup object, since this is where we grab our  texture from. As 
+        long as the appropriate texture is set somewhere in the group
+        hierarchy, it should work.
 
         batch: a pyglet.graphics.Batch object. This will be the object's batch.
         """
@@ -182,9 +202,9 @@ class BasicTile(RepeatingTextureTile):
         tile.
 
         tex_group: a pyglet.graphics.Group object. Ideally, this should be a
-        pyglet.graphics.TextureGroup object, since this is where we grab our 
-        texture from. As long as the appropriate texture is set somewhere in
-        the group hierarchy, it should work.
+        TileGroup object, since this is where we grab our  texture from. As 
+        long as the appropriate texture is set somewhere in the group
+        hierarchy, it should work.
         """
         steps = None
         
@@ -195,3 +215,54 @@ class BasicTile(RepeatingTextureTile):
             pos=pos, sizes=sizes, tex_steps=steps, tex_group=tex_group
         )
 
+class SimpleTile(RepeatingTextureTile):
+    """
+    A variation on RepeatingTextureTile. Calculates the texture step AND the
+    size from the texture group
+    """
+    def __init__(self, pos, tex_group, batch):
+        """
+        Creates the RepeatingTextureTile, to the user's specifications.
+
+        Inputs:
+        
+        pos: a tuple, containing the x,y position of the tile. This is the
+        position of the lower left corner.
+
+        tex_group: a pyglet.graphics.Group object. Ideally, this should be a
+        TileGroup object, since this is where we grab our  texture from. As 
+        long as the appropriate texture is set somewhere in the group
+        hierarchy, it should work.
+
+        batch: a pyglet.graphics.Batch object. This will be the object's batch.
+        """
+        super(SimpleTile, self).__init__(
+            pos,
+            (tex_group.texture.width, tex_group.texture.height),
+            (tex_group.texture.width, tex_group.texture.height),
+            tex_group, batch
+        )
+        
+    def update_data(self, pos=None, tex_group=None):
+        """
+        Updates the shape using the given parameters. Any None values are
+        ignored.
+
+        Inputs:
+        
+        pos: a tuple, containing the x,y position of the tile. This is the
+        position of the lower left corner.
+
+        tex_group: a pyglet.graphics.Group object. Ideally, this should be a
+        TileGroup object, since this is where we grab our  texture from. As 
+        long as the appropriate texture is set somewhere in the group
+        hierarchy, it should work.
+        """
+        steps = None
+        
+        if tex_group is not None:
+            sizes = (tex_group.texture.width, tex_group.texture.height)
+
+        super(SimpleTile, self).update_data(
+            pos=pos, sizes=sizes, tex_steps=sizes, tex_group=tex_group
+        )

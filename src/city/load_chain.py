@@ -9,15 +9,13 @@ from game_state import LoadingStatus
 
 from . import tile_cam, world
 from .world.assets.terrain_detail import DetailKey
+import game_util
 
 # Timed at 01:07 for a 512 x 512 (Dirty Start)
 #MAX_SPRITES_MADE = 5000
 # Timed at 01:07 for a 512 x 512 (Clean Start)
 # Timed at 01:07 for a 512 x 512 (Dirty Start)
 MAX_SPRITES_MADE = 1000
-
-X_DEBUG = False
-Y_DEBUG = False
 
 """
 This is the load_chain, which is my backwards idea of a factory class/method.
@@ -156,6 +154,8 @@ def make_camera(dt, city_state):
     city_state.world_sprites = [ [None for _ in range(city_state.y_len)] for _ in range(city_state.x_len)]
     # Create the empty detail array
     city_state.detail_sprites = [ [None for _ in range(city_state.y_len * 2)] for _ in range(city_state.x_len * 2)]
+    # Create our texture groups dict
+    city_state.texture_groups = {}
 
     # Schedules check_build
     pyglet.clock.schedule_once(sprite_build, 0, city_state)
@@ -183,32 +183,24 @@ def sprite_build(dt, city_state, current=0):
         y = t_num // city_state.x_len
         
         designate = city_state.world_data.terrain_shaped[x, y]
-        choice = city_state.terrain_primary.get_tile_designate(designate)
+        choice_enum = city_state.terrain_primary.get_enum(designate)
 
-        sprite = None
+        if choice_enum not in city_state.texture_groups:
+            choice_image = city_state.terrain_primary.get_tile_designate(designate)
+            city_state.texture_groups[choice_enum] = game_util.tiles.TileGroup(
+                texture=choice_image.get_texture()
+            )
 
-        #if current < MAX_SPRITES_MADE:
-            #print(x, y)
+        texture_group = city_state.texture_groups[choice_enum]
 
-        if X_DEBUG:
-            sprite = pyglet.text.Label( str(x), 
-                x=(x * 32) + city_state.view_offset_x,
-                y=(y * 32) + city_state.view_offset_y, 
-                font_size=8, batch=city_state.world_batch
-            )
-        elif Y_DEBUG:
-            sprite = pyglet.text.Label( str(y), 
-                x=(x * 32) + city_state.view_offset_x,
-                y=(y * 32) + city_state.view_offset_y, 
-                font_size=8, batch=city_state.world_batch
-            )
-        else:
-            sprite = pyglet.sprite.Sprite( choice, 
-                x=(x * 32) + city_state.view_offset_x,
-                y=(y * 32) + city_state.view_offset_y, 
-                batch=city_state.world_batch
-            )
-            #print( "[%d, %d]" % (sprite.x, sprite.y) )
+        sprite_x = (x * 32) + city_state.view_offset_x
+        sprite_y = (y * 32) + city_state.view_offset_y
+
+        sprite = game_util.tiles.SimpleTile(
+            pos=(sprite_x, sprite_y), 
+            tex_group=texture_group, 
+            batch=city_state.world_batch
+        )
 
         city_state.world_sprites[x][y] = sprite
 
@@ -221,18 +213,25 @@ def sprite_build(dt, city_state, current=0):
 
             designate = city_state.world_data.detail_shaped[x * 2 + x_adj, y * 2 + y_adj]
 
-            enum = city_state.terrain_detail.get_enum(designate)
+            choice_enum = city_state.terrain_detail.get_enum(designate)
             # If it's the blank option, skip!
-            if enum == DetailKey.NONE:
+            if choice_enum == DetailKey.NONE:
                 continue
-            choice = city_state.terrain_detail.get_tile_designate(designate)
+
+            if choice_enum not in city_state.texture_groups:
+                choice_image = city_state.terrain_detail.get_tile_designate(designate)
+                city_state.texture_groups[choice_enum] = game_util.tiles.TileGroup(
+                    texture=choice_image.get_texture()
+                )
+
+            texture_group = city_state.texture_groups[choice_enum]
 
             sprite_x = int(((det_x + x_adj) * 16) + city_state.view_offset_x)
             sprite_y = int(((det_y + y_adj) * 16) + city_state.view_offset_y)
 
-            sprite = pyglet.sprite.Sprite( choice, 
-                x=sprite_x,
-                y=sprite_y, 
+            sprite = game_util.tiles.SimpleTile(
+                pos=(sprite_x, sprite_y), 
+                tex_group=texture_group, 
                 batch=city_state.detail_batch
             )
 

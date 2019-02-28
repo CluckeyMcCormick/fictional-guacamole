@@ -8,11 +8,6 @@ import game_state
 
 from . import tile_cam, load_chain
 
-WORKERS = 8
-
-X_DEBUG = False #True
-Y_DEBUG = False #True
-
 class CityState(game_state.GameState):
 
     def __init__(self, window, x_len, y_len):
@@ -32,6 +27,7 @@ class CityState(game_state.GameState):
 
         self.world_sprites = None
         self.detail_sprites = None
+        self.texture_groups = None
 
         self.view_offset_x = 0
         self.view_offset_y = 0
