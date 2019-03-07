@@ -69,23 +69,12 @@ def start_build(dt, city_state):
     """
     
     # Create the basic world items
-    wd = world.data.WorldData(city_state.x_len, city_state.y_len)
+    wd = world.data.WorldData(city_state.x_len, city_state.y_len, city_state.terrain_primary)
     # Save them in city state
     city_state.world_data = wd
 
-    # The sizes of each side of the CityState world
-    sizes = (city_state.x_len, city_state.y_len)
-
     # Has the world been made yet?
     complete = mp.Value(c_bool, False)
-
-    # The build process will need all of our raw arrays
-    raw_arr = [
-        wd.terrain_raw, 
-        wd.detail_raw,
-        wd.struct_raw, 
-        wd.average_raw
-    ]
 
     # Get the primary tileset
     primary_ts = city_state.terrain_primary.get_picklable()
@@ -96,7 +85,7 @@ def start_build(dt, city_state):
     # The process that will manage the world building
     proc = mp.Process(
         target=world.maker.build_world, 
-        args=(raw_arr, complete, sizes, primary_ts, detail_ts)
+        args=(wd, complete, primary_ts, detail_ts)
     )
 
     proc.start()
@@ -150,6 +139,8 @@ def make_camera(dt, city_state):
 
     city_state.camera = tile_cam.TileCamera(mins, maxs, view_area, margin, tile_size)
 
+    # Create the empty average array
+    city_state.average_sprites = [ [None for _ in range(city_state.y_len // world.data.AVERAGE_ZONE_LEN)] for _ in range(city_state.x_len // world.data.AVERAGE_ZONE_LEN)]
     # Create the empty tile array
     city_state.world_sprites = [ [None for _ in range(city_state.y_len)] for _ in range(city_state.x_len)]
     # Create the empty detail array
@@ -158,12 +149,49 @@ def make_camera(dt, city_state):
     city_state.texture_groups = {}
 
     # Schedules check_build
-    pyglet.clock.schedule_once(sprite_build, 0, city_state)
+    pyglet.clock.schedule_once(average_sprite_build, 0, city_state)
+
+def average_sprite_build(dt, city_state):
+
+    x_len, y_len = city_state.world_data.get_sizes()
+    avg_x_len = x_len // world.data.AVERAGE_ZONE_LEN
+    avg_y_len = y_len // world.data.AVERAGE_ZONE_LEN
+
+    avg_tile_size = 32 * world.data.AVERAGE_ZONE_LEN
+
+    for avg_x in range(avg_x_len):
+        for avg_y in range(avg_y_len):
+
+            designate = city_state.world_data.average_shaped[avg_x, avg_y]
+            choice_enum = city_state.terrain_primary.get_enum(designate)
+
+            if choice_enum not in city_state.texture_groups:
+                choice_image = city_state.terrain_primary.get_tile_designate(designate)
+                city_state.texture_groups[choice_enum] = game_util.tiles.TileGroup(
+                    texture=choice_image.get_texture()
+                )
+
+            texture_group = city_state.texture_groups[choice_enum]
+
+            sprite_x = (avg_x * avg_tile_size) + city_state.view_offset_x
+            sprite_y = (avg_y * avg_tile_size) + city_state.view_offset_y
+
+            sprite = game_util.tiles.SizableTile(
+                pos=(sprite_x, sprite_y),
+                sizes=(avg_tile_size, avg_tile_size), 
+                tex_group=texture_group, 
+                batch=city_state.average_batch
+            )
+
+            city_state.average_sprites[avg_x][avg_y] = sprite            
+
+    # Schedules check_build
+    pyglet.clock.schedule_once(world_sprite_build, 0, city_state)
 
 #
 # Step Five: Build the sprites
 #
-def sprite_build(dt, city_state, current=0):
+def world_sprite_build(dt, city_state, current=0):
     """
     Create our camera and a sprite array to hold any sprites we'll be
     rendering.
@@ -185,24 +213,30 @@ def sprite_build(dt, city_state, current=0):
         designate = city_state.world_data.terrain_shaped[x, y]
         choice_enum = city_state.terrain_primary.get_enum(designate)
 
-        if choice_enum not in city_state.texture_groups:
-            choice_image = city_state.terrain_primary.get_tile_designate(designate)
-            city_state.texture_groups[choice_enum] = game_util.tiles.TileGroup(
-                texture=choice_image.get_texture()
+        avg_x = x // world.data.AVERAGE_ZONE_LEN
+        avg_y = y // world.data.AVERAGE_ZONE_LEN
+
+        avg_designate = city_state.world_data.average_shaped[avg_x, avg_y]
+
+        if avg_designate != designate:
+            if choice_enum not in city_state.texture_groups:
+                choice_image = city_state.terrain_primary.get_tile_designate(designate)
+                city_state.texture_groups[choice_enum] = game_util.tiles.TileGroup(
+                    texture=choice_image.get_texture()
+                )
+
+            texture_group = city_state.texture_groups[choice_enum]
+
+            sprite_x = (x * 32) + city_state.view_offset_x
+            sprite_y = (y * 32) + city_state.view_offset_y
+
+            sprite = game_util.tiles.SimpleTile(
+                pos=(sprite_x, sprite_y), 
+                tex_group=texture_group, 
+                batch=city_state.world_batch
             )
 
-        texture_group = city_state.texture_groups[choice_enum]
-
-        sprite_x = (x * 32) + city_state.view_offset_x
-        sprite_y = (y * 32) + city_state.view_offset_y
-
-        sprite = game_util.tiles.SimpleTile(
-            pos=(sprite_x, sprite_y), 
-            tex_group=texture_group, 
-            batch=city_state.world_batch
-        )
-
-        city_state.world_sprites[x][y] = sprite
+            city_state.world_sprites[x][y] = sprite
 
         det_x = x * 2
         det_y = y * 2
@@ -242,7 +276,7 @@ def sprite_build(dt, city_state, current=0):
     if current + MAX_SPRITES_MADE < maximum:
         # schedule ourselves again
         pyglet.clock.schedule_once(
-            sprite_build, 0, 
+            world_sprite_build, 0, 
             city_state, current=current+MAX_SPRITES_MADE
         )
     # Otherwise, we're done here.

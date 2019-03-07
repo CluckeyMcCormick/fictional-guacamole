@@ -182,7 +182,7 @@ class SizableTile(RepeatingTextureTile):
 
         batch: a pyglet.graphics.Batch object. This will be the object's batch.
         """
-        super(BasicTile, self).__init__(
+        super(SizableTile, self).__init__(
             pos, sizes, 
             (tex_group.texture.width, tex_group.texture.height),
             tex_group, batch
@@ -211,7 +211,7 @@ class SizableTile(RepeatingTextureTile):
         if tex_group is not None:
             steps = (tex_group.texture.width, tex_group.texture.height)
 
-        super(BasicTile, self).update_data(
+        super(SizableTile, self).update_data(
             pos=pos, sizes=sizes, tex_steps=steps, tex_group=tex_group
         )
 

@@ -12,6 +12,7 @@ class CityState(game_state.GameState):
 
     def __init__(self, window, x_len, y_len):
         super(CityState, self).__init__(window)
+        self.average_batch = pyglet.graphics.Batch()
         self.world_batch = pyglet.graphics.Batch()
         self.detail_batch = pyglet.graphics.Batch()
         self.labels = pyglet.graphics.Batch()
@@ -72,6 +73,8 @@ class CityState(game_state.GameState):
 
     def on_draw(self):
         self.window.clear()
+        self.average_batch.draw()
         self.world_batch.draw()
         self.detail_batch.draw()
         self.labels.draw()
+

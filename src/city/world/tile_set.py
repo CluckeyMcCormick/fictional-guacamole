@@ -52,6 +52,9 @@ class TileSet(object):
                     self._enum_dict[current] = next_val
                     self._designate_dict[next_val] = current
 
+    def __len__(self):
+        return len(self._enum_dict)
+
     def get_tile_designate(self, designate):
         enum = self._designate_dict[designate]
         return self.get_tile_enum(enum)

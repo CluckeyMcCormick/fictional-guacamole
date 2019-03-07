@@ -3,11 +3,13 @@ import numpy
 import random
 import math
 import noise
+import operator
 # Only need these two items from ctypes, and they come with prefixes
 from ctypes import c_byte, c_bool, c_int16
 
 from .assets.terrain_primary import PrimaryKey
 from .assets.terrain_detail import EdgeKey, DetailKey
+from .data import AVERAGE_ZONE_LEN
 
 # Everytime we do a parallel-izable process, how many workers work on it?
 DEFAULT_WORKERS = 8
@@ -19,9 +21,9 @@ MAX_VORONI_DIST = 64
 
 DEFAULT_CHOICE = 1
 
-BASE = 0
+BASE = 1
 
-def build_world(raw_arr, complete_val, sizes, primary_ts, detail_ts):
+def build_world(world_data, complete_val, primary_ts, detail_ts):
     """
     The build_world function is our main building algorithm. It's main role is
     in deciding what arguments to pass to our world painting methods and what
@@ -32,18 +34,23 @@ def build_world(raw_arr, complete_val, sizes, primary_ts, detail_ts):
     persistence = 0.5
     lacunarity = 2.0
 
+    print("\n\tStarting perlin gen..\n\n")
     kw_args = {
-        "world_raw" : raw_arr[0], "tile_set" : primary_ts, "scale" : scale, 
+        "tile_set" : primary_ts, "scale" : scale, 
         "octaves" : octaves, "persistence" : persistence, 
         "lacunarity" : lacunarity, "base" : BASE
     }
-    perform_work(perlin, sizes, kw_args=kw_args)
+    perform_work(perlin, world_data, kw_args=kw_args)
+
+    print("\n\tAssigning averages...\n\n")
+    assign_averages(world_data)
+
+    print("\n\tPerforming the ever important edge pass...\n\n")
 
     kw_args = {
         "world_ts" : primary_ts, "detail_ts" : detail_ts, 
-        "world_raw" : raw_arr[0], "detail_raw" : raw_arr[1] 
     }
-    perform_work(edge_pass, sizes, kw_args=kw_args)
+    perform_work(edge_pass, world_data, kw_args=kw_args)
 
     # Since this a mp.Value object, we have to manually change 
     # the Value.value's value. Ooof.
@@ -53,7 +60,7 @@ def build_world(raw_arr, complete_val, sizes, primary_ts, detail_ts):
 # ~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~
 
-def perform_work(func, sizes, in_args=[], kw_args={}):
+def perform_work(func, world_data, in_args=[], kw_args={}):
     """
     Divies up the given world into DEFAULT_WORKERS chunks, then calls func on
     each chunk (as it's own process)
@@ -64,7 +71,7 @@ def perform_work(func, sizes, in_args=[], kw_args={}):
     procs = [None for _ in range(workers)]
 
     # Get the x_len and y_len, but dump the y_len since we don't need it
-    x_len, _ = sizes
+    x_len, _ = world_data.get_sizes()
 
     # How many x-columns will each process be responsible for?
     x_step = x_len // workers
@@ -78,7 +85,7 @@ def perform_work(func, sizes, in_args=[], kw_args={}):
         else:
             orders = (x_step * i, x_step * (i + 1))
 
-        args = [sizes, orders]
+        args = [world_data, orders]
         args.extend(in_args)
 
         p = mp.Process(target=func, args=args, kwargs=kw_args)
@@ -99,6 +106,29 @@ def perform_work(func, sizes, in_args=[], kw_args={}):
 #       World Painting Methods!!!!!!!!!!!!!!
 #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+def assign_averages(world_data):
+    x_len, y_len = world_data.get_sizes()
+
+    avg_x_len = x_len // AVERAGE_ZONE_LEN
+    avg_y_len = y_len // AVERAGE_ZONE_LEN
+
+    average_shaped = world_data.make_average_shaped()
+    counts_shaped = world_data.make_counts_shaped()
+
+    for x in range(avg_x_len):
+        for y in range(avg_y_len):
+            # Get the maximum value
+            max_val = None
+            max_amount = -1
+
+            for key in range(world_data.primary_types):
+                if counts_shaped[x, y, key] > max_amount:
+                    max_val = key
+                    max_amount = counts_shaped[x, y, key]
+
+            average_shaped[x, y] = max_val
+
+
 def make_voroni_points(sizes, points, choice_list):
 
     x_size, y_size = sizes
@@ -118,12 +148,13 @@ def make_voroni_points(sizes, points, choice_list):
 # CRED: Credit goes to Rosetta Code's Voroni Diagram article/thing for
 # at least some of this algorithm (especially the math.hypot part)
 # https://rosettacode.org/wiki/Voronoi_diagram#Python
-def voroni(sizes, orders, world_raw, tile_set, points, max_dist, default):
-    _, y_size = sizes
+def voroni(world_data, orders, tile_set, points, max_dist, default):
+    _, y_size = world_data.get_sizes()
     first, limit = orders
 
     # Using numpy, reshape the raw array so we can work on it in terms of x,y
-    shaped_world = numpy.frombuffer( world_raw.get_obj(), dtype=c_byte ).reshape( sizes )
+    shaped_world = world_data.make_terrain_shaped()
+    shaped_counts = world_data.make_counts_shaped()
 
     for x in range(first, limit):
         for y in range(y_size):
@@ -141,19 +172,29 @@ def voroni(sizes, orders, world_raw, tile_set, points, max_dist, default):
                     closest_dist = dist
                     closest_choice = choice
             
+            designate = tile_set.get_designate(closest_choice)
+
+            avg_x = x // AVERAGE_ZONE_LEN
+            avg_y = y // AVERAGE_ZONE_LEN
+
+            # Update the average roster
+            shaped_counts[avg_x, avg_y, shaped_world[x, y]] -= 1
+            shaped_counts[avg_x, avg_y, designate] += 1
+
             # Set the current tile to the closest point type
-            shaped_world[x, y] = tile_set.get_designate(closest_choice)
+            shaped_world[x, y] = designate
 
 # CRED: Credit goes to Yvan Scher's article about Perlin noise in Python.
 # Revelead unto me the existence of the Python noise module, and gave some an
 # example to start playing with.
 # https://medium.com/@yvanscher/playing-with-perlin-noise-generating-realistic-archipelagos-b59f004d8401
-def perlin(sizes, orders, world_raw, tile_set, scale, octaves, persistence, lacunarity, base):
-    x_size, y_size = sizes
+def perlin(world_data, orders, tile_set, scale, octaves, persistence, lacunarity, base):
+    x_size, y_size = world_data.get_sizes()
     first, limit = orders
 
     # Using numpy, reshape the raw array so we can work on it in terms of x,y
-    shaped_world = numpy.frombuffer( world_raw.get_obj(), dtype=c_byte ).reshape( sizes )
+    shaped_world = world_data.make_terrain_shaped()
+    shaped_counts = world_data.make_counts_shaped()
 
     for x in range(first, limit):
         for y in range(y_size):
@@ -182,24 +223,44 @@ def perlin(sizes, orders, world_raw, tile_set, scale, octaves, persistence, lacu
             elif value < 1.0:
                 choice = PrimaryKey.STONE
 
-            # Set the current tile to the closest point type
-            shaped_world[x, y] = tile_set.get_designate(choice)
+            designate = tile_set.get_designate(choice)
 
-def stochastic(sizes, orders, world_raw, tile_set):
-    _, y_size = sizes
+            avg_x = x // AVERAGE_ZONE_LEN
+            avg_y = y // AVERAGE_ZONE_LEN
+
+            # Update the average roster
+            shaped_counts[avg_x, avg_y, shaped_world[x, y]] -= 1
+            shaped_counts[avg_x, avg_y, designate] += 1
+
+            # Set the current tile to the closest point type
+            shaped_world[x, y] = designate
+
+def stochastic(world_data, orders, tile_set):
+    _, y_size = world_data.get_sizes()
     first, limit = orders
 
     # Using numpy, reshape the raw array so we can work on it in terms of x,y
-    shaped_world = numpy.frombuffer( world_raw.get_obj(), dtype=c_byte ).reshape( sizes )
+    shaped_world = world_data.make_terrain_shaped()
+    shaped_counts = world_data.make_counts_shaped()
 
     choice_list = list(PrimaryKey)
 
     for x in range(first, limit):
         for y in range(y_size):
             choice = random.choice( choice_list )
-            shaped_world[x, y] = tile_set.get_designate(choice)
+            designate = tile_set.get_designate(choice)
 
-def edge_pass(sizes, orders, world_ts, detail_ts, world_raw, detail_raw):
+            avg_x = x // AVERAGE_ZONE_LEN
+            avg_y = y // AVERAGE_ZONE_LEN
+
+            # Update the average roster
+            shaped_counts[avg_x, avg_y, shaped_world[x, y]] -= 1
+            shaped_counts[avg_x, avg_y, designate] += 1
+
+            # Set the current tile to the closest point type
+            shaped_world[x, y] = designate
+
+def edge_pass(world_data, orders, world_ts, detail_ts):
     """
     The world is a series of tiles, like this:
          |       |       |
@@ -215,20 +276,19 @@ def edge_pass(sizes, orders, world_ts, detail_ts, world_raw, detail_raw):
          |       |       |    
     """
 
-    x_size, y_size = sizes
+    x_size, y_size = world_data.get_sizes()
     first, limit = orders
 
     # The detail world assigns 4 sub-tiles to each primary tile, and is thusly
     # twice as big on each axis
-    x_det_size, y_det_size = sizes
-    x_det_size *= 2
-    y_det_size *= 2
+    x_det_size = x_size * 2
+    y_det_size = y_size * 2
     det_sizes = (x_det_size, y_det_size)
 
     # Using numpy, reshape the raw array so we can work on it in terms of x,y
-    shaped_world = numpy.frombuffer( world_raw.get_obj(), dtype=c_byte ).reshape( sizes )
+    shaped_world = world_data.make_terrain_shaped()
     # Ditto for the detail array
-    shaped_detail = numpy.frombuffer( detail_raw.get_obj(), dtype=c_int16 ).reshape( det_sizes )
+    shaped_detail = world_data.make_detail_shaped()
 
     # The neighbor shifts on world_x and world_y, for each detail tile
     # We'll use these to quickly check the neighbor tiles for each detail tile
