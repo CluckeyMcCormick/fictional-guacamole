@@ -1,5 +1,7 @@
 
 import pyglet
+from pyglet import gl
+
 import random
 import numpy
 from ctypes import c_byte
@@ -50,22 +52,13 @@ class CityState(game_state.GameState):
 
         pyglet.clock.schedule_interval(self.process_and_cull, 1/60.0)
 
+        self.fps_display = pyglet.window.FPSDisplay(self.window)
+        self.delta_time_display = pyglet.text.Label( batch=self.labels, x=12, y=75, font_size=25, color=(255, 0, 25, 255))
+
     def process_and_cull(self, dt):
 
         self.camera.move_camera(dt)
-
-        #
-        # The following code segment, which concerns culling and creating tile
-        # sprites is a direct borrow of code from the _update_sprite_set
-        # function in tile.py from the cocos2d Python package. 
-        #
-        # See LICENSE.cocos for the complete license.
-        #
-
-        # Get the visible tiles
-        
-        # End cocos licensed section
-
+        self.delta_time_display.text = "Delta Time: " + str(round(dt, 4))
 
     def stop(self):
         pyglet.clock.unschedule(self.camera.move_camera)
@@ -76,5 +69,25 @@ class CityState(game_state.GameState):
         self.average_batch.draw()
         self.world_batch.draw()
         self.detail_batch.draw()
+
+        # Get the model view matrix, put it on the "pile"
+        gl.glMatrixMode(gl.GL_MODELVIEW)
+        gl.glPushMatrix()
+        gl.glLoadIdentity()
+
+        # Get the projection view matrix, push it on the pile
+        gl.glMatrixMode(gl.GL_PROJECTION)
+        gl.glPushMatrix()
+        gl.glLoadIdentity()
+
+        # Do... something???
+        gl.glOrtho(0, self.window.width, 0, self.window.height, -1, 1)
+
         self.labels.draw()
 
+        # Put everything back to the way it was
+        gl.glPopMatrix()
+        gl.glMatrixMode(gl.GL_MODELVIEW)
+        gl.glPopMatrix()
+
+        self.fps_display.draw()
