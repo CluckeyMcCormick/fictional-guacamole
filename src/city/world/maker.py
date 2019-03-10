@@ -36,11 +36,14 @@ def build_world(world_data, complete_val, primary_ts, detail_ts):
 
     print("\n\tStarting perlin gen..\n\n")
     kw_args = {
-        "tile_set" : primary_ts, "scale" : scale, 
-        "octaves" : octaves, "persistence" : persistence, 
-        "lacunarity" : lacunarity, "base" : BASE
+        "tile_set" : primary_ts
     }
-    perform_work(perlin, world_data, kw_args=kw_args)
+    perform_spatial_work(only_grass, world_data, kw_args=kw_args)
+
+    print("\n\tLake Painting...\n\n")
+    lakes = generate_lake_chains( world_data )
+    kw_args = { "tile_set" : primary_ts }
+    perform_work(paint_square_lake, world_data, lakes, kw_args=kw_args)
 
     print("\n\tAssigning averages...\n\n")
     assign_averages(world_data)
@@ -50,7 +53,7 @@ def build_world(world_data, complete_val, primary_ts, detail_ts):
     kw_args = {
         "world_ts" : primary_ts, "detail_ts" : detail_ts, 
     }
-    perform_work(edge_pass, world_data, kw_args=kw_args)
+    perform_spatial_work(edge_pass, world_data, kw_args=kw_args)
 
     # Since this a mp.Value object, we have to manually change 
     # the Value.value's value. Ooof.
@@ -60,38 +63,53 @@ def build_world(world_data, complete_val, primary_ts, detail_ts):
 # ~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~
 # ~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~ ~~~~~~~~~~~~~~~
 
-def perform_work(func, world_data, in_args=[], kw_args={}):
+def perform_spatial_work(func, world_data, in_args=[], kw_args={}):
     """
-    Divies up the given world into DEFAULT_WORKERS chunks, then calls func on
-    each chunk (as it's own process)
+    Divies up the given world into DEFAULT_WORKERS chunks, then supplies those
+    as orders to the given func
     """
-    workers = DEFAULT_WORKERS
+    CHUNK_COUNT = DEFAULT_WORKERS
 
     # Starts the worker processes for building the world
-    procs = [None for _ in range(workers)]
+    orders = []
 
     # Get the x_len and y_len, but dump the y_len since we don't need it
     x_len, _ = world_data.get_sizes()
 
     # How many x-columns will each process be responsible for?
-    x_step = x_len // workers
+    x_step = x_len // CHUNK_COUNT
 
     # For each worker process
-    for i in range(workers):
+    for i in range(CHUNK_COUNT):
         # If we're on the last iteration, do last
-        if i == workers - 1:
-            orders = (x_step * i, x_len)
+        if i == CHUNK_COUNT - 1:
+            o = (x_step * i, x_len)
         # Otherwise, divy up the world
         else:
-            orders = (x_step * i, x_step * (i + 1))
+            o = (x_step * i, x_step * (i + 1))
 
-        args = [world_data, orders]
+        orders.append(o)
+
+    perform_work(func, world_data, orders, in_args=in_args, kw_args=kw_args)
+
+def perform_work(func, world_data, orders, in_args=[], kw_args={}):
+    """
+    For each item in orders, starts a Process running *func* with world_data,
+    orders, in_args, and kw_args as arguments.
+    """
+    # Starts the worker processes for building the world
+    procs = []
+    
+    # For each worker process
+    for o in orders:
+        # First args are always world_data and orders
+        args = [world_data, o]
         args.extend(in_args)
 
         p = mp.Process(target=func, args=args, kwargs=kw_args)
 
         # Store the process
-        procs[i] = p
+        procs.append(p)
 
         p.start()
 
@@ -100,6 +118,7 @@ def perform_work(func, world_data, in_args=[], kw_args={}):
     # straight away
     for p in procs:
         p.join()
+
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -128,6 +147,137 @@ def assign_averages(world_data):
 
             average_shaped[x, y] = max_val
 
+# The mean lake size
+LAKE_SIZE_MU = 4
+
+# The variance in lake size
+LAKE_SIZE_SIGMA = 1
+
+# The mean distance of each sub-lake from the center lake
+LAKE_POS_MU = 3
+
+# The variance in sub-lake distance
+LAKE_POS_SIGMA = 2
+
+# The mean number of lakes in a chain
+LAKE_CHAIN_MU = 5
+
+# The variance of lakes in a chain.
+LAKE_CHAIN_SIGMA = 2
+
+# The mean number of lakes in a chain
+LAKE_COUNT_MU = 4
+
+# The variance of lakes in a chain.
+LAKE_COUNT_SIGMA = 1
+
+# The margin for placing lake centers
+LAKE_CENTER_MARGIN = 24
+
+def generate_lake_chains(world_data):
+
+    lake_list = []
+
+    # Get the maximum values possible for our world 
+    world_max_x, world_max_y = world_data.get_sizes()
+
+    # Calculate the minimum position for a lake
+    min_x = LAKE_CENTER_MARGIN
+    min_y = LAKE_CENTER_MARGIN
+
+    # Calculate the maximum position for a lake
+    max_x = world_max_x - LAKE_CENTER_MARGIN
+    max_y = world_max_y - LAKE_CENTER_MARGIN
+
+    # Calculate the number of lake chains we'll be making
+    lake_count = int(random.gauss(LAKE_COUNT_MU, LAKE_COUNT_SIGMA))
+
+    for _ in range( lake_count ):
+        center_x = random.randint(min_x, max_x) 
+        center_y = random.randint(min_y, max_y)
+
+        # Stores the points that make up the current lake chain
+        current_chain = []
+
+        # Calculate the number of lake points we want in the current chain
+        chain_length = int( random.gauss(LAKE_CHAIN_MU, LAKE_CHAIN_SIGMA))
+        # There must be at least one lake point in the chain
+        chain_length = max( chain_length, 1 )
+
+        for i in range(chain_length):
+
+            # If this is the first lake, then use the generated center
+            if i == 0:
+                center = (center_x, center_y)
+
+            # Otherwise...
+            else:
+                # Choose a random center in the chain to shift from
+                c_x, c_y = random.choice(current_chain)[0]
+
+                # Calculate a magnitude to shift on
+                adj_x = random.gauss(LAKE_POS_MU, LAKE_POS_SIGMA)
+                # Then give it a direction...
+                adj_x *= random.choice([-1, 1])
+
+                # Ditto for y
+                adj_y = random.gauss(LAKE_POS_MU, LAKE_POS_SIGMA)
+                adj_y *= random.choice([-1, 1])
+
+                center = ( int(c_x + adj_x), int(c_y + adj_y) )
+
+            size = int(random.gauss(LAKE_SIZE_MU, LAKE_SIZE_SIGMA))
+
+            current_chain.append( (center, size) )
+
+        print( current_chain )
+
+        lake_list.append( current_chain )
+
+    return lake_list
+
+def paint_square_lake(world_data, lake_points, tile_set):
+
+    # Using numpy, reshape the raw array so we can work on it in terms of x, y
+    shaped_world = world_data.make_terrain_shaped()
+    shaped_counts = world_data.make_counts_shaped()
+
+    for center, radius in lake_points:
+
+        c_x, c_y = center
+
+        for shift_x in range(-radius, radius + 1):
+            for shift_y in range(-radius, radius + 1):
+
+                x = c_x + shift_x
+                y = c_y + shift_y
+
+                avg_x = x // AVERAGE_ZONE_LEN
+                avg_y = y // AVERAGE_ZONE_LEN
+
+                # Decide whether we're painting sand or water
+                if abs(shift_x) == radius or abs(shift_y) == radius:
+                    enum = PrimaryKey.SAND
+                else:
+                    enum = PrimaryKey.WATER
+
+                designate = tile_set.get_designate(enum)
+
+                # If we're going to paint the current tile sand...
+                if enum == PrimaryKey.SAND:
+                    # Check if it's water...
+                    water_designate = tile_set.get_designate(PrimaryKey.WATER)
+                    if shaped_world[x, y] == water_designate:
+                        # If it is water, then skip. We don't want to ruin an 
+                        # existing lake!
+                        continue
+
+                # Update the average roster
+                shaped_counts[avg_x, avg_y, shaped_world[x, y]] -= 1
+                shaped_counts[avg_x, avg_y, designate] += 1
+
+                # Set the current tile to the closest point type
+                shaped_world[x, y] = designate
 
 def make_voroni_points(sizes, points, choice_list):
 
@@ -230,6 +380,30 @@ def perlin(world_data, orders, tile_set, scale, octaves, persistence, lacunarity
 
             # Update the average roster
             shaped_counts[avg_x, avg_y, shaped_world[x, y]] -= 1
+            shaped_counts[avg_x, avg_y, designate] += 1
+
+            # Set the current tile to the closest point type
+            shaped_world[x, y] = designate
+
+def only_grass(world_data, orders, tile_set):
+    x_size, y_size = world_data.get_sizes()
+    first, limit = orders
+
+    # Using numpy, reshape the raw array so we can work on it in terms of x,y
+    shaped_world = world_data.make_terrain_shaped()
+    shaped_counts = world_data.make_counts_shaped()
+
+    for x in range(first, limit):
+        for y in range(y_size):
+
+            choice = PrimaryKey.GRASS
+
+            designate = tile_set.get_designate(choice)
+
+            avg_x = x // AVERAGE_ZONE_LEN
+            avg_y = y // AVERAGE_ZONE_LEN
+
+            # Update the average roster
             shaped_counts[avg_x, avg_y, designate] += 1
 
             # Set the current tile to the closest point type
