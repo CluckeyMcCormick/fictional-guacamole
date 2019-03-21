@@ -4,6 +4,10 @@ edge.py
 Contains functions for determining the tile edges on the detail map.
 """
 
+import math
+
+from ..assets.terrain_detail import EdgeKey, DetailKey
+
 def edge_pass(world_data, orders, world_ts, detail_ts):
     """
     The world is a series of tiles, like this:

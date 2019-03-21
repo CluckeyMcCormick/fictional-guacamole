@@ -5,6 +5,8 @@ average.py
 Contains functions for evaluating the averages in 
 """
 
+from ..data import AVERAGE_ZONE_LEN
+
 def assign_averages(world_data):
     x_len, y_len = world_data.get_sizes()
 

@@ -6,6 +6,13 @@ used on blank worlds, so they're generally incompatible and can produce some
 undefined behavior if used together.
 """
 
+import random
+import noise
+
+from ..data import AVERAGE_ZONE_LEN
+
+from ..assets.terrain_primary import PrimaryKey
+
 def make_voroni_points(sizes, points, choice_list):
 
     x_size, y_size = sizes

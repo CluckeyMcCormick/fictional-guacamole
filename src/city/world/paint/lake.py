@@ -4,6 +4,11 @@ lake.py
 Contains functions for generating lakes in the world.
 """
 
+import random
+
+from ..assets.terrain_primary import PrimaryKey
+from ..data import AVERAGE_ZONE_LEN
+
 # The mean lake size
 LAKE_SIZE_MU = 4
 
@@ -87,8 +92,6 @@ def generate_lake_chains(world_data):
 
             current_chain.append( (center, size) )
 
-        print( current_chain )
-
         lake_list.append( current_chain )
 
     return lake_list
@@ -135,3 +138,4 @@ def paint_square_lake(world_data, lake_points, tile_set):
 
                 # Set the current tile to the closest point type
                 shaped_world[x, y] = designate
+

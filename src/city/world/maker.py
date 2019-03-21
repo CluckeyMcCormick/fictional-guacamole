@@ -1,15 +1,6 @@
 import multiprocessing as mp
-import numpy
-import random
-import math
-import noise
-import operator
-# Only need these two items from ctypes, and they come with prefixes
-from ctypes import c_byte, c_bool, c_int16
 
-from .assets.terrain_primary import PrimaryKey
-from .assets.terrain_detail import EdgeKey, DetailKey
-from .data import AVERAGE_ZONE_LEN
+from . import paint
 
 # Everytime we do a parallel-izable process, how many workers work on it?
 DEFAULT_WORKERS = 8
@@ -35,22 +26,22 @@ def build_world(world_data, complete_val, primary_ts, detail_ts):
     kw_args = {
         "tile_set" : primary_ts
     }
-    perform_spatial_work(only_grass, world_data, kw_args=kw_args)
+    perform_spatial_work(paint.base.only_grass, world_data, kw_args=kw_args)
 
     print("\n\tLake Painting...\n\n")
-    lakes = generate_lake_chains( world_data )
+    lakes = paint.lake.generate_lake_chains( world_data )
     kw_args = { "tile_set" : primary_ts }
-    perform_work(paint_square_lake, world_data, lakes, kw_args=kw_args)
+    perform_work(paint.lake.paint_square_lake, world_data, lakes, kw_args=kw_args)
 
     print("\n\tAssigning averages...\n\n")
-    assign_averages(world_data)
+    paint.average.assign_averages(world_data)
 
     print("\n\tPerforming the ever important edge pass...\n\n")
 
     kw_args = {
         "world_ts" : primary_ts, "detail_ts" : detail_ts, 
     }
-    perform_spatial_work(edge_pass, world_data, kw_args=kw_args)
+    perform_spatial_work(paint.edge.edge_pass, world_data, kw_args=kw_args)
 
     # Since this a mp.Value object, we have to manually change 
     # the Value.value's value. Ooof.
