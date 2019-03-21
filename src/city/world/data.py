@@ -32,7 +32,11 @@ class WorldLayer(object):
         x, y = key
         
         if not (0 <= x < self.x_len and 0 <= y < self.y_len):
-            raise Exception("Invalid WorldLayer index: ({0},{1})".format(x, y))
+            raise Exception(
+                "Invalid WorldLayer index: ({0},{1}) vs. [{2}, {3}]".format(
+                    x, y, self.x_len, self.y_len
+                )
+            )
 
         return self.array[ (y * self.x_len) + x  ]
 
@@ -44,7 +48,11 @@ class WorldLayer(object):
         x, y = key
         
         if not (0 <= x < self.x_len and 0 <= y < self.y_len):
-            raise Exception("Invalid WorldLayer index: ({0},{1})".format(x, y))
+            raise Exception(
+                "Invalid WorldLayer index: ({0},{1}) vs. [{2}, {3}]".format(
+                    x, y, self.x_len, self.y_len
+                )
+            )
 
         self.array[ (y * self.x_len) + x ] = value
 
@@ -53,29 +61,39 @@ class AveragedWorldLayer(WorldLayer):
     Represents a world layer that notes changes made to itself in the provided
     "Average" world layer. Neat!
     """
-    def __init__(self, x_len, y_len, item_type, average_layer):
+    def __init__(self, x_len, y_len, item_type, average_layer, avg_factors):
         super(AveragedWorldLayer, self).__init__(x_len, y_len, item_type)
         self.avg_x_len, self.avg_y_len = average_layer.sizes
         self.average_layer = average_layer
+        self.avg_x_factor, self.avg_y_factor = avg_factors
 
     def __setitem__(self, key, value):
+        x, y = key
+        
+        if not (0 <= x < self.x_len and 0 <= y < self.y_len):
+            raise Exception(
+                "Invalid WorldLayer index: ({0},{1}) vs. [{2}, {3}]".format(
+                    x, y, self.x_len, self.y_len
+                )
+            )
 
-        old_val = self.__getitem__(key)
-
-        super(AveragedWorldLayer, self).__setitem__(key, value)
+        old_val = self.array[ (y * self.x_len) + x ]
+        self.array[ (y * self.x_len) + x ] = value
 
         # If the value changed...
-        if old_val != self.__getitem__(key):
+        if old_val != value:
             # Figure out where our average is
             x, y = key
-            avg_x = x // AVERAGE_ZONE_LEN
-            avg_y = y // AVERAGE_ZONE_LEN
+            avg_x = x // self.avg_x_factor
+            avg_y = y // self.avg_y_factor
+
+            avg_index = (y // self.avg_y_factor) * self.avg_x_len + (x // self.avg_x_factor)
 
             # Update the new value
-            self.average_layer[avg_x, avg_y].counts[value] = self.average_layer[avg_x, avg_y].counts[value] + 1
+            self.average_layer.array[avg_index].counts[value] += 1
 
-            # Get rid of the old value
-            self.average_layer[avg_x, avg_y].counts[old_val] = max(self.average_layer[avg_x, avg_y].counts[old_val] - 1, 0)
+            # Get rid of the old value. Minimum possible value is 0.
+            self.average_layer.array[avg_index].counts[old_val] = max(self.average_layer.array[avg_index].counts[old_val] - 1, 0)
 
 class WorldData(object):
     """
@@ -116,12 +134,14 @@ class WorldData(object):
                 ('counts', c_byte * self.primary_types)
             ]
 
+        avg_factors = (AVERAGE_ZONE_LEN, AVERAGE_ZONE_LEN)
+
         self.base_average = WorldLayer(x_avg_len, y_avg_len, AVERAGE_CHUNK)
 
         # The terrain of the map.
         # Grass, Sand, Dirt, Stone, Water, Snow. All that stuff. 
         # 32 x 32 Tiles
-        self.base = AveragedWorldLayer(self._x_len, self._y_len, c_byte, self.base_average)
+        self.base = AveragedWorldLayer(self._x_len, self._y_len, c_byte, self.base_average, avg_factors)
 
         # The miscellaneous details that cover our terrain.
         # This can be terrain transitions, or it can be other details (like
