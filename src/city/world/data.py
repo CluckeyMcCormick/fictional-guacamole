@@ -1,8 +1,9 @@
 import multiprocessing as mp
 import numpy
+import enum
 
 # Only need these two items from ctypes, and they come with prefixes
-from ctypes import c_byte, c_int16
+from ctypes import c_bool, c_byte, c_int16, Structure
 
 # In order to save time on rendering tiles, we divide the map up into squares.
 # We then assign each square the most common terrain tile type there-in.
@@ -10,9 +11,75 @@ from ctypes import c_byte, c_int16
 # The world sizes MUST be divisible by AVERAGE_ZONE_LEN!
 AVERAGE_ZONE_LEN = 10
 
+class WorldLayer(object):
+    """
+    Represents a single layer of tiles. More or less acts as a wrapper for the
+    multiprocessing Array that it holds. Kind of pointless by itself, but we'll
+    use this to build other classes off of.
+    """
+    def __init__(self, x_len, y_len, item_type):
+        super(WorldLayer, self).__init__()
+        self.array = mp.Array(item_type, x_len * y_len)
+        self.x_len = x_len
+        self.y_len = y_len
+        self.item_type = item_type
+
+    @property
+    def sizes(self):
+        return (self.x_len, self.y_len)
+
+    def __getitem__(self, key):
+        x, y = key
+        
+        if not (0 <= x < self.x_len and 0 <= y < self.y_len):
+            raise Exception("Invalid WorldLayer index: ({0},{1})".format(x, y))
+
+        return self.array[ (y * self.x_len) + x  ]
+
+    def __setitem__(self, key, value):
+
+        if isinstance(self.item_type, Structure):
+            raise Exception("Cannot set Structure type of {0} to {1}!".format(self.item_type, value))
+
+        x, y = key
+        
+        if not (0 <= x < self.x_len and 0 <= y < self.y_len):
+            raise Exception("Invalid WorldLayer index: ({0},{1})".format(x, y))
+
+        self.array[ (y * self.x_len) + x ] = value
+
+class AveragedWorldLayer(WorldLayer):
+    """
+    Represents a world layer that notes changes made to itself in the provided
+    "Average" world layer. Neat!
+    """
+    def __init__(self, x_len, y_len, item_type, average_layer):
+        super(AveragedWorldLayer, self).__init__(x_len, y_len, item_type)
+        self.avg_x_len, self.avg_y_len = average_layer.sizes
+        self.average_layer = average_layer
+
+    def __setitem__(self, key, value):
+
+        old_val = self.__getitem__(key)
+
+        super(AveragedWorldLayer, self).__setitem__(key, value)
+
+        # If the value changed...
+        if old_val != self.__getitem__(key):
+            # Figure out where our average is
+            x, y = key
+            avg_x = x // AVERAGE_ZONE_LEN
+            avg_y = y // AVERAGE_ZONE_LEN
+
+            # Update the new value
+            self.average_layer[avg_x, avg_y].counts[value] = self.average_layer[avg_x, avg_y].counts[value] + 1
+
+            # Get rid of the old value
+            self.average_layer[avg_x, avg_y].counts[old_val] = max(self.average_layer[avg_x, avg_y].counts[old_val] - 1, 0)
+
 class WorldData(object):
     """
-    docstring for WorldData
+    Collates all of our world layers together into one fat class.
     """
     def __init__(self, x_len, y_len, primary_ts):
         super(WorldData, self).__init__()
@@ -29,23 +96,6 @@ class WorldData(object):
         self._x_len = x_len
         self._y_len = y_len
 
-        # The terrain of the map.
-        # Grass, Sand, Dirt, Stone, Water, Snow. All that stuff. 
-        # 32 x 32 Tiles
-        self.terrain_raw = mp.Array(c_byte, self._x_len * self._y_len)
-
-        # The miscellaneous details that cover our terrain.
-        # This can be terrain transitions, or it can be other details (like
-        # flowers, or something).
-        # Each terrain tile gets 4 tiles : NW, NE, SW, and SE.
-        # Ergo, 16 x 16 Tiles
-        self.detail_raw = mp.Array(c_int16, (self._x_len * 2) * (self._y_len * 2))
-
-        # The structures that go over our terrain. We track them separately so
-        # we can more easily see information SPECIFICALLY about structures.
-        # 32 x 32 Tiles.
-        self.struct_raw = mp.Array(c_byte, self._x_len * self._y_len )
-
         self.primary_types = len(primary_ts)
 
         # In order to save time on rendering tiles, we divide the map up into
@@ -54,39 +104,38 @@ class WorldData(object):
         # AVERAGE_ZONE_LEN x AVERAGE_ZONE_LEN Tiles
         x_avg_len = self._x_len // AVERAGE_ZONE_LEN
         y_avg_len = self._y_len // AVERAGE_ZONE_LEN
-        self.average_raw = mp.Array(c_byte, x_avg_len * y_avg_len)
-        self.counts_raw = mp.Array(c_byte, x_avg_len * y_avg_len * self.primary_types)
 
-        self.terrain_shaped = self.make_terrain_shaped()
-        self.detail_shaped = self.make_detail_shaped()
-        self.struct_shaped = self.make_struct_shaped()
-        self.average_shaped = self.make_average_shaped()
-        self.counts_shaped = self.make_counts_shaped()
+        # Okay, here's some Pythonic black magic for you - we're going to
+        # create an "AVERAGE_CHUNK" struct on the fly to hold information on our
+        # average chunks.
+        # We need to build this on the fly because the size changes based on 
+        # the length of primary_ts.
+        class AVERAGE_CHUNK(Structure):
+            _fields_ = [
+                ('avg', c_byte),
+                ('counts', c_byte * self.primary_types)
+            ]
 
-    def get_sizes(self):
+        self.base_average = WorldLayer(x_avg_len, y_avg_len, AVERAGE_CHUNK)
+
+        # The terrain of the map.
+        # Grass, Sand, Dirt, Stone, Water, Snow. All that stuff. 
+        # 32 x 32 Tiles
+        self.base = AveragedWorldLayer(self._x_len, self._y_len, c_byte, self.base_average)
+
+        # The miscellaneous details that cover our terrain.
+        # This can be terrain transitions, or it can be other details (like
+        # flowers, or something).
+        # Each terrain tile gets 4 tiles : NW, NE, SW, and SE.
+        # Ergo, 16 x 16 Tiles
+        self.detail = WorldLayer(self._x_len * 2, self._y_len * 2, c_int16)
+
+        # The structures that go over our terrain. We track them separately so
+        # we can more easily see information SPECIFICALLY about structures.
+        # 32 x 32 Tiles.
+        self.struct = WorldLayer(self._x_len, self._y_len, c_byte)
+
+    @property
+    def sizes(self):
         return (self._x_len, self._y_len)
-
-    def make_terrain_shaped(self):
-        a = numpy.frombuffer( self.terrain_raw.get_obj(), dtype=c_byte )
-        return a.reshape( (self._x_len, self._y_len) )
-
-    def make_detail_shaped(self):
-        a = numpy.frombuffer( self.detail_raw.get_obj(), dtype=c_int16 )
-        return a.reshape( (self._x_len * 2, self._y_len * 2) )
-
-    def make_struct_shaped(self):
-        a = numpy.frombuffer( self.struct_raw.get_obj(), dtype=c_byte )
-        return a.reshape( (self._x_len, self._y_len) )
-
-    def make_average_shaped(self):
-        x_avg_len = self._x_len // AVERAGE_ZONE_LEN
-        y_avg_len = self._y_len // AVERAGE_ZONE_LEN
-        a = numpy.frombuffer( self.average_raw.get_obj(), dtype=c_byte )
-        return a.reshape( (x_avg_len, y_avg_len) )
-
-    def make_counts_shaped(self):
-        x_avg_len = self._x_len // AVERAGE_ZONE_LEN
-        y_avg_len = self._y_len // AVERAGE_ZONE_LEN
-        a = numpy.frombuffer( self.counts_raw.get_obj(), dtype=c_byte )
-        return a.reshape( (x_avg_len, y_avg_len, self.primary_types) )
 

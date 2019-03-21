@@ -153,7 +153,7 @@ def make_camera(dt, city_state):
 
 def average_sprite_build(dt, city_state):
 
-    x_len, y_len = city_state.world_data.get_sizes()
+    x_len, y_len = city_state.world_data.sizes
     avg_x_len = x_len // world.data.AVERAGE_ZONE_LEN
     avg_y_len = y_len // world.data.AVERAGE_ZONE_LEN
 
@@ -162,7 +162,7 @@ def average_sprite_build(dt, city_state):
     for avg_x in range(avg_x_len):
         for avg_y in range(avg_y_len):
 
-            designate = city_state.world_data.average_shaped[avg_x, avg_y]
+            designate = city_state.world_data.base_average[avg_x, avg_y].avg
             choice_enum = city_state.terrain_primary.get_enum(designate)
 
             if choice_enum not in city_state.texture_groups:
@@ -210,13 +210,13 @@ def world_sprite_build(dt, city_state, current=0):
         x = t_num % city_state.x_len
         y = t_num // city_state.x_len
         
-        designate = city_state.world_data.terrain_shaped[x, y]
+        designate = city_state.world_data.base[x, y]
         choice_enum = city_state.terrain_primary.get_enum(designate)
 
         avg_x = x // world.data.AVERAGE_ZONE_LEN
         avg_y = y // world.data.AVERAGE_ZONE_LEN
 
-        avg_designate = city_state.world_data.average_shaped[avg_x, avg_y]
+        avg_designate = city_state.world_data.base_average[avg_x, avg_y].avg
 
         if avg_designate != designate:
             if choice_enum not in city_state.texture_groups:
@@ -245,7 +245,7 @@ def world_sprite_build(dt, city_state, current=0):
             x_adj = i % 2
             y_adj = i // 2
 
-            designate = city_state.world_data.detail_shaped[x * 2 + x_adj, y * 2 + y_adj]
+            designate = city_state.world_data.detail[x * 2 + x_adj, y * 2 + y_adj]
 
             choice_enum = city_state.terrain_detail.get_enum(designate)
             # If it's the blank option, skip!

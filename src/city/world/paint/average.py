@@ -5,16 +5,8 @@ average.py
 Contains functions for evaluating the averages in 
 """
 
-from ..data import AVERAGE_ZONE_LEN
-
 def assign_averages(world_data):
-    x_len, y_len = world_data.get_sizes()
-
-    avg_x_len = x_len // AVERAGE_ZONE_LEN
-    avg_y_len = y_len // AVERAGE_ZONE_LEN
-
-    average_shaped = world_data.make_average_shaped()
-    counts_shaped = world_data.make_counts_shaped()
+    avg_x_len, avg_y_len = world_data.base_average.sizes
 
     for x in range(avg_x_len):
         for y in range(avg_y_len):
@@ -23,8 +15,9 @@ def assign_averages(world_data):
             max_amount = -1
 
             for key in range(world_data.primary_types):
-                if counts_shaped[x, y, key] > max_amount:
+                count = world_data.base_average[x, y].counts[key]
+                if count > max_amount:
                     max_val = key
-                    max_amount = counts_shaped[x, y, key]
+                    max_amount = count
 
-            average_shaped[x, y] = max_val
+            world_data.base_average[x, y].avg = max_val

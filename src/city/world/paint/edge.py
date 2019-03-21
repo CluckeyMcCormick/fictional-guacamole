@@ -24,7 +24,7 @@ def edge_pass(world_data, orders, world_ts, detail_ts):
          |       |       |    
     """
 
-    x_size, y_size = world_data.get_sizes()
+    x_size, y_size = world_data.sizes
     first, limit = orders
 
     # The detail world assigns 4 sub-tiles to each primary tile, and is thusly
@@ -32,11 +32,6 @@ def edge_pass(world_data, orders, world_ts, detail_ts):
     x_det_size = x_size * 2
     y_det_size = y_size * 2
     det_sizes = (x_det_size, y_det_size)
-
-    # Using numpy, reshape the raw array so we can work on it in terms of x,y
-    shaped_world = world_data.make_terrain_shaped()
-    # Ditto for the detail array
-    shaped_detail = world_data.make_detail_shaped()
 
     # The neighbor shifts on world_x and world_y, for each detail tile
     # We'll use these to quickly check the neighbor tiles for each detail tile
@@ -68,7 +63,7 @@ def edge_pass(world_data, orders, world_ts, detail_ts):
 
     for world_x in range(first, limit):
         for world_y in range(y_size):
-            current_tile = world_ts.get_enum( shaped_world[world_x, world_y] )
+            current_tile = world_ts.get_enum( world_data.base[world_x, world_y] )
 
             det_x = world_x * 2
             det_y = world_y * 2
@@ -85,7 +80,7 @@ def edge_pass(world_data, orders, world_ts, detail_ts):
 
                     # If we're in the appropriate boundaries...
                     if (0 <= world_x + adj_x < x_size) and (0 <= world_y + adj_y < y_size):
-                        value = shaped_world[world_x + adj_x, world_y + adj_y]
+                        value = world_data.base[world_x + adj_x, world_y + adj_y]
                         value = world_ts.get_enum( value )
                     neighbor_list.append( value )
 
@@ -100,7 +95,7 @@ def edge_pass(world_data, orders, world_ts, detail_ts):
                 adj_det_y = i // 2
 
                 value = detail_ts.get_designate( edge_enum )
-                shaped_detail[det_x + adj_det_x, det_y + adj_det_y] = value
+                world_data.detail[det_x + adj_det_x, det_y + adj_det_y] = value
 
 def enum_sort_key(enum):
     if enum is None:

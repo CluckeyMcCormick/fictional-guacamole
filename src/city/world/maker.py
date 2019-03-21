@@ -62,7 +62,7 @@ def perform_spatial_work(func, world_data, in_args=[], kw_args={}):
     orders = []
 
     # Get the x_len and y_len, but dump the y_len since we don't need it
-    x_len, _ = world_data.get_sizes()
+    x_len, _ = world_data.sizes
 
     # How many x-columns will each process be responsible for?
     x_step = x_len // CHUNK_COUNT
