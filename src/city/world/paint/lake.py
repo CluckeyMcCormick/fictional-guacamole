@@ -5,36 +5,52 @@ Contains functions for generating lakes in the world.
 """
 
 import random
+import collections
+
+import noise
+
 
 from ..assets.terrain_primary import PrimaryKey
 from ..data import AVERAGE_ZONE_LEN
 
-# The mean lake size
-LAKE_SIZE_MU = 4
+"""
+~~~~~~~~~~~~~~~~~~~~~~~~
+~ General Lake Constants
+~~~~~~~~~~~~~~~~~~~~~~~~
+"""
 
-# The variance in lake size
-LAKE_SIZE_SIGMA = 1
-
-# The mean distance of each sub-lake from the center lake
-LAKE_POS_MU = 3
-
-# The variance in sub-lake distance
-LAKE_POS_SIGMA = 2
-
-# The mean number of lakes in a chain
-LAKE_CHAIN_MU = 5
-
-# The variance of lakes in a chain.
-LAKE_CHAIN_SIGMA = 2
-
-# The mean number of lakes in a chain
+# The mean number of lakes overall
 LAKE_COUNT_MU = 4
 
-# The variance of lakes in a chain.
+# The variance in the number of overall lakes.
 LAKE_COUNT_SIGMA = 1
 
+"""
+~~~~~~~~~~~~~~~~~~~~~~~~
+~ General Lake Constants
+~~~~~~~~~~~~~~~~~~~~~~~~
+"""
+
+# The mean lake size
+CHAIN_SIZE_MU = 4
+
+# The variance in lake size
+CHAIN_SIZE_SIGMA = 1
+
+# The mean distance of each sub-lake from the center lake
+CHAIN_POS_MU = 3
+
+# The variance in sub-lake distance
+CHAIN_POS_SIGMA = 2
+
+# The mean number of lakes in a chain
+CHAIN_COUNT_MU = 5
+
+# The variance of lakes in a chain.
+CHAIN_COUNT_SIGMA = 2
+
 # The margin for placing lake centers
-LAKE_CENTER_MARGIN = 24
+CHAIN_CENTER_MARGIN = 24
 
 def generate_lake_chains(world_data):
 
@@ -44,12 +60,12 @@ def generate_lake_chains(world_data):
     world_max_x, world_max_y = world_data.sizes
 
     # Calculate the minimum position for a lake
-    min_x = LAKE_CENTER_MARGIN
-    min_y = LAKE_CENTER_MARGIN
+    min_x = CHAIN_CENTER_MARGIN
+    min_y = CHAIN_CENTER_MARGIN
 
     # Calculate the maximum position for a lake
-    max_x = world_max_x - LAKE_CENTER_MARGIN
-    max_y = world_max_y - LAKE_CENTER_MARGIN
+    max_x = world_max_x - CHAIN_CENTER_MARGIN
+    max_y = world_max_y - CHAIN_CENTER_MARGIN
 
     # Calculate the number of lake chains we'll be making
     lake_count = int(random.gauss(LAKE_COUNT_MU, LAKE_COUNT_SIGMA))
@@ -62,7 +78,7 @@ def generate_lake_chains(world_data):
         current_chain = []
 
         # Calculate the number of lake points we want in the current chain
-        chain_length = int( random.gauss(LAKE_CHAIN_MU, LAKE_CHAIN_SIGMA))
+        chain_length = int( random.gauss(CHAIN_COUNT_MU, CHAIN_COUNT_SIGMA))
         # There must be at least one lake point in the chain
         chain_length = max( chain_length, 1 )
 
@@ -78,17 +94,17 @@ def generate_lake_chains(world_data):
                 c_x, c_y = random.choice(current_chain)[0]
 
                 # Calculate a magnitude to shift on
-                adj_x = random.gauss(LAKE_POS_MU, LAKE_POS_SIGMA)
+                adj_x = random.gauss(CHAIN_POS_MU, CHAIN_POS_SIGMA)
                 # Then give it a direction...
                 adj_x *= random.choice([-1, 1])
 
                 # Ditto for y
-                adj_y = random.gauss(LAKE_POS_MU, LAKE_POS_SIGMA)
+                adj_y = random.gauss(CHAIN_POS_MU, CHAIN_POS_SIGMA)
                 adj_y *= random.choice([-1, 1])
 
                 center = ( int(c_x + adj_x), int(c_y + adj_y) )
 
-            size = int(random.gauss(LAKE_SIZE_MU, LAKE_SIZE_SIGMA))
+            size = int(random.gauss(CHAIN_SIZE_MU, CHAIN_SIZE_SIGMA))
 
             current_chain.append( (center, size) )
 
@@ -131,4 +147,138 @@ def paint_square_lake(world_data, lake_points, tile_set):
                 # Update the world map
                 world_data.base[x, y] = designate
 
+"""
+~~~~~~~~~~~~~~~~~~~~~
+~ Fill Lake Constants
+~~~~~~~~~~~~~~~~~~~~~
+"""
+# The minimum possible tolerance generated
+FILL_MIN_TOLERANCE = 0.016
+
+# The maximum possible tolerance generated
+FILL_MAX_TOLERANCE = 0.04
+
+class FillLake(object):
+    """
+    Stores the necessary information to paint a FillLake - the center of the
+    lake, and the fill tolerance.
+    """
+    def __init__(self, center, tolerance):
+        """
+        Creates a FillLake object.
+
+        Inputs:
+
+        center: The center of the FillLake.
+
+        tolerance: The tolerance for the fill. Given the algorithm we use, it
+        is suggested that the value be between 0.016 and 0.04
+        """
+        super(FillLake, self).__init__()
+        self.center = center
+        self.tolerance = tolerance
+
+def range_convert(new_min, new_max, in_val, old_min=0.0, old_max=1.0):
+
+    val = in_val - old_min
+    val /= (old_max - old_min)
+    val *= new_max - new_min
+    val += new_min
+
+    return val;
+
+def generate_fill_lakes(world_data):
+    # Calculate the number of FillLakes we'll be making
+    lake_count = int( random.gauss(LAKE_COUNT_MU, LAKE_COUNT_SIGMA) )
+
+    # Get the maximum values possible for our world 
+    world_max_x, world_max_y = world_data.sizes
+
+    lakes = []
+
+    for _ in range( lake_count ):
+
+        center_x = random.randint(0, world_max_x) 
+        center_y = random.randint(0, world_max_y)
+
+        tolerance = range_convert(FILL_MIN_TOLERANCE, FILL_MAX_TOLERANCE, random.random())
+
+        print("\t", center_x, center_y, tolerance)
+
+        lakes.append( FillLake((center_x, center_y), tolerance) )
+
+    return lakes
+
+def paint_fill_lake(world_data, fill_lake, tile_set, base):
+
+    center = fill_lake.center
+    tolerance = fill_lake.tolerance
+
+    scale = 100.0
+    octaves = 6
+    persistence = 0.5
+    lacunarity = 2.0
+
+    to_fill = collections.deque([center])
+    filled = set([center])
+
+    x, y = center
+
+    x_max, y_max = world_data.sizes
+
+    core_value = noise.pnoise2(
+        x/scale, y/scale, 
+        octaves=octaves, persistence=persistence, 
+        lacunarity=lacunarity, 
+        repeatx=x_max, repeaty=y_max, base=base
+    ) 
+
+    while to_fill:
+        # Get the next tile
+        x, y = to_fill.popleft()
+
+        # Add it to our "visited" list
+        filled.add( (x, y) )
+
+        value = noise.pnoise2(
+            x/scale, y/scale, 
+            octaves=octaves, persistence=persistence, 
+            lacunarity=lacunarity, 
+            repeatx=x_max, repeaty=y_max, base=base
+        )
+
+        # If we're in the "tolerance" range, then this tile is water
+        if core_value - tolerance <= value <= core_value + tolerance:
+            enum = PrimaryKey.WATER
+
+        # Otherwise, it's sand.
+        else:
+            enum = PrimaryKey.SAND
+
+        # Get the enum's integer designation
+        designate = tile_set.get_designate(enum)
+
+        # Set the tile
+        world_data.base[x, y] = designate
+
+        # If our enum is SAND, then we're on an edge tile; skip adding any tiles
+        if enum == PrimaryKey.SAND:
+            continue
+
+        for xplus in range(-1, 2):
+            for yplus in range(-1, 2):
+
+                # If this tile isn't a legitimate tile, skip it
+                if not( 0 <= x + xplus < x_max and 0 <= y + yplus < y_max):
+                    continue
+
+                tile = (x + xplus, y + yplus)
+
+                # If we already touched this tile (or will), we don't want to
+                # do it again
+                if tile in filled or tile in to_fill:
+                    continue
+
+                # Otherwise, if we made it here, add this tile to the stack
+                to_fill.append( tile )
 

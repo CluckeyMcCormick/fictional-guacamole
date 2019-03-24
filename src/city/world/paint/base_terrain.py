@@ -97,9 +97,6 @@ def perlin(world_data, orders, tile_set, scale, octaves, persistence, lacunarity
 
             designate = tile_set.get_designate(choice)
 
-            avg_x = x // AVERAGE_ZONE_LEN
-            avg_y = y // AVERAGE_ZONE_LEN
-
             # Set the current tile to the closest point type
             world_data.base[x, y] = designate
 
@@ -113,10 +110,6 @@ def only_grass(world_data, orders, tile_set):
             choice = PrimaryKey.GRASS
 
             designate = tile_set.get_designate(choice)
-
-            avg_x = x // AVERAGE_ZONE_LEN
-            avg_y = y // AVERAGE_ZONE_LEN
-
 
             # Set the current tile to the closest point type
             world_data.base[x, y] = designate

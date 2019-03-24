@@ -29,9 +29,9 @@ def build_world(world_data, complete_val, primary_ts, detail_ts):
     perform_spatial_work(paint.base.only_grass, world_data, kw_args=kw_args)
 
     print("\n\tLake Painting...\n\n")
-    lakes = paint.lake.generate_lake_chains( world_data )
-    kw_args = { "tile_set" : primary_ts }
-    perform_work(paint.lake.paint_square_lake, world_data, lakes, kw_args=kw_args)
+    lakes = paint.lake.generate_fill_lakes( world_data )
+    kw_args = { "tile_set" : primary_ts, "base" : BASE + 1 }
+    perform_work(paint.lake.paint_fill_lake, world_data, lakes, kw_args=kw_args)
 
     print("\n\tAssigning averages...\n\n")
     paint.average.assign_averages(world_data)
