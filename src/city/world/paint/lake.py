@@ -27,7 +27,7 @@ LAKE_COUNT_SIGMA = 1
 
 """
 ~~~~~~~~~~~~~~~~~~~~~~~~
-~ General Lake Constants
+~ Chain Lake Constants
 ~~~~~~~~~~~~~~~~~~~~~~~~
 """
 
@@ -52,7 +52,34 @@ CHAIN_COUNT_SIGMA = 2
 # The margin for placing lake centers
 CHAIN_CENTER_MARGIN = 24
 
-def generate_lake_chains(world_data):
+class ChainLake(object):
+    """
+    Stores the necessary information to paint a ChainLake - primarily, a list
+    of lake centers and a list of lake radii.
+    """
+    def __init__(self):
+        """
+        Creates a ChainLake object.
+        """
+        super(ChainLake, self).__init__()
+        self.center_list = []
+        self.radius_list = []
+
+    def add_lake(self, center, radius):
+        self.center_list.append( center )
+        self.radius_list.append( radius )
+
+    @property
+    def center(self):
+        if not self.center_list:
+            return None
+        else:
+            return self.center_list[0]
+
+    def __iter__(self):
+        return zip( self.center_list, self.radius_list )
+
+def generate_chain_lakes(world_data):
 
     lake_list = []
 
@@ -74,8 +101,8 @@ def generate_lake_chains(world_data):
         center_x = random.randint(min_x, max_x) 
         center_y = random.randint(min_y, max_y)
 
-        # Stores the points that make up the current lake chain
-        current_chain = []
+        # The current lake chain
+        lake = ChainLake()
 
         # Calculate the number of lake points we want in the current chain
         chain_length = int( random.gauss(CHAIN_COUNT_MU, CHAIN_COUNT_SIGMA))
@@ -91,8 +118,7 @@ def generate_lake_chains(world_data):
             # Otherwise...
             else:
                 # Choose a random center in the chain to shift from
-                c_x, c_y = random.choice(current_chain)[0]
-
+                c_x, c_y = random.choice(lake.center_list)
                 # Calculate a magnitude to shift on
                 adj_x = random.gauss(CHAIN_POS_MU, CHAIN_POS_SIGMA)
                 # Then give it a direction...
@@ -106,15 +132,17 @@ def generate_lake_chains(world_data):
 
             size = int(random.gauss(CHAIN_SIZE_MU, CHAIN_SIZE_SIGMA))
 
-            current_chain.append( (center, size) )
+            lake.add_lake(center, size)
 
-        lake_list.append( current_chain )
+        lake_list.append( lake )
 
     return lake_list
 
-def paint_square_lake(world_data, lake_points, tile_set):
+def paint_square_lake_chain(world_data, lake, tile_set):
 
-    for center, radius in lake_points:
+    print("\tLake: ", lake.center)
+
+    for center, radius in lake:
 
         c_x, c_y = center
 
