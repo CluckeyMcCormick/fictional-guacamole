@@ -38,7 +38,7 @@ class WorldLayer(object):
                 )
             )
 
-        return self.array[ (y * self.x_len) + x  ]
+        return self.array[ (y * self.x_len) + x ]
 
     def __setitem__(self, key, value):
 

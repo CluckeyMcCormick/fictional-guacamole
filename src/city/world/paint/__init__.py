@@ -4,5 +4,6 @@ from . import (
     detail,
     edge,
     lake,
-    plant
+    plant,
+    river
 )

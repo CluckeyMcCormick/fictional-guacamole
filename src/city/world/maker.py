@@ -1,6 +1,6 @@
 import multiprocessing as mp
 
-from . import paint
+from . import paint, generator
 
 # Everytime we do a parallel-izable process, how many workers work on it?
 DEFAULT_WORKERS = 8
@@ -32,6 +32,16 @@ def build_world(world_data, complete_val, primary_ts, detail_ts):
     lakes = paint.lake.generate_chain_lakes( world_data )
     kw_args = { "tile_set" : primary_ts }
     perform_work(paint.lake.paint_square_lake_chain, world_data, lakes, kw_args=kw_args)
+
+    gennies = [
+        generator.PerlinGenerator(world_data.sizes, 0),
+        generator.PerpendicularGenerator(1, 1, (0, world_data.sizes[0]), val_range=(0, 400))
+    ]
+
+    print("\n\tRiparine Formutationals...\n\n")
+
+    river = paint.river.make_river(world_data, lakes[0].center, gennies)
+    paint.river.paint_river(world_data, primary_ts, river)
 
     print("\n\tAssigning averages...\n\n")
     paint.average.assign_averages(world_data)

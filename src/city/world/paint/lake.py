@@ -9,9 +9,8 @@ import collections
 
 import noise
 
-
 from ..assets.terrain_primary import PrimaryKey
-from ..data import AVERAGE_ZONE_LEN
+import game_util
 
 """
 ~~~~~~~~~~~~~~~~~~~~~~~~
@@ -152,9 +151,6 @@ def paint_square_lake_chain(world_data, lake, tile_set):
                 x = c_x + shift_x
                 y = c_y + shift_y
 
-                avg_x = x // AVERAGE_ZONE_LEN
-                avg_y = y // AVERAGE_ZONE_LEN
-
                 # Decide whether we're painting sand or water
                 if abs(shift_x) == radius or abs(shift_y) == radius:
                     enum = PrimaryKey.SAND
@@ -208,12 +204,7 @@ class FillLake(object):
 
 def range_convert(new_min, new_max, in_val, old_min=0.0, old_max=1.0):
 
-    val = in_val - old_min
-    val /= (old_max - old_min)
-    val *= new_max - new_min
-    val += new_min
-
-    return val;
+    return game_util.range_convert(old_min, old_max, new_min, new_max, in_val)
 
 def generate_fill_lakes(world_data):
     # Calculate the number of FillLakes we'll be making
