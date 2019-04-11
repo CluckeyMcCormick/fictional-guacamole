@@ -40,7 +40,12 @@ def build_world(world_data, complete_val, primary_ts, detail_ts):
 
     print("\n\tRiparine Formutationals...\n\n")
 
-    river = paint.river.make_river(world_data, lakes[0].center, gennies)
+    src_list = []
+
+    for lk in lakes:
+        src_list.append(lk.center)
+
+    river = paint.river.generate_rivers(world_data, src_list, gennies[0])
     paint.river.paint_river(world_data, primary_ts, river)
 
     print("\n\tAssigning averages...\n\n")

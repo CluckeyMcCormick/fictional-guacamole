@@ -108,11 +108,12 @@ class PerpendicularGenerator(object):
         d = perp_y - y
 
         # Step 4: Calculate the X intersection of these two lines
-        x_val = d / (a - b)
+        x_val = abs( d / (a - b) )
 
         # Step 5: Convert the x value into a value range value
         min_x, max_x = self.x_range
         min_val, max_val = self.val_range
+
         val = game_util.range_convert(min_x, max_x, min_val, max_val, x_val)
 
         return val
