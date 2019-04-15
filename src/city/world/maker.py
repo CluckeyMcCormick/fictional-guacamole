@@ -33,11 +33,6 @@ def build_world(world_data, complete_val, primary_ts, detail_ts):
     kw_args = { "tile_set" : primary_ts }
     perform_work(paint.lake.paint_square_lake_chain, world_data, lakes, kw_args=kw_args)
 
-    gennies = [
-        generator.PerlinGenerator(world_data.sizes, 0),
-        generator.PerpendicularGenerator(1, 1, (0, world_data.sizes[0]), val_range=(0, 400))
-    ]
-
     print("\n\tRiparine Formutationals...\n\n")
 
     src_list = []
@@ -45,7 +40,7 @@ def build_world(world_data, complete_val, primary_ts, detail_ts):
     for lk in lakes:
         src_list.append(lk.center)
 
-    river = paint.river.generate_rivers(world_data, src_list, gennies[0])
+    river = paint.river.generate_rivers(world_data, src_list)
     paint.river.paint_river(world_data, primary_ts, river)
 
     print("\n\tAssigning averages...\n\n")
