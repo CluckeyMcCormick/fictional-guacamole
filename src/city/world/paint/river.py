@@ -1,4 +1,5 @@
 
+import fractions
 import random
 import enum
 import math
@@ -124,7 +125,7 @@ class RiverLattice(object):
                 y = lat_y * self.POINT_STEP - self.POINT_STEP
 
                 # If this point is in bounds, shift it around.
-                if (0 <= x < len(x_range)) and (0 <= y < len(y_range)):
+                if (0 <= x < self.REAL_X_SIZE) and (0 <= y < self.REAL_Y_SIZE):
                     x = round(random.gauss(x, self.POINT_DEVIATION))
                     y = round(random.gauss(y, self.POINT_DEVIATION))  
 
@@ -184,56 +185,10 @@ class RiverLattice(object):
         segments = []
 
         for lp_pos, lp in self.active_points.items():
-            # Get our points
-            x1, y1 = self[ lp_pos ].real_pos
-            x2, y2 = self[ lp.next_pos ].real_pos
-
-            # Get our x distance
-            x_dist = x2 - x1
-
-            # If our x_dist is 0, then we have a vertical line. Our slope range
-            # needs to be be different
-            if x_dist == 0:
-                slope = None
-                slope_range = range(0, y2 - y1, round(math.copysign(1, y2 - y1)) )
-
-            # Otherwise, we can make a normal slope
-            else:
-                slope = (y2 - y1) / (x_dist)
-                slope_range = range(0, x_dist, round(math.copysign(1, x_dist)) )
-
-            # For each point between here and the next lattice point...
-            for shift in slope_range:
-                # Create an empty segment object. We'll edit this as we go.
-                seg = RiverSegment(None, None, None, None)
-
-                # If we lack a slope, just set the position up or down
-                if slope is None:
-                    seg.pos = (x1, y1 + shift)
-
-                # Otherwise, calculate the y_shift and set the position
-                else:
-                    # Calculate our y_shift
-                    y_shift = round(slope * shift)
-                    seg.pos = (x1 + shift, y1 + y_shift)
-
-                if not (0 <= seg.pos[0] < self.REAL_X_SIZE and 0 <= seg.pos[1] < self.REAL_Y_SIZE):
-                    continue
-
-                # Set the flow and the size.
-                seg.flow = lp.flow
-                seg.size = lp.size
-
-                # If the slope is between -1 and 1,
-                if slope is not None and -1 <= slope <= 1:
-                    # The orientation is horizontal
-                    seg.orient = RiverOrient.HORIZONTAL
-                # Otherwise...
-                else:
-                    # The orientation is vertical
-                    seg.orient = RiverOrient.VERTICAL
-
-                segments.append(seg)
+            # Get our target point
+            target = self[ lp.next_pos ].real_pos
+            # Extend the segments list
+            segments.extend( lp.to_segments( target ))
 
         return segments
 
@@ -254,6 +209,80 @@ class LatticePoint(object):
         self.real_pos = real_pos
         #
         self.next_pos = None
+
+    def to_segments(self, to_real_pos):
+        segments = []
+
+        x1, y1 = self.real_pos
+        x2, y2 = to_real_pos
+
+        x_dist = x1 - x2
+        y_dist = y1 - y2
+
+        orient = None
+
+        # If the y distance is bigger...
+        if abs(y_dist) > abs(x_dist):
+            # Then we're y oriented
+            x_orient = False
+            # Iterate over y
+            slope_range = range(0, y_dist, int( math.copysign(1, y_dist) ) )
+            # The slope is run / rise
+            slope = fractions.Fraction( x_dist, y_dist )
+
+            # If the slope is between -1 and 1,
+            if -1 <= slope <= 1:
+                # The orientation is vertical
+                orient = RiverOrient.VERTICAL
+            # Otherwise...
+            else:
+                # The orientation is horizontal
+                orient = RiverOrient.HORIZONTAL
+
+        # Otherwise, the x distance is bigger (or equal)
+        else:
+            # Then we're x oriented
+            x_orient = True
+            # Iterate over x
+            slope_range = range(0, x_dist, int( math.copysign(1, x_dist) ) )
+            # The slope is rise / run
+            slope = fractions.Fraction( y_dist, x_dist )
+
+            # If the slope is between -1 and 1,
+            if -1 <= slope <= 1:
+                # The orientation is horizontal
+                orient = RiverOrient.HORIZONTAL
+            # Otherwise...
+            else:
+                # The orientation is vertical
+                orient = RiverOrient.VERTICAL
+
+        for shift in slope_range:
+            # Create an empty segment object. We'll edit this as we go.
+            seg = RiverSegment(None, None, None, None)
+
+            # If we're x oriented...
+            if x_orient:
+                # Than the shift on X is just the current shift
+                x_shift = shift
+                # And the shift on Y needs to be calculated using our slope
+                y_shift = round(slope * shift)
+            else:
+                # Than the shift on X is just the current shift
+                y_shift = shift
+                # And the shift on Y needs to be calculated using our slope
+                x_shift = round(slope * shift)
+
+            seg.pos = (x1 + x_shift, y1 + y_shift)
+
+            # Set the flow and the size.
+            seg.flow = self.flow
+            seg.size = self.size
+            seg.orient = orient
+
+            segments.append(seg)
+
+        return segments
 
 ### CRED: MichaelHouse
 ### https://gamedev.stackexchange.com/questions/31263/road-river-generation-on-2d-grid-map
@@ -510,7 +539,7 @@ def paint_river(world_data, tile_set, river):
 
 def paint_river_vertical(world_data, tile_set, segment):
     pos_x, pos_y = segment.pos
-    x_size, _ = world_data.base.sizes
+    x_size, y_size = world_data.base.sizes
 
     water_designate = tile_set.get_designate(PrimaryKey.WATER)
     
@@ -525,7 +554,7 @@ def paint_river_vertical(world_data, tile_set, segment):
         new_x = pos_x + ((i + 1) // 2) * int(disposition)
 
         # If we're not in the limit, skip this tile
-        if not (0 <= new_x < x_size):
+        if not ( (0 <= new_x < x_size) and (0 <= pos_y < y_size) ):
             continue
 
         # Paint the tile
@@ -533,7 +562,7 @@ def paint_river_vertical(world_data, tile_set, segment):
 
 def paint_river_horizontal(world_data, tile_set, segment):
     pos_x, pos_y = segment.pos
-    _, y_size = world_data.base.sizes
+    x_size, y_size = world_data.base.sizes
 
     water_designate = tile_set.get_designate(PrimaryKey.WATER)
 
@@ -548,7 +577,7 @@ def paint_river_horizontal(world_data, tile_set, segment):
         new_y = pos_y + ((i + 1) // 2) * int(disposition)
 
         # If we're not in the limit, skip this tile
-        if not (0 <= new_y < y_size):
+        if not ( (0 <= pos_x < x_size) and (0 <= new_y < y_size) ):
             continue
 
         # Paint the tile
