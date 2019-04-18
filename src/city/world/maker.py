@@ -42,16 +42,12 @@ def build_world(world_data, complete_val, primary_ts, detail_ts):
     for lk in lakes:
         src_list.append(lk.center)
 
-    #river = paint.river.generate_rivers(world_data, src_list)
+    river = paint.river.generate_rivers(world_data, src_list)
     #river = paint.river.LatticePoint(3, None, (0, 0) ).to_segments( (45, 45) )
-    #paint.river.paint_river(world_data, primary_ts, river)
+    paint.river.paint_river(world_data, primary_ts, river)
 
     #river = paint.river.LatticePoint(3, None, (45, 46) ).to_segments( (45, 50) )
     #paint.river.paint_river(world_data, primary_ts, river)
-
-    game_util.bresenham.func_circle( (20, 20), 6, fill_water, args=[world_data, primary_ts], fill=True)
-
-    game_util.bresenham.func_line( (5, 5), (32, 15), fill_water, args=[world_data, primary_ts])
 
     print("\n\tAssigning averages...\n\n")
     paint.average.assign_averages(world_data)
@@ -126,11 +122,3 @@ def perform_work(func, world_data, orders, in_args=[], kw_args={}):
     # straight away
     for p in procs:
         p.join()
-
-
-def fill_water(x, y, world_data, tile_set):
-        # Get the enum's integer designation
-        designate = tile_set.get_designate(assets.terrain_primary.PrimaryKey.WATER)
-
-        # Set the tile
-        world_data.base[x, y] = designate

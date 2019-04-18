@@ -7,6 +7,8 @@ import math
 import noise
 
 from ..assets.terrain_primary import PrimaryKey
+from game_util.bresenham import func_line, func_circle
+
 import game_util
 
 class RiverFlow(enum.IntEnum):
@@ -44,37 +46,18 @@ flow_shifts = {
     RiverFlow.SOUTH_EAST: ( 1,-1)
 }
 
-class RiverOrient(enum.Enum):
-    """
-    Describes the overall orientation of the river; independent from the
-    direction of the water's flow.
-    """
-    # A Left<->Right (West<->East) configuration
-    HORIZONTAL = 0
-
-    # A Positive Slope, Lower Left<->Upper Right (South West<->North East)
-    POS_SLOPE = 1
-    
-    # A Up<->Down (North<->South) configuration
-    VERTICAL = 2
-    
-    # A Negative Slope, Upper Left<->Lower Right (North West<->South East)
-    NEG_SLOPE = 3
-
 class RiverSegment(object):
     """
     Describes a segment of a river, where each segment is a 1-thick slice of a
     river along it's width.
     """
-    def __init__(self, pos, orient, flow, size):
+    def __init__(self, pos, flow, size):
         """
         Creates a segment of a river.
 
         Inputs:
 
         pos: a (x, y) tuple that specifies the semantic center of the river
-
-        orient: a RiverOrient enum that specfies how the river is oriented
 
         flow: a RiverFlow enum that describes the flow of the water in this
         segment
@@ -83,7 +66,6 @@ class RiverSegment(object):
         """
         super(RiverSegment, self).__init__()
         self.pos = pos
-        self.orient = orient
         self.flow = flow
         self.size = size
 
@@ -100,7 +82,7 @@ class RiverLattice(object):
     POINT_DEVIATION = 1.5
 
     # The default size/width of the river - in other words, the basic size.
-    DEFAULT_RIVER_SIZE = 3
+    DEFAULT_RIVER_SIZE = 2
     
     def __init__(self, world_sizes):
         super(RiverLattice, self).__init__()
@@ -207,82 +189,24 @@ class LatticePoint(object):
         self.flow = flow
         # The "real grid" position of this point
         self.real_pos = real_pos
-        #
+        # The next point on the lattic grid
         self.next_pos = None
 
     def to_segments(self, to_real_pos):
         segments = []
 
-        x1, y1 = self.real_pos
-        x2, y2 = to_real_pos
+        args = [ self.flow, self.size, segments ]
 
-        x_dist = x2 - x1
-        y_dist = y2 - y1
-
-        orient = None
-
-        # If the y distance is bigger...
-        if abs(y_dist) > abs(x_dist):
-            # Then we're y oriented
-            x_orient = False
-            # Iterate over y
-            slope_range = range(0, y_dist, int( math.copysign(1, y_dist) ) )
-            # The slope is run / rise
-            slope = fractions.Fraction( x_dist, y_dist )
-
-            # If the slope is between -1 and 1,
-            if -1 <= slope <= 1:
-                # The orientation is vertical
-                orient = RiverOrient.VERTICAL
-            # Otherwise...
-            else:
-                # The orientation is horizontal
-                orient = RiverOrient.HORIZONTAL
-
-        # Otherwise, the x distance is bigger (or equal)
-        else:
-            # Then we're x oriented
-            x_orient = True
-            # Iterate over x
-            slope_range = range(0, x_dist, int( math.copysign(1, x_dist) ) )
-            # The slope is rise / run
-            slope = fractions.Fraction( y_dist, x_dist )
-
-            # If the slope is between -1 and 1,
-            if -1 <= slope <= 1:
-                # The orientation is horizontal
-                orient = RiverOrient.HORIZONTAL
-            # Otherwise...
-            else:
-                # The orientation is vertical
-                orient = RiverOrient.VERTICAL
-
-        for shift in slope_range:
-            # Create an empty segment object. We'll edit this as we go.
-            seg = RiverSegment(None, None, None, None)
-
-            # If we're x oriented...
-            if x_orient:
-                # Than the shift on X is just the current shift
-                x_shift = shift
-                # And the shift on Y needs to be calculated using our slope
-                y_shift = round(slope * shift)
-            else:
-                # Than the shift on X is just the current shift
-                y_shift = shift
-                # And the shift on Y needs to be calculated using our slope
-                x_shift = round(slope * shift)
-
-            seg.pos = (x1 + x_shift, y1 + y_shift)
-
-            # Set the flow and the size.
-            seg.flow = self.flow
-            seg.size = self.size
-            seg.orient = orient
-
-            segments.append(seg)
+        func_line( self.real_pos, to_real_pos, create_river_segs, args )
 
         return segments
+
+# Helper function for creating river segments on a specific x, y
+# Meant to be used in conjunction with the Bresenham line function
+def create_river_segs(x, y, flow, size, segments):
+    seg = RiverSegment( (x, y), flow, size)
+
+    segments.append(seg)
 
 ### CRED: MichaelHouse
 ### https://gamedev.stackexchange.com/questions/31263/road-river-generation-on-2d-grid-map
@@ -427,158 +351,26 @@ def generate_rivers(world_data, sources):
     """
     return river_lat.to_segments()
 
-        
-def make_river(world_data, start, generators):
-    """
-    Generates a river object. 
-
-    For generating a river, we add together the values produced by the provided
-    generators. This is interpreted as a heightmap; the river is generated by
-    using this heightmap as a watershed. That means that the provided
-    generators need to provide some form of direction to the river or things
-    could go badly - infinite loop badly.
-
-    Inputs:
-
-    world_data: The WorldData object we will be working on
-
-    start: a (x, y) tuple that specifies the start/source/headwaters of the
-    river
-
-    generators: a List of Generator objects
-
-    """
-    X_SIZE, Y_SIZE = world_data.sizes
-
-    # Initialize our values: we are at the start, in the map, with no flow
-    cur_x, cur_y = start
-    in_map = True
-    old_flow = None
-
-    river = []
-
-    # While we haven't gone off the map...
-    while in_map:
-
-        flow = None
-        low_val = math.inf
-
-        # If we don't have a flow...
-        if old_flow is None:
-            # Then check every direction!
-            flow_range = range(0, len(RiverFlow))
-            old_flow = 0
-        # Otherwise...
-        else:
-            # Just check the left, forward, and right
-            flow_range = range(-1, 2)
-
-        """
-        Step 1: Determine which tile to flow into.
-        """
-        for turn in flow_range:
-            # Calculate our new flow value
-            adj_flow = (old_flow + turn) % len(RiverFlow)
-
-            # unpack our adjustments for our current flow direction
-            adj_x, adj_y = flow_shifts[ adj_flow ]
-
-            # calculate the new X and Y
-            new_x = cur_x + adj_x
-            new_y = cur_y + adj_y
-
-            # Sum up this value across all the provided generators
-            value = 0
-            for gen in generators:
-                value += gen.get_value(new_x, new_y)
-
-            # If this is currently the lowest value, then update our tracking
-            if value < low_val:
-                low_val = value
-                flow = adj_flow
-
-        """
-        Step 2: Create a segment, place it on the stack.
-        """
-        segment = RiverSegment( 
-            (cur_x, cur_y), RiverOrient.HORIZONTAL, RiverFlow(flow), 3
-        )
-        river.append(segment)
-
-        """
-        Step 3: Move to the new tile.
-        """ 
-        # unpack our adjustments for our new flow direction
-        adj_x, adj_y = flow_shifts[ flow ]
-
-        # Adjust the X and Y
-        cur_x += adj_x
-        cur_y += adj_y
-
-        # Update the old flow
-        old_flow = flow
-
-        """
-        Step 4: Check if you're still in bounds.
-        """
-        in_map = (0 <= cur_x < X_SIZE) and (0 <= cur_y < Y_SIZE)
-
-    return river
-
 def paint_river(world_data, tile_set, river):
     """
     Paints the provided river, end to end.
     """
+    # For each segment that makes up a river...
     for segment in river:
-        if segment.orient == RiverOrient.HORIZONTAL:
-            paint_river_horizontal(world_data, tile_set, segment)
+        # Get our arguments together
+        args = [world_data, tile_set]
+        # Paint a circle on top of this segment
+        func_circle( segment.pos, segment.size, fill_water, args=args, fill=True)
 
-        if segment.orient == RiverOrient.VERTICAL:
-            paint_river_vertical(world_data, tile_set, segment)
-
-
-def paint_river_vertical(world_data, tile_set, segment):
-    pos_x, pos_y = segment.pos
+# Helper function for painting a river segment 
+# Meant to be used in conjunction with the Bresenham circle function
+def fill_water(x, y, world_data, tile_set):
+    # Get the size
     x_size, y_size = world_data.base.sizes
 
-    water_designate = tile_set.get_designate(PrimaryKey.WATER)
-    
-    # For every tile...
-    for i in range(segment.size):
-        # Calculate the disposition - are we adding this on the left or right?
-        # We alternate between painting on either side depending on whether
-        # we're odd or even - and (conveniently), so does cosine!
-        disposition =  math.cos( i * math.pi )
-
-        # Calculate our distance from the "original" point
-        new_x = pos_x + ((i + 1) // 2) * int(disposition)
-
-        # If we're not in the limit, skip this tile
-        if not ( (0 <= new_x < x_size) and (0 <= pos_y < y_size) ):
-            continue
-
-        # Paint the tile
-        world_data.base[new_x, pos_y] = water_designate
-
-def paint_river_horizontal(world_data, tile_set, segment):
-    pos_x, pos_y = segment.pos
-    x_size, y_size = world_data.base.sizes
-
-    water_designate = tile_set.get_designate(PrimaryKey.WATER)
-
-    # For every tile...
-    for i in range(segment.size):
-        # Calculate the disposition - are we adding this on the top or bottom?
-        # We alternate between painting on either side depending on whether
-        # we're odd or even - and (conveniently), so does cosine!
-        disposition =  math.cos( i * math.pi )
-
-        # Calculate our distance from the "original" point
-        new_y = pos_y + ((i + 1) // 2) * int(disposition)
-
-        # If we're not in the limit, skip this tile
-        if not ( (0 <= pos_x < x_size) and (0 <= new_y < y_size) ):
-            continue
-
-        # Paint the tile
-        world_data.base[pos_x, new_y] = water_designate
+    # If we're in the world
+    if (0 <= x < x_size) and (0 <= y < y_size):
+        # Get the enum's integer designation
+        designate = tile_set.get_designate(PrimaryKey.WATER)
+        # Set the tile
+        world_data.base[x, y] = designate
