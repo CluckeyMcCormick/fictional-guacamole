@@ -216,8 +216,8 @@ class LatticePoint(object):
         x1, y1 = self.real_pos
         x2, y2 = to_real_pos
 
-        x_dist = x1 - x2
-        y_dist = y1 - y2
+        x_dist = x2 - x1
+        y_dist = y2 - y1
 
         orient = None
 

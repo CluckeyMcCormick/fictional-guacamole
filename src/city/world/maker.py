@@ -41,7 +41,11 @@ def build_world(world_data, complete_val, primary_ts, detail_ts):
         src_list.append(lk.center)
 
     river = paint.river.generate_rivers(world_data, src_list)
+    #river = paint.river.LatticePoint(3, None, (0, 0) ).to_segments( (45, 45) )
     paint.river.paint_river(world_data, primary_ts, river)
+
+    #river = paint.river.LatticePoint(3, None, (45, 46) ).to_segments( (45, 50) )
+    #paint.river.paint_river(world_data, primary_ts, river)
 
     print("\n\tAssigning averages...\n\n")
     paint.average.assign_averages(world_data)
