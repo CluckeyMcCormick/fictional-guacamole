@@ -1,5 +1,5 @@
 from . import (
-	tiles
+	tiles, bresenham
 )
 
 import math

@@ -300,4 +300,3 @@ def paint_fill_lake(world_data, fill_lake, tile_set, base):
 
                 # Otherwise, if we made it here, add this tile to the stack
                 to_fill.append( tile )
-
