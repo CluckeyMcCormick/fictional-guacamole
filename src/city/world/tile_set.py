@@ -1,4 +1,32 @@
 
+import collections
+import enum
+
+class TileEnum(enum.Enum):
+    def __new__(cls, index, is_animation):
+        obj = object.__new__(cls)
+        # Assign an aribitrary value for value
+        obj._value_ = len(cls.__members__)
+        obj._index_ = index
+        obj._is_animation_ = is_animation
+
+        return obj
+
+    @property
+    def is_animation(self):
+        # Hide the is_animation value behind a property
+        return self._is_animation_
+
+    @property
+    def index(self):
+        # Hide the index value behind a property
+        return self._index_
+
+    @property
+    def image_path(self):
+        message = "Image path not provided for class {0}".format( type(self) )
+        raise NotImplementedError(message)
+
 class TileSet(object):
     """
     The TileSet takes in tile assets enumerations and assigns each value an
@@ -11,6 +39,11 @@ class TileSet(object):
         - The integer designation for parallelization (i.e. in world raw)
         - The enumeration that describes how to access the tile from its image
           and gives each tile a programmable name.
+
+    We title these three concepts as:
+        - Image
+        - Designate
+        - Enum
 
     * Using an arbitrary designation allows for easy expansion of the tileset
     if we want to add more tiles to a "set" but don't want to change the
@@ -55,17 +88,27 @@ class TileSet(object):
     def __len__(self):
         return len(self._enum_dict)
 
-    def get_tile_designate(self, designate):
-        enum = self._designate_dict[designate]
-        return self.get_tile_enum(enum)
+    def get_image(self, key):
+        """
+        Get an image slice for the given designate or enum.
+        """
+        if key in self._designate_dict:
+            enum = self._designate_dict[key]
+        else:
+            enum = key
 
-    def get_tile_enum(self, enum):
-        return self._grid_dict[enum.image_path][enum.value]
+        return self._grid_dict[enum.image_path][enum.index]
         
     def get_designate(self, enum):
+        """
+        Get a designate for the given enum.
+        """
         return self._enum_dict[enum]
 
     def get_enum(self, designate):
+        """
+        Get a enum for the given designate.
+        """
         return self._designate_dict[designate]
 
     #

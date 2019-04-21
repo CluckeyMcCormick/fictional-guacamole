@@ -166,7 +166,7 @@ def average_sprite_build(dt, city_state):
             choice_enum = city_state.terrain_primary.get_enum(designate)
 
             if choice_enum not in city_state.texture_groups:
-                choice_image = city_state.terrain_primary.get_tile_designate(designate)
+                choice_image = city_state.terrain_primary.get_image(designate)
                 city_state.texture_groups[choice_enum] = game_util.tiles.TileGroup(
                     texture=choice_image.get_texture()
                 )
@@ -220,7 +220,7 @@ def world_sprite_build(dt, city_state, current=0):
 
         if avg_designate != designate:
             if choice_enum not in city_state.texture_groups:
-                choice_image = city_state.terrain_primary.get_tile_designate(designate)
+                choice_image = city_state.terrain_primary.get_image(designate)
                 city_state.texture_groups[choice_enum] = game_util.tiles.TileGroup(
                     texture=choice_image.get_texture()
                 )
@@ -253,7 +253,7 @@ def world_sprite_build(dt, city_state, current=0):
                 continue
 
             if choice_enum not in city_state.texture_groups:
-                choice_image = city_state.terrain_detail.get_tile_designate(designate)
+                choice_image = city_state.terrain_detail.get_image(designate)
                 city_state.texture_groups[choice_enum] = game_util.tiles.TileGroup(
                     texture=choice_image.get_texture()
                 )

@@ -61,16 +61,20 @@ def edge_pass(world_data, orders, world_ts, detail_ts):
         ("UPPER_RIGHT_INNER", "RIGHT_EDGE_B", "TOP_EDGE_B", "LOWER_LEFT_OUTER")     #(+1, +1)
     ]
 
+    # For each base tile in our range...
     for world_x in range(first, limit):
         for world_y in range(y_size):
+            # Get the enumeration using the designate
             current_tile = world_ts.get_enum( world_data.base[world_x, world_y] )
 
+            # Calculate the detail map position
             det_x = world_x * 2
             det_y = world_y * 2
 
+            # For each of this tiles four subtiles...
             for i in range(4):
 
-                # Get our neighbor tiles
+                # Get our three base neighbor tiles
                 neighbor_list = []
                 for pair in shifts[i]:
                     adj_x, adj_y = pair
@@ -81,7 +85,7 @@ def edge_pass(world_data, orders, world_ts, detail_ts):
                     # If we're in the appropriate boundaries...
                     if (0 <= world_x + adj_x < x_size) and (0 <= world_y + adj_y < y_size):
                         value = world_data.base[world_x + adj_x, world_y + adj_y]
-                        value = world_ts.get_enum( value )
+                        value = world_ts.get_enum( value ).proxy # Get the proxy
                     neighbor_list.append( value )
 
                 # Pack those neighbor tiles into a tuple for easy access
@@ -89,6 +93,7 @@ def edge_pass(world_data, orders, world_ts, detail_ts):
                     neighbor_list[0], neighbor_list[1], neighbor_list[2]
                 )
 
+                # Determine the edge type to put here
                 edge_enum = edge_determine(current_tile, neighbor_tuple, tile_strings[i])
 
                 adj_det_x = i % 2
@@ -101,7 +106,7 @@ def enum_sort_key(enum):
     if enum is None:
         return math.inf
     else:
-        return enum.value
+        return enum.precedence
 
 def edge_determine(current_tile, neighbors, tiles):
     n_horiz_a, n_vert_b, n_corner_c = neighbors

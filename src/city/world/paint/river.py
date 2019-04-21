@@ -11,40 +11,40 @@ from game_util.bresenham import func_line, func_circle
 
 import game_util
 
-class RiverFlow(enum.IntEnum):
+class ShiftEnum(enum.Enum):
+    def __new__(cls, value, shift):
+        obj = object.__new__(cls)
+        obj._value_ = value
+        obj.shift = shift
+
+        return obj
+
+    def __sub__(self, other):
+        # Get the class
+        typed = type(self)
+        # Return enum with that value
+        return typed( (self.value - other) % len(typed.__members__) ) 
+
+    def __add__(self, other):
+        # Get the class
+        typed = type(self)
+        # Return enum with that value
+        return typed( (self.value + other) % len(typed.__members__) )
+
+class RiverFlow(ShiftEnum):
     """
     Describes the flow direction of a particular river segment; used for the
     semantics of river flow.
     """
-    EAST = 0
-    NORTH_EAST = 1
-    NORTH = 2
-    NORTH_WEST = 3
-    WEST = 4
-    SOUTH_WEST = 5
-    SOUTH = 6
-    SOUTH_EAST = 7
+    EAST  = 0, ( 1, 0)
+    NORTH = 2, ( 0, 1)
+    WEST  = 4, (-1, 0)
+    SOUTH = 6, (0, -1)
 
-"""
-The flow_shifts dict contains flow_shifts tuples, which describe the
-flow_shifts on x and y that match a particular flow. For example, if we have a
-river flowing east, we want to move in an easterly direction. We would index
-this dictionary with RiverFlow.EAST and get (1, 0). Thus, we can calculate due
-east with x + 1, y + 0.
-
-Also, this had to be defined outside of it's class because OTHERWISE it would
-become an enum itself and be useless.
-"""
-flow_shifts = {
-    RiverFlow.EAST: (1, 0),
-    RiverFlow.NORTH: (0, 1),
-    RiverFlow.WEST: (-1, 0),
-    RiverFlow.SOUTH: (0, -1),
-    RiverFlow.NORTH_EAST: ( 1, 1),
-    RiverFlow.NORTH_WEST: (-1, 1),   
-    RiverFlow.SOUTH_WEST: (-1,-1),
-    RiverFlow.SOUTH_EAST: ( 1,-1)
-}
+    NORTH_EAST = 1, ( 1, 1)
+    NORTH_WEST = 3, (-1, 1)
+    SOUTH_WEST = 5, (-1,-1)
+    SOUTH_EAST = 7, ( 1,-1)
 
 class RiverSegment(object):
     """
@@ -286,7 +286,7 @@ def generate_rivers(world_data, sources):
             if old_flow is None:
                 # Then check every direction!
                 flow_range = range(0, len(RiverFlow))
-                old_flow = 0
+                old_flow = RiverFlow.EAST
             # Otherwise...
             else:
                 # Just check forward, right, and left (in that order).
@@ -297,11 +297,11 @@ def generate_rivers(world_data, sources):
             low_val = math.inf
             for turn in flow_range:
                 # Calculate our new flow value
-                adj_flow = (old_flow + turn) % len(RiverFlow)
+                adj_flow = old_flow + turn
 
                 # Unpack our adjustments for our current flow direction
-                new_x = lat_x + flow_shifts[adj_flow][0] # First in tuple is X
-                new_y = lat_y + flow_shifts[adj_flow][1] # Second in tuple is Y
+                new_x = lat_x + adj_flow.shift[0] # First in tuple is X
+                new_y = lat_y + adj_flow.shift[1] # Second in tuple is Y
 
                 # Sum up this value across all the provided generators
                 value = noise.pnoise2(

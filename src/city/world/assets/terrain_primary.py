@@ -1,6 +1,45 @@
 import pyglet
 import enum
 
+from ..tile_set import TileEnum
+
+class PrimaryTileEnum(TileEnum):
+    def __new__(cls, index, is_animation, has_edge):
+        obj = object.__new__(cls)
+        # Assign an aribitrary value for value
+        obj._value_ = len(cls.__members__)
+        obj._is_animation_ = is_animation
+        obj._index_ = index
+        obj._has_edge_ = has_edge
+        return obj
+
+    @property
+    def has_edge(self):
+        # Hide the has_edge value behind a property
+        return self._has_edge_
+
+    @property
+    def proxy(self):
+        """
+        Occassionally, it may be desirable, for whatever reason, for a primary
+        tile to appear as another tile. For example, we would want river water
+        to appear to some portions of the program as just water. The proxy
+        property is what we'll access for when this deferrment occurs.
+        """
+        return self # For the base class, just return this object
+
+    @property
+    def precedence(self):
+        """
+        When we're drawing up edge tiles, we need to know the precedence score
+        of each tile so we can determine which tiles cover what. A lower score
+        is considered to have more precedence.
+        """
+        # Return the assigned value.
+        # Note that, since the "value" field is automatically determined with 0
+        # being the first enum defined, the order of Enums is very important!
+        return self.value
+
 # How many tiles is terrain_primary.png, left to right?
 IMAGE_TILE_WIDTH = 1
 
@@ -24,18 +63,21 @@ def load():
 
     return image, grid, [PrimaryKey], IMAGE_PATH
 
-class PrimaryKey(enum.Enum):
+class PrimaryKey(PrimaryTileEnum):
     """
     The ImageGrid indices for each item in the Terrain Primary Tile set. The
     primary tileset provides the primary version for each terrain type that we
     then layer over with detail tiles.
     """
-    SNOW = 0
-    GRASS = 1
-    DIRT = 2
-    SAND = 3
-    STONE = 4
-    ICE = 5
-    WATER = 6
-    LOW_STONE = 7
+    SNOW =  0, False, False
+    GRASS =  1, False, False
+    DIRT =  2, False, False
+    SAND =  3, False, False
+    STONE =  4, False, False
+    ICE =  5, False, False
+    WATER =  6, False, True # Water doesn't have edges
+    LOW_STONE =  7, False, False
 
+    @property
+    def image_path(self):
+        return IMAGE_PATH
