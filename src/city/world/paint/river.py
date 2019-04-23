@@ -114,7 +114,7 @@ class RiverLattice(object):
                     y = round(random.gauss(y, self.POINT_DEVIATION))  
 
                 # Create our LatticePoint object
-                lp = LatticePoint( self.DEFAULT_RIVER_SIZE, None, (x, y) )
+                lp = LatticePoint( self.DEFAULT_RIVER_SIZE, (x, y) )
 
                 # Stick our LatticePoint on the array.
                 self.lattice[lat_x].append( lp )
@@ -189,30 +189,31 @@ class LatticePoint(object):
     A point in our river lattice. Gives the river a vector to follow to the
     next point.
     """
-    def __init__(self, size, flow, real_pos):
+    def __init__(self, size, real_pos):
         super(LatticePoint, self).__init__()
         self.size = size
-        self.flow = flow
         # The "real grid" position of this point
         self.real_pos = real_pos
-        # The next point on the lattic grid
+        # The next point on the lattice grid
         self.next_pos = None
+        # The direction the river flows on the lattice grid
+        self.semantic_flow = None
+        # The direction the river flows from real_pos to real_pos
+        self.real_flow = RiverDirKey.NO_FLOW
 
     def to_segments(self, to_real_pos):
+        # Create a list of segments, for storage
         segments = []
 
-        args = [ self.flow, self.size, segments ]
-
-        func_line( self.real_pos, to_real_pos, create_river_segs, args )
+        # Go over a line, creating river segments.
+        func_line( self.real_pos, to_real_pos, self._make_segment, [ segments ] )
 
         return segments
 
-# Helper function for creating river segments on a specific x, y
-# Meant to be used in conjunction with the Bresenham line function
-def create_river_segs(x, y, flow, size, segments):
-    seg = RiverSegment( (x, y), flow, size)
-
-    segments.append(seg)
+    # Helper function for creating river segments on a specific x, y
+    # Meant to be used in conjunction with the Bresenham line function
+    def _make_segment(self, x, y, segments):
+        segments.append( RiverSegment( (x, y), self.real_flow, self.size) )
 
 ### CRED: MichaelHouse
 ### https://gamedev.stackexchange.com/questions/31263/road-river-generation-on-2d-grid-map
@@ -329,14 +330,76 @@ def generate_rivers(world_data, sources):
                 # If this is currently the lowest value, then update our tracking
                 if value < low_val:
                     low_val = value
-                    curr_lp.flow = adj_flow
+                    curr_lp.semantic_flow = adj_flow 
                     curr_lp.next_pos = (new_x, new_y)
 
             # Update the old flow
-            old_flow = curr_lp.flow
+            old_flow = curr_lp.semantic_flow
 
-            # Update the flow base on the real pos
-            curr_lp.flow = river_dir_on_angle(river_lat, curr_lp)
+            # If we're in bounds, then update the flow base on the real pos,
+            # using the slope and unit circle values
+            if river_lat.in_bounds(curr_lp.next_pos):
+
+                x_diff = river_lat[ curr_lp.next_pos ].real_pos[0] - curr_lp.real_pos[0]
+                y_diff = river_lat[ curr_lp.next_pos ].real_pos[1] - curr_lp.real_pos[1]
+
+                # If x_diff is 0...
+                if x_diff == 0:
+                    # Decide if the flow is North or South
+                    if y_diff > 0:
+                        curr_lp.real_flow = RiverDirKey.NORTH
+                    elif y_diff < 0:
+                        curr_lp.real_flow = RiverDirKey.SOUTH
+
+                # Otherwise, if x_diff is less than 0...
+                elif x_diff < 0:
+                    # Calculate the slope
+                    slope = fractions.Fraction(y_diff, x_diff)
+                    # Calculate the angle of the slope in radians
+                    rads = math.tan(slope)
+
+                    """
+                    if rads > math.tan( (11 / 8) * math.pi ):
+                        curr_lp.real_flow = RiverDirKey.SOUTH
+                    elif rads > math.tan( (9 / 8) * math.pi ):
+                        curr_lp.real_flow = RiverDirKey.SOUTH_WEST
+                    """
+                    if rads > math.tan( (9 / 8) * math.pi ):
+                        curr_lp.real_flow = RiverDirKey.SOUTH_WEST
+                    elif rads > math.tan( (7 / 8) * math.pi ):
+                        curr_lp.real_flow = RiverDirKey.WEST
+                    else:
+                        curr_lp.real_flow = RiverDirKey.NORTH_WEST
+                    """
+                    elif rads > math.tan( (5 / 8) * math.pi ):
+                        curr_lp.real_flow = RiverDirKey.NORTH_WEST
+                    else:
+                        curr_lp.real_flow = RiverDirKey.NORTH
+                    """
+                # Otherwise, if x_diff is greater than 0 (which it MUST be)...
+                elif x_diff > 0:
+                    # Calculate the slope
+                    slope = fractions.Fraction(y_diff, x_diff)
+                    # Calculate the angle of the slope in radians
+                    rads = math.tan(slope)
+                    """
+                    if rads < math.tan( (13 / 8) * math.pi ):
+                        curr_lp.real_flow = RiverDirKey.SOUTH
+                    elif rads < math.tan( (15 / 8) * math.pi ):
+                        curr_lp.real_flow = RiverDirKey.SOUTH_EAST
+                    """
+                    if rads < math.tan( (15 / 8) * math.pi ):
+                        curr_lp.real_flow = RiverDirKey.SOUTH_EAST
+                    elif rads < math.tan( (1 / 8) * math.pi ):
+                        curr_lp.real_flow = RiverDirKey.EAST
+                    else:
+                        curr_lp.real_flow = RiverDirKey.NORTH_EAST
+                    """
+                    elif rads < math.tan( (3 / 8) * math.pi ):
+                        curr_lp.real_flow = RiverDirKey.NORTH_EAST
+                    else:
+                        curr_lp.real_flow = RiverDirKey.NORTH
+                    """
 
             # If marking the current lattice point returns True, then we're done 
             if river_lat.mark_point( (lat_x, lat_y) ):
@@ -354,71 +417,11 @@ def generate_rivers(world_data, sources):
                 in_map = (0 < lat_x < river_lat.X_SIZE - 1) and (0 < lat_y < river_lat.Y_SIZE - 1)
     """
     ~
-    ~ Step 5: Now that we have a heap of LatticePoints, generate these into
+    ~ Step 4: Now that we have a heap of LatticePoints, generate these into
     ~         a heap of RiverSegment objects.
     ~
     """
     return river_lat.to_segments()
-
-def river_dir_on_angle(river_lat, lp):
-    """
-    Given a river lattice, and a segment, returns a RiverDirKey enum based on
-    the angle between this segment and the next segment's real positions.
-    """
-    x_from, y_from = lp.real_pos
-
-    retval = RiverDirKey.NO_FLOW
-
-    if not river_lat.in_bounds(lp.next_pos):
-        return retval
-
-    x_to, y_to = river_lat[ lp.next_pos ].real_pos
-
-    x_diff = x_to - x_from
-    y_diff = y_to - y_from
-    
-    # If X is largest...
-    if abs(x_diff) > abs(y_diff):
-        # And x is positive, we flow east.
-        if x_diff > 0:
-            retval = RiverDirKey.EAST
-        # Otherwise, we flow west
-        else:
-            retval = RiverDirKey.WEST
-
-    # Otherwise, if Y is the largest...
-    elif abs(y_diff) > abs(x_diff):
-        # And y is positive, we flow north.
-        if y_diff > 0:
-            retval = RiverDirKey.NORTH
-        # Otherwise, we flow south
-        else:
-            retval = RiverDirKey.SOUTH
-
-    # Otherwise, they are equal. Decide which ordinal we need...
-    else:
-
-        # Check the X. If positive, then it's East
-        if x_diff > 0:
-            # Now, decide North and South based on y
-            # If y is positive, we flow north.
-            if y_diff > 0:
-                retval = RiverDirKey.NORTH_EAST
-            # Otherwise, we flow south
-            else:
-                retval = RiverDirKey.SOUTH_EAST
-        # Otherwise, it's west
-        else:
-            # Now, decide North and South based on y
-            # If y is positive, we flow north.
-            if y_diff > 0:
-                retval = RiverDirKey.NORTH_WEST
-            # Otherwise, we flow south
-            else:
-                retval = RiverDirKey.SOUTH_WEST
-
-    return retval
-
 
 def paint_river(world_data, tile_set, river):
     """
@@ -437,14 +440,13 @@ def fill_water(x, y, world_data, tile_set, flow):
     # Get the size
     x_size, y_size = world_data.base.sizes
 
-
     # If we're in the world
     if (0 <= x < x_size) and (0 <= y < y_size):
 
         curr = tile_set.get_enum( world_data.base[x, y] )
 
-        if curr not in RiverDirKey:
-            # Get the enum's integer designation
-            designate = tile_set.get_designate(flow)
-            # Set the tile
-            world_data.base[x, y] = designate
+        #if curr not in RiverDirKey:
+        # Get the enum's integer designation
+        designate = tile_set.get_designate(flow)
+        # Set the tile
+        world_data.base[x, y] = designate
