@@ -53,9 +53,10 @@ def load_textures(dt, city_state):
     # Get the load methods for our tile sheets
     primary_load = world.assets.terrain_primary.load
     detail_load = world.assets.terrain_detail.load
+    river_load = world.assets.river_dir.load
 
     # Create the TileSet objects
-    city_state.terrain_primary = world.tile_set.TileSet(primary_load)
+    city_state.terrain_primary = world.tile_set.TileSet(primary_load, river_load)
     city_state.terrain_detail = world.tile_set.TileSet(detail_load)
 
     pyglet.clock.schedule_once(start_build, 0, city_state)

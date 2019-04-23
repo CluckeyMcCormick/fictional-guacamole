@@ -69,14 +69,14 @@ class PrimaryKey(PrimaryTileEnum):
     primary tileset provides the primary version for each terrain type that we
     then layer over with detail tiles.
     """
-    SNOW =  0, False, False
-    GRASS =  1, False, False
-    DIRT =  2, False, False
-    SAND =  3, False, False
-    STONE =  4, False, False
-    ICE =  5, False, False
-    WATER =  6, False, True # Water doesn't have edges
-    LOW_STONE =  7, False, False
+    SNOW  =      0, False, True
+    GRASS =      1, False, True
+    DIRT  =      2, False, True
+    SAND  =      3, False, True
+    STONE =      4, False, True
+    ICE   =      5, False, True
+    WATER =      6, False, False # Water doesn't have edges
+    LOW_STONE =  7, False, True
 
     @property
     def image_path(self):

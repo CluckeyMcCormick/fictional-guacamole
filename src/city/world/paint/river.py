@@ -7,6 +7,7 @@ import math
 import noise
 
 from ..assets.terrain_primary import PrimaryKey
+from ..assets.river_dir import RiverDirKey
 from game_util.bresenham import func_line, func_circle
 
 import game_util
@@ -28,6 +29,7 @@ class ShiftEnum(enum.Enum):
     def __add__(self, other):
         # Get the class
         typed = type(self)
+        # Return enum with that value
         # Return enum with that value
         return typed( (self.value + other) % len(typed.__members__) )
 
@@ -59,7 +61,7 @@ class RiverSegment(object):
 
         pos: a (x, y) tuple that specifies the semantic center of the river
 
-        flow: a RiverFlow enum that describes the flow of the water in this
+        flow: a RiverDirKey enum that describes the flow of the water in this
         segment
 
         size: the size/width of the river
@@ -173,6 +175,10 @@ class RiverLattice(object):
             segments.extend( lp.to_segments( target ))
 
         return segments
+
+    def in_bounds(self, pos):
+        x, y = pos
+        return 0 <= x < self.X_SIZE and 0 <= y < self.Y_SIZE
 
     def __getitem__(self, key):
         x, y = key
@@ -329,6 +335,9 @@ def generate_rivers(world_data, sources):
             # Update the old flow
             old_flow = curr_lp.flow
 
+            # Update the flow base on the real pos
+            curr_lp.flow = river_dir_on_angle(river_lat, curr_lp)
+
             # If marking the current lattice point returns True, then we're done 
             if river_lat.mark_point( (lat_x, lat_y) ):
                 in_map = False
@@ -351,6 +360,66 @@ def generate_rivers(world_data, sources):
     """
     return river_lat.to_segments()
 
+def river_dir_on_angle(river_lat, lp):
+    """
+    Given a river lattice, and a segment, returns a RiverDirKey enum based on
+    the angle between this segment and the next segment's real positions.
+    """
+    x_from, y_from = lp.real_pos
+
+    retval = RiverDirKey.NO_FLOW
+
+    if not river_lat.in_bounds(lp.next_pos):
+        return retval
+
+    x_to, y_to = river_lat[ lp.next_pos ].real_pos
+
+    x_diff = x_to - x_from
+    y_diff = y_to - y_from
+    
+    # If X is largest...
+    if abs(x_diff) > abs(y_diff):
+        # And x is positive, we flow east.
+        if x_diff > 0:
+            retval = RiverDirKey.EAST
+        # Otherwise, we flow west
+        else:
+            retval = RiverDirKey.WEST
+
+    # Otherwise, if Y is the largest...
+    elif abs(y_diff) > abs(x_diff):
+        # And y is positive, we flow north.
+        if y_diff > 0:
+            retval = RiverDirKey.NORTH
+        # Otherwise, we flow south
+        else:
+            retval = RiverDirKey.SOUTH
+
+    # Otherwise, they are equal. Decide which ordinal we need...
+    else:
+
+        # Check the X. If positive, then it's East
+        if x_diff > 0:
+            # Now, decide North and South based on y
+            # If y is positive, we flow north.
+            if y_diff > 0:
+                retval = RiverDirKey.NORTH_EAST
+            # Otherwise, we flow south
+            else:
+                retval = RiverDirKey.SOUTH_EAST
+        # Otherwise, it's west
+        else:
+            # Now, decide North and South based on y
+            # If y is positive, we flow north.
+            if y_diff > 0:
+                retval = RiverDirKey.NORTH_WEST
+            # Otherwise, we flow south
+            else:
+                retval = RiverDirKey.SOUTH_WEST
+
+    return retval
+
+
 def paint_river(world_data, tile_set, river):
     """
     Paints the provided river, end to end.
@@ -358,19 +427,24 @@ def paint_river(world_data, tile_set, river):
     # For each segment that makes up a river...
     for segment in river:
         # Get our arguments together
-        args = [world_data, tile_set]
+        args = [world_data, tile_set, segment.flow]
         # Paint a circle on top of this segment
         func_circle( segment.pos, segment.size, fill_water, args=args, fill=True)
 
 # Helper function for painting a river segment 
 # Meant to be used in conjunction with the Bresenham circle function
-def fill_water(x, y, world_data, tile_set):
+def fill_water(x, y, world_data, tile_set, flow):
     # Get the size
     x_size, y_size = world_data.base.sizes
 
+
     # If we're in the world
     if (0 <= x < x_size) and (0 <= y < y_size):
-        # Get the enum's integer designation
-        designate = tile_set.get_designate(PrimaryKey.WATER)
-        # Set the tile
-        world_data.base[x, y] = designate
+
+        curr = tile_set.get_enum( world_data.base[x, y] )
+
+        if curr not in RiverDirKey:
+            # Get the enum's integer designation
+            designate = tile_set.get_designate(flow)
+            # Set the tile
+            world_data.base[x, y] = designate
