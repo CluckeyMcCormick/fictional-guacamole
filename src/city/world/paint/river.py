@@ -198,22 +198,115 @@ class LatticePoint(object):
         self.next_pos = None
         # The direction the river flows on the lattice grid
         self.semantic_flow = None
-        # The direction the river flows from real_pos to real_pos
-        self.real_flow = RiverDirKey.NO_FLOW
 
     def to_segments(self, to_real_pos):
         # Create a list of segments, for storage
         segments = []
+        # Cook up an arguments list
+        args = [ segments, to_real_pos, ]
 
         # Go over a line, creating river segments.
-        func_line( self.real_pos, to_real_pos, self._make_segment, [ segments ] )
+        func_line( self.real_pos, to_real_pos, self._make_segment, args)
 
         return segments
 
     # Helper function for creating river segments on a specific x, y
     # Meant to be used in conjunction with the Bresenham line function
-    def _make_segment(self, x, y, segments):
-        segments.append( RiverSegment( (x, y), self.real_flow, self.size) )
+    def _make_segment(self, x, y, segments, to_real_pos):
+
+        # Create a segment for this space, with no flow.
+        seg = RiverSegment( (x, y), RiverDirKey.NO_FLOW, self.size)
+
+        # If this segment is the first segment...
+        if not segments:
+            # Then we need to decide which way the first segment flows.
+            # If we started at the last point...
+            if (x, y) == to_real_pos:
+                # Then make the direction the vague flow between the lattice
+                # point's start and it's destination
+                seg.flow = river_dir_between_points( self.real_pos, to_real_pos )
+
+            # Otherwise, if we started at the first point, we'll do nothing.
+            # The algorithm will naturally change our flow.
+
+        # Otherwise, 
+        else:
+            # Get the last segment
+            last_seg = segments[-1]
+
+            # Calculate the distance from here to the target real pos
+            current_dist = game_util.tuple_distance( seg.pos, to_real_pos )
+
+            # Calculate the distance from the last segment to the target real pos
+            last_dist = game_util.tuple_distance( last_seg.pos, to_real_pos )
+
+            # if this segment is closer than the last one (or is the same)...
+            if current_dist <= last_dist:
+                # Then we are moving from the lattice point's start to it's end
+                # Since we can't see ahead of ourselves, we can only modify the
+                # segments that came before.
+
+                # So, we need to change the last segment to flow into this one
+                last_seg.flow = river_dir_between_points( last_seg.pos, (x, y) )
+                # Just in case something messes up, set the current segment to 
+                # match the flow of the previous segment
+                seg.flow = last_seg.flow
+
+            # Otherwise...
+            else:
+                # We must be moving from the lattice point's end to it's start
+                # Set the current segment's flow such that it flows into the
+                # previous tile.
+                seg.flow = river_dir_between_points( seg.pos, last_seg.pos )
+
+        # Add the new segment to the pot.
+        segments.append( seg )
+
+def river_dir_between_points(pos_from, pos_to):
+    """
+    Given two points, returns the RiverDirKey flow between them. 
+    This method assumes that the river is flowing from pos_from to pos_to.
+    """
+    # First, unpack our values
+    x_from, y_from = pos_from
+    x_to, y_to = pos_to
+
+    # Next, calculate the x and y difference
+    x_diff = x_to - x_from
+    y_diff = y_to - y_from
+
+    # Next calculate what I call the "disposition" which is basically the slope
+    # reduced to units / signs
+    if x_diff == 0:
+        dispo = ( 0, y_diff / abs(y_diff) )
+    
+    elif y_diff == 0:
+        dispo = ( x_diff / abs(x_diff), 0 )
+
+    else:
+        dispo = ( x_diff / abs(x_diff), y_diff / abs(y_diff) )
+
+    # Finally, decide the RiverDirKey flow based on the disposition
+    if dispo == (1, 0):
+        flow = RiverDirKey.EAST
+    elif dispo == (1, 1):
+        flow = RiverDirKey.NORTH_EAST
+    elif dispo == (0, 1):
+        flow = RiverDirKey.NORTH
+    elif dispo == (-1, 1):
+        flow = RiverDirKey.NORTH_WEST
+    elif dispo == (-1, 0):
+        flow = RiverDirKey.WEST
+    elif dispo == (-1, -1):
+        flow = RiverDirKey.SOUTH_WEST
+    elif dispo == (0, -1):
+        flow = RiverDirKey.SOUTH
+    elif dispo == (1, -1):
+        flow = RiverDirKey.SOUTH_EAST
+    else:
+        flow = RiverDirKey.NO_FLOW
+
+    return flow
 
 ### CRED: MichaelHouse
 ### https://gamedev.stackexchange.com/questions/31263/road-river-generation-on-2d-grid-map
@@ -335,71 +428,6 @@ def generate_rivers(world_data, sources):
 
             # Update the old flow
             old_flow = curr_lp.semantic_flow
-
-            # If we're in bounds, then update the flow base on the real pos,
-            # using the slope and unit circle values
-            if river_lat.in_bounds(curr_lp.next_pos):
-
-                x_diff = river_lat[ curr_lp.next_pos ].real_pos[0] - curr_lp.real_pos[0]
-                y_diff = river_lat[ curr_lp.next_pos ].real_pos[1] - curr_lp.real_pos[1]
-
-                # If x_diff is 0...
-                if x_diff == 0:
-                    # Decide if the flow is North or South
-                    if y_diff > 0:
-                        curr_lp.real_flow = RiverDirKey.NORTH
-                    elif y_diff < 0:
-                        curr_lp.real_flow = RiverDirKey.SOUTH
-
-                # Otherwise, if x_diff is less than 0...
-                elif x_diff < 0:
-                    # Calculate the slope
-                    slope = fractions.Fraction(y_diff, x_diff)
-                    # Calculate the angle of the slope in radians
-                    rads = math.tan(slope)
-
-                    """
-                    if rads > math.tan( (11 / 8) * math.pi ):
-                        curr_lp.real_flow = RiverDirKey.SOUTH
-                    elif rads > math.tan( (9 / 8) * math.pi ):
-                        curr_lp.real_flow = RiverDirKey.SOUTH_WEST
-                    """
-                    if rads > math.tan( (9 / 8) * math.pi ):
-                        curr_lp.real_flow = RiverDirKey.SOUTH_WEST
-                    elif rads > math.tan( (7 / 8) * math.pi ):
-                        curr_lp.real_flow = RiverDirKey.WEST
-                    else:
-                        curr_lp.real_flow = RiverDirKey.NORTH_WEST
-                    """
-                    elif rads > math.tan( (5 / 8) * math.pi ):
-                        curr_lp.real_flow = RiverDirKey.NORTH_WEST
-                    else:
-                        curr_lp.real_flow = RiverDirKey.NORTH
-                    """
-                # Otherwise, if x_diff is greater than 0 (which it MUST be)...
-                elif x_diff > 0:
-                    # Calculate the slope
-                    slope = fractions.Fraction(y_diff, x_diff)
-                    # Calculate the angle of the slope in radians
-                    rads = math.tan(slope)
-                    """
-                    if rads < math.tan( (13 / 8) * math.pi ):
-                        curr_lp.real_flow = RiverDirKey.SOUTH
-                    elif rads < math.tan( (15 / 8) * math.pi ):
-                        curr_lp.real_flow = RiverDirKey.SOUTH_EAST
-                    """
-                    if rads < math.tan( (15 / 8) * math.pi ):
-                        curr_lp.real_flow = RiverDirKey.SOUTH_EAST
-                    elif rads < math.tan( (1 / 8) * math.pi ):
-                        curr_lp.real_flow = RiverDirKey.EAST
-                    else:
-                        curr_lp.real_flow = RiverDirKey.NORTH_EAST
-                    """
-                    elif rads < math.tan( (3 / 8) * math.pi ):
-                        curr_lp.real_flow = RiverDirKey.NORTH_EAST
-                    else:
-                        curr_lp.real_flow = RiverDirKey.NORTH
-                    """
 
             # If marking the current lattice point returns True, then we're done 
             if river_lat.mark_point( (lat_x, lat_y) ):
