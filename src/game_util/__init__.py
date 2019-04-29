@@ -1,5 +1,5 @@
 from . import (
-	tiles, bresenham
+	tiles, bresenham, enum
 )
 
 import math
