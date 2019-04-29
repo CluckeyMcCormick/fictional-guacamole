@@ -228,6 +228,13 @@ class TileCamera(object):
         trans_x = self._vpx - new_vpx
         trans_y = self._vpy - new_vpy
 
+        # Convert the translation into an integer value. Translating the world
+        # using floats causes a wierd issue where textures we pulled from an 
+        # ImageGrid would bleed into each other. Seems to be a result of how
+        # OpenGL draws stuff - being at the subpixel level caused issues.
+        trans_x = int(trans_x)
+        trans_y = int(trans_y)
+
         # Set the new values
         self._vpx -= trans_x
         self._vpy -= trans_y

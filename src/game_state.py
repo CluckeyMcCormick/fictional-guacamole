@@ -1,6 +1,17 @@
 
 import pyglet
 
+from enum import Enum
+
+class LoadingStatus(Enum):
+    """
+    Small enum for tracking the current "LoadingStatus" of a game state.
+    Offered here for utility, more than anything
+    """
+    PRE_LOAD = 0
+    LOADING = 1
+    LOAD_COMPLETE = 2
+
 class GameState(object):
     """
     The GameState represents an isolatable, swappable state in the simulation;
@@ -207,7 +218,7 @@ class LoadState(object):
         A "private" start - pushes the handlers, schedule the load
         """
         # Schedule the load process
-        pyglet.clock.schedule_interval(self.interval_load, 1/1000.0)
+        pyglet.clock.schedule_once(self.interval_load, 0)
         
         self.window.push_handlers(self.on_draw)
 
@@ -236,12 +247,11 @@ class LoadState(object):
 
         # If our state finishes loading
         if self.state_to_load.load():
-            # Unschedule this load function
-            pyglet.clock.unschedule(self.interval_load)
             # Switch the states
             self.window.dispatch_event('switch_state', self.state_to_load)
-
             self._loaded = True
+        else:
+            pyglet.clock.schedule_once(self.interval_load, 0)
         
     ###
     #
