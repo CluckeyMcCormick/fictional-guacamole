@@ -8,20 +8,23 @@ import math
 
 from ..assets.terrain_detail import EdgeKey, DetailKey
 
+from game_util.enum import CardinalEnum
+
 def edge_pass(world_data, orders, world_ts, detail_ts):
     """
     The world is a series of tiles, like this:
-         |       |       |
-        -+---+---+---+---+- The left hand side is a normal tile, bereft of any
-         |       |   |   |  detail markings. The right hand side is a tile with
-         |       | 2 | 3 |  detail markings. As you can see, each tile has four
-         |       |   |   |  detail tiles that occupy the corners.
-         |       |---+---+-
-         |       |   |   |  The edge pass algorithm observes each detail tile's
-         |       | 0 | 1 |  applicable neighbors: one above or below, one left
-         |       |   |   |  or right, and one corner-wise. It then determines
-        -+---+---+---+---+- which edge tile would be best for that detail tile.
-         |       |       |    
+         |         |         |
+        -+----+----+----+----+- The left hand side is a normal tile, bereft of 
+         |         |    |    |  any detail markings. The right hand side is a
+         |         | NW | NE |  tile with detail markings. As you can see, each
+         |         |    |    |  tile has four detail tiles that occupy the
+         |         |----+----+- corners.
+         |         |    |    |  
+         |         | SW | SE |  The edge pass algorithm observes each detail 
+         |         |    |    |  tile's applicable neighbors: one above or 
+        -+----+----+----+----+- below, one left or right, and one corner-wise.
+         |         |         |  It then determines which edge tile would be best 
+                                for that detail tile.
     """
 
     x_size, y_size = world_data.sizes
@@ -33,14 +36,11 @@ def edge_pass(world_data, orders, world_ts, detail_ts):
     y_det_size = y_size * 2
     det_sizes = (x_det_size, y_det_size)
 
-    # The neighbor shifts on world_x and world_y, for each detail tile
-    # We'll use these to quickly check the neighbor tiles for each detail tile
-    shifts = [
-        # n_horiz_a, n_vert_b, n_corner_c
-        ( (-1, 0), (0, -1), (-1, -1) ), #(+0, +0) (0)
-        ( ( 1, 0), (0, -1), ( 1, -1) ), #(+1, +0) (1)
-        ( (-1, 0), (0,  1), (-1,  1) ), #(+0, +1) (2)
-        ( ( 1, 0), (0,  1), ( 1,  1) )  #(+1, +1) (3)
+    # The list of quads we will investigate, in the order we will
+    # investigate them
+    quad_list = [
+        CardinalEnum.NORTH_EAST, CardinalEnum.NORTH_WEST,
+        CardinalEnum.SOUTH_WEST, CardinalEnum.SOUTH_EAST
     ]
 
     """
@@ -53,13 +53,29 @@ def edge_pass(world_data, orders, world_ts, detail_ts):
     horizontal edge, a vertical edge, and an exterior corner. Each set of
     strings lines up with those edge types.
     """
-    tile_strings = [
+    tile_strings = {
         # int_corner, horiz, vert, ext_corner
-        ("LOWER_LEFT_INNER", "LEFT_EDGE_A", "BOTTOM_EDGE_A", "UPPER_RIGHT_OUTER"),  #(+0, +0)
-        ("LOWER_RIGHT_INNER", "RIGHT_EDGE_A", "BOTTOM_EDGE_B", "UPPER_LEFT_OUTER"), #(+1, +0)
-        ("UPPER_LEFT_INNER", "LEFT_EDGE_B", "TOP_EDGE_A", "LOWER_RIGHT_OUTER"),     #(+0, +1)
-        ("UPPER_RIGHT_INNER", "RIGHT_EDGE_B", "TOP_EDGE_B", "LOWER_LEFT_OUTER")     #(+1, +1)
-    ]
+        CardinalEnum.SOUTH_WEST : (
+            "LOWER_LEFT_INNER", "LEFT_EDGE_A", "BOTTOM_EDGE_A", "UPPER_RIGHT_OUTER"
+        ),
+        CardinalEnum.SOUTH_EAST : (
+            "LOWER_RIGHT_INNER", "RIGHT_EDGE_A", "BOTTOM_EDGE_B", "UPPER_LEFT_OUTER"
+        ),
+        CardinalEnum.NORTH_WEST : (
+            "UPPER_LEFT_INNER", "LEFT_EDGE_B", "TOP_EDGE_A", "LOWER_RIGHT_OUTER"
+        ),
+        CardinalEnum.NORTH_EAST : (
+            "UPPER_RIGHT_INNER", "RIGHT_EDGE_B", "TOP_EDGE_B", "LOWER_LEFT_OUTER"
+        )
+    }
+
+    # The shifts for each quad to match with it's detail tile.
+    detail_shifts = {
+        CardinalEnum.SOUTH_WEST : (0, 0),
+        CardinalEnum.SOUTH_EAST : (1, 0),
+        CardinalEnum.NORTH_WEST : (0, 1),
+        CardinalEnum.NORTH_EAST : (1, 1)
+    }
 
     # For each base tile in our range...
     for world_x in range(first, limit):
@@ -71,35 +87,53 @@ def edge_pass(world_data, orders, world_ts, detail_ts):
             det_x = world_x * 2
             det_y = world_y * 2
 
-            # For each of this tiles four subtiles...
-            for i in range(4):
+            # For each of this tile's quadrants
+            for q in quad_list:
+                q_x, q_y = q.shift
 
-                # Get our three base neighbor tiles
+                # Holds the enums from each of the neighboring tiles. The order
+                # will be horizontal, vertical, then diagonal. We'll convert it
+                # to a tuple later for easy unpacking.
                 neighbor_list = []
-                for pair in shifts[i]:
+
+                # Get a value for each of our three neighbor tiles.
+                # One horizontal, one vertical, one diagonal.
+                for pair in [ (q_x, 0), (0, q_y), q.shift ]:
+                    # Unpack the shift
                     adj_x, adj_y = pair
 
                     # Value is None by default
                     value = None
 
+                    # Calculate our ADJusted position
+                    adj_coord = (world_x + adj_x, world_y + adj_y)
+
                     # If we're in the appropriate boundaries...
-                    if (0 <= world_x + adj_x < x_size) and (0 <= world_y + adj_y < y_size):
-                        value = world_data.base[world_x + adj_x, world_y + adj_y]
-                        value = world_ts.get_enum( value ).proxy # Get the proxy
+                    if world_data.base.in_bounds(adj_coord):
+                        # Get the designate value for the tile
+                        temp = world_data.base[adj_coord]
+                        # Get the enum from that designate
+                        temp = world_ts.get_enum( temp )
+
+                        # If this enum has an edge...
+                        if temp.has_edge:
+                            # Then get the proxy.
+                            value = temp.proxy
+                        # Otherwise, we're not interested in this tile. We'll
+                        # have this tile stay as the default.
+
+                    # Add this value to the list
                     neighbor_list.append( value )
 
-                # Pack those neighbor tiles into a tuple for easy access
-                neighbor_tuple = (
-                    neighbor_list[0], neighbor_list[1], neighbor_list[2]
-                )
-
                 # Determine the edge type to put here
-                edge_enum = edge_determine(current_tile, neighbor_tuple, tile_strings[i])
+                edge_enum = edge_determine(current_tile, tuple(neighbor_list), tile_strings[q])
 
-                adj_det_x = i % 2
-                adj_det_y = i // 2
+                # Unpack our detail shifts
+                adj_det_x, adj_det_y = detail_shifts[q]
 
+                # Get the designate for the enum so we can "paint" it.
                 value = detail_ts.get_designate( edge_enum )
+                # Paint the detail layer with our designate
                 world_data.detail[det_x + adj_det_x, det_y + adj_det_y] = value
 
 def enum_sort_key(enum):

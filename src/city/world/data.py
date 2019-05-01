@@ -56,6 +56,10 @@ class WorldLayer(object):
 
         self.array[ (y * self.x_len) + x ] = value
 
+    def in_bounds(self, key):
+        x, y = key
+        return 0 <= x < self.x_len and 0 <= y < self.y_len
+
 class AveragedWorldLayer(WorldLayer):
     """
     Represents a world layer that notes changes made to itself in the provided
