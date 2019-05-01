@@ -13,21 +13,6 @@ from game_util.enum import CardinalEnum
 
 import game_util
 
-class RiverFlow(ShiftEnum):
-    """
-    Describes the flow direction of a particular river segment; used for the
-    semantics of river flow.
-    """
-    EAST  = 0, ( 1, 0)
-    NORTH = 2, ( 0, 1)
-    WEST  = 4, (-1, 0)
-    SOUTH = 6, (0, -1)
-
-    NORTH_EAST = 1, ( 1, 1)
-    NORTH_WEST = 3, (-1, 1)
-    SOUTH_WEST = 5, (-1,-1)
-    SOUTH_EAST = 7, ( 1,-1)
-
 class RiverSegment(object):
     """
     Describes a segment of a river, where each segment is a 1-thick slice of a
