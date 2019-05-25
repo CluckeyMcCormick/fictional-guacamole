@@ -22,88 +22,69 @@ class WorldLayer(object):
         self.array = mp.Array(item_type, x_len * y_len)
         self.x_len = x_len
         self.y_len = y_len
+
+        # The "C Types" type of the array. We need this to create both the
+        # array & the numpy_array.
         self.item_type = item_type
+
+        # Numpy arrays seem to be quicker process-wise to read & write, so
+        # we'll
+        self.numpy_array = None
+        # However - numpy arrays aren't picklable (or at least, not in a way
+        # that supports multiprocessing). Therefore, we'll only instantiate this
+        # variable as it gets called.
 
     @property
     def sizes(self):
         return (self.x_len, self.y_len)
 
-    def __getitem__(self, key):
-        x, y = key
-        
-        if not (0 <= x < self.x_len and 0 <= y < self.y_len):
-            raise Exception(
-                "Invalid WorldLayer index: ({0},{1}) vs. [{2}, {3}]".format(
-                    x, y, self.x_len, self.y_len
-                )
-            )
-
-        return self.array[ (y * self.x_len) + x ]
-
-    def __setitem__(self, key, value):
-
-        if isinstance(self.item_type, Structure):
-            raise Exception("Cannot set Structure type of {0} to {1}!".format(self.item_type, value))
-
-        x, y = key
-        
-        if not (0 <= x < self.x_len and 0 <= y < self.y_len):
-            raise Exception(
-                "Invalid WorldLayer index: ({0},{1}) vs. [{2}, {3}]".format(
-                    x, y, self.x_len, self.y_len
-                )
-            )
-
-        self.array[ (y * self.x_len) + x ] = value
-
     def in_bounds(self, key):
         x, y = key
         return 0 <= x < self.x_len and 0 <= y < self.y_len
 
-class AveragedWorldLayer(WorldLayer):
-    """
-    Represents a world layer that notes changes made to itself in the provided
-    "Average" world layer. Neat!
-    """
-    def __init__(self, x_len, y_len, item_type, average_layer, avg_factors):
-        super(AveragedWorldLayer, self).__init__(x_len, y_len, item_type)
-        self.avg_x_len, self.avg_y_len = average_layer.sizes
-        self.average_layer = average_layer
-        self.avg_x_factor, self.avg_y_factor = avg_factors
+    def get_picklable(self):
+        # If we don't have a numpy array, then this layer itself is good enough
+        if self.numpy_array is None:
+            return self
+        # Otherwise, whip up a new layer
+        else:
+            return WorldLayerPicklable(self.array, self.x_len, self.y_len, self.item_type)
+
+    def __getitem__(self, key):
+        
+        # If we don't have a numpy array yet, make it!
+        if self.numpy_array is None:
+            a = numpy.frombuffer( self.array.get_obj(), dtype=self.item_type )
+            self.numpy_array = a.reshape( (self.x_len, self.y_len) )
+
+        return self.numpy_array[key]
 
     def __setitem__(self, key, value):
-        x, y = key
-        
-        if not (0 <= x < self.x_len and 0 <= y < self.y_len):
-            raise Exception(
-                "Invalid WorldLayer index: ({0},{1}) vs. [{2}, {3}]".format(
-                    x, y, self.x_len, self.y_len
-                )
-            )
 
-        old_val = self.array[ (y * self.x_len) + x ]
-        self.array[ (y * self.x_len) + x ] = value
+        # If we don't have a numpy array yet, make it!
+        if self.numpy_array is None:
+            a = numpy.frombuffer( self.array.get_obj(), dtype=self.item_type )
+            self.numpy_array = a.reshape( (self.x_len, self.y_len) )
 
-        # If the value changed...
-        if old_val != value:
-            # Figure out where our average is
-            x, y = key
-            avg_x = x // self.avg_x_factor
-            avg_y = y // self.avg_y_factor
+        self.numpy_array[key] = value
 
-            avg_index = (y // self.avg_y_factor) * self.avg_x_len + (x // self.avg_x_factor)
-
-            # Update the new value
-            self.average_layer.array[avg_index].counts[value] += 1
-
-            # Get rid of the old value. Minimum possible value is 0.
-            self.average_layer.array[avg_index].counts[old_val] = max(self.average_layer.array[avg_index].counts[old_val] - 1, 0)
+class WorldLayerPicklable(WorldLayer):
+    """
+    A knockoff of WorldLayer - the only difference is that this class accepts
+    a multiprocessing array, so that we can pass it around.
+    """
+    def __init__(self, array, x_len, y_len, item_type):
+        self.array = array
+        self.x_len = x_len
+        self.y_len = y_len
+        self.item_type = item_type
+        self.numpy_array = None
 
 class WorldData(object):
     """
     Collates all of our world layers together into one fat class.
     """
-    def __init__(self, x_len, y_len, primary_ts):
+    def __init__(self, x_len, y_len):
         super(WorldData, self).__init__()
 
         if x_len is None or y_len is None:
@@ -118,7 +99,10 @@ class WorldData(object):
         self._x_len = x_len
         self._y_len = y_len
 
-        self.primary_types = len(primary_ts)
+        # The terrain of the map.
+        # Grass, Sand, Dirt, Stone, Water, Snow. All that stuff. 
+        # 32 x 32 Tiles
+        self.base = WorldLayer(self._x_len, self._y_len, c_byte)
 
         # In order to save time on rendering tiles, we divide the map up into
         # squares. We then assign each square the most common terrain tile type
@@ -127,25 +111,12 @@ class WorldData(object):
         x_avg_len = self._x_len // AVERAGE_ZONE_LEN
         y_avg_len = self._y_len // AVERAGE_ZONE_LEN
 
-        # Okay, here's some Pythonic black magic for you - we're going to
-        # create an "AVERAGE_CHUNK" struct on the fly to hold information on our
-        # average chunks.
-        # We need to build this on the fly because the size changes based on 
-        # the length of primary_ts.
-        class AVERAGE_CHUNK(Structure):
-            _fields_ = [
-                ('avg', c_byte),
-                ('counts', c_byte * self.primary_types)
-            ]
+        self.avg_size_x = AVERAGE_ZONE_LEN
+        self.avg_size_y = AVERAGE_ZONE_LEN
 
-        avg_factors = (AVERAGE_ZONE_LEN, AVERAGE_ZONE_LEN)
-
-        self.base_average = WorldLayer(x_avg_len, y_avg_len, AVERAGE_CHUNK)
-
-        # The terrain of the map.
-        # Grass, Sand, Dirt, Stone, Water, Snow. All that stuff. 
-        # 32 x 32 Tiles
-        self.base = AveragedWorldLayer(self._x_len, self._y_len, c_byte, self.base_average, avg_factors)
+        # The average tile for each "section" - an AVERAGE_ZONE_LEN x AVERAGE_ZONE_LEN
+        # space that we use to help speed up our render processing.
+        self.base_average = WorldLayer(x_avg_len, y_avg_len, c_byte)
 
         # The miscellaneous details that cover our terrain.
         # This can be terrain transitions, or it can be other details (like
@@ -163,3 +134,25 @@ class WorldData(object):
     def sizes(self):
         return (self._x_len, self._y_len)
 
+    def get_picklable(self):
+        return WorldDataPicklable(self)
+
+class WorldDataPicklable(WorldData):
+    """
+    Offers the same functionality as WorldData, but it's guaranteed to be picklable.
+    Until one of the layers is accessed. Then you just need to call get_picklable()
+    again.
+    """
+    def __init__(self, copy_target):
+
+        # Copy over the sizes
+        self._x_len = copy_target._x_len
+        self._y_len = copy_target._y_len
+        self.avg_size_x = copy_target.avg_size_x
+        self.avg_size_y = copy_target.avg_size_y
+
+        # Copy over the layers
+        self.base = copy_target.base.get_picklable()
+        self.base_average = copy_target.base_average.get_picklable()
+        self.detail = copy_target.detail.get_picklable()
+        self.struct = copy_target.struct.get_picklable()
