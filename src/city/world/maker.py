@@ -13,7 +13,7 @@ DEFAULT_CHOICE = 1
 
 BASE = 1
 
-def build_world(world_data, complete_val, primary_ts, detail_ts):
+def build_world_basic(world_data, complete_val, primary_ts, detail_ts):
     """
     The build_world function is our main building algorithm. It's main role is
     in deciding what arguments to pass to our world painting methods and what

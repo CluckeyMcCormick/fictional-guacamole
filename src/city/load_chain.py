@@ -45,7 +45,7 @@ The advantage (that I currently percieve), is threefold:
 #
 # Step One: Load the textures
 #
-def load_textures(dt, city_state):
+def load_textures(dt, city_state, world_maker):
     """
     Loads the various textures that city_state will need.
     """
@@ -59,12 +59,12 @@ def load_textures(dt, city_state):
     city_state.terrain_primary = world.tile_set.TileSet(primary_load, river_load)
     city_state.terrain_detail = world.tile_set.TileSet(detail_load)
 
-    pyglet.clock.schedule_once(start_build, 0, city_state)
+    pyglet.clock.schedule_once(start_build, 0, city_state, world_maker)
 
 #
 # Step Two: Start the worldbuilding processes
 #
-def start_build(dt, city_state):
+def start_build(dt, city_state, world_maker):
     """
     Divys up the world and starts the world painting process.
     """
@@ -85,7 +85,7 @@ def start_build(dt, city_state):
 
     # The process that will manage the world building
     proc = mp.Process(
-        target=world.maker.build_world, 
+        target=world_maker, 
         args=(wd, complete, primary_ts, detail_ts)
     )
 

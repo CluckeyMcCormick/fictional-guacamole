@@ -8,11 +8,13 @@ from ctypes import c_byte
 
 import game_state
 
-from . import tile_cam, load_chain
+from . import tile_cam, load_chain, world
+
+default_world_maker = world.maker.build_world_basic
 
 class CityState(game_state.GameState):
 
-    def __init__(self, window, x_len, y_len):
+    def __init__(self, window, x_len, y_len, world_maker=default_world_maker):
         super(CityState, self).__init__(window)
         self.average_batch = pyglet.graphics.Batch()
         self.world_batch = pyglet.graphics.Batch()
@@ -37,10 +39,16 @@ class CityState(game_state.GameState):
 
         self.load_status = game_state.LoadingStatus.PRE_LOAD
 
+        # The technique we'll use to generate the world
+        self.world_maker = world_maker
+
     def load(self):
         if self.load_status == game_state.LoadingStatus.PRE_LOAD:
             self.load_status = game_state.LoadingStatus.LOADING
-            pyglet.clock.schedule_once(load_chain.load_textures, 0, self)
+            pyglet.clock.schedule_once(
+                load_chain.load_textures, 0, 
+                self, self.world_maker
+            )
 
         elif self.load_status == game_state.LoadingStatus.LOAD_COMPLETE:
             return True
