@@ -28,11 +28,9 @@ class WorldLayer(object):
         self.item_type = item_type
 
         # Numpy arrays seem to be quicker process-wise to read & write, so
-        # we'll
-        self.numpy_array = None
-        # However - numpy arrays aren't picklable (or at least, not in a way
-        # that supports multiprocessing). Therefore, we'll only instantiate this
-        # variable as it gets called.
+        # we'll use this for read-writing
+        a = numpy.frombuffer( self.array.get_obj(), dtype=self.item_type )
+        self.numpy_array = a.reshape( (self.x_len, self.y_len) )
 
     @property
     def sizes(self):
@@ -42,43 +40,11 @@ class WorldLayer(object):
         x, y = key
         return 0 <= x < self.x_len and 0 <= y < self.y_len
 
-    def get_picklable(self):
-        # If we don't have a numpy array, then this layer itself is good enough
-        if self.numpy_array is None:
-            return self
-        # Otherwise, whip up a new layer
-        else:
-            return WorldLayerPicklable(self.array, self.x_len, self.y_len, self.item_type)
-
     def __getitem__(self, key):
-        
-        # If we don't have a numpy array yet, make it!
-        if self.numpy_array is None:
-            a = numpy.frombuffer( self.array.get_obj(), dtype=self.item_type )
-            self.numpy_array = a.reshape( (self.x_len, self.y_len) )
-
         return self.numpy_array[key]
 
     def __setitem__(self, key, value):
-
-        # If we don't have a numpy array yet, make it!
-        if self.numpy_array is None:
-            a = numpy.frombuffer( self.array.get_obj(), dtype=self.item_type )
-            self.numpy_array = a.reshape( (self.x_len, self.y_len) )
-
         self.numpy_array[key] = value
-
-class WorldLayerPicklable(WorldLayer):
-    """
-    A knockoff of WorldLayer - the only difference is that this class accepts
-    a multiprocessing array, so that we can pass it around.
-    """
-    def __init__(self, array, x_len, y_len, item_type):
-        self.array = array
-        self.x_len = x_len
-        self.y_len = y_len
-        self.item_type = item_type
-        self.numpy_array = None
 
 class WorldData(object):
     """
@@ -133,26 +99,3 @@ class WorldData(object):
     @property
     def sizes(self):
         return (self._x_len, self._y_len)
-
-    def get_picklable(self):
-        return WorldDataPicklable(self)
-
-class WorldDataPicklable(WorldData):
-    """
-    Offers the same functionality as WorldData, but it's guaranteed to be picklable.
-    Until one of the layers is accessed. Then you just need to call get_picklable()
-    again.
-    """
-    def __init__(self, copy_target):
-
-        # Copy over the sizes
-        self._x_len = copy_target._x_len
-        self._y_len = copy_target._y_len
-        self.avg_size_x = copy_target.avg_size_x
-        self.avg_size_y = copy_target.avg_size_y
-
-        # Copy over the layers
-        self.base = copy_target.base.get_picklable()
-        self.base_average = copy_target.base_average.get_picklable()
-        self.detail = copy_target.detail.get_picklable()
-        self.struct = copy_target.struct.get_picklable()
