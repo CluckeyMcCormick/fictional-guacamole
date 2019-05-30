@@ -9,44 +9,9 @@ import noise
 from ..assets.terrain_primary import PrimaryKey
 from ..assets.river_dir import RiverDirKey
 from game_util.bresenham import func_line, func_circle
+from game_util.enum import CardinalEnum
 
 import game_util
-
-class ShiftEnum(enum.Enum):
-    def __new__(cls, value, shift):
-        obj = object.__new__(cls)
-        obj._value_ = value
-        obj.shift = shift
-
-        return obj
-
-    def __sub__(self, other):
-        # Get the class
-        typed = type(self)
-        # Return enum with that value
-        return typed( (self.value - other) % len(typed.__members__) ) 
-
-    def __add__(self, other):
-        # Get the class
-        typed = type(self)
-        # Return enum with that value
-        # Return enum with that value
-        return typed( (self.value + other) % len(typed.__members__) )
-
-class RiverFlow(ShiftEnum):
-    """
-    Describes the flow direction of a particular river segment; used for the
-    semantics of river flow.
-    """
-    EAST  = 0, ( 1, 0)
-    NORTH = 2, ( 0, 1)
-    WEST  = 4, (-1, 0)
-    SOUTH = 6, (0, -1)
-
-    NORTH_EAST = 1, ( 1, 1)
-    NORTH_WEST = 3, (-1, 1)
-    SOUTH_WEST = 5, (-1,-1)
-    SOUTH_EAST = 7, ( 1,-1)
 
 class RiverSegment(object):
     """
@@ -385,8 +350,8 @@ def generate_rivers(world_data, sources):
             # If we don't have a flow...
             if old_flow is None:
                 # Then check every direction!
-                flow_range = range(0, len(RiverFlow))
-                old_flow = RiverFlow.EAST
+                flow_range = range(0, len(CardinalEnum))
+                old_flow = CardinalEnum.EAST
             # Otherwise...
             else:
                 # Just check forward, right, and left (in that order).

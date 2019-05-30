@@ -22,84 +22,35 @@ class WorldLayer(object):
         self.array = mp.Array(item_type, x_len * y_len)
         self.x_len = x_len
         self.y_len = y_len
+
+        # The "C Types" type of the array. We need this to create both the
+        # array & the numpy_array.
         self.item_type = item_type
+
+        # Numpy arrays seem to be quicker process-wise to read & write, so
+        # we'll use this for read-writing
+        a = numpy.frombuffer( self.array.get_obj(), dtype=self.item_type )
+        self.numpy_array = a.reshape( (self.x_len, self.y_len) )
 
     @property
     def sizes(self):
         return (self.x_len, self.y_len)
 
+    def in_bounds(self, key):
+        x, y = key
+        return 0 <= x < self.x_len and 0 <= y < self.y_len
+
     def __getitem__(self, key):
-        x, y = key
-        
-        if not (0 <= x < self.x_len and 0 <= y < self.y_len):
-            raise Exception(
-                "Invalid WorldLayer index: ({0},{1}) vs. [{2}, {3}]".format(
-                    x, y, self.x_len, self.y_len
-                )
-            )
-
-        return self.array[ (y * self.x_len) + x ]
+        return self.numpy_array[key]
 
     def __setitem__(self, key, value):
-
-        if isinstance(self.item_type, Structure):
-            raise Exception("Cannot set Structure type of {0} to {1}!".format(self.item_type, value))
-
-        x, y = key
-        
-        if not (0 <= x < self.x_len and 0 <= y < self.y_len):
-            raise Exception(
-                "Invalid WorldLayer index: ({0},{1}) vs. [{2}, {3}]".format(
-                    x, y, self.x_len, self.y_len
-                )
-            )
-
-        self.array[ (y * self.x_len) + x ] = value
-
-class AveragedWorldLayer(WorldLayer):
-    """
-    Represents a world layer that notes changes made to itself in the provided
-    "Average" world layer. Neat!
-    """
-    def __init__(self, x_len, y_len, item_type, average_layer, avg_factors):
-        super(AveragedWorldLayer, self).__init__(x_len, y_len, item_type)
-        self.avg_x_len, self.avg_y_len = average_layer.sizes
-        self.average_layer = average_layer
-        self.avg_x_factor, self.avg_y_factor = avg_factors
-
-    def __setitem__(self, key, value):
-        x, y = key
-        
-        if not (0 <= x < self.x_len and 0 <= y < self.y_len):
-            raise Exception(
-                "Invalid WorldLayer index: ({0},{1}) vs. [{2}, {3}]".format(
-                    x, y, self.x_len, self.y_len
-                )
-            )
-
-        old_val = self.array[ (y * self.x_len) + x ]
-        self.array[ (y * self.x_len) + x ] = value
-
-        # If the value changed...
-        if old_val != value:
-            # Figure out where our average is
-            x, y = key
-            avg_x = x // self.avg_x_factor
-            avg_y = y // self.avg_y_factor
-
-            avg_index = (y // self.avg_y_factor) * self.avg_x_len + (x // self.avg_x_factor)
-
-            # Update the new value
-            self.average_layer.array[avg_index].counts[value] += 1
-
-            # Get rid of the old value. Minimum possible value is 0.
-            self.average_layer.array[avg_index].counts[old_val] = max(self.average_layer.array[avg_index].counts[old_val] - 1, 0)
+        self.numpy_array[key] = value
 
 class WorldData(object):
     """
     Collates all of our world layers together into one fat class.
     """
-    def __init__(self, x_len, y_len, primary_ts):
+    def __init__(self, x_len, y_len):
         super(WorldData, self).__init__()
 
         if x_len is None or y_len is None:
@@ -114,7 +65,10 @@ class WorldData(object):
         self._x_len = x_len
         self._y_len = y_len
 
-        self.primary_types = len(primary_ts)
+        # The terrain of the map.
+        # Grass, Sand, Dirt, Stone, Water, Snow. All that stuff. 
+        # 32 x 32 Tiles
+        self.base = WorldLayer(self._x_len, self._y_len, c_byte)
 
         # In order to save time on rendering tiles, we divide the map up into
         # squares. We then assign each square the most common terrain tile type
@@ -123,25 +77,12 @@ class WorldData(object):
         x_avg_len = self._x_len // AVERAGE_ZONE_LEN
         y_avg_len = self._y_len // AVERAGE_ZONE_LEN
 
-        # Okay, here's some Pythonic black magic for you - we're going to
-        # create an "AVERAGE_CHUNK" struct on the fly to hold information on our
-        # average chunks.
-        # We need to build this on the fly because the size changes based on 
-        # the length of primary_ts.
-        class AVERAGE_CHUNK(Structure):
-            _fields_ = [
-                ('avg', c_byte),
-                ('counts', c_byte * self.primary_types)
-            ]
+        self.avg_size_x = AVERAGE_ZONE_LEN
+        self.avg_size_y = AVERAGE_ZONE_LEN
 
-        avg_factors = (AVERAGE_ZONE_LEN, AVERAGE_ZONE_LEN)
-
-        self.base_average = WorldLayer(x_avg_len, y_avg_len, AVERAGE_CHUNK)
-
-        # The terrain of the map.
-        # Grass, Sand, Dirt, Stone, Water, Snow. All that stuff. 
-        # 32 x 32 Tiles
-        self.base = AveragedWorldLayer(self._x_len, self._y_len, c_byte, self.base_average, avg_factors)
+        # The average tile for each "section" - an AVERAGE_ZONE_LEN x AVERAGE_ZONE_LEN
+        # space that we use to help speed up our render processing.
+        self.base_average = WorldLayer(x_avg_len, y_avg_len, c_byte)
 
         # The miscellaneous details that cover our terrain.
         # This can be terrain transitions, or it can be other details (like
@@ -158,4 +99,3 @@ class WorldData(object):
     @property
     def sizes(self):
         return (self._x_len, self._y_len)
-

@@ -13,7 +13,7 @@ DEFAULT_CHOICE = 1
 
 BASE = 1
 
-def build_world(world_data, complete_val, primary_ts, detail_ts):
+def build_world_basic(world_data, complete_val, primary_ts, detail_ts):
     """
     The build_world function is our main building algorithm. It's main role is
     in deciding what arguments to pass to our world painting methods and what
@@ -28,12 +28,18 @@ def build_world(world_data, complete_val, primary_ts, detail_ts):
     kw_args = {
         "tile_set" : primary_ts
     }
-    perform_spatial_work(paint.base.only_grass, world_data, kw_args=kw_args)
+    perform_spatial_work(
+        paint.base.only_grass, world_data, 
+        kw_args=kw_args
+    )
 
     print("\n\tLake Painting...\n\n")
     lakes = paint.lake.generate_chain_lakes( world_data )
     kw_args = { "tile_set" : primary_ts }
-    perform_work(paint.lake.paint_square_lake_chain, world_data, lakes, kw_args=kw_args)
+    perform_work(
+        paint.lake.paint_square_lake_chain, world_data,
+        lakes, kw_args=kw_args
+    )
 
     print("\n\tRiparine Formutationals...\n\n")
 
@@ -57,7 +63,10 @@ def build_world(world_data, complete_val, primary_ts, detail_ts):
     kw_args = {
         "world_ts" : primary_ts, "detail_ts" : detail_ts, 
     }
-    perform_spatial_work(paint.edge.edge_pass, world_data, kw_args=kw_args)
+    perform_spatial_work(
+        paint.edge.edge_pass, world_data, 
+        kw_args=kw_args
+    )
 
     # Since this a mp.Value object, we have to manually change 
     # the Value.value's value. Ooof.

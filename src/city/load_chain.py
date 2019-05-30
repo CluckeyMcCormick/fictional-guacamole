@@ -45,7 +45,7 @@ The advantage (that I currently percieve), is threefold:
 #
 # Step One: Load the textures
 #
-def load_textures(dt, city_state):
+def load_textures(dt, city_state, world_maker):
     """
     Loads the various textures that city_state will need.
     """
@@ -59,18 +59,18 @@ def load_textures(dt, city_state):
     city_state.terrain_primary = world.tile_set.TileSet(primary_load, river_load)
     city_state.terrain_detail = world.tile_set.TileSet(detail_load)
 
-    pyglet.clock.schedule_once(start_build, 0, city_state)
+    pyglet.clock.schedule_once(start_build, 0, city_state, world_maker)
 
 #
 # Step Two: Start the worldbuilding processes
 #
-def start_build(dt, city_state):
+def start_build(dt, city_state, world_maker):
     """
     Divys up the world and starts the world painting process.
     """
     
     # Create the basic world items
-    wd = world.data.WorldData(city_state.x_len, city_state.y_len, city_state.terrain_primary)
+    wd = world.data.WorldData(city_state.x_len, city_state.y_len)
     # Save them in city state
     city_state.world_data = wd
 
@@ -78,14 +78,14 @@ def start_build(dt, city_state):
     complete = mp.Value(c_bool, False)
 
     # Get the primary tileset
-    primary_ts = city_state.terrain_primary.get_picklable()
+    primary_ts = city_state.terrain_primary
 
     # Get the secondary tileset
-    detail_ts = city_state.terrain_detail.get_picklable()
+    detail_ts = city_state.terrain_detail
 
     # The process that will manage the world building
     proc = mp.Process(
-        target=world.maker.build_world, 
+        target=world_maker, 
         args=(wd, complete, primary_ts, detail_ts)
     )
 
@@ -149,9 +149,12 @@ def make_camera(dt, city_state):
     # Create our texture groups dict
     city_state.texture_groups = {}
 
-    # Schedules check_build
+    # Schedules the average sprite building
     pyglet.clock.schedule_once(average_sprite_build, 0, city_state)
 
+#
+# Step Five: Build the "average" wide-sprites
+#
 def average_sprite_build(dt, city_state):
 
     x_len, y_len = city_state.world_data.sizes
@@ -163,7 +166,7 @@ def average_sprite_build(dt, city_state):
     for avg_x in range(avg_x_len):
         for avg_y in range(avg_y_len):
 
-            designate = city_state.world_data.base_average[avg_x, avg_y].avg
+            designate = city_state.world_data.base_average[avg_x, avg_y]
             choice_enum = city_state.terrain_primary.get_enum(designate)
 
             if choice_enum not in city_state.texture_groups:
@@ -190,7 +193,7 @@ def average_sprite_build(dt, city_state):
     pyglet.clock.schedule_once(world_sprite_build, 0, city_state)
 
 #
-# Step Five: Build the sprites
+# Step Six: Build the sprites, per tile
 #
 def world_sprite_build(dt, city_state, current=0):
     """
@@ -217,7 +220,7 @@ def world_sprite_build(dt, city_state, current=0):
         avg_x = x // world.data.AVERAGE_ZONE_LEN
         avg_y = y // world.data.AVERAGE_ZONE_LEN
 
-        avg_designate = city_state.world_data.base_average[avg_x, avg_y].avg
+        avg_designate = city_state.world_data.base_average[avg_x, avg_y]
 
         if avg_designate != designate:
             if choice_enum not in city_state.texture_groups:
