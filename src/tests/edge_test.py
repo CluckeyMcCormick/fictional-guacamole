@@ -1,10 +1,63 @@
 
+import random
+
 import pyglet
 from pyglet import gl
 
 import load_screens 
 import city
 
+from city.world.assets.terrain_primary import PrimaryKey
+
+def random_checkerboard(world_data, orders, tile_set):
+
+    _, y_size = world_data.sizes
+    first, limit = orders
+
+    choice_list = [
+        PrimaryKey.SNOW,
+        PrimaryKey.GRASS,
+        PrimaryKey.DIRT,
+        PrimaryKey.SAND,
+        PrimaryKey.STONE,
+        PrimaryKey.ICE,
+        PrimaryKey.WATER,
+    ]
+
+    for x in range(first, limit):
+        for y in range(y_size):
+
+            # Create a string to seed from
+            seed_string =  "{0},{1}".format( x//5, y//5 )
+            random.seed(seed_string)
+
+            choice = random.choice( choice_list )
+            designate = tile_set.get_designate(choice)
+
+            # Set the current tile to the closest point type
+            world_data.base[x, y] = designate
+
+def limited_stochastic(world_data, orders, tile_set):
+    _, y_size = world_data.sizes
+    first, limit = orders
+
+    choice_list = [
+        PrimaryKey.SNOW,
+        PrimaryKey.GRASS,
+        PrimaryKey.DIRT,
+        PrimaryKey.SAND,
+        PrimaryKey.STONE,
+        PrimaryKey.ICE,
+        PrimaryKey.WATER,
+    ]
+
+    for x in range(first, limit):
+        for y in range(y_size):
+            choice = random.choice( choice_list )
+            designate = tile_set.get_designate(choice)
+
+            # Set the current tile to the closest point type
+            world_data.base[x, y] = designate
 
 def make_checkerboard_world(world_data, complete_val, primary_ts, detail_ts):
     """
@@ -17,7 +70,7 @@ def make_checkerboard_world(world_data, complete_val, primary_ts, detail_ts):
         "tile_set" : primary_ts
     }
     city.world.maker.perform_spatial_work(
-        city.world.paint.base.only_grass, world_data, 
+        random_checkerboard, world_data, 
         kw_args=kw_args
     )
 
@@ -56,7 +109,7 @@ def run():
 
     current_state = load_screens.CircleLoadScreen(
         window, city.city_state.CityState(
-            window, 20, 20, world_maker=make_checkerboard_world
+            window, 40, 40, world_maker=make_checkerboard_world
         )
     )
 
