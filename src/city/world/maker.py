@@ -29,7 +29,7 @@ def build_world_basic(world_data, complete_val, primary_ts, detail_ts):
         "tile_set" : primary_ts
     }
     perform_spatial_work(
-        paint.base.only_grass, world_data, 
+        paint.base.only_grass, world_data.get_picklable(), 
         kw_args=kw_args
     )
 
@@ -37,7 +37,7 @@ def build_world_basic(world_data, complete_val, primary_ts, detail_ts):
     lakes = paint.lake.generate_chain_lakes( world_data )
     kw_args = { "tile_set" : primary_ts }
     perform_work(
-        paint.lake.paint_square_lake_chain, world_data,
+        paint.lake.paint_square_lake_chain, world_data.get_picklable(),
         lakes, kw_args=kw_args
     )
 
@@ -64,7 +64,7 @@ def build_world_basic(world_data, complete_val, primary_ts, detail_ts):
         "world_ts" : primary_ts, "detail_ts" : detail_ts, 
     }
     perform_spatial_work(
-        paint.edge.edge_pass, world_data, 
+        paint.edge.edge_pass, world_data.get_picklable(), 
         kw_args=kw_args
     )
 
