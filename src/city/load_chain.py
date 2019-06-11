@@ -78,15 +78,15 @@ def start_build(dt, city_state, world_maker):
     complete = mp.Value(c_bool, False)
 
     # Get the primary tileset
-    primary_ts = city_state.terrain_primary
+    primary_ts = city_state.terrain_primary.get_picklable()
 
     # Get the secondary tileset
-    detail_ts = city_state.terrain_detail
+    detail_ts = city_state.terrain_detail.get_picklable()
 
     # The process that will manage the world building
     proc = mp.Process(
         target=world_maker, 
-        args=(wd, complete, primary_ts, detail_ts)
+        args=(wd.get_picklable(), complete, primary_ts, detail_ts)
     )
 
     proc.start()

@@ -29,7 +29,7 @@ def build_world_basic(world_data, complete_val, primary_ts, detail_ts):
         "tile_set" : primary_ts
     }
     perform_spatial_work(
-        paint.base.only_grass, world_data, 
+        paint.base.only_grass, world_data.get_picklable(), 
         kw_args=kw_args
     )
 
@@ -37,7 +37,7 @@ def build_world_basic(world_data, complete_val, primary_ts, detail_ts):
     lakes = paint.lake.generate_chain_lakes( world_data )
     kw_args = { "tile_set" : primary_ts }
     perform_work(
-        paint.lake.paint_square_lake_chain, world_data,
+        paint.lake.paint_square_lake_chain, world_data.get_picklable(),
         lakes, kw_args=kw_args
     )
 
@@ -55,6 +55,13 @@ def build_world_basic(world_data, complete_val, primary_ts, detail_ts):
     #river = paint.river.LatticePoint(3, None, (45, 46) ).to_segments( (45, 50) )
     #paint.river.paint_river(world_data, primary_ts, river)
 
+    print("\n\tDetail Pass...\n\n")
+    kw_args = { "detail_set" : detail_ts, "base_set" : primary_ts }
+    perform_spatial_work(
+        paint.detail.paint_grassy_detail, 
+        world_data.get_picklable(), kw_args=kw_args
+    )
+
     print("\n\tAssigning averages...\n\n")
     paint.average.assign_averages(world_data)
 
@@ -64,7 +71,7 @@ def build_world_basic(world_data, complete_val, primary_ts, detail_ts):
         "world_ts" : primary_ts, "detail_ts" : detail_ts, 
     }
     perform_spatial_work(
-        paint.edge.edge_pass, world_data, 
+        paint.edge.edge_pass, world_data.get_picklable(), 
         kw_args=kw_args
     )
 
