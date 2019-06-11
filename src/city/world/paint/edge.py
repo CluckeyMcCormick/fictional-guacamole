@@ -128,6 +128,9 @@ def edge_pass(world_data, orders, world_ts, detail_ts):
                 # Determine the edge type to put here
                 edge_enum = edge_determine(current_tile, tuple(neighbor_list), tile_strings[q])
 
+                if edge_enum is DetailKey.NONE:
+                    continue
+
                 # Unpack our detail shifts
                 adj_det_x, adj_det_y = detail_shifts[q]
 
