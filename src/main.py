@@ -3,9 +3,9 @@ import pyglet
 from pyglet import gl
 
 import load_screens 
-import city
+import turret
 
-window = pyglet.window.Window(width=1000, height=600)
+window = pyglet.window.Window(width=550, height=650)
 
 # Set where we'll be loading assets from
 pyglet.resource.path.append('@city.world.assets')
@@ -16,7 +16,7 @@ pyglet.resource.reindex()
 window.register_event_type('switch_state')
 
 current_state = load_screens.CircleLoadScreen(
-    window, city.city_state.CityState(window, 400, 400)#1024, 1024) #16, 16)
+    window, turret.turret_state.TurretState(window)
 )
 
 @window.event
