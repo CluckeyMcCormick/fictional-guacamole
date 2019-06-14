@@ -44,7 +44,7 @@ class TurretState(game_state.GameState):
         )
 
     def state_loop(self, dt):
-        self.delta_time_display.text = "Delta Time: " + str(round(dt, 4))
+        self.delta_time_display.text = "Rotation Value: " + str(self.turret.rot_velo)
         self.turret.update(dt)
 
     def stop(self):
