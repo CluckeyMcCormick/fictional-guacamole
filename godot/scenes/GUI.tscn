@@ -4,6 +4,7 @@
 [ext_resource path="res://assets/grab_wheel.png" type="Texture" id=2]
 
 [node name="GUIBox" type="MarginContainer"]
+editor/display_folded = true
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
