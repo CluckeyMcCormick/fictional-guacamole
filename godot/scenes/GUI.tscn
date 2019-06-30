@@ -1,10 +1,16 @@
-[gd_scene load_steps=3 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://assets/menu_background.png" type="Texture" id=1]
 [ext_resource path="res://assets/grab_wheel.png" type="Texture" id=2]
+[ext_resource path="res://assets/curve_arrow_flip.png" type="Texture" id=3]
+[ext_resource path="res://assets/curve_arrow.png" type="Texture" id=4]
+[ext_resource path="res://assets/font/Minimal5x7.ttf" type="DynamicFontData" id=5]
+
+[sub_resource type="DynamicFont" id=1]
+size = 33
+font_data = ExtResource( 5 )
 
 [node name="GUIBox" type="MarginContainer"]
-editor/display_folded = true
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
@@ -57,3 +63,42 @@ margin_bottom = 150.0
 rect_scale = Vector2( 0.75, 0.75 )
 rect_pivot_offset = Vector2( 75, 75 )
 texture = ExtResource( 2 )
+
+[node name="Arrow_CNTR" type="TextureRect" parent="BoxMargins/BoxDivider/WheelMaster"]
+margin_left = 90.0
+margin_top = -30.0
+margin_right = 190.0
+margin_bottom = 70.0
+rect_scale = Vector2( 0.5, 0.5 )
+rect_pivot_offset = Vector2( 50, 50 )
+texture = ExtResource( 3 )
+
+[node name="Arrow_CLCK" type="TextureRect" parent="BoxMargins/BoxDivider/WheelMaster"]
+margin_left = 90.0
+margin_top = 80.0
+margin_right = 190.0
+margin_bottom = 180.0
+rect_rotation = 180.0
+rect_scale = Vector2( 0.5, 0.5 )
+rect_pivot_offset = Vector2( 50, 50 )
+texture = ExtResource( 4 )
+
+[node name="Label_CNTR" type="Label" parent="BoxMargins/BoxDivider/WheelMaster"]
+margin_left = 159.0
+margin_top = 13.0
+margin_right = 207.0
+margin_bottom = 35.0
+custom_fonts/font = SubResource( 1 )
+text = "CNTR"
+align = 1
+valign = 1
+
+[node name="Label_CLCK" type="Label" parent="BoxMargins/BoxDivider/WheelMaster"]
+margin_left = 159.0
+margin_top = 123.0
+margin_right = 208.0
+margin_bottom = 145.0
+custom_fonts/font = SubResource( 1 )
+text = "CLCK"
+align = 1
+valign = 1
