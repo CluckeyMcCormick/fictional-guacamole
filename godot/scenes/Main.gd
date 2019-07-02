@@ -32,4 +32,3 @@ func _process(delta):
             # rotational value.
             rot = clamp_rot - $Turret.rotation
         $Turret.rotate(rot)
-
