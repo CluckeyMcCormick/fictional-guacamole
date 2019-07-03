@@ -5,7 +5,6 @@
 [ext_resource path="res://scenes/Turret.gd" type="Script" id=3]
 [ext_resource path="res://scenes/GUI/GUI.tscn" type="PackedScene" id=4]
 
-
 [node name="Node" type="Node"]
 script = ExtResource( 1 )
 
