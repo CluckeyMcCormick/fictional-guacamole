@@ -1,15 +1,18 @@
 extends Control
 
+# Need to emit a signal whenever our velocity changes
+signal wheel_velocity_changed;
+
 # Our rate of velocity decay, per second. Essentially, the wheel will lose
 # ANG_VELO_DECAY % velocity every second
 const ANG_VELO_DECAY = 0.95
 
 # The maximum absolute angular velocity, measured in radians / sec
-const MAX_ABS_ANG_VELO =  (7 * PI) / 2 
+const MAX_ABS_ANG_VELO =  (7 * PI) / 2
 
 # Mouse movement is measured in pixels, and our angular velocity in rads/sec
 # This constant converts 1 pixel move to however many rads/sec specified
-const MOUSE_MOVE_RADS = (1 * PI) / 2 
+const MOUSE_MOVE_RADS = (1 * PI) / 2
 
 # We'll use this enum to determine our current quadrant, relative to the wheel
 enum { NORTH_EAST, NORTH_WEST, SOUTH_WEST, SOUTH_EAST, NONE}
@@ -36,7 +39,8 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
     
-    if ang_velo < 0.001:    
+    # If we have sufficient angular velocity...
+    if ang_velo > 0.001 or ang_velo < -0.001:
         # Set our rotation using the angular velocity
         trav_wheel.set_rotation( trav_wheel.get_rotation() + (ang_velo * delta) )
         
@@ -45,8 +49,17 @@ func _process(delta):
         
         # Clamp our angular velocity value
         ang_velo = clamp( ang_velo, -MAX_ABS_ANG_VELO, MAX_ABS_ANG_VELO)
+        
+        # Emit the new velocity
+        emit_signal("wheel_velocity_changed", ang_velo)
+    # Otherwise, if our velocity isn't sufficient but also isn't 0...
+    elif ang_velo != 0:
+        # Then make it 0
+        ang_velo = 0
+        # Emit the new velocity
+        emit_signal("wheel_velocity_changed", ang_velo)
     else:
-        ang_velo = 0;
+        ang_velo = 0
 
 # What do we do when the wheel is pressed?
 func _on_TraverseWheel_button_down():
@@ -94,34 +107,30 @@ func _input(event):
     # depending on which quadrant we started in
     match quadrant:
         NORTH_EAST:
-            print("North East ", event.relative)
             # Negative Y is CCW, Positive is CW
             # Ergo, respect the sign
             new_velo += event.relative.y * MOUSE_MOVE_RADS
             
             # Negative X is CCW, Positive is CW
             # Ergo, respect the sign
-            new_velo += event.relative.x * MOUSE_MOVE_RADS       
+            new_velo += event.relative.x * MOUSE_MOVE_RADS
         NORTH_WEST:
-            print("North West ", event.relative)
             # Negative Y is CW, Positive is CCW
             # Ergo, flip the sign
             new_velo += -(event.relative.y * MOUSE_MOVE_RADS)
             
             # Negative X is CCW, Positive is CW
             # Ergo, respect the sign
-            new_velo += event.relative.x * MOUSE_MOVE_RADS           
+            new_velo += event.relative.x * MOUSE_MOVE_RADS
         SOUTH_WEST:
-            print("South West ", event.relative)
             # Negative Y is CW, Positive is CCW
             # Ergo, flip the sign
             new_velo += -(event.relative.y * MOUSE_MOVE_RADS)
             
             # Negative X is CW, Positive is CCW
             # Ergo, flip the sign
-            new_velo += -(event.relative.x * MOUSE_MOVE_RADS)            
+            new_velo += -(event.relative.x * MOUSE_MOVE_RADS)
         SOUTH_EAST:
-            print("South East ", event.relative)
             # Negative Y is CCW, Positive is CW
             # Ergo, respect the sign
             new_velo += event.relative.y * MOUSE_MOVE_RADS
@@ -133,3 +142,5 @@ func _input(event):
     # Step 3: Assign the velocity, emit a velocity_changed signal
     ang_velo = new_velo
     ang_velo = clamp( ang_velo, -MAX_ABS_ANG_VELO, MAX_ABS_ANG_VELO)
+    # Emit the new velocity
+    emit_signal("wheel_velocity_changed", ang_velo)
