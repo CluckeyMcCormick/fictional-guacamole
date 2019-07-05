@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/GUI/GUI.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu_background.png" type="Texture" id=2]
@@ -7,6 +7,11 @@
 [ext_resource path="res://assets/curve_arrow_flip.png" type="Texture" id=5]
 [ext_resource path="res://assets/curve_arrow.png" type="Texture" id=6]
 [ext_resource path="res://assets/font/Minimal5x7.ttf" type="DynamicFontData" id=7]
+
+[sub_resource type="InputEventKey" id=3]
+
+[sub_resource type="ShortCut" id=4]
+shortcut = SubResource( 3 )
 
 [sub_resource type="DynamicFont" id=1]
 size = 33
@@ -71,6 +76,7 @@ margin_bottom = 150.0
 rect_scale = Vector2( 0.75, 0.75 )
 rect_pivot_offset = Vector2( 75, 75 )
 action_mode = 0
+shortcut = SubResource( 4 )
 texture_normal = ExtResource( 4 )
 
 [node name="Arrow_CNTR" type="TextureRect" parent="BoxMargins/BoxDivider/WheelMaster"]
@@ -99,6 +105,16 @@ margin_right = 207.0
 margin_bottom = 35.0
 custom_fonts/font = SubResource( 1 )
 text = "CNTR"
+align = 1
+valign = 1
+
+[node name="Label_F" type="Label" parent="BoxMargins/BoxDivider/WheelMaster"]
+margin_left = 146.0
+margin_top = 67.0
+margin_right = 159.0
+margin_bottom = 89.0
+custom_fonts/font = SubResource( 1 )
+text = "F"
 align = 1
 valign = 1
 
