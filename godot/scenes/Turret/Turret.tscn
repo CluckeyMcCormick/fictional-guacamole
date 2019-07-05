@@ -1,0 +1,15 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://assets/tank_turret.png" type="Texture" id=1]
+[ext_resource path="res://scenes/Turret/Turret.gd" type="Script" id=2]
+[ext_resource path="res://scenes/Turret/ShellPath.gd" type="Script" id=3]
+
+[node name="Turret" type="Sprite"]
+texture = ExtResource( 1 )
+offset = Vector2( 0, -25 )
+script = ExtResource( 2 )
+
+[node name="ShellPath" type="Polygon2D" parent="."]
+color = Color( 1, 0, 0, 0.392157 )
+polygon = PoolVector2Array( -10, -180, 10, -180, 10, -170, -10, -170 )
+script = ExtResource( 3 )

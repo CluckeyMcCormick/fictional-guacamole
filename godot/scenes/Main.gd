@@ -4,7 +4,7 @@ extends Node
 # var a = 2
 # var b = "text"
 
-const TURRET_VELO_RETENTION_PERCENTAGE = 0.25
+const TURRET_VELO_RETENTION_PERCENTAGE = 0.15
 var turret_velo = 0
 
 # Called when the node enters the scene tree for the first time.
