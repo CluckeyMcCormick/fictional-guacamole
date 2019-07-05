@@ -24,7 +24,17 @@ onready var travlay_label = $Label_TRAVLAY
 onready var trav_wheel = $TraverseWheel
 
 # Is our "Traverse Laying Process" engaged (are we aiming the turret)?
-var travlay_engaged = false
+# Need to store two values - one for the "action" input, and one for the
+# "button" input.
+var travlay_engaged = [false, false]
+# In our "engaged" array, which element is the "Action" value?
+const TRAV_ACTION_INDEX = 0
+# In our "engaged" array, which element is the "Button" value?
+const TRAV_BUTTON_INDEX = 1
+# Since our engaged value is not a simple boolean, we'll use a
+# function to determine it's state
+func is_engaged():
+    return travlay_engaged[TRAV_ACTION_INDEX] or travlay_engaged[TRAV_BUTTON_INDEX]
 
 # Our current angular velocity for the traverse wheel
 # Ideally measured in radians / sec
@@ -34,10 +44,26 @@ var ang_velo = 0;
 func _ready():
     # Ensure our values are at their defaults
     travlay_label.hide()
-    travlay_engaged = false
+    travlay_engaged[TRAV_ACTION_INDEX] = false
+    travlay_engaged[TRAV_BUTTON_INDEX] = false
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+    
+    # First, check our input. If the appropriate action is pressed, then we
+    # need to make the appropriate truth index TRUE
+    if Input.is_action_pressed("traverse_engage"):
+        travlay_engaged[TRAV_ACTION_INDEX] = true
+    else:
+        travlay_engaged[TRAV_ACTION_INDEX] = false
+    
+    # Next, we need to check and see if our traverse process is engaged.
+    if is_engaged():
+        # If so, we need to show the traverse label
+        travlay_label.show()
+    else:
+        # Otherwise, the label needs to be hidden
+        travlay_label.hide()     
     
     # If we have sufficient angular velocity...
     if ang_velo > 0.001 or ang_velo < -0.001:
@@ -61,19 +87,10 @@ func _process(delta):
     else:
         ang_velo = 0
 
-# What do we do when the wheel is pressed?
-func _on_TraverseWheel_button_down():
-    travlay_label.show()
-    travlay_engaged = true
-
-# What do we do when the wheel is released?
-func _on_TraverseWheel_button_up():
-    travlay_label.hide()
-    travlay_engaged = false
-
 func _input(event):
+    
     # If lay process isn't engaged or the event isn't a mouse motion, then back out
-    if not travlay_engaged or not event is InputEventMouseMotion:
+    if not is_engaged() or not event is InputEventMouseMotion:
         return
          
     # Step 1: Determine which quadrant the mouse started in, relative to the
@@ -144,3 +161,11 @@ func _input(event):
     ang_velo = clamp( ang_velo, -MAX_ABS_ANG_VELO, MAX_ABS_ANG_VELO)
     # Emit the new velocity
     emit_signal("wheel_velocity_changed", ang_velo)
+    
+# What do we do when the wheel is pressed?
+func _on_TraverseWheel_button_down():
+    travlay_engaged[TRAV_BUTTON_INDEX] = true
+
+# What do we do when the wheel is released?
+func _on_TraverseWheel_button_up():
+    travlay_engaged[TRAV_BUTTON_INDEX] = false
