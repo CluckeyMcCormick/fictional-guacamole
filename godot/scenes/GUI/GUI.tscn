@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=20 format=2]
 
 [ext_resource path="res://scenes/GUI/GUI.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu_background.png" type="Texture" id=2]
@@ -10,6 +10,9 @@
 [ext_resource path="res://assets/arrow.png" type="Texture" id=8]
 [ext_resource path="res://assets/menu_overground.png" type="Texture" id=9]
 [ext_resource path="res://assets/bar_fill.png" type="Texture" id=10]
+[ext_resource path="res://assets/gun_bolt.png" type="Texture" id=11]
+[ext_resource path="res://assets/gun_lock.png" type="Texture" id=12]
+[ext_resource path="res://assets/fire_control_button.png" type="Texture" id=13]
 
 [sub_resource type="DynamicFont" id=1]
 size = 33
@@ -21,6 +24,18 @@ font_data = ExtResource( 5 )
 
 [sub_resource type="DynamicFont" id=3]
 size = 33
+font_data = ExtResource( 5 )
+
+[sub_resource type="DynamicFont" id=6]
+size = 75
+font_data = ExtResource( 5 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 44
+font_data = ExtResource( 5 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 40
 font_data = ExtResource( 5 )
 
 [node name="GUI" type="MarginContainer"]
@@ -66,9 +81,12 @@ margin_top = 15.0
 margin_right = 949.0
 margin_bottom = 165.0
 custom_constants/separation = 50
+alignment = 1
 
 [node name="WheelMaster" type="Control" parent="BoxMargins/BoxDivider"]
-margin_right = 210.0
+editor/display_folded = true
+margin_left = 154.0
+margin_right = 364.0
 margin_bottom = 150.0
 rect_min_size = Vector2( 210, 150 )
 script = ExtResource( 3 )
@@ -149,8 +167,8 @@ valign = 1
 
 [node name="RangeMaster" type="Control" parent="BoxMargins/BoxDivider"]
 editor/display_folded = true
-margin_left = 260.0
-margin_right = 325.0
+margin_left = 414.0
+margin_right = 479.0
 margin_bottom = 150.0
 rect_min_size = Vector2( 65, 150 )
 
@@ -220,13 +238,66 @@ align = 1
 valign = 1
 
 [node name="FireMaster" type="Control" parent="BoxMargins/BoxDivider"]
-margin_left = 375.0
-margin_right = 375.0
+margin_left = 529.0
+margin_right = 729.0
 margin_bottom = 150.0
+rect_min_size = Vector2( 200, 150 )
+
+[node name="Bolt" type="TextureButton" parent="BoxMargins/BoxDivider/FireMaster"]
+margin_left = 64.0
+margin_top = 7.0
+margin_right = 320.0
+margin_bottom = 263.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture_normal = ExtResource( 11 )
+
+[node name="R" type="Label" parent="BoxMargins/BoxDivider/FireMaster/Bolt"]
+margin_left = 22.0
+margin_top = 112.0
+margin_right = 62.0
+margin_bottom = 160.0
+custom_fonts/font = SubResource( 6 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "R"
+
+[node name="Lock" type="TextureRect" parent="BoxMargins/BoxDivider/FireMaster"]
+margin_left = 64.0
+margin_top = 7.0
+margin_right = 320.0
+margin_bottom = 263.0
+rect_scale = Vector2( 0.5, 0.5 )
+texture = ExtResource( 12 )
+
+[node name="Control" type="TextureButton" parent="BoxMargins/BoxDivider/FireMaster"]
+editor/display_folded = true
+margin_left = 64.0
+margin_top = 105.0
+margin_right = 194.0
+margin_bottom = 145.0
+texture_normal = ExtResource( 13 )
+
+[node name="FIRE" type="Label" parent="BoxMargins/BoxDivider/FireMaster/Control"]
+margin_left = 8.0
+margin_top = 5.33337
+margin_right = 124.0
+margin_bottom = 45.3334
+custom_fonts/font = SubResource( 4 )
+custom_colors/font_color = Color( 1, 0, 0, 1 )
+text = "F  I  R  E"
+align = 1
+valign = 1
+
+[node name="Status" type="Label" parent="BoxMargins/BoxDivider/FireMaster"]
+margin_left = 67.3334
+margin_top = 8.66666
+margin_right = 192.333
+margin_bottom = 34.6667
+custom_fonts/font = SubResource( 5 )
+text = "GUN READY"
 
 [node name="PayloadMaster" type="Control" parent="BoxMargins/BoxDivider"]
-margin_left = 425.0
-margin_right = 425.0
+margin_left = 779.0
+margin_right = 779.0
 margin_bottom = 150.0
 [connection signal="button_down" from="BoxMargins/BoxDivider/WheelMaster/TraverseWheel" to="BoxMargins/BoxDivider/WheelMaster" method="_on_TraverseWheel_button_down"]
 [connection signal="button_up" from="BoxMargins/BoxDivider/WheelMaster/TraverseWheel" to="BoxMargins/BoxDivider/WheelMaster" method="_on_TraverseWheel_button_up"]
