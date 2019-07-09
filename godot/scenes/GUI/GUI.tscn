@@ -1,42 +1,65 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=25 format=2]
 
 [ext_resource path="res://scenes/GUI/GUI.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu_background.png" type="Texture" id=2]
-[ext_resource path="res://scenes/GUI/WheelMaster.gd" type="Script" id=3]
-[ext_resource path="res://assets/grab_wheel.png" type="Texture" id=4]
-[ext_resource path="res://assets/font/Minimal5x7.ttf" type="DynamicFontData" id=5]
-[ext_resource path="res://assets/curve_arrow_flip.png" type="Texture" id=6]
-[ext_resource path="res://assets/curve_arrow.png" type="Texture" id=7]
-[ext_resource path="res://assets/arrow.png" type="Texture" id=8]
-[ext_resource path="res://assets/menu_overground.png" type="Texture" id=9]
-[ext_resource path="res://assets/bar_fill.png" type="Texture" id=10]
-[ext_resource path="res://assets/gun_bolt.png" type="Texture" id=11]
-[ext_resource path="res://assets/gun_lock.png" type="Texture" id=12]
-[ext_resource path="res://assets/fire_control_button.png" type="Texture" id=13]
-
-[sub_resource type="DynamicFont" id=1]
-size = 33
-font_data = ExtResource( 5 )
-
-[sub_resource type="DynamicFont" id=2]
-size = 25
-font_data = ExtResource( 5 )
+[ext_resource path="res://assets/arrow.png" type="Texture" id=3]
+[ext_resource path="res://assets/menu_overground.png" type="Texture" id=4]
+[ext_resource path="res://assets/bar_fill.png" type="Texture" id=5]
+[ext_resource path="res://assets/font/Minimal5x7.ttf" type="DynamicFontData" id=6]
+[ext_resource path="res://assets/gun_bolt.png" type="Texture" id=7]
+[ext_resource path="res://assets/gun_lock.png" type="Texture" id=8]
+[ext_resource path="res://assets/fire_control_button.png" type="Texture" id=9]
+[ext_resource path="res://scenes/GUI/WheelMaster.gd" type="Script" id=10]
+[ext_resource path="res://assets/grab_wheel.png" type="Texture" id=11]
+[ext_resource path="res://assets/curve_arrow_flip.png" type="Texture" id=12]
+[ext_resource path="res://assets/curve_arrow.png" type="Texture" id=13]
+[ext_resource path="res://assets/payload_explode.png" type="Texture" id=14]
+[ext_resource path="res://assets/payload_fire.png" type="Texture" id=15]
 
 [sub_resource type="DynamicFont" id=3]
 size = 33
-font_data = ExtResource( 5 )
+font_data = ExtResource( 6 )
 
 [sub_resource type="DynamicFont" id=6]
 size = 75
-font_data = ExtResource( 5 )
+font_data = ExtResource( 6 )
 
 [sub_resource type="DynamicFont" id=4]
 size = 44
-font_data = ExtResource( 5 )
+font_data = ExtResource( 6 )
 
 [sub_resource type="DynamicFont" id=5]
 size = 40
-font_data = ExtResource( 5 )
+font_data = ExtResource( 6 )
+
+[sub_resource type="DynamicFont" id=1]
+size = 33
+font_data = ExtResource( 6 )
+
+[sub_resource type="DynamicFont" id=2]
+size = 25
+font_data = ExtResource( 6 )
+
+[sub_resource type="SpriteFrames" id=7]
+animations = [ {
+"frames": [ ExtResource( 14 ) ],
+"loop": true,
+"name": "explosive",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 15 ) ],
+"loop": false,
+"name": "fire",
+"speed": 1.0
+} ]
+
+[sub_resource type="DynamicFont" id=9]
+size = 30
+font_data = ExtResource( 6 )
+
+[sub_resource type="DynamicFont" id=8]
+size = 25
+font_data = ExtResource( 6 )
 
 [node name="GUI" type="MarginContainer"]
 anchor_top = 1.0
@@ -83,92 +106,10 @@ margin_bottom = 165.0
 custom_constants/separation = 50
 alignment = 1
 
-[node name="WheelMaster" type="Control" parent="BoxMargins/BoxDivider"]
-editor/display_folded = true
-margin_left = 154.0
-margin_right = 364.0
-margin_bottom = 150.0
-rect_min_size = Vector2( 210, 150 )
-script = ExtResource( 3 )
-
-[node name="TraverseWheel" type="TextureButton" parent="BoxMargins/BoxDivider/WheelMaster"]
-editor/display_folded = true
-margin_right = 150.0
-margin_bottom = 150.0
-rect_scale = Vector2( 0.75, 0.75 )
-rect_pivot_offset = Vector2( 75, 75 )
-action_mode = 0
-texture_normal = ExtResource( 4 )
-
-[node name="Label_F" type="Label" parent="BoxMargins/BoxDivider/WheelMaster/TraverseWheel"]
-margin_left = 69.6667
-margin_top = 64.3333
-margin_right = 82.6667
-margin_bottom = 86.3333
-custom_fonts/font = SubResource( 1 )
-custom_colors/font_color = Color( 0, 0, 0, 1 )
-text = "F"
-align = 1
-valign = 1
-
-[node name="Arrow_CNTR" type="TextureRect" parent="BoxMargins/BoxDivider/WheelMaster"]
-margin_left = 90.0
-margin_top = -30.0
-margin_right = 190.0
-margin_bottom = 70.0
-rect_scale = Vector2( 0.5, 0.5 )
-rect_pivot_offset = Vector2( 50, 50 )
-texture = ExtResource( 6 )
-
-[node name="Arrow_CLCK" type="TextureRect" parent="BoxMargins/BoxDivider/WheelMaster"]
-margin_left = 90.0
-margin_top = 80.0
-margin_right = 190.0
-margin_bottom = 180.0
-rect_rotation = 180.0
-rect_scale = Vector2( 0.5, 0.5 )
-rect_pivot_offset = Vector2( 50, 50 )
-texture = ExtResource( 7 )
-
-[node name="Label_CNTR" type="Label" parent="BoxMargins/BoxDivider/WheelMaster"]
-margin_left = 159.0
-margin_top = 13.0
-margin_right = 207.0
-margin_bottom = 35.0
-custom_fonts/font = SubResource( 1 )
-text = "CNTR"
-align = 1
-valign = 1
-
-[node name="Label_CLCK" type="Label" parent="BoxMargins/BoxDivider/WheelMaster"]
-margin_left = 159.0
-margin_top = 123.0
-margin_right = 208.0
-margin_bottom = 145.0
-custom_fonts/font = SubResource( 1 )
-text = "CLCK"
-align = 1
-valign = 1
-
-[node name="Label_TRAVLAY" type="Label" parent="BoxMargins/BoxDivider/WheelMaster"]
-margin_left = 115.0
-margin_top = 52.0
-margin_right = 245.0
-margin_bottom = 102.0
-rect_min_size = Vector2( 130, 50 )
-rect_rotation = 90.0
-rect_pivot_offset = Vector2( 65, 25 )
-custom_fonts/font = SubResource( 2 )
-custom_colors/font_color = Color( 1, 1, 1, 1 )
-text = "TGLP
-ENGAGE"
-align = 1
-valign = 1
-
 [node name="RangeMaster" type="Control" parent="BoxMargins/BoxDivider"]
 editor/display_folded = true
-margin_left = 414.0
-margin_right = 479.0
+margin_left = 54.0
+margin_right = 119.0
 margin_bottom = 150.0
 rect_min_size = Vector2( 65, 150 )
 
@@ -179,7 +120,7 @@ margin_right = 141.0
 margin_bottom = 135.0
 rect_scale = Vector2( 0.1, 0.1 )
 rect_pivot_offset = Vector2( 125, 125 )
-texture_normal = ExtResource( 8 )
+texture_normal = ExtResource( 3 )
 
 [node name="Down" type="TextureButton" parent="BoxMargins/BoxDivider/RangeMaster"]
 margin_left = -109.0
@@ -189,7 +130,7 @@ margin_bottom = 263.0
 rect_rotation = 180.0
 rect_scale = Vector2( 0.1, 0.1 )
 rect_pivot_offset = Vector2( 125, 125 )
-texture_normal = ExtResource( 8 )
+texture_normal = ExtResource( 3 )
 
 [node name="Range" type="TextureProgress" parent="BoxMargins/BoxDivider/RangeMaster"]
 margin_left = 4.0
@@ -197,8 +138,8 @@ margin_top = 25.0
 margin_right = 29.0
 margin_bottom = 123.0
 value = 100.0
-texture_over = ExtResource( 9 )
-texture_progress = ExtResource( 10 )
+texture_over = ExtResource( 4 )
+texture_progress = ExtResource( 5 )
 fill_mode = 3
 nine_patch_stretch = true
 stretch_margin_left = 11
@@ -238,8 +179,9 @@ align = 1
 valign = 1
 
 [node name="FireMaster" type="Control" parent="BoxMargins/BoxDivider"]
-margin_left = 529.0
-margin_right = 729.0
+editor/display_folded = true
+margin_left = 169.0
+margin_right = 369.0
 margin_bottom = 150.0
 rect_min_size = Vector2( 200, 150 )
 
@@ -249,7 +191,7 @@ margin_top = 7.0
 margin_right = 320.0
 margin_bottom = 263.0
 rect_scale = Vector2( 0.5, 0.5 )
-texture_normal = ExtResource( 11 )
+texture_normal = ExtResource( 7 )
 
 [node name="R" type="Label" parent="BoxMargins/BoxDivider/FireMaster/Bolt"]
 margin_left = 22.0
@@ -266,7 +208,7 @@ margin_top = 7.0
 margin_right = 320.0
 margin_bottom = 263.0
 rect_scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 12 )
+texture = ExtResource( 8 )
 
 [node name="Control" type="TextureButton" parent="BoxMargins/BoxDivider/FireMaster"]
 editor/display_folded = true
@@ -274,7 +216,7 @@ margin_left = 64.0
 margin_top = 105.0
 margin_right = 194.0
 margin_bottom = 145.0
-texture_normal = ExtResource( 13 )
+texture_normal = ExtResource( 9 )
 
 [node name="FIRE" type="Label" parent="BoxMargins/BoxDivider/FireMaster/Control"]
 margin_left = 8.0
@@ -295,9 +237,154 @@ margin_bottom = 34.6667
 custom_fonts/font = SubResource( 5 )
 text = "GUN READY"
 
-[node name="PayloadMaster" type="Control" parent="BoxMargins/BoxDivider"]
-margin_left = 779.0
-margin_right = 779.0
+[node name="WheelMaster" type="Control" parent="BoxMargins/BoxDivider"]
+editor/display_folded = true
+margin_left = 419.0
+margin_right = 629.0
 margin_bottom = 150.0
+rect_min_size = Vector2( 210, 150 )
+script = ExtResource( 10 )
+
+[node name="TraverseWheel" type="TextureButton" parent="BoxMargins/BoxDivider/WheelMaster"]
+editor/display_folded = true
+margin_right = 150.0
+margin_bottom = 150.0
+rect_scale = Vector2( 0.75, 0.75 )
+rect_pivot_offset = Vector2( 75, 75 )
+action_mode = 0
+texture_normal = ExtResource( 11 )
+
+[node name="Label_F" type="Label" parent="BoxMargins/BoxDivider/WheelMaster/TraverseWheel"]
+margin_left = 69.6667
+margin_top = 64.3333
+margin_right = 82.6667
+margin_bottom = 86.3333
+custom_fonts/font = SubResource( 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "F"
+align = 1
+valign = 1
+
+[node name="Arrow_CNTR" type="TextureRect" parent="BoxMargins/BoxDivider/WheelMaster"]
+margin_left = 90.0
+margin_top = -30.0
+margin_right = 190.0
+margin_bottom = 70.0
+rect_scale = Vector2( 0.5, 0.5 )
+rect_pivot_offset = Vector2( 50, 50 )
+texture = ExtResource( 12 )
+
+[node name="Arrow_CLCK" type="TextureRect" parent="BoxMargins/BoxDivider/WheelMaster"]
+margin_left = 90.0
+margin_top = 80.0
+margin_right = 190.0
+margin_bottom = 180.0
+rect_rotation = 180.0
+rect_scale = Vector2( 0.5, 0.5 )
+rect_pivot_offset = Vector2( 50, 50 )
+texture = ExtResource( 13 )
+
+[node name="Label_CNTR" type="Label" parent="BoxMargins/BoxDivider/WheelMaster"]
+margin_left = 159.0
+margin_top = 13.0
+margin_right = 207.0
+margin_bottom = 35.0
+custom_fonts/font = SubResource( 1 )
+text = "CNTR"
+align = 1
+valign = 1
+
+[node name="Label_CLCK" type="Label" parent="BoxMargins/BoxDivider/WheelMaster"]
+margin_left = 159.0
+margin_top = 123.0
+margin_right = 208.0
+margin_bottom = 145.0
+custom_fonts/font = SubResource( 1 )
+text = "CLCK"
+align = 1
+valign = 1
+
+[node name="Label_TRAVLAY" type="Label" parent="BoxMargins/BoxDivider/WheelMaster"]
+margin_left = 115.0
+margin_top = 52.0
+margin_right = 245.0
+margin_bottom = 102.0
+rect_min_size = Vector2( 130, 50 )
+rect_rotation = 90.0
+rect_pivot_offset = Vector2( 65, 25 )
+custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
+text = "TGLP
+ENGAGE"
+align = 1
+valign = 1
+
+[node name="PayloadMaster" type="Control" parent="BoxMargins/BoxDivider"]
+margin_left = 679.0
+margin_right = 879.0
+margin_bottom = 150.0
+rect_min_size = Vector2( 200, 150 )
+
+[node name="Payload" type="AnimatedSprite" parent="BoxMargins/BoxDivider/PayloadMaster"]
+position = Vector2( 100, 25 )
+scale = Vector2( 0.2, 0.2 )
+frames = SubResource( 7 )
+animation = "fire"
+
+[node name="Next" type="TextureButton" parent="BoxMargins/BoxDivider/PayloadMaster"]
+margin_left = 30.0
+margin_top = -100.0
+margin_right = 280.0
+margin_bottom = 150.0
+rect_rotation = 90.0
+rect_scale = Vector2( 0.2, 0.2 )
+rect_pivot_offset = Vector2( 125, 125 )
+texture_normal = ExtResource( 3 )
+
+[node name="P" type="Label" parent="BoxMargins/BoxDivider/PayloadMaster"]
+margin_left = 136.0
+margin_top = 18.0
+margin_right = 147.0
+margin_bottom = 38.0
+custom_fonts/font = SubResource( 9 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "P"
+
+[node name="Previous" type="TextureButton" parent="BoxMargins/BoxDivider/PayloadMaster"]
+margin_left = -80.0
+margin_top = -100.0
+margin_right = 170.0
+margin_bottom = 150.0
+rect_rotation = -90.0
+rect_scale = Vector2( 0.2, 0.2 )
+rect_pivot_offset = Vector2( 125, 125 )
+texture_normal = ExtResource( 3 )
+
+[node name="P2" type="Label" parent="BoxMargins/BoxDivider/PayloadMaster"]
+margin_left = 55.0
+margin_top = 18.0
+margin_right = 66.0
+margin_bottom = 38.0
+custom_fonts/font = SubResource( 9 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+text = "I"
+
+[node name="Title" type="Label" parent="BoxMargins/BoxDivider/PayloadMaster"]
+margin_left = 45.0
+margin_top = 55.0
+margin_right = 155.0
+margin_bottom = 71.0
+custom_fonts/font = SubResource( 8 )
+text = "PHOSPHOROUS"
+align = 1
+
+[node name="Description" type="Label" parent="BoxMargins/BoxDivider/PayloadMaster"]
+margin_top = 83.0
+margin_right = 200.0
+margin_bottom = 150.0
+custom_fonts/font = SubResource( 8 )
+text = "Lorem ipsum"
+align = 1
+valign = 1
 [connection signal="button_down" from="BoxMargins/BoxDivider/WheelMaster/TraverseWheel" to="BoxMargins/BoxDivider/WheelMaster" method="_on_TraverseWheel_button_down"]
 [connection signal="button_up" from="BoxMargins/BoxDivider/WheelMaster/TraverseWheel" to="BoxMargins/BoxDivider/WheelMaster" method="_on_TraverseWheel_button_up"]
