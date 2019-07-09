@@ -40,10 +40,14 @@ func is_engaged():
 # Ideally measured in radians / sec
 var ang_velo = 0;
 
+# The colors for our TRAVLAY label
+const OFF_COLOR = Color(0.25, 0.25, 0.25)
+const ON_COLOR = Color(1, 1, 1)
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
     # Ensure our values are at their defaults
-    travlay_label.hide()
+    travlay_label.add_color_override("font_color", OFF_COLOR) 
     travlay_engaged[TRAV_ACTION_INDEX] = false
     travlay_engaged[TRAV_BUTTON_INDEX] = false
 
@@ -60,10 +64,10 @@ func _process(delta):
     # Next, we need to check and see if our traverse process is engaged.
     if is_engaged():
         # If so, we need to show the traverse label
-        travlay_label.show()
+        travlay_label.add_color_override("font_color", ON_COLOR ) 
     else:
         # Otherwise, the label needs to be hidden
-        travlay_label.hide()     
+        travlay_label.add_color_override("font_color", OFF_COLOR )    
     
     # If we have sufficient angular velocity...
     if ang_velo > 0.001 or ang_velo < -0.001:

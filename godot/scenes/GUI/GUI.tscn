@@ -65,16 +65,16 @@ margin_left = 15.0
 margin_top = 15.0
 margin_right = 949.0
 margin_bottom = 165.0
-custom_constants/separation = 20
+custom_constants/separation = 50
 
 [node name="WheelMaster" type="Control" parent="BoxMargins/BoxDivider"]
-editor/display_folded = true
 margin_right = 210.0
 margin_bottom = 150.0
 rect_min_size = Vector2( 210, 150 )
 script = ExtResource( 3 )
 
 [node name="TraverseWheel" type="TextureButton" parent="BoxMargins/BoxDivider/WheelMaster"]
+editor/display_folded = true
 margin_right = 150.0
 margin_bottom = 150.0
 rect_scale = Vector2( 0.75, 0.75 )
@@ -141,6 +141,7 @@ rect_min_size = Vector2( 130, 50 )
 rect_rotation = 90.0
 rect_pivot_offset = Vector2( 65, 25 )
 custom_fonts/font = SubResource( 2 )
+custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "TGLP
 ENGAGE"
 align = 1
@@ -148,9 +149,10 @@ valign = 1
 
 [node name="RangeMaster" type="Control" parent="BoxMargins/BoxDivider"]
 editor/display_folded = true
-margin_left = 230.0
-margin_right = 290.0
+margin_left = 260.0
+margin_right = 325.0
 margin_bottom = 150.0
+rect_min_size = Vector2( 65, 150 )
 
 [node name="Up" type="TextureButton" parent="BoxMargins/BoxDivider/RangeMaster"]
 margin_left = -109.0
@@ -218,13 +220,13 @@ align = 1
 valign = 1
 
 [node name="FireMaster" type="Control" parent="BoxMargins/BoxDivider"]
-margin_left = 250.0
-margin_right = 250.0
+margin_left = 375.0
+margin_right = 375.0
 margin_bottom = 150.0
 
 [node name="PayloadMaster" type="Control" parent="BoxMargins/BoxDivider"]
-margin_left = 270.0
-margin_right = 270.0
+margin_left = 425.0
+margin_right = 425.0
 margin_bottom = 150.0
 [connection signal="button_down" from="BoxMargins/BoxDivider/WheelMaster/TraverseWheel" to="BoxMargins/BoxDivider/WheelMaster" method="_on_TraverseWheel_button_down"]
 [connection signal="button_up" from="BoxMargins/BoxDivider/WheelMaster/TraverseWheel" to="BoxMargins/BoxDivider/WheelMaster" method="_on_TraverseWheel_button_up"]
