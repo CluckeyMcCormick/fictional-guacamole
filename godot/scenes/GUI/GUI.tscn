@@ -1,65 +1,66 @@
-[gd_scene load_steps=25 format=2]
+[gd_scene load_steps=26 format=2]
 
 [ext_resource path="res://scenes/GUI/GUI.gd" type="Script" id=1]
 [ext_resource path="res://assets/menu_background.png" type="Texture" id=2]
-[ext_resource path="res://assets/arrow.png" type="Texture" id=3]
-[ext_resource path="res://assets/menu_overground.png" type="Texture" id=4]
-[ext_resource path="res://assets/bar_fill.png" type="Texture" id=5]
-[ext_resource path="res://assets/font/Minimal5x7.ttf" type="DynamicFontData" id=6]
-[ext_resource path="res://assets/gun_bolt.png" type="Texture" id=7]
-[ext_resource path="res://assets/gun_lock.png" type="Texture" id=8]
-[ext_resource path="res://assets/fire_control_button.png" type="Texture" id=9]
-[ext_resource path="res://scenes/GUI/WheelMaster.gd" type="Script" id=10]
-[ext_resource path="res://assets/grab_wheel.png" type="Texture" id=11]
-[ext_resource path="res://assets/curve_arrow_flip.png" type="Texture" id=12]
-[ext_resource path="res://assets/curve_arrow.png" type="Texture" id=13]
-[ext_resource path="res://assets/payload_explode.png" type="Texture" id=14]
-[ext_resource path="res://assets/payload_fire.png" type="Texture" id=15]
-
-[sub_resource type="DynamicFont" id=3]
-size = 33
-font_data = ExtResource( 6 )
-
-[sub_resource type="DynamicFont" id=6]
-size = 75
-font_data = ExtResource( 6 )
-
-[sub_resource type="DynamicFont" id=4]
-size = 44
-font_data = ExtResource( 6 )
-
-[sub_resource type="DynamicFont" id=5]
-size = 40
-font_data = ExtResource( 6 )
+[ext_resource path="res://scenes/GUI/RangeMaster.gd" type="Script" id=3]
+[ext_resource path="res://assets/arrow.png" type="Texture" id=4]
+[ext_resource path="res://assets/menu_overground.png" type="Texture" id=5]
+[ext_resource path="res://assets/bar_fill.png" type="Texture" id=6]
+[ext_resource path="res://assets/font/Minimal5x7.ttf" type="DynamicFontData" id=7]
+[ext_resource path="res://assets/gun_bolt.png" type="Texture" id=8]
+[ext_resource path="res://assets/gun_lock.png" type="Texture" id=9]
+[ext_resource path="res://assets/fire_control_button.png" type="Texture" id=10]
+[ext_resource path="res://scenes/GUI/WheelMaster.gd" type="Script" id=11]
+[ext_resource path="res://assets/grab_wheel.png" type="Texture" id=12]
+[ext_resource path="res://assets/curve_arrow_flip.png" type="Texture" id=13]
+[ext_resource path="res://assets/curve_arrow.png" type="Texture" id=14]
+[ext_resource path="res://assets/payload_explode.png" type="Texture" id=15]
+[ext_resource path="res://assets/payload_fire.png" type="Texture" id=16]
 
 [sub_resource type="DynamicFont" id=1]
 size = 33
-font_data = ExtResource( 6 )
+font_data = ExtResource( 7 )
 
 [sub_resource type="DynamicFont" id=2]
+size = 75
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=3]
+size = 44
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=4]
+size = 40
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=5]
+size = 33
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=6]
 size = 25
-font_data = ExtResource( 6 )
+font_data = ExtResource( 7 )
 
 [sub_resource type="SpriteFrames" id=7]
 animations = [ {
-"frames": [ ExtResource( 14 ) ],
+"frames": [ ExtResource( 15 ) ],
 "loop": true,
 "name": "explosive",
 "speed": 5.0
 }, {
-"frames": [ ExtResource( 15 ) ],
+"frames": [ ExtResource( 16 ) ],
 "loop": false,
 "name": "fire",
 "speed": 1.0
 } ]
 
-[sub_resource type="DynamicFont" id=9]
-size = 30
-font_data = ExtResource( 6 )
-
 [sub_resource type="DynamicFont" id=8]
+size = 30
+font_data = ExtResource( 7 )
+
+[sub_resource type="DynamicFont" id=9]
 size = 25
-font_data = ExtResource( 6 )
+font_data = ExtResource( 7 )
 
 [node name="GUI" type="MarginContainer"]
 anchor_top = 1.0
@@ -112,6 +113,7 @@ margin_left = 54.0
 margin_right = 119.0
 margin_bottom = 150.0
 rect_min_size = Vector2( 65, 150 )
+script = ExtResource( 3 )
 
 [node name="Up" type="TextureButton" parent="BoxMargins/BoxDivider/RangeMaster"]
 margin_left = -109.0
@@ -120,7 +122,7 @@ margin_right = 141.0
 margin_bottom = 135.0
 rect_scale = Vector2( 0.1, 0.1 )
 rect_pivot_offset = Vector2( 125, 125 )
-texture_normal = ExtResource( 3 )
+texture_normal = ExtResource( 4 )
 
 [node name="Down" type="TextureButton" parent="BoxMargins/BoxDivider/RangeMaster"]
 margin_left = -109.0
@@ -130,16 +132,19 @@ margin_bottom = 263.0
 rect_rotation = 180.0
 rect_scale = Vector2( 0.1, 0.1 )
 rect_pivot_offset = Vector2( 125, 125 )
-texture_normal = ExtResource( 3 )
+texture_normal = ExtResource( 4 )
 
-[node name="Range" type="TextureProgress" parent="BoxMargins/BoxDivider/RangeMaster"]
+[node name="RangeBar" type="TextureProgress" parent="BoxMargins/BoxDivider/RangeMaster"]
 margin_left = 4.0
 margin_top = 25.0
 margin_right = 29.0
 margin_bottom = 123.0
-value = 100.0
-texture_over = ExtResource( 4 )
-texture_progress = ExtResource( 5 )
+min_value = -600.0
+max_value = -5.0
+step = 5.0
+value = -5.0
+texture_over = ExtResource( 5 )
+texture_progress = ExtResource( 6 )
 fill_mode = 3
 nine_patch_stretch = true
 stretch_margin_left = 11
@@ -147,33 +152,33 @@ stretch_margin_top = 11
 stretch_margin_right = 11
 stretch_margin_bottom = 11
 
-[node name="E_Label" type="Label" parent="BoxMargins/BoxDivider/RangeMaster"]
+[node name="E" type="Label" parent="BoxMargins/BoxDivider/RangeMaster"]
 margin_left = 42.0
 margin_top = 1.0
 margin_right = 55.0
 margin_bottom = 23.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 1 )
 text = "E"
 align = 1
 valign = 1
 
-[node name="Q_Label" type="Label" parent="BoxMargins/BoxDivider/RangeMaster"]
+[node name="Q" type="Label" parent="BoxMargins/BoxDivider/RangeMaster"]
 margin_left = 42.0
 margin_top = 132.0
 margin_right = 55.0
 margin_bottom = 154.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 1 )
 text = "Q"
 align = 1
 valign = 1
 
-[node name="RANGE_Label" type="Label" parent="BoxMargins/BoxDivider/RangeMaster"]
+[node name="RangeLabel" type="Label" parent="BoxMargins/BoxDivider/RangeMaster"]
 margin_left = 55.0
-margin_top = 46.0
+margin_top = 47.0
 margin_right = 116.0
-margin_bottom = 68.0
+margin_bottom = 69.0
 rect_rotation = 90.0
-custom_fonts/font = SubResource( 3 )
+custom_fonts/font = SubResource( 1 )
 text = "RANGE"
 align = 1
 valign = 1
@@ -191,14 +196,14 @@ margin_top = 7.0
 margin_right = 320.0
 margin_bottom = 263.0
 rect_scale = Vector2( 0.5, 0.5 )
-texture_normal = ExtResource( 7 )
+texture_normal = ExtResource( 8 )
 
 [node name="R" type="Label" parent="BoxMargins/BoxDivider/FireMaster/Bolt"]
 margin_left = 22.0
 margin_top = 112.0
 margin_right = 62.0
 margin_bottom = 160.0
-custom_fonts/font = SubResource( 6 )
+custom_fonts/font = SubResource( 2 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "R"
 
@@ -208,7 +213,7 @@ margin_top = 7.0
 margin_right = 320.0
 margin_bottom = 263.0
 rect_scale = Vector2( 0.5, 0.5 )
-texture = ExtResource( 8 )
+texture = ExtResource( 9 )
 
 [node name="Control" type="TextureButton" parent="BoxMargins/BoxDivider/FireMaster"]
 editor/display_folded = true
@@ -216,14 +221,14 @@ margin_left = 64.0
 margin_top = 105.0
 margin_right = 194.0
 margin_bottom = 145.0
-texture_normal = ExtResource( 9 )
+texture_normal = ExtResource( 10 )
 
 [node name="FIRE" type="Label" parent="BoxMargins/BoxDivider/FireMaster/Control"]
 margin_left = 8.0
 margin_top = 5.33337
 margin_right = 124.0
 margin_bottom = 45.3334
-custom_fonts/font = SubResource( 4 )
+custom_fonts/font = SubResource( 3 )
 custom_colors/font_color = Color( 1, 0, 0, 1 )
 text = "F  I  R  E"
 align = 1
@@ -234,7 +239,7 @@ margin_left = 67.3334
 margin_top = 8.66666
 margin_right = 192.333
 margin_bottom = 34.6667
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 4 )
 text = "GUN READY"
 
 [node name="WheelMaster" type="Control" parent="BoxMargins/BoxDivider"]
@@ -243,7 +248,7 @@ margin_left = 419.0
 margin_right = 629.0
 margin_bottom = 150.0
 rect_min_size = Vector2( 210, 150 )
-script = ExtResource( 10 )
+script = ExtResource( 11 )
 
 [node name="TraverseWheel" type="TextureButton" parent="BoxMargins/BoxDivider/WheelMaster"]
 editor/display_folded = true
@@ -252,14 +257,14 @@ margin_bottom = 150.0
 rect_scale = Vector2( 0.75, 0.75 )
 rect_pivot_offset = Vector2( 75, 75 )
 action_mode = 0
-texture_normal = ExtResource( 11 )
+texture_normal = ExtResource( 12 )
 
 [node name="Label_F" type="Label" parent="BoxMargins/BoxDivider/WheelMaster/TraverseWheel"]
 margin_left = 69.6667
 margin_top = 64.3333
 margin_right = 82.6667
 margin_bottom = 86.3333
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 5 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "F"
 align = 1
@@ -272,7 +277,7 @@ margin_right = 190.0
 margin_bottom = 70.0
 rect_scale = Vector2( 0.5, 0.5 )
 rect_pivot_offset = Vector2( 50, 50 )
-texture = ExtResource( 12 )
+texture = ExtResource( 13 )
 
 [node name="Arrow_CLCK" type="TextureRect" parent="BoxMargins/BoxDivider/WheelMaster"]
 margin_left = 90.0
@@ -282,14 +287,14 @@ margin_bottom = 180.0
 rect_rotation = 180.0
 rect_scale = Vector2( 0.5, 0.5 )
 rect_pivot_offset = Vector2( 50, 50 )
-texture = ExtResource( 13 )
+texture = ExtResource( 14 )
 
 [node name="Label_CNTR" type="Label" parent="BoxMargins/BoxDivider/WheelMaster"]
 margin_left = 159.0
 margin_top = 13.0
 margin_right = 207.0
 margin_bottom = 35.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 5 )
 text = "CNTR"
 align = 1
 valign = 1
@@ -299,7 +304,7 @@ margin_left = 159.0
 margin_top = 123.0
 margin_right = 208.0
 margin_bottom = 145.0
-custom_fonts/font = SubResource( 1 )
+custom_fonts/font = SubResource( 5 )
 text = "CLCK"
 align = 1
 valign = 1
@@ -312,7 +317,7 @@ margin_bottom = 102.0
 rect_min_size = Vector2( 130, 50 )
 rect_rotation = 90.0
 rect_pivot_offset = Vector2( 65, 25 )
-custom_fonts/font = SubResource( 2 )
+custom_fonts/font = SubResource( 6 )
 custom_colors/font_color = Color( 1, 1, 1, 1 )
 text = "TGLP
 ENGAGE"
@@ -320,6 +325,7 @@ align = 1
 valign = 1
 
 [node name="PayloadMaster" type="Control" parent="BoxMargins/BoxDivider"]
+editor/display_folded = true
 margin_left = 679.0
 margin_right = 879.0
 margin_bottom = 150.0
@@ -339,14 +345,14 @@ margin_bottom = 150.0
 rect_rotation = 90.0
 rect_scale = Vector2( 0.2, 0.2 )
 rect_pivot_offset = Vector2( 125, 125 )
-texture_normal = ExtResource( 3 )
+texture_normal = ExtResource( 4 )
 
 [node name="P" type="Label" parent="BoxMargins/BoxDivider/PayloadMaster"]
 margin_left = 136.0
 margin_top = 18.0
 margin_right = 147.0
 margin_bottom = 38.0
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "P"
 
@@ -358,14 +364,14 @@ margin_bottom = 150.0
 rect_rotation = -90.0
 rect_scale = Vector2( 0.2, 0.2 )
 rect_pivot_offset = Vector2( 125, 125 )
-texture_normal = ExtResource( 3 )
+texture_normal = ExtResource( 4 )
 
-[node name="P2" type="Label" parent="BoxMargins/BoxDivider/PayloadMaster"]
+[node name="I" type="Label" parent="BoxMargins/BoxDivider/PayloadMaster"]
 margin_left = 55.0
 margin_top = 18.0
 margin_right = 66.0
 margin_bottom = 38.0
-custom_fonts/font = SubResource( 9 )
+custom_fonts/font = SubResource( 8 )
 custom_colors/font_color = Color( 0, 0, 0, 1 )
 text = "I"
 
@@ -374,7 +380,7 @@ margin_left = 45.0
 margin_top = 55.0
 margin_right = 155.0
 margin_bottom = 71.0
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 9 )
 text = "PHOSPHOROUS"
 align = 1
 
@@ -382,7 +388,7 @@ align = 1
 margin_top = 83.0
 margin_right = 200.0
 margin_bottom = 150.0
-custom_fonts/font = SubResource( 8 )
+custom_fonts/font = SubResource( 9 )
 text = "Lorem ipsum"
 align = 1
 valign = 1

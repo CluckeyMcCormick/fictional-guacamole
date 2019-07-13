@@ -11,6 +11,7 @@ var turret_velo = 0
 func _ready():
     # Register the function
     $GUIBox.register_wheel_velocity(self, "_on_wheel_velocity_changed")
+    $GUIBox.register_range_change($Turret, "_on_range_change")
 
 func _on_wheel_velocity_changed(new_velo):
     turret_velo = new_velo * TURRET_VELO_RETENTION_PERCENTAGE
