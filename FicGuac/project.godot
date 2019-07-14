@@ -18,6 +18,10 @@ _global_script_class_icons={
 config/name="FicGuac"
 config/icon="res://icon.png"
 
+[autoload]
+
+WorldTiles="*res://scenes/World/WorldTiles.gd"
+
 [rendering]
 
 quality/2d/use_pixel_snap=true
