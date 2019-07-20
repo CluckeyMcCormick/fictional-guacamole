@@ -2,12 +2,14 @@ extends Node2D
 
 # In order to paint the world, we need a way to refer to the tiles. Just using
 # an atlas to automatically break up our textures does not, unfortunately,
-# allow you to name the tiles. So we'll do it through a singular.
+# allow you to name the tiles. You just have to know the Vector2 coordinates.
+# So we'll instead name things through this singular
 var tile_codes
 
 # TileMap seems to be set up such that it doesn't really have a fixed size. You
 # can just keep expanding as you add tiles. However, we want our world to be
-# limited in scope. 
+# limited in scope. These variables determine the size of the area (in tiles)
+# that we'll be performing our algorithms on.
 export(int) var world_len_x
 export(int) var world_len_y
 
