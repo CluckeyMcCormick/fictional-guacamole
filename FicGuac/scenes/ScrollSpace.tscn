@@ -9,4 +9,6 @@
 
 [node name="ScrollCam" type="Camera2D" parent="."]
 current = true
+drag_margin_h_enabled = false
+drag_margin_v_enabled = false
 script = ExtResource( 2 )

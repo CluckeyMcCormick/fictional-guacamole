@@ -2,7 +2,7 @@ extends Camera2D
 
 const SPEED = 500
 
-func _process(delta):
+func _process(delta):    
     var move_dist = Vector2(0, 0)
     
     if Input.is_action_pressed("scroll_right"):
