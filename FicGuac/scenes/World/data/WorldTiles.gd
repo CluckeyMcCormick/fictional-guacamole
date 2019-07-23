@@ -12,6 +12,18 @@ var PRIME_ICE = primary_set.find_tile_by_name("ice")
 var PRIME_WATER = primary_set.find_tile_by_name("water")
 var PRIME_LOW_STONE = primary_set.find_tile_by_name("low_stone")
 
+# Unforunately, Godot currently lacks a good way to set tile properties in a
+# TileSet, which is really quite a shame. This is our work around - a
+# dictionary for each property, as necessary. Apparently properties are coming.
+# Soon.
+
+# This first dict is the priority of each primary tile.
+# Higher number is a better number, in this instance.
+var PRIME_PRIORITY = {
+    PRIME_SNOW: 7, PRIME_GRASS: 6, PRIME_DIRT: 5, PRIME_SAND: 4,
+    PRIME_STONE: 3, PRIME_ICE: 2, PRIME_WATER: 1, PRIME_LOW_STONE: 0
+}
+
 # One of the... rougher aspects of how we do tiles is that we need to check the
 # adjacency conditions to create our edge tiles. This cardinal enum specifies
 # our different directions.
@@ -33,7 +45,7 @@ var CARDINAL_SHIFTS = {
 }
 
 # Adjacent tile is greater than this tile
-const ADJ_GT = 0x10
+const ADJ_GT = 0x02
 # Some edge tiles have duplicates - this flag indicates to use the duplicate
 const ADJ_ALT_FLAG = 0x01
 # Since we often use "greater than" and the "alt" flag in conjuction, we'll
@@ -67,16 +79,16 @@ func generate_edges(ul_coords):
     # The dict follow a certain formula, so we'll just return it right away
     return {
         # First, the easiest coordinates: the sides
+        ADJ_GT << Cardinal.EAST  : ul_coords + Vector2(3, 1),
         ADJ_GT << Cardinal.NORTH : ul_coords + Vector2(1, 0),
         ADJ_GT << Cardinal.WEST  : ul_coords + Vector2(0, 1),
-        ADJ_GT << Cardinal.EAST  : ul_coords + Vector2(3, 1),
         ADJ_GT << Cardinal.SOUTH : ul_coords + Vector2(1, 3),
 
         # Next, the alts for those side tiles
+        ADJ_GT_ALT << Cardinal.EAST : ul_coords + Vector2(3, 2),
         ADJ_GT_ALT << Cardinal.NORTH : ul_coords + Vector2(2, 0),
         ADJ_GT_ALT << Cardinal.WEST : ul_coords + Vector2(0, 2),
-        ADJ_GT_ALT << Cardinal.EAST : ul_coords + Vector2(3, 2),
-        (ADJ_GT | ADJ_ALT_FLAG ) << Cardinal.SOUTH : ul_coords + Vector2(2, 3),
+        ADJ_GT_ALT << Cardinal.SOUTH : ul_coords + Vector2(2, 3),
         
         # Now, the interior corner tiles
         (ADJ_GT << Cardinal.WEST) | (ADJ_GT << Cardinal.NORTH): ul_coords,
@@ -85,10 +97,10 @@ func generate_edges(ul_coords):
         (ADJ_GT << Cardinal.EAST) | (ADJ_GT << Cardinal.SOUTH): ul_coords + Vector2(3, 3),
         
         # Finally, the exterior corner tiles
-        ADJ_GT << Cardinal.NORTH_WEST : ul_coords + Vector2(1, 1),
-        ADJ_GT << Cardinal.NORTH_EAST : ul_coords + Vector2(2, 1),
-        ADJ_GT << Cardinal.SOUTH_WEST : ul_coords + Vector2(1, 2),
-        ADJ_GT << Cardinal.SOUTH_EAST : ul_coords + Vector2(2, 2),
+        ADJ_GT << Cardinal.NORTH_WEST : ul_coords + Vector2(2, 2),
+        ADJ_GT << Cardinal.NORTH_EAST : ul_coords + Vector2(1, 2),
+        ADJ_GT << Cardinal.SOUTH_WEST : ul_coords + Vector2(2, 1),
+        ADJ_GT << Cardinal.SOUTH_EAST : ul_coords + Vector2(1, 1),
         
         # 
         # Now then, what if we have an alt side, but we actually want a corner?
