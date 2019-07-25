@@ -1,7 +1,7 @@
 extends Node
 
-var primary_set = load("res://scenes/World/data/PrimaryTileSet.tres")
-var detail_set = load("res://scenes/World/data/DetailTileSet.tres")
+var primary_set = load("res://scenes/world/data/PrimaryTileSet.tres")
+var detail_set = load("res://scenes/world/data/DetailTileSet.tres")
 
 var PRIME_SNOW = primary_set.find_tile_by_name("snow")
 var PRIME_GRASS = primary_set.find_tile_by_name("grass")

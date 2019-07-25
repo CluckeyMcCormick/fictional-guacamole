@@ -19,10 +19,6 @@ config/name="FicGuac"
 run/main_scene="res://scenes/ScrollSpace.tscn"
 config/icon="res://icon.png"
 
-[autoload]
-
-WorldTiles="*res://scenes/World/data/WorldTiles.gd"
-
 [input]
 
 scroll_left={

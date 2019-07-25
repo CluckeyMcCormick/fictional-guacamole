@@ -3,8 +3,9 @@ extends Node2D
 # In order to paint the world, we need a way to refer to the tiles. Just using
 # an atlas to automatically break up our textures does not, unfortunately,
 # allow you to name the tiles. You just have to know the Vector2 coordinates.
-# So we'll instead name things through this singular
-var tile_codes
+# So we'll instead name things through this Node
+# $TileData
+
 
 # TileMap seems to be set up such that it doesn't really have a fixed size. You
 # can just keep expanding as you add tiles. However, we want our world to be
@@ -14,8 +15,7 @@ export(int) var world_len_x
 export(int) var world_len_y
 
 func _ready():
-    # Get our tile constants
-    tile_codes = get_node("/root/WorldTiles")
+    pass
 
 # This will be the function we call to generate the world. Every inheriting
 # world should provide their own version of this.
@@ -43,14 +43,14 @@ func _edge_determine(prime_x, prime_y):
     
     # Cardinal is an enum that we'll be using throughout this algorithm. We'll
     # grab it here so we don't have to continually reference the chain
-    var CARD = tile_codes.Cardinal
+    var CARD = $TileData.Cardinal
     # Ditto for above, but with the xy shift vectors
-    var CARD_SHIFT = tile_codes.CARDINAL_SHIFTS
+    var CARD_SHIFT = $TileData.CARDINAL_SHIFTS
     
     # Our priority properties can't be stored in the tiles, so we have to store
     # them in an external dictionary in tile_codes. We'll use this var for easy
     # reference and access.
-    var PRIME_PRI = tile_codes.PRIME_PRIORITY
+    var PRIME_PRI = $TileData.PRIME_PRIORITY
     
     # Since our "current" detail tile is marked as being a 0-3, we need to know
     # which directions to check, depending on our current quadrant.
@@ -116,7 +116,7 @@ func _edge_determine(prime_x, prime_y):
             nghb_val = $Primary.get_cellv(nghb_coords) 
         
             # If this is an invalid tile, let's skip
-            if not (nghb_val in PRIME_PRI and nghb_val in tile_codes.detail_dict):
+            if not (nghb_val in PRIME_PRI and nghb_val in $TileData.detail_dict):
                 continue
          
             # If this tile has less priority than our current tile,
@@ -158,14 +158,14 @@ func _edge_determine(prime_x, prime_y):
             # bit-pack our test results into here.
             var tile = 0
             # A dereference to our edge dictionary
-            var edge_dict = tile_codes.detail_dict[ nghb_arr[i] ]["edge"]
+            var edge_dict = $TileData.detail_dict[ nghb_arr[i] ]["edge"]
             
             # Test each of our CARDINAL directions, (elements 0 and 2), 
             # make a note if we pass 
             for dir in [ directs[0], directs[2] ]:
                 nghb_coords = prime_xy + CARD_SHIFT[ dir ]
                 if $Primary.get_cellv(nghb_coords) == nghb_arr[i]:
-                    tile = tile | (tile_codes.ADJ_GT << dir)
+                    tile = tile | ($TileData.ADJ_GT << dir)
                 
             # If we have a tile, paint it
             if tile in edge_dict:
@@ -181,7 +181,7 @@ func _edge_determine(prime_x, prime_y):
                 tile = 0
                 nghb_coords = prime_xy + CARD_SHIFT[ directs[1] ]
                 if $Primary.get_cellv(nghb_coords) == nghb_arr[i]:
-                    tile = tile | (tile_codes.ADJ_GT << directs[1])
+                    tile = tile | ($TileData.ADJ_GT << directs[1])
                 
                 # If we have a tile, paint it
                 if tile in edge_dict:
