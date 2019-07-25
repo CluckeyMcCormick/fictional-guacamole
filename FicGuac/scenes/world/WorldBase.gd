@@ -16,9 +16,10 @@ export(int) var world_len_y
 func _ready():
     # Get our tile constants
     tile_codes = get_node("/root/WorldTiles")
-    
-    $DetailAlpha.set_cell( 0, 0, 0, false, false, false, Vector2( 4, 0 )) 
-    
+
+# This will be the function we call to generate the world. Every inheriting
+# world should provide their own version of this.
+func generate():
     _edge_pass(0, world_len_x)
 
 # Performs the _edge_determine algorithm on every world tile in the specified
