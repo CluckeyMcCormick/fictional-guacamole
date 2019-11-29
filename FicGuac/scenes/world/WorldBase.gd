@@ -14,12 +14,41 @@ extends Node2D
 export(int) var world_len_x
 export(int) var world_len_y
 
+export(int) var world_seed
+
+# Open Simplex Generator for determining soil composition
+var soil_noise
+# Open Simplex Generator for determining moisture levels
+var moisture_noise
+
 func _ready():
     pass
 
 # This will be the function we call to generate the world. Every inheriting
 # world should provide their own version of this.
 func generate():
+    # Step 1: Seed the randomatico!
+    seed(world_seed)
+    
+    # Step 2: Make the generators
+    soil_noise = OpenSimplexNoise.new()
+    moisture_noise = OpenSimplexNoise.new()
+    
+    # Step 3: Set our variables!
+    soil_noise.seed = randi()
+    soil_noise.octaves = 4
+    soil_noise.period = 20.0
+    soil_noise.persistence = 0.8
+    
+    moisture_noise.seed = randi()
+    moisture_noise.octaves = 4
+    moisture_noise.period = 20.0
+    moisture_noise.persistence = 0.8
+    
+    # Step 4: Generate the terrain!
+    terrain_gen()
+    
+    # Step 5: Perform an edge pass over the fresh terrain
     _edge_pass(0, world_len_x)
 
 # Performs the _edge_determine algorithm on every world tile in the specified
@@ -190,6 +219,49 @@ func _edge_determine(prime_x, prime_y):
                         edge_dict[tile]
                     )
 
+func terrain_gen():
+    var moisture
+    var soil
+    var tile
+    
+    # For each tile in our map... 
+    for x in range(world_len_x):
+        for y in range(world_len_y):
+            # Get the moisture and soil values
+            moisture = moisture_noise.get_noise_2d(x, y)
+            soil = soil_noise.get_noise_2d(x, y)
+            # Pass those values onto our "Terrain Decision" function
+            # This will change depending on our world type
+            tile = terrain_decision(moisture, soil)
+            # Paint that tile into the world
+            $Primary.set_cell(x, y, tile)
+
+func terrain_decision(moisture, soil):
+    var tile
+    
+    # Moisture Category/Cutoff 1: WATER
+    if moisture >= 0.3:
+        tile = $TileData.PRIME_WATER
+        
+    # Moisture Category/Cutoff 2: LUSH
+    elif moisture >= -0.50:
+        # Only STONE can't have grass on it
+        if soil >= -0.4:
+            tile = $TileData.PRIME_GRASS
+        else:
+            tile = $TileData.PRIME_STONE
+            
+    # Moisture Category/Cutoff 3: BARREN
+    else:
+        # Soil Category/Cutoff 1: DIRT
+        if soil >= -0.4:
+            tile = $TileData.PRIME_DIRT
+        # Soil Category/Cutoff 2: STONE
+        else:
+            tile = $TileData.PRIME_STONE
+            
+    return tile
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
+# func _process(delta):
 #    pass
