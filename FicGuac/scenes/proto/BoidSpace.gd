@@ -6,7 +6,7 @@ extends Node2D
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    #$Boid_Micro.add_force()
+    $Boid_Micro.add_central_force( Vector2(0, -25) )
     pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
