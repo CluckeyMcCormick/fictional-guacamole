@@ -1,7 +1,14 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/proto/BoidSpace.gd" type="Script" id=1]
 [ext_resource path="res://scenes/proto/Boid_Micro.tscn" type="PackedScene" id=2]
+
+[sub_resource type="CircleShape2D" id=5]
+radius = 128.5
+
+[sub_resource type="CapsuleShape2D" id=6]
+radius = 41.46
+height = 155.32
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 512, 10 )
@@ -20,8 +27,21 @@ script = ExtResource( 1 )
 
 [node name="Boid_Micro" parent="." instance=ExtResource( 2 )]
 position = Vector2( 600, 300 )
+draw_debug_ray = true
+
+[node name="Obstacles" type="StaticBody2D" parent="."]
+position = Vector2( 512, 0 )
+
+[node name="CollisionShape2D" type="CollisionShape2D" parent="Obstacles"]
+position = Vector2( -169.993, 521.803 )
+shape = SubResource( 5 )
+
+[node name="CollisionShape2D2" type="CollisionShape2D" parent="Obstacles"]
+position = Vector2( 199.557, 121.212 )
+shape = SubResource( 6 )
 
 [node name="CollideBox" type="StaticBody2D" parent="."]
+editor/display_folded = true
 
 [node name="cbTop" type="CollisionShape2D" parent="CollideBox"]
 position = Vector2( 512, 0 )
