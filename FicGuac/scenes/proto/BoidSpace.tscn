@@ -27,6 +27,7 @@ script = ExtResource( 1 )
 
 [node name="Boid_Micro" parent="." instance=ExtResource( 2 )]
 position = Vector2( 600, 300 )
+show_cast_result = 1
 show_cast_points = true
 
 [node name="Obstacles" type="StaticBody2D" parent="."]

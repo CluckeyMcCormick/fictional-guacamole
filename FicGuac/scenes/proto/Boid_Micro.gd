@@ -34,9 +34,12 @@ export(bool) var show_cast_points
 
 const ARTI_ACCEL = 50
 const MAX_SPEED = 250
+const ROT_VELO_RAD = 5 * PI
 
 var _arti_speed
-var _target_rotation
+# Which direction are we turning? Left is negative, Right is positive, Straight
+# Ahead is 0.
+var _turn_dir = 0
 
 # The container zfor bodies we are currently tracking as our "flock"
 var flock_members = {}
@@ -84,6 +87,9 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+    # Turn as specified by our turn direction
+    rotation += _turn_dir * (ROT_VELO_RAD * delta)
+    
     # Add our newly recieved acceleration
     _arti_speed = clamp(_arti_speed + (ARTI_ACCEL * delta), 0, MAX_SPEED)
     # Calculate our movement, given heading, speed, and time delta
@@ -177,44 +183,30 @@ func _physics_process(delta):
     # If the left center is blocked, but not the right center...    
     if cen_left_blocked and not cen_right_blocked:
         # Then we need to rotate towards the center of center right
-        _target_rotation = self.rotation + (RAYCAST_LRC_RADS / 2)
+        _turn_dir = 1
     # If the right center has a collision, but the left center is open...
     elif cen_right_blocked and not cen_left_blocked:
         # Then we need to do the same as above - but with the left!
-        _target_rotation = self.rotation - (RAYCAST_LRC_RADS / 2)
+       _turn_dir = -1
     # Otherwise, if the whole center is blocked...
     elif cen_left_blocked and cen_right_blocked:
         # Then we need to pick either the left or right quadrants
-        
-        # Let's calculate the angle addition we'll use real quick - reuse ray_step!
-        # First, calculate the radian arc size for the post-LRC arc
-        ray_step = (PI / 2) - RAYCAST_LRC_RADS
-        # Then, cut it in half to get the middle
-        ray_step /= 2
-        # Finally, shift it past the LRC line
-        ray_step += RAYCAST_LRC_RADS
-        
         # If left is blocked, but right is open,
         if left_blocked and not right_blocked:
-            _target_rotation = self.rotation + ray_step
+            _turn_dir = 1
         # Otherwise, if right is closed but the left is clear
         elif right_blocked and not left_blocked:
-            _target_rotation = self.rotation - ray_step
-        # Otherwise, if both are clear and open
-        elif not left_blocked and not right_blocked:
-            if randi() % 2 == 0:
-                _target_rotation = self.rotation + ray_step
-            else:
-                _target_rotation = self.rotation - ray_step
-        # Otherwise, both must be closed - That means literally everything in
-        # front of us is death - we need a full reverse!
+           _turn_dir = -1
+        # Otherwise, either both are clear and open or both are entirely
+        # blocked. Either way, we'll just flip a coin and pick a direction
         else:
-            _target_rotation = self.rotation + PI
+            if randi() % 2 == 0:
+                _turn_dir = 1
+            else:
+                _turn_dir = -1
     # Otherwise, the way forward is clear. We don't need to turn at all
     else:
-        _target_rotation = self.rotation
-        
-    rotation = _target_rotation
+        _turn_dir = 0
 
 func _input(event):
     if event.is_action_pressed("debug_print"):
