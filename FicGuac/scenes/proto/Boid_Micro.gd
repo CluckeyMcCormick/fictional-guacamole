@@ -2,11 +2,14 @@ extends RigidBody2D
 
 # To scan for danger, we'll raycast in front of our boid. But how big is our
 # raycast? These constants will help to define that.
-# Our length for each raycast
-const RAYCAST_MAGNITUDE = 30
+# The length for each raycast at no speed
+const MIN_RAYCAST_MAGNITUDE = 30
+# Our length for each raycast at full speed
+const MAX_RAYCAST_MAGNITUDE = 75
+
 # How many points we want to cast, including the central/forward ray. Points are
-# measured in a plus-STEP minus-STEP pattern.
-const RAYCAST_STEPS_COUNT = 15
+# measured in a plus-STEP minus-STEP pattern. Ideally, an odd number
+const RAYCAST_STEPS_COUNT = 25
 # When we raycast, we cast the points in front of the boid using the unit
 # circle. We start in "front" of the Boid, and cast extra points using this step
 const RAYCAST_STEP = PI / (RAYCAST_STEPS_COUNT - 1)
@@ -16,6 +19,10 @@ const RAYCAST_STEP = PI / (RAYCAST_STEPS_COUNT - 1)
 # (rotation + RAYCAST_LRC_RADS) are right, and those rays between those points
 # are center
 const RAYCAST_LRC_RADS = (3 * PI) / 14 # Appropriate "Forward" range for a microboid
+# The center is defined as the area which, if the boid continues forward, it will
+# die. But how do we define that? Well, if we take the boids width, and measure a
+# point's sin output, we can determine whether a point is "centered", left, or right.
+const RAYCAST_BOID_RADIUS = 8
 
 # Packed scene, used for debug and collision marking. Has convenience routines
 # for setting colors and removing itself.
@@ -31,15 +38,26 @@ const X_SPRITE_NO_COLLIDE_LIFETIME = 2
 enum RAYCAST_DEBUG {none, only_collisions, all}
 export(RAYCAST_DEBUG) var show_cast_result
 export(bool) var show_cast_points
+export(bool) var show_boid_path
+var _cast_points = []
 
 const ARTI_ACCEL = 50
-const MAX_SPEED = 250
-const ROT_VELO_RAD = 5 * PI
+const MAX_SPEED = 300
+# Our maximum rotation speed - since this operates inversely to linear speed,
+# this is our rotation speed at a linear speed of 0
+const MAX_ROT_SPEED = (5 * PI) / 2
+# Minimum rotation speed - which we'll hit at max linear speed
+const MIN_ROT_SPEED = (16 * PI) / 8
 
+# What is our current speed?
 var _arti_speed
+# What is our current raycast magnitude?
+var _raycast_mag
 # Which direction are we turning? Left is negative, Right is positive, Straight
 # Ahead is 0.
 var _turn_dir = 0
+# Are we dead? Did we die?
+var _dead = false
 
 # The container zfor bodies we are currently tracking as our "flock"
 var flock_members = {}
@@ -52,6 +70,7 @@ func _ready():
     var ray_step
     var new_angle
     _arti_speed = 0
+    _raycast_mag = MIN_RAYCAST_MAGNITUDE
     
     if not show_cast_points:
         return
@@ -62,22 +81,30 @@ func _ready():
         new_angle = ray_step * RAYCAST_STEP
         
         # Calculate the raycasted/shifted point
-        var casted_pos = Vector2(0, 0)
-        casted_pos.x = cos(new_angle)
-        casted_pos.y = sin(new_angle)
-        casted_pos *= RAYCAST_MAGNITUDE
+        var uncasted_pos = Vector2(0, 0)
+        uncasted_pos.x = cos(new_angle)
+        uncasted_pos.y = sin(new_angle)
         
         # Add a point at the shifted location
         var debug_node = X_SPRITE_SCENE.instance() # Create a new sprite!
         add_child(debug_node) # Add it as a child of this node.
-        debug_node.position = casted_pos
+        debug_node.position = uncasted_pos * _raycast_mag
+        debug_node.uncasted_pos = uncasted_pos
         
-        if new_angle < -RAYCAST_LRC_RADS:
-            debug_node.set_color(X_SPRITE_SCRIPT.X_CLASSES.LEFT)
-        elif new_angle > RAYCAST_LRC_RADS:
-            debug_node.set_color(X_SPRITE_SCRIPT.X_CLASSES.RIGHT)
-        else:
+        # If we haven't crossed the LRC line yet, then we're still in the center
+        var is_center = RAYCAST_LRC_RADS > abs(ray_step * RAYCAST_STEP)
+        # If our step is negative, then we're probing the left
+        var is_left = ray_step < 0
+        
+        if is_center:
             debug_node.set_color(X_SPRITE_SCRIPT.X_CLASSES.CENTER)
+        elif is_left:
+            debug_node.set_color(X_SPRITE_SCRIPT.X_CLASSES.LEFT)
+        else:
+            debug_node.set_color(X_SPRITE_SCRIPT.X_CLASSES.RIGHT)
+        
+        # Throw it all into our array
+        _cast_points.append( debug_node )
         
         # Otherwise, update our step for the next go-around
         if i % 2 == 0:
@@ -87,11 +114,34 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
+    # Skip if dead
+    if _dead:
+        return
+    
+    # Calculate the rotational velocity
+    var rota_velo = clamp(
+        MAX_ROT_SPEED * ( 1 - (_arti_speed / MAX_SPEED) ),
+        MIN_ROT_SPEED, MAX_ROT_SPEED
+    )
     # Turn as specified by our turn direction
-    rotation += _turn_dir * (ROT_VELO_RAD * delta)
+    rotation += _turn_dir * (rota_velo * delta)
     
     # Add our newly recieved acceleration
     _arti_speed = clamp(_arti_speed + (ARTI_ACCEL * delta), 0, MAX_SPEED)
+    # Calculate the new raycast magnitude 
+    var new_mag = clamp(
+        MAX_RAYCAST_MAGNITUDE * (_arti_speed / MAX_SPEED),
+        MIN_RAYCAST_MAGNITUDE, MAX_RAYCAST_MAGNITUDE
+    )
+    # If the raycast magnitude is different, we need to adjust the magnitude
+    # and the debug points
+    if new_mag != _raycast_mag:
+        _raycast_mag = new_mag
+        if RAYCAST_DEBUG:
+            # Then we need to move up the points
+            for debug_node in _cast_points:
+                debug_node.position = debug_node.uncasted_pos * _raycast_mag         
+    
     # Calculate our movement, given heading, speed, and time delta
     var movement = Vector2(0, 0)
     movement.x = cos(rotation)
@@ -100,8 +150,17 @@ func _process(delta):
     movement *= delta
     
     self.position = self.position + movement
-
+    
+    if show_boid_path:
+        var debug_node = X_SPRITE_SCENE.instance() # Create a new sprite!
+        debug_node.position = position
+        owner.add_child(debug_node) # Add it as a child of the parent node
+        
 func _physics_process(delta):
+    # Skip if dead
+    if _dead:
+        return
+    
     var space_state = get_world_2d().direct_space_state
     var ray_step
     
@@ -114,6 +173,13 @@ func _physics_process(delta):
     var cen_right_blocked = false
     var right_blocked = false
     
+    # We'll also track the "shortest-distance-to-collision" for each quadrant.
+    # This will allow us to make an informed decision about which direction to
+    # go. We only check left and right since - when we use these - the center
+    # is blocked to us
+    var left_shortest = INF
+    var right_shortest = INF
+    
     ray_step = 0
     for i in range(RAYCAST_STEPS_COUNT):
         # Calculate our current angle
@@ -123,12 +189,12 @@ func _physics_process(delta):
         var casted_pos = Vector2(0, 0)
         casted_pos.x = cos(curr_angle)
         casted_pos.y = sin(curr_angle)
-        casted_pos *= RAYCAST_MAGNITUDE
+        casted_pos *= _raycast_mag
         casted_pos += global_position
         
         # Get the result of our collision raycast
         var result = space_state.intersect_ray(global_position, casted_pos, [self])
-        
+
         # Render our collision, depending on whether we've enabled the debug or not
         match show_cast_result:
             RAYCAST_DEBUG.none:
@@ -157,6 +223,8 @@ func _physics_process(delta):
             var is_center = RAYCAST_LRC_RADS > abs(ray_step * RAYCAST_STEP)
             # If our step is negative, then we're probing the left
             var is_left = ray_step < 0
+            # Calculate the length of this
+            var collision_length = (global_position - result.position).length()
             # Special case when ray step is 0
             if ray_step == 0:
                 cen_left_blocked = true
@@ -170,9 +238,11 @@ func _physics_process(delta):
             # LEFT
             elif not is_center and is_left:
                 left_blocked = true
+                left_shortest = min(left_shortest, collision_length)
             # RIGHT
             elif not is_center and not is_left:
                 right_blocked = true
+                right_shortest = min(right_shortest, collision_length)
         
         # Otherwise, update our step for the next go-around
         if i % 2 == 0:
@@ -187,7 +257,7 @@ func _physics_process(delta):
     # If the right center has a collision, but the left center is open...
     elif cen_right_blocked and not cen_left_blocked:
         # Then we need to do the same as above - but with the left!
-       _turn_dir = -1
+        _turn_dir = -1
     # Otherwise, if the whole center is blocked...
     elif cen_left_blocked and cen_right_blocked:
         # Then we need to pick either the left or right quadrants
@@ -196,9 +266,18 @@ func _physics_process(delta):
             _turn_dir = 1
         # Otherwise, if right is closed but the left is clear
         elif right_blocked and not left_blocked:
-           _turn_dir = -1
+            _turn_dir = -1
         # Otherwise, either both are clear and open or both are entirely
-        # blocked. Either way, we'll just flip a coin and pick a direction
+        # blocked. Let's try picking the direction with the longest collision
+        # length. Only evaluate left and right, since we know we can't go forward
+        # So, if left is shortest
+        elif left_shortest < right_shortest:
+            _turn_dir = -1
+        # Otherwise, if right is shortest
+        elif right_shortest < left_shortest:
+            _turn_dir = 1
+        # Otherwise - they're equal?!?! Oh to hell with it - flip a coin and see
+        # which direction to go
         else:
             if randi() % 2 == 0:
                 _turn_dir = 1
@@ -234,11 +313,27 @@ func _on_ExplosionPlayer_animation_finished(anim_name):
 # calibrated to occur when the Skin sprite is obscured so we can toggle
 # visibility
 func _on_ExplosionTimer_timeout():
-    $Skin.visible = false
+    # $Skin.visible = false
+    $Skin.modulate = Color(0, 0, 0)
 
 # Called when colliding with another body - be it static, rigid, or kinematic
 func _on_Boid_Micro_body_entered(body):
-    print("BODY ENTERED!")
+    # If we died, we don't want to do anything
+    if _dead:
+        return
+    # We're dead. We died.
+    _dead = true
+    # Convert our artificial speed and rotational velocity into physics-end
+    # velocity and rotation
+    self.linear_velocity = Vector2( cos(rotation), sin(rotation) ) * _arti_speed    
+    # Calculate the rotational/angular velocity
+    var rota_velo = clamp(
+        MAX_ROT_SPEED * ( 1 - (_arti_speed / MAX_SPEED) ),
+        MIN_ROT_SPEED, MAX_ROT_SPEED
+    )
+    # Turn as specified by our turn direction
+    self.angular_velocity = _turn_dir * rota_velo
+    # Make ourselves explode
     $Explosion.visible = true
     $Explosion/ExplosionTimer.start()
     $Explosion/ExplosionPlayer.play("explode")

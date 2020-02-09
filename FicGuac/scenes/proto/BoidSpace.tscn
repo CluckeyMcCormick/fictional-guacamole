@@ -29,6 +29,7 @@ script = ExtResource( 1 )
 position = Vector2( 600, 300 )
 show_cast_result = 1
 show_cast_points = true
+show_boid_path = true
 
 [node name="Obstacles" type="StaticBody2D" parent="."]
 editor/display_folded = true

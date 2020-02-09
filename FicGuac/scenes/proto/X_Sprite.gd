@@ -1,5 +1,7 @@
 extends Sprite
 
+var uncasted_pos
+
 # The difference classes of X/point
 enum X_CLASSES {
     NONE, NO_COLLIDE, COLLIDE,
