@@ -5,7 +5,7 @@ extends RigidBody2D
 # The length for each raycast at no speed
 const MIN_RAYCAST_MAGNITUDE = 30
 # Our length for each raycast at full speed
-const MAX_RAYCAST_MAGNITUDE = 75
+const MAX_RAYCAST_MAGNITUDE = 100
 
 # How many points we want to cast, including the central/forward ray. Points are
 # measured in a plus-STEP minus-STEP pattern. Ideally, an odd number
@@ -19,10 +19,6 @@ const RAYCAST_STEP = PI / (RAYCAST_STEPS_COUNT - 1)
 # (rotation + RAYCAST_LRC_RADS) are right, and those rays between those points
 # are center
 const RAYCAST_LRC_RADS = (3 * PI) / 14 # Appropriate "Forward" range for a microboid
-# The center is defined as the area which, if the boid continues forward, it will
-# die. But how do we define that? Well, if we take the boids width, and measure a
-# point's sin output, we can determine whether a point is "centered", left, or right.
-const RAYCAST_BOID_RADIUS = 8
 
 # Packed scene, used for debug and collision marking. Has convenience routines
 # for setting colors and removing itself.
@@ -140,7 +136,7 @@ func _process(delta):
         if RAYCAST_DEBUG:
             # Then we need to move up the points
             for debug_node in _cast_points:
-                debug_node.position = debug_node.uncasted_pos * _raycast_mag         
+                debug_node.position = debug_node.uncasted_pos * _raycast_mag
     
     # Calculate our movement, given heading, speed, and time delta
     var movement = Vector2(0, 0)
@@ -168,17 +164,10 @@ func _physics_process(delta):
     # and right. Anything in the "center" categories is something we WILL hit if
     # we continue on our current trajectory, so priority is given to avoiding
     # collisions in those areas
-    var left_blocked = false
-    var cen_left_blocked = false
-    var cen_right_blocked = false
-    var right_blocked = false
-    
-    # We'll also track the "shortest-distance-to-collision" for each quadrant.
-    # This will allow us to make an informed decision about which direction to
-    # go. We only check left and right since - when we use these - the center
-    # is blocked to us
-    var left_shortest = INF
-    var right_shortest = INF
+    var left_blocked = 0
+    var cen_left_blocked = 0
+    var cen_right_blocked = 0
+    var right_blocked = 0
     
     ray_step = 0
     for i in range(RAYCAST_STEPS_COUNT):
@@ -224,25 +213,22 @@ func _physics_process(delta):
             # If our step is negative, then we're probing the left
             var is_left = ray_step < 0
             # Calculate the length of this
-            var collision_length = (global_position - result.position).length()
             # Special case when ray step is 0
             if ray_step == 0:
-                cen_left_blocked = true
-                cen_right_blocked = true
+                cen_left_blocked += 1
+                cen_right_blocked += 1
             # CENTER LEFT
             elif is_center and is_left:
-                cen_left_blocked = true
+                cen_left_blocked += 1
             # CENTER RIGHT
             elif is_center and not is_left:
-                cen_right_blocked = true
+                cen_right_blocked += 1
             # LEFT
             elif not is_center and is_left:
-                left_blocked = true
-                left_shortest = min(left_shortest, collision_length)
+                left_blocked += 1
             # RIGHT
             elif not is_center and not is_left:
-                right_blocked = true
-                right_shortest = min(right_shortest, collision_length)
+                right_blocked += 1
         
         # Otherwise, update our step for the next go-around
         if i % 2 == 0:
@@ -251,35 +237,34 @@ func _physics_process(delta):
             ray_step = -ray_step
 
     # If the left center is blocked, but not the right center...    
-    if cen_left_blocked and not cen_right_blocked:
+    if cen_left_blocked > 0 and cen_right_blocked <= 0:
         # Then we need to rotate towards the center of center right
         _turn_dir = 1
     # If the right center has a collision, but the left center is open...
-    elif cen_right_blocked and not cen_left_blocked:
+    elif cen_right_blocked > 0 and cen_left_blocked <= 0:
         # Then we need to do the same as above - but with the left!
         _turn_dir = -1
     # Otherwise, if the whole center is blocked...
-    elif cen_left_blocked and cen_right_blocked:
+    elif cen_left_blocked > 0 and cen_right_blocked > 0:
         # Then we need to pick either the left or right quadrants
         # If left is blocked, but right is open,
-        if left_blocked and not right_blocked:
+        if left_blocked > 0 and right_blocked <= 0:
             _turn_dir = 1
         # Otherwise, if right is closed but the left is clear
-        elif right_blocked and not left_blocked:
+        elif right_blocked > 0 and left_blocked <= 0:
             _turn_dir = -1
-        # Otherwise, either both are clear and open or both are entirely
-        # blocked. Let's try picking the direction with the longest collision
-        # length. Only evaluate left and right, since we know we can't go forward
-        # So, if left is shortest
-        elif left_shortest < right_shortest:
-            _turn_dir = -1
-        # Otherwise, if right is shortest
-        elif right_shortest < left_shortest:
-            _turn_dir = 1
-        # Otherwise - they're equal?!?! Oh to hell with it - flip a coin and see
-        # which direction to go
         else:
-            if randi() % 2 == 0:
+            # Right, so now we KNOW that everything is blocked - but to what
+            # degree? Let's choose the least blocked - left or right?
+            # If the left is least blocked, turn left.
+            if left_blocked < right_blocked:
+                _turn_dir = -1
+            # If the right is least blocked, turn right.
+            elif right_blocked < left_blocked:
+                _turn_dir = 1
+            # Otherwise - they're both equal?!?! Oh to hell with it - flip a
+            # coin and see which direction to go
+            elif randi() % 2 == 0:
                 _turn_dir = 1
             else:
                 _turn_dir = -1
@@ -325,7 +310,7 @@ func _on_Boid_Micro_body_entered(body):
     _dead = true
     # Convert our artificial speed and rotational velocity into physics-end
     # velocity and rotation
-    self.linear_velocity = Vector2( cos(rotation), sin(rotation) ) * _arti_speed    
+    self.linear_velocity = Vector2( cos(rotation), sin(rotation) ) * _arti_speed
     # Calculate the rotational/angular velocity
     var rota_velo = clamp(
         MAX_ROT_SPEED * ( 1 - (_arti_speed / MAX_SPEED) ),
