@@ -1,14 +1,8 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://scenes/proto/BoidSpace.gd" type="Script" id=1]
 [ext_resource path="res://scenes/proto/Boid_Micro.tscn" type="PackedScene" id=2]
-
-[sub_resource type="CircleShape2D" id=1]
-radius = 128.5
-
-[sub_resource type="CapsuleShape2D" id=2]
-radius = 41.46
-height = 155.32
+[ext_resource path="res://scenes/proto/BounceBall.tscn" type="PackedScene" id=3]
 
 [sub_resource type="RectangleShape2D" id=3]
 extents = Vector2( 512, 10 )
@@ -30,20 +24,19 @@ position = Vector2( 600, 300 )
 show_cast_points = true
 show_boid_path = true
 
-[node name="Obstacles" type="StaticBody2D" parent="."]
-editor/display_folded = true
-position = Vector2( 512, 0 )
+[node name="Boid_Micro2" parent="." instance=ExtResource( 2 )]
+position = Vector2( 600, 202.57 )
+rotation = -3.03687
+show_cast_points = true
+show_boid_path = true
 
-[node name="ObCircle" type="CollisionShape2D" parent="Obstacles"]
-position = Vector2( -169.993, 521.803 )
-shape = SubResource( 1 )
-
-[node name="ObCapsule" type="CollisionShape2D" parent="Obstacles"]
-position = Vector2( 199.557, 121.212 )
-shape = SubResource( 2 )
+[node name="Boid_Micro3" parent="." instance=ExtResource( 2 )]
+position = Vector2( 505.68, 251.91 )
+rotation = 2.04204
+show_cast_points = true
+show_boid_path = true
 
 [node name="CollideBox" type="StaticBody2D" parent="."]
-editor/display_folded = true
 
 [node name="cbTop" type="CollisionShape2D" parent="CollideBox"]
 position = Vector2( 512, 0 )
@@ -60,3 +53,9 @@ shape = SubResource( 5 )
 [node name="cbBottom" type="CollisionShape2D" parent="CollideBox"]
 position = Vector2( 512, 600 )
 shape = SubResource( 6 )
+
+[node name="BounceBall" parent="." instance=ExtResource( 3 )]
+position = Vector2( 321.667, 243.092 )
+
+[node name="BounceBall2" parent="." instance=ExtResource( 3 )]
+position = Vector2( 738.457, 401.972 )
