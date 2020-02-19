@@ -4,16 +4,16 @@
 [ext_resource path="res://scenes/proto/Boid_Micro.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/proto/BounceBall.tscn" type="PackedScene" id=3]
 
-[sub_resource type="RectangleShape2D" id=3]
+[sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 512, 10 )
 
+[sub_resource type="RectangleShape2D" id=2]
+extents = Vector2( 10, 300 )
+
+[sub_resource type="RectangleShape2D" id=3]
+extents = Vector2( 10, 300 )
+
 [sub_resource type="RectangleShape2D" id=4]
-extents = Vector2( 10, 300 )
-
-[sub_resource type="RectangleShape2D" id=5]
-extents = Vector2( 10, 300 )
-
-[sub_resource type="RectangleShape2D" id=6]
 extents = Vector2( 512, 10 )
 
 [node name="Node2D" type="Node2D"]
@@ -21,41 +21,43 @@ script = ExtResource( 1 )
 
 [node name="Boid_Micro" parent="." instance=ExtResource( 2 )]
 position = Vector2( 600, 300 )
-show_cast_points = true
 show_boid_path = true
+show_guide_vector = true
 
 [node name="Boid_Micro2" parent="." instance=ExtResource( 2 )]
-position = Vector2( 600, 202.57 )
-rotation = -3.03687
-show_cast_points = true
+position = Vector2( 822.584, 58.9314 )
+rotation = -3.49066
 show_boid_path = true
+show_guide_vector = true
 
 [node name="Boid_Micro3" parent="." instance=ExtResource( 2 )]
-position = Vector2( 505.68, 251.91 )
-rotation = 2.04204
-show_cast_points = true
+position = Vector2( 356.044, 511.967 )
+rotation = -1.58825
 show_boid_path = true
+show_guide_vector = true
 
 [node name="CollideBox" type="StaticBody2D" parent="."]
+editor/display_folded = true
+visible = false
 
 [node name="cbTop" type="CollisionShape2D" parent="CollideBox"]
 position = Vector2( 512, 0 )
-shape = SubResource( 3 )
+shape = SubResource( 1 )
 
 [node name="cbLeft" type="CollisionShape2D" parent="CollideBox"]
 position = Vector2( 0, 300 )
-shape = SubResource( 4 )
+shape = SubResource( 2 )
 
 [node name="cbRight" type="CollisionShape2D" parent="CollideBox"]
 position = Vector2( 1024, 300 )
-shape = SubResource( 5 )
+shape = SubResource( 3 )
 
 [node name="cbBottom" type="CollisionShape2D" parent="CollideBox"]
 position = Vector2( 512, 600 )
-shape = SubResource( 6 )
+shape = SubResource( 4 )
 
 [node name="BounceBall" parent="." instance=ExtResource( 3 )]
-position = Vector2( 321.667, 243.092 )
+position = Vector2( 218.537, 211.171 )
 
 [node name="BounceBall2" parent="." instance=ExtResource( 3 )]
-position = Vector2( 738.457, 401.972 )
+position = Vector2( 896.249, 511.967 )

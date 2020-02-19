@@ -1,11 +1,8 @@
 extends Sprite
 
-var uncasted_pos
-
 # The difference classes of X/point
 enum X_CLASSES {
-    NONE, NO_COLLIDE, COLLIDE,
-    LEFT, LEFT_CENTER, CENTER, RIGHT_CENTER, RIGHT
+    NONE, NO_COLLIDE, COLLIDE, THREAT_VECTOR, CAST_POINT
 }
 
 func start_timer(time_sec):
@@ -13,6 +10,7 @@ func start_timer(time_sec):
 
 # Set the color for this point 
 func set_color(x_class):
+    # Palatable Blue - Color(0.352, 0.691, 0.731)
     match x_class:
         X_CLASSES.NO_COLLIDE:
             self.modulate = Color(0.0, 1.0, 0.0)
@@ -20,13 +18,10 @@ func set_color(x_class):
         X_CLASSES.COLLIDE:
             self.modulate = Color(1.0, 0.0, 0.0)
             
-        X_CLASSES.LEFT:
-            self.modulate = Color(0.352, 0.691, 0.731)
-            
-        X_CLASSES.LEFT_CENTER, X_CLASSES.CENTER, X_CLASSES.RIGHT_CENTER:
+        X_CLASSES.THREAT_VECTOR:
             self.modulate = Color(0.965, 0.863, 0.445)
             
-        X_CLASSES.RIGHT:
+        X_CLASSES.CAST_POINT:
             self.modulate = Color(0.645, 0.781, 0.508)
             
         _, X_CLASSES.NONE:
