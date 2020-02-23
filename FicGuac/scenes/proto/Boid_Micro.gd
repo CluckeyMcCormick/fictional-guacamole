@@ -33,17 +33,34 @@ export(bool) var show_boid_path
 export(bool) var show_guide_vector
 var guide_vector_sprite
 
-# The torque/rotation force that we'll use to rotate the boid
-const ROT_TORQUE = 250
+# The boid can only move "forward" (to it's current rotation) - but how fast is
+# the boid currently moving?
+var _drive_speed
+# Our minimum and maximum speed - we will default to minimum speed
+const DRIVE_SPEED_MIN = 5 
+const DRIVE_SPEED_MAX = 350
 
-# Our maximum driving force; if we encounter no obstacles, this will be our 
-const DRIVE_FORCE_MAX = 125
-const DRIVE_FORCE_MIN = -250
+# The rate-of-change for _drive_speed; we'll modulate this to either make the
+# boid speed up or slow down.
+var _drive_accelerate
+# What's our default acceleration?
+const DRIVE_DEFAULT_ACCEL = 350
+# We set the acceleration like so: we take DRIVE_DEFAULT_ACCEL and we multiply
+# it by a percentage. That percentage is derived from our "angle_to" the ideal
+# heading divided by this value, all subtracted from one. 
+# As an example, let's say this value is PI. That means, if our "angle_to" the
+# ideal heading was 0, we would go 100% of DRIVE_DEFAULT_ACCEL. If "angle_to"
+# was PI / 2, it would 50%. And, if "angle_to" was PI, it would be 0%.
+# This constant, then, acts as the angular acceleration threshold - turns with
+# an arc beyond this size will cause the boid to slow down more and more. So, a
+# lower value of PI (i.e. PI / 6) will cause the boid to slow down more heavily
+# for turns
+const DRIVE_ACCEL_ARC = PI / 6
 
-# What is our current speed?
-var _arti_speed
-# What is our current raycast magnitude?
-var _raycast_mag
+# When we need to turn, we'll set the angular velocity to (at most) this value
+# 15 seems to work pretty well
+const DRIVE_ROTATIONAL = 12
+
 # Are we dead? Did we die?
 var _dead = false
 
@@ -57,8 +74,9 @@ var obstacle_members = {}
 func _ready():
     var ray_step
     var new_angle
-    _arti_speed = 0
-    _raycast_mag = RAYCAST_MAGNITUDE
+    
+    _drive_speed = DRIVE_SPEED_MIN
+    _drive_accelerate = DRIVE_DEFAULT_ACCEL
     
     if show_cast_points:
         ray_step = 0
@@ -67,7 +85,7 @@ func _ready():
             new_angle = ray_step * RAYCAST_STEP
             
             # Calculate the raycasted/shifted point
-            var casted_pos = Vector2(_raycast_mag, 0).rotated(new_angle)
+            var casted_pos = Vector2(RAYCAST_MAGNITUDE, 0).rotated(new_angle)
                     
             # Add a point at the shifted location
             var debug_node = X_SPRITE_SCENE.instance() # Create a new sprite!
@@ -107,7 +125,7 @@ func _integrate_forces(body_state):
         var curr_angle = self.rotation + (ray_step * RAYCAST_STEP)
         
         # Calculate the raycasted/shifted point
-        var casted_pos = Vector2(_raycast_mag, 0).rotated(curr_angle)
+        var casted_pos = Vector2(RAYCAST_MAGNITUDE, 0).rotated(curr_angle)
         casted_pos += global_position
         
         # Get the result of our collision raycast
@@ -169,14 +187,11 @@ func _integrate_forces(body_state):
     # overshoot the angle we need to turn to. Our angle should either be between
     # 0 & -PI or 0 & PI. Either way, we'll never have to go longer than an arc
     # length of PI - so set the turn force as a percentage of PI
-    set_applied_torque( ROT_TORQUE * (turn_angle / PI) )
-
+    set_angular_velocity( DRIVE_ROTATIONAL * (turn_angle / PI) )
     
-    var drive = DRIVE_FORCE_MAX 
-    drive *= 1 - ( abs(turn_angle) / (PI / 6) )
-    #drive *= 1 - ( abs(turn_angle) / RAYCAST_LRC_RADS )
-    drive = clamp( drive, DRIVE_FORCE_MIN, DRIVE_FORCE_MAX)
-    set_applied_force( Vector2(drive, 0).rotated(rotation) )
+    _drive_accelerate = DRIVE_DEFAULT_ACCEL 
+    _drive_accelerate *= 1 - ( abs(turn_angle) / PI )
+    set_linear_velocity( Vector2(_drive_speed, 0).rotated(rotation) )
     
     if show_boid_path:
         var debug_node = X_SPRITE_SCENE.instance() # Create a new sprite!
@@ -187,6 +202,11 @@ func _physics_process(delta):
     # Skip if dead
     if _dead:
         return
+    
+    # Set the new drive speed, then clamp the result
+    _drive_speed = _drive_speed + (_drive_accelerate * delta)
+    _drive_speed = clamp( _drive_speed, DRIVE_SPEED_MIN, DRIVE_SPEED_MAX)
+    
 
 func _input(event):
     if event.is_action_pressed("debug_print"):
