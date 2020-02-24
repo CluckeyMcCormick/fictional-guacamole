@@ -3,10 +3,9 @@ extends RigidBody2D
 # To scan for danger, we'll raycast in front of our boid. But how big is our
 # raycast?
 const RAYCAST_MAGNITUDE = 100
-
 # How many points we want to cast, including the central/forward ray. Points are
 # measured in a plus-STEP minus-STEP pattern. Ideally, an odd number
-const RAYCAST_STEPS_COUNT = 19
+const RAYCAST_STEPS_COUNT = 35#19
 # When we raycast, we cast the points in front of the boid using the unit
 # circle. We start in "front" of the Boid, and cast extra points using this step
 const RAYCAST_STEP = (2 * PI) / (RAYCAST_STEPS_COUNT - 1)
@@ -37,7 +36,7 @@ var guide_vector_sprite
 # the boid currently moving?
 var _drive_speed
 # Our minimum and maximum speed - we will default to minimum speed
-const DRIVE_SPEED_MIN = 5 
+const DRIVE_SPEED_MIN = 5
 const DRIVE_SPEED_MAX = 350
 
 # The rate-of-change for _drive_speed; we'll modulate this to either make the
@@ -58,17 +57,20 @@ const DRIVE_DEFAULT_ACCEL = 350
 const DRIVE_ACCEL_ARC = PI / 6
 
 # When we need to turn, we'll set the angular velocity to (at most) this value
-# 15 seems to work pretty well
+# Anywhere from 12 to 15... units seems to work pretty well
 const DRIVE_ROTATIONAL = 12
 
 # Are we dead? Did we die?
 var _dead = false
 
-# The container zfor bodies we are currently tracking as our "flock"
+# What team are we on?
+var boid_team = "Best Boids"
+# The container for bodies we are currently tracking as our "flock"
 var flock_members = {}
 
-# The container for bodies we are currently tracking as our "dangers"
-var obstacle_members = {}
+#
+# !--> Ready, Process, and Miscellaneous Functions
+#
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -111,13 +113,66 @@ func _ready():
         guide_vector_sprite.modulate = Color.royalblue
         guide_vector_sprite.scale = Vector2(1, 1) * 0.05
 
+func _input(event):
+    if event.is_action_pressed("debug_print"):
+        print(rotation)
+        print(rotation_degrees)
+
+# Kills the boid, playing the animation and doing any other necessary actions
+func die():
+    # We're dead. We died.
+    _dead = true
+    
+    # Change our collision layer. Now that we're dead, we're no longer a boid -
+    # we are merely an obstacle
+    set_collision_layer_bit(1, false)
+    set_collision_layer_bit(0, true)
+    
+    if show_guide_vector:
+        guide_vector_sprite.visible = false
+    
+    # Set our layers up so that we're an obstacle
+    # Make ourselves explode
+    $Explosion.visible = true
+    $Explosion/ExplosionTimer.start()
+    $Explosion/ExplosionPlayer.play("explode")
+#
+# !--> Driving Functions
+#
 func _integrate_forces(body_state):
     # Skip if dead
     if _dead:
         return
     
+    var guide_vector = Vector2(RAYCAST_MAGNITUDE, 0)
+    guide_vector = calculate_avoidance_vector(body_state)
+    
+    # If we're showing a threat vector, set the position to the threat sum
+    if show_guide_vector:
+        guide_vector_sprite.global_position = global_position + guide_vector
+    
+    # So now we have a summed-up threat vector that's telling us which way to
+    # go. Let's find out how much we have to turn - that will inform our
+    # decision making
+    var turn_angle = self.get_angle_to(global_position + guide_vector)
+    # We need to scale our torque (rotational force) so that we don't radically
+    # overshoot the angle we need to turn to. Our angle should either be between
+    # 0 & -PI or 0 & PI. Either way, we'll never have to go longer than an arc
+    # length of PI - so set the turn force as a percentage of PI
+    set_angular_velocity( DRIVE_ROTATIONAL * (turn_angle / PI) )
+    
+    _drive_accelerate = DRIVE_DEFAULT_ACCEL
+    _drive_accelerate *= 1 - ( abs(turn_angle) / PI )
+    set_linear_velocity( Vector2(_drive_speed, 0).rotated(rotation) )
+    
+    if show_boid_path:
+        var debug_node = X_SPRITE_SCENE.instance() # Create a new sprite!
+        debug_node.position = position
+        owner.add_child(debug_node) # Add it as a child of the parent node
+
+func calculate_avoidance_vector(body_state):
     var space_state = body_state.get_space_state()
-    var threat_sum = Vector2.ZERO
+    var threat_sum = Vector2(0, 0)
     var ray_step = 0
     
     for i in range(RAYCAST_STEPS_COUNT):
@@ -128,8 +183,16 @@ func _integrate_forces(body_state):
         var casted_pos = Vector2(RAYCAST_MAGNITUDE, 0).rotated(curr_angle)
         casted_pos += global_position
         
+        # We do want to exclude some items - starting with our flock
+        var excludes = flock_members.values()
+        # Okay, if that had no values, default to an empty array
+        if not excludes:
+            excludes = []
+        # We obviously want to exclude ourselves
+        excludes.append(self)
+        
         # Get the result of our collision raycast
-        var result = space_state.intersect_ray(global_position, casted_pos, [self])
+        var result = space_state.intersect_ray(global_position, casted_pos, excludes)
 
         # Render our collision, depending on whether we've enabled the debug or not
         match show_cast_result:
@@ -174,30 +237,17 @@ func _integrate_forces(body_state):
             ray_step = abs(ray_step) + 1
         else:
             ray_step = -ray_step
+            
+    return threat_sum
+
+func calculate_alignment_vector(body_state):
     
-    # If we're showing a threat vector, set the position to the threat sum
-    if show_guide_vector:
-        guide_vector_sprite.global_position = global_position + threat_sum
+    var alignment_sum = Vector2(0, 0)
     
-    # So now we have a summed-up threat vector that's telling us which way to
-    # go. Let's find out how much we have to turn - that will inform our
-    # decision making
-    var turn_angle = self.get_angle_to(global_position + threat_sum)
-    # We need to scale our torque (rotational force) so that we don't radically
-    # overshoot the angle we need to turn to. Our angle should either be between
-    # 0 & -PI or 0 & PI. Either way, we'll never have to go longer than an arc
-    # length of PI - so set the turn force as a percentage of PI
-    set_angular_velocity( DRIVE_ROTATIONAL * (turn_angle / PI) )
+       
+func calculate_cohesion_vector(body_state):
+    pass
     
-    _drive_accelerate = DRIVE_DEFAULT_ACCEL 
-    _drive_accelerate *= 1 - ( abs(turn_angle) / PI )
-    set_linear_velocity( Vector2(_drive_speed, 0).rotated(rotation) )
-    
-    if show_boid_path:
-        var debug_node = X_SPRITE_SCENE.instance() # Create a new sprite!
-        debug_node.position = position
-        owner.add_child(debug_node) # Add it as a child of the parent node
-        
 func _physics_process(delta):
     # Skip if dead
     if _dead:
@@ -206,12 +256,10 @@ func _physics_process(delta):
     # Set the new drive speed, then clamp the result
     _drive_speed = _drive_speed + (_drive_accelerate * delta)
     _drive_speed = clamp( _drive_speed, DRIVE_SPEED_MIN, DRIVE_SPEED_MAX)
-    
 
-func _input(event):
-    if event.is_action_pressed("debug_print"):
-        print(rotation)
-        print(rotation_degrees)
+#
+# !--> Singal Functions
+#
 
 # An area has entered our detection area
 # This might be an attack guide of some sort
@@ -220,10 +268,21 @@ func _input(event):
 # This might be an attack guide of some sort
 
 # A physical body has entered our flock detection zone
-# This is either another boid, an obstacle, or a projectile
+# That means it was on the boid layer...
+func _on_DangerFlock_body_entered(body):
+    # Get the other body's boid_team
+    var other_boid_team = body.get("boid_team")
+    # If the boid team doesn't match ours, we're done here
+    if other_boid_team != boid_team:
+        return
+    # Stuff it in the dict
+    flock_members[body.name] = body
 
 # A physical body has exited our detection zone
 # As above, this is either another boid, an obstacle, or a projectile
+func _on_DangerFlock_body_exited(body):
+    # Remove the body, if applicable
+    flock_members.erase(body.name)
 
 # Called when the explosion animation has finished; that means it's time to
 # remove this boid.
@@ -242,12 +301,10 @@ func _on_Boid_Micro_body_entered(body):
     # If we died, we don't want to do anything
     if _dead:
         return
-    # We're dead. We died.
-    _dead = true
-    # Clear the applied force
-    set_applied_torque(0)
-    set_applied_force( Vector2.ZERO )
-    # Make ourselves explode
-    $Explosion.visible = true
-    $Explosion/ExplosionTimer.start()
-    $Explosion/ExplosionPlayer.play("explode")
+    # Get the other body's boid_team
+    var other_boid_team = body.get("boid_team")
+    # If it matches ours, then we're done. We ignore same-team collisions
+    if other_boid_team == boid_team:
+        return
+    # Otherwise - DIE!
+    self.die()

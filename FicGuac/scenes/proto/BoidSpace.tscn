@@ -18,24 +18,40 @@ extents = Vector2( 512, 10 )
 
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 1 )
-engine_speed = 0.5
 
 [node name="Boid_Micro" parent="." instance=ExtResource( 2 )]
 position = Vector2( 600, 300 )
+show_cast_points = true
 show_boid_path = true
 show_guide_vector = true
 
 [node name="Boid_Micro2" parent="." instance=ExtResource( 2 )]
 position = Vector2( 822.584, 58.9314 )
 rotation = -3.49066
-show_boid_path = true
-show_guide_vector = true
 
 [node name="Boid_Micro3" parent="." instance=ExtResource( 2 )]
-position = Vector2( 356.044, 511.967 )
+position = Vector2( 308.789, 501.943 )
 rotation = -1.58825
-show_boid_path = true
-show_guide_vector = true
+
+[node name="Boid_Micro4" parent="." instance=ExtResource( 2 )]
+position = Vector2( 449.122, 424.617 )
+rotation = -1.58825
+
+[node name="Boid_Micro5" parent="." instance=ExtResource( 2 )]
+position = Vector2( 188.503, 408.865 )
+rotation = -1.58825
+
+[node name="Boid_Micro6" parent="." instance=ExtResource( 2 )]
+position = Vector2( 585.16, 509.103 )
+rotation = -1.58825
+
+[node name="Boid_Micro7" parent="." instance=ExtResource( 2 )]
+position = Vector2( 51.0337, 431.776 )
+rotation = -1.58825
+
+[node name="Boid_Micro8" parent="." instance=ExtResource( 2 )]
+position = Vector2( 413.323, 290.011 )
+rotation = -1.58825
 
 [node name="CollideBox" type="StaticBody2D" parent="."]
 editor/display_folded = true

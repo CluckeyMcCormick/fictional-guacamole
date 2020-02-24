@@ -47,6 +47,11 @@ debug_print={
  ]
 }
 
+[layer_names]
+
+2d_physics/layer_1="Universal Obstacle"
+2d_physics/layer_2="Boids"
+
 [rendering]
 
 quality/2d/use_pixel_snap=true
