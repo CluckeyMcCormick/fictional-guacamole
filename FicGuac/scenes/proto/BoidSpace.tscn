@@ -1,8 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://scenes/proto/BoidSpace.gd" type="Script" id=1]
-[ext_resource path="res://scenes/proto/boid/Boid_Micro.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/proto/boid/BoidMicro.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/proto/BounceBall.tscn" type="PackedScene" id=3]
+[ext_resource path="res://scenes/proto/boid/BoidFaction.tscn" type="PackedScene" id=4]
 
 [sub_resource type="RectangleShape2D" id=1]
 extents = Vector2( 512, 10 )
@@ -19,19 +20,19 @@ extents = Vector2( 512, 10 )
 [node name="Node2D" type="Node2D"]
 script = ExtResource( 1 )
 
-[node name="Boid_Micro" parent="." instance=ExtResource( 2 )]
+[node name="boid01" parent="." instance=ExtResource( 2 )]
 position = Vector2( 428.16, 256.323 )
 
-[node name="Boid_Micro2" parent="." instance=ExtResource( 2 )]
+[node name="boid02" parent="." instance=ExtResource( 2 )]
 position = Vector2( 337.946, 226.252 )
 
-[node name="Boid_Micro3" parent="." instance=ExtResource( 2 )]
+[node name="boid03" parent="." instance=ExtResource( 2 )]
 position = Vector2( 421, 327.922 )
 
-[node name="Boid_Micro4" parent="." instance=ExtResource( 2 )]
+[node name="boid04" parent="." instance=ExtResource( 2 )]
 position = Vector2( 349.401, 317.898 )
 
-[node name="Boid_Micro5" parent="." instance=ExtResource( 2 )]
+[node name="boid05" parent="." instance=ExtResource( 2 )]
 position = Vector2( 403.817, 187.589 )
 
 [node name="CollideBox" type="StaticBody2D" parent="."]
@@ -59,3 +60,5 @@ position = Vector2( 218.537, 211.171 )
 
 [node name="BounceBall2" parent="." instance=ExtResource( 3 )]
 position = Vector2( 896.249, 511.967 )
+
+[node name="MasterFaction" parent="." instance=ExtResource( 4 )]

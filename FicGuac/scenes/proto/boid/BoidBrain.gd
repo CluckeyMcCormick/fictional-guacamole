@@ -60,8 +60,8 @@ const DRIVE_ACCEL_ARC = PI / 6
 # Anywhere from 12 to 15... units seems to work pretty well
 export(int) var DRIVE_ROTATIONAL = 12
 
-# Are we dead? Did we die?
-var _dead = false
+# What faction are we a part of?
+var faction = null
 
 # The container for bodies we are currently tracking as our "flock"
 var flock_members = {}
@@ -110,28 +110,32 @@ func _ready():
         guide_vector_sprite.position = Vector2.ZERO
         guide_vector_sprite.modulate = Color.royalblue
         guide_vector_sprite.scale = Vector2(1, 1) * 0.05
+            
+# Sets the boid to TRULY boid mode
+func set_mode_boid(boid_body):
+    boid_body.set_collision_layer_bit(1, true)
+    boid_body.set_collision_layer_bit(0, false)
+    boid_body.set_collision_mask_bit(1, false)
+    boid_body.set_collision_mask_bit(0, true)
+    if show_guide_vector:
+        guide_vector_sprite.visible = true
 
-# Sets certain variables relating to the boids team - mostly collision and mask
-# nonsense
-func change_team(team):
-    # Process depending on team
-    match team:
-        # If null, the boid has been rendered as an obstacle
-        null:
-            owner.set_collision_layer_bit(1, false)
-            owner.set_collision_layer_bit(0, true)
-            owner.set_collision_mask_bit(1, false)
-            owner.set_collision_mask_bit(1, true)
-            if show_guide_vector:
-                guide_vector_sprite.visible = false
-        # By default, assert status as a regular boid
-        _:
-            owner.set_collision_layer_bit(1, true)
-            owner.set_collision_layer_bit(0, false)
-            owner.set_collision_mask_bit(1, true)
-            owner.set_collision_mask_bit(1, false)
-            if show_guide_vector:
-                guide_vector_sprite.visible = true
+# Sets the boid to obstacle mode
+func set_mode_obstacle(boid_body):
+    boid_body.set_collision_layer_bit(1, false)
+    boid_body.set_collision_layer_bit(0, true)
+    boid_body.set_collision_mask_bit(1, true)
+    boid_body.set_collision_mask_bit(0, false)
+    if show_guide_vector:
+        guide_vector_sprite.visible = false
+
+func deactivate():
+    $FlockArea.monitorable = false
+    $FlockArea.monitoring = false
+
+func activate():
+    $FlockArea.monitorable = true
+    $FlockArea.monitoring = true
 
 #
 # !--> Driving Functions
@@ -141,7 +145,8 @@ func boid_physics_process(delta):
     _drive_speed = _drive_speed + (_drive_accelerate * delta)
     _drive_speed = clamp( _drive_speed, DRIVE_SPEED_MIN, DRIVE_SPEED_MAX)
 
-func boid_integrate_forces(body_state):   
+func boid_integrate_forces(body_state):
+    
     var guide_vector = Vector2(RAYCAST_MAGNITUDE, 0)
     guide_vector = calculate_avoidance_vector(body_state)
     
@@ -169,7 +174,7 @@ func boid_integrate_forces(body_state):
     
     if show_boid_path:
         var debug_node = X_SPRITE_SCENE.instance() # Create a new sprite!
-        debug_node.position = position
+        debug_node.position = global_position
         owner.owner.add_child(debug_node) # Add it as a child of the parent node's parent
     
     # Return the linear velocity and angular velocity as a sort of pseudo-tuple.
@@ -258,15 +263,32 @@ func calculate_cohesion_vector(body_state):
 
 # A physical body has entered our flock detection zone
 # That means it was on the boid layer...
-func _on_DangerFlock_body_entered(body):
-    # If the other body's boid team doesn't match ours, we're done here
-    if not owner.team_match(body):
+func _on_FlockArea_body_entered(body):
+    # Ensure that both us and the body have a faction
+    if not self.get("faction") or not body.get("faction"):
+        return
+    # If the other body's faction isn't friendly with ours, exit
+    if not self.faction.is_friendly(body.faction):
         return
     # Stuff it in the dict
     flock_members[body.name] = body
 
+func _on_DangerArea_body_entered(body):
+    # Remove the body, if applicable
+    flock_members.erase(body.name)
+
 # A physical body has exited our detection zone
 # As above, this is either another boid, an obstacle, or a projectile
-func _on_DangerFlock_body_exited(body):
+func _on_DangerArea_body_exited(body):
+    # Ensure that both us and the body have a faction
+    if not self.get("faction") or not body.get("faction"):
+        return
+    # If the other body's faction isn't friendly with ours, exit
+    if not self.faction.is_friendly(body.faction):
+        return
+    # Stuff it in the dict
+    flock_members[body.name] = body
+
+func _on_FlockArea_body_exited(body):
     # Remove the body, if applicable
     flock_members.erase(body.name)
