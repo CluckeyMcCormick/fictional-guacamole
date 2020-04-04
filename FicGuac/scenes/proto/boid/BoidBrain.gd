@@ -146,9 +146,14 @@ func boid_physics_process(delta):
     _drive_speed = clamp( _drive_speed, DRIVE_SPEED_MIN, DRIVE_SPEED_MAX)
 
 func boid_integrate_forces(body_state):
+    # TODO: Actually remember how weighted averaging works
     
     var guide_vector = Vector2(RAYCAST_MAGNITUDE, 0)
-    guide_vector = calculate_avoidance_vector(body_state)
+    guide_vector = calculate_avoidance_vector(body_state) * .9
+    guide_vector += calculate_alignment_vector(body_state) * .875 #* .75
+    guide_vector += calculate_cohesion_vector(body_state) * .125 #* .25
+    
+    guide_vector /= 3
     
     # If we're showing a threat vector, set the position to the threat sum
     if show_guide_vector:
@@ -252,10 +257,51 @@ func calculate_avoidance_vector(body_state):
     return threat_sum
 
 func calculate_alignment_vector(body_state):
-    pass  
+    # Create a blank vector for us to add to
+    var align_sum = Vector2.ZERO
+    
+    # If we don't have any flock members, back out now. Otherwise, we might
+    # divide by zero, get a NAN vector, and then everything would be REALLY bad
+    if flock_members.size() <= 0:
+        return align_sum
+    
+    # For each boid in flock members...
+    for flock_boid in flock_members.values():
+        # Create a standard "forward" vector
+        var rotated_alignment = Vector2(10, 0)
+        # Rotate it by this boid's heading
+        rotated_alignment = rotated_alignment.rotated( flock_boid.rotation )
+        # Add that to our "blank" vector
+        align_sum += rotated_alignment
+        
+    # Divide the total vector by the boid count to get the "average" alignment
+    # vector
+    align_sum /= flock_members.size()
+    
+    # Send it!
+    return align_sum
        
 func calculate_cohesion_vector(body_state):
-    pass
+    # Create a blank vector for us to add to
+    var cohesion_sum = Vector2.ZERO
+    
+    # If we don't have any flock members, back out now. Otherwise, we might
+    # divide by zero, get a NAN vector, and then everything would be REALLY bad
+    if flock_members.size() <= 0:
+        return cohesion_sum
+    
+    # For each boid in flock members...
+    for flock_boid in flock_members.values():
+        # Calculate the vector from brain-boid to current-flock-boid, add it to
+        # our "blank" vector
+        cohesion_sum += flock_boid.global_position - owner.global_position
+        
+    # Divide the total vector by the boid count to get the "average" cohesion
+    # position vector
+    cohesion_sum /= flock_members.size()
+    
+    # Send it!
+    return cohesion_sum
 
 #
 # !--> Singal Functions
