@@ -3,9 +3,9 @@
 [ext_resource path="res://scenes/proto/boid/BoidMicro.gd" type="Script" id=1]
 [ext_resource path="res://scenes/proto/boid/BoidBrain.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/proto/boid03.png" type="Texture" id=3]
-[ext_resource path="res://assets/proto/boid01.png" type="Texture" id=4]
+[ext_resource path="res://assets/proto/boid04.png" type="Texture" id=4]
 [ext_resource path="res://assets/proto/boid02.png" type="Texture" id=5]
-[ext_resource path="res://assets/proto/boid04.png" type="Texture" id=6]
+[ext_resource path="res://assets/proto/boid01.png" type="Texture" id=6]
 [ext_resource path="res://assets/explosionBig.png" type="Texture" id=7]
 
 [sub_resource type="SpriteFrames" id=1]
@@ -16,9 +16,9 @@ animations = [ {
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 4 ) ],
-"loop": false,
-"name": "boid01",
-"speed": 0.0
+"loop": true,
+"name": "boid04",
+"speed": 5.0
 }, {
 "frames": [ ExtResource( 5 ) ],
 "loop": true,
@@ -26,9 +26,9 @@ animations = [ {
 "speed": 5.0
 }, {
 "frames": [ ExtResource( 6 ) ],
-"loop": true,
-"name": "boid04",
-"speed": 5.0
+"loop": false,
+"name": "boid01",
+"speed": 0.0
 } ]
 
 [sub_resource type="Animation" id=2]

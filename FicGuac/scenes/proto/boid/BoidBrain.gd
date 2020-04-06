@@ -2,7 +2,9 @@ extends Node2D
 
 # To scan for danger, we'll raycast in front of our boid. But how big is our
 # raycast?
-export(int) var RAYCAST_MAGNITUDE = 100
+# This needs to be constant since other elements of the BoidBrain (Flock &
+# Cohesion areas) are directly related to this size
+const RAYCAST_MAGNITUDE = 100
 # How many points we want to cast, including the central/forward ray. Points are
 # measured in a plus-STEP minus-STEP pattern. Ideally, an odd number
 export(int) var RAYCAST_STEPS_COUNT = 35 #19
@@ -65,6 +67,9 @@ var faction = null
 
 # The container for bodies we are currently tracking as our "flock"
 var flock_members = {}
+# The container for bodies we are currently tracking for the purposes of
+# cohesion
+var cohesion_members = {}
 
 #
 # !--> Ready, Process, and Miscellaneous Functions
@@ -130,12 +135,26 @@ func set_mode_obstacle(boid_body):
         guide_vector_sprite.visible = false
 
 func deactivate():
+    # Disable the flock area
     $FlockArea.monitorable = false
     $FlockArea.monitoring = false
+    # Disable the danger area
+    $DangerArea.monitorable = false
+    $DangerArea.monitoring = false
+    # Disable the cohesion area
+    $CohesionArea.monitorable = false
+    $CohesionArea.monitoring = false
 
 func activate():
+    # Enable the flock area
     $FlockArea.monitorable = true
     $FlockArea.monitoring = true
+    # Enable the danger area
+    $DangerArea.monitorable = true
+    $DangerArea.monitoring = true
+    # Enable the cohesion area
+    $CohesionArea.monitorable = true
+    $CohesionArea.monitoring = true
 
 #
 # !--> Driving Functions
@@ -149,15 +168,15 @@ func boid_integrate_forces(body_state):
     # TODO: Actually remember how weighted averaging works
     
     var guide_vector = Vector2(RAYCAST_MAGNITUDE, 0)
-    guide_vector = calculate_avoidance_vector(body_state) * .9
-    guide_vector += calculate_alignment_vector(body_state) * .875 #* .75
-    guide_vector += calculate_cohesion_vector(body_state) * .125 #* .25
+    guide_vector = calculate_avoidance_vector(body_state) #* .9
+    guide_vector += calculate_alignment_vector(body_state) #* .875 #* .75
+    guide_vector += calculate_cohesion_vector(body_state) #* .125 #* .25
     
-    guide_vector /= 3
+    #guide_vector /= 3
     
     # If we're showing a threat vector, set the position to the threat sum
     if show_guide_vector:
-        guide_vector_sprite.global_position = owner.global_position + guide_vector
+        guide_vector_sprite.global_position = owner.global_position + (guide_vector * .5)
     
     # So now we have a summed-up threat vector that's telling us which way to
     # go. Let's find out how much we have to turn - that will inform our
@@ -285,20 +304,20 @@ func calculate_cohesion_vector(body_state):
     # Create a blank vector for us to add to
     var cohesion_sum = Vector2.ZERO
     
-    # If we don't have any flock members, back out now. Otherwise, we might
+    # If we don't have any cohesion members, back out now. Otherwise, we might
     # divide by zero, get a NAN vector, and then everything would be REALLY bad
-    if flock_members.size() <= 0:
+    if cohesion_members.size() <= 0:
         return cohesion_sum
     
-    # For each boid in flock members...
-    for flock_boid in flock_members.values():
-        # Calculate the vector from brain-boid to current-flock-boid, add it to
-        # our "blank" vector
-        cohesion_sum += flock_boid.global_position - owner.global_position
+    # For each boid in cohesion-flock members...
+    for coho_boid in cohesion_members.values():
+        # Calculate the vector from brain-boid to current-cohesion-boid, add it
+        # to our "blank" vector
+        cohesion_sum += coho_boid.global_position - owner.global_position
         
     # Divide the total vector by the boid count to get the "average" cohesion
     # position vector
-    cohesion_sum /= flock_members.size()
+    cohesion_sum /= cohesion_members.size()
     
     # Send it!
     return cohesion_sum
@@ -322,6 +341,17 @@ func _on_FlockArea_body_entered(body):
 func _on_DangerArea_body_entered(body):
     # Remove the body, if applicable
     flock_members.erase(body.name)
+    
+# We track flock members to cohese with  
+func _on_CohesionArea_body_entered(body):
+    # Ensure that both us and the body have a faction
+    if not self.get("faction") or not body.get("faction"):
+        return
+    # If the other body's faction isn't friendly with ours, exit
+    if not self.faction.is_friendly(body.faction):
+        return
+    # Stuff it in the dict
+    cohesion_members[body.name] = body
 
 # A physical body has exited our detection zone
 # As above, this is either another boid, an obstacle, or a projectile
@@ -338,3 +368,7 @@ func _on_DangerArea_body_exited(body):
 func _on_FlockArea_body_exited(body):
     # Remove the body, if applicable
     flock_members.erase(body.name)
+
+func _on_CohesionArea_body_exited(body):
+    # Remove the body, if applicable
+    cohesion_members.erase(body.name)

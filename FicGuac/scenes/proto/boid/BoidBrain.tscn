@@ -24,7 +24,16 @@ collision_mask = 2
 
 [node name="DangerDetect" type="CollisionShape2D" parent="DangerArea"]
 shape = SubResource( 2 )
+
+[node name="CohesionArea" type="Area2D" parent="."]
+collision_layer = 0
+collision_mask = 2
+
+[node name="CohesionDetect" type="CollisionPolygon2D" parent="CohesionArea"]
+polygon = PoolVector2Array( 50.0342, -86.6257, 70.738, -70.6757, 86.6144, -50.0237, 96.6681, -25.7934, 99.9872, 0.0324116, 96.5713, 25.9839, 86.564, 50.095, 70.5978, 70.86, 50.017, 86.6537, 25.9093, 96.5634, 0.0181408, 0.0185499, 25.8957, -96.5942 )
 [connection signal="body_entered" from="FlockArea" to="." method="_on_FlockArea_body_entered"]
 [connection signal="body_exited" from="FlockArea" to="." method="_on_FlockArea_body_exited"]
 [connection signal="body_entered" from="DangerArea" to="." method="_on_DangerArea_body_entered"]
 [connection signal="body_exited" from="DangerArea" to="." method="_on_DangerArea_body_exited"]
+[connection signal="body_entered" from="CohesionArea" to="." method="_on_CohesionArea_body_entered"]
+[connection signal="body_exited" from="CohesionArea" to="." method="_on_CohesionArea_body_exited"]
