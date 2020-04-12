@@ -13,12 +13,6 @@ func _ready():
     if(randomize_movement):
         randomize()
     Engine.time_scale = engine_speed
-    
-    $boid01.set_faction($MasterFaction)
-    $boid02.set_faction($MasterFaction)
-    $boid03.set_faction($MasterFaction)
-    $boid04.set_faction($MasterFaction)
-    $boid05.set_faction($MasterFaction)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
