@@ -71,6 +71,9 @@ var flock_members = {}
 # cohesion
 var cohesion_members = {}
 
+# Get the global variables - these will have the scalars for our 3 input factors
+onready var boid_globals = get_node("/root/BoidGlobals")
+
 #
 # !--> Ready, Process, and Miscellaneous Functions
 #
@@ -168,11 +171,25 @@ func boid_integrate_forces(body_state):
     # TODO: Actually remember how weighted averaging works
     
     var guide_vector = Vector2(RAYCAST_MAGNITUDE, 0)
-    guide_vector = calculate_avoidance_vector(body_state) #* .9
-    guide_vector += calculate_alignment_vector(body_state) #* .875 #* .75
-    guide_vector += calculate_cohesion_vector(body_state) #* .125 #* .25
     
-    #guide_vector /= 3
+    # Get the boid's globalized scalar values
+    var avoid_scale = boid_globals.avoidance
+    var align_scale = boid_globals.alignment
+    var cohes_scale = boid_globals.cohesion
+    
+    # Catch the scale in case it's too small
+    if avoid_scale <= 0:
+        avoid_scale = boid_globals.SCALAR_MIN
+    if align_scale <= 0:
+        align_scale = boid_globals.SCALAR_MIN
+    if cohes_scale <= 0:
+        cohes_scale = boid_globals.SCALAR_MIN       
+    
+    guide_vector = avoid_scale * calculate_avoidance_vector(body_state) #* .9
+    guide_vector += align_scale * calculate_alignment_vector(body_state) #* .875 #* .75
+    guide_vector += cohes_scale * calculate_cohesion_vector(body_state) #* .125 #* .25
+    
+    #guide_vector /= avoid_scale + align_scale + cohes_scale
     
     # If we're showing a threat vector, set the position to the threat sum
     if show_guide_vector:
@@ -287,7 +304,7 @@ func calculate_alignment_vector(body_state):
     # For each boid in flock members...
     for flock_boid in flock_members.values():
         # Create a standard "forward" vector
-        var rotated_alignment = Vector2(10, 0)
+        var rotated_alignment = Vector2(1, 0)
         # Rotate it by this boid's heading
         rotated_alignment = rotated_alignment.rotated( flock_boid.rotation )
         # Add that to our "blank" vector

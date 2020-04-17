@@ -92,6 +92,5 @@ func _on_Boid_Micro_body_entered(body):
     # If the body has a faction and it's friendly with ours, the do nothing
     if body.get("faction") and not self.faction.is_friendly(body.faction):
         return
-    
     # Otherwise - DIE!
     self.die()
