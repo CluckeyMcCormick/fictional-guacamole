@@ -1,0 +1,4 @@
+
+terrain.png was derived from *Blowhard 2: Blow Harder* by *surt*.
+
+explosionBig.png was by Justin Dalessandro (ColdOneK)
