@@ -4,10 +4,12 @@ extends Camera
 # var a = 2
 # var b = "text"
 
+const MOVE_RATE = 5
+
 # To move forward, backward, left and right, we need to translate the camera -
 # which we can do with these vectors. Neat!
-var MOVE_RATE_FORW_BACK = Vector3(-1, 0, -1)#.rotated( Vector3(0, 1, 0), PI / 2)
-var MOVE_RATE_LEFT_RIGHT = Vector3(1, 0, 1).rotated( Vector3(0, 1, 0), PI / 2)
+var move_vector_FB = Vector3(-MOVE_RATE, 0, -MOVE_RATE)
+var move_vector_LR = Vector3(MOVE_RATE, 0, MOVE_RATE).rotated( Vector3(0, 1, 0), PI / 2)
 
 # When we recenter the camera, where does the camera move to? We'll have it
 # reset to it's starting position, so we'll grab that
@@ -23,13 +25,13 @@ func _process(delta):
     
     # Handle our camera movement
     if Input.is_action_pressed("camera_move_forward"):
-        translator += delta * MOVE_RATE_FORW_BACK
+        translator += delta * move_vector_FB
     if Input.is_action_pressed("camera_move_backward"):
-        translator -= delta * MOVE_RATE_FORW_BACK
+        translator -= delta * move_vector_FB
     if Input.is_action_pressed("camera_move_right"):
-        translator += delta * MOVE_RATE_LEFT_RIGHT
+        translator += delta * move_vector_LR
     if Input.is_action_pressed("camera_move_left"):
-        translator -= delta * MOVE_RATE_LEFT_RIGHT
+        translator -= delta * move_vector_LR
     
     self.global_translate( translator )
 
