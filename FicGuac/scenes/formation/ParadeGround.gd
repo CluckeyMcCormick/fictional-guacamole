@@ -14,6 +14,12 @@ var mouse_to
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+    $FloatBox/SpinTween.interpolate_property(
+        $FloatBox, "rotation_degrees",
+        Vector3(0, 0, 0), Vector3(0, 360, 0), 20,
+        Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
+    $FloatBox/SpinTween.start()
+    $FloatBox
     pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -31,8 +37,8 @@ func _physics_process(delta):
         
         if result:
             # Now, move the sprite to the collision position
-            $MusterFlag.translation.x = result.position.x
-            $MusterFlag.translation.z = result.position.z
+            $Unit/TargetGroup.translation.x = result.position.x
+            $Unit/TargetGroup.translation.z = result.position.z
             
             # We did it! Don't have any mouse stuff pending anymore!
             mouse_pending = false

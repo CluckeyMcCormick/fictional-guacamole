@@ -1,0 +1,45 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/formation/red_draw.tres" type="Material" id=1]
+[ext_resource path="res://assets/formation/fade.tres" type="Material" id=2]
+[ext_resource path="res://scenes/formation/UnitPawn.tscn" type="PackedScene" id=3]
+
+[sub_resource type="CubeMesh" id=1]
+material = ExtResource( 1 )
+size = Vector3( 0.5, 0.5, 0.5 )
+
+[sub_resource type="QuadMesh" id=2]
+material = ExtResource( 2 )
+size = Vector2( 0.5, 0.1 )
+
+[node name="Unit" type="Spatial"]
+
+[node name="TargetGroup" type="Spatial" parent="."]
+editor/display_folded = true
+
+[node name="HollowCube" type="MeshInstance" parent="TargetGroup"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.00251505, 0.00358877, 0.000797033 )
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="West" type="MeshInstance" parent="TargetGroup"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, 0.25 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="East" type="MeshInstance" parent="TargetGroup"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, -0.25 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="South" type="MeshInstance" parent="TargetGroup"]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0.25, -0.2, 0 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="North" type="MeshInstance" parent="TargetGroup"]
+transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.25, -0.2, 0 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="UnitPawn" parent="." instance=ExtResource( 3 )]
