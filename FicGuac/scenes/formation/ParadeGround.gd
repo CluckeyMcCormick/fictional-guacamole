@@ -19,7 +19,6 @@ func _ready():
         Vector3(0, 0, 0), Vector3(0, 360, 0), 20,
         Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
     $FloatBox/SpinTween.start()
-    $FloatBox
     pass # Replace with function body.
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
@@ -39,6 +38,9 @@ func _physics_process(delta):
             # Now, move the sprite to the collision position
             $Unit/TargetGroup.translation.x = result.position.x
             $Unit/TargetGroup.translation.z = result.position.z
+            
+            # Set the Unit's move order
+            $Unit/UnitPawn.move_order = Vector3(result.position.x, 0, result.position.z)
             
             # We did it! Don't have any mouse stuff pending anymore!
             mouse_pending = false
