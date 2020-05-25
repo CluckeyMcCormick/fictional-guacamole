@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/sprite_states_brace02.png-8a2bfe2ce2597ce345eb1e8c98b4bb9e.s3tc.stex"
-path.etc2="res://.import/sprite_states_brace02.png-8a2bfe2ce2597ce345eb1e8c98b4bb9e.etc2.stex"
+path.s3tc="res://.import/circular_fade.png-3d1086c35700fe222a1f59a5e9141051.s3tc.stex"
+path.etc2="res://.import/circular_fade.png-3d1086c35700fe222a1f59a5e9141051.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/mob_state/sprite_states_brace02.png"
-dest_files=[ "res://.import/sprite_states_brace02.png-8a2bfe2ce2597ce345eb1e8c98b4bb9e.s3tc.stex", "res://.import/sprite_states_brace02.png-8a2bfe2ce2597ce345eb1e8c98b4bb9e.etc2.stex" ]
+source_file="res://assets/formation/circular_fade.png"
+dest_files=[ "res://.import/circular_fade.png-3d1086c35700fe222a1f59a5e9141051.s3tc.stex", "res://.import/circular_fade.png-3d1086c35700fe222a1f59a5e9141051.etc2.stex" ]
 
 [params]
 

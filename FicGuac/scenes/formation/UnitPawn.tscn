@@ -9,22 +9,28 @@
 [ext_resource path="res://assets/mob_state/sprite_states_attack02.png" type="Texture" id=7]
 [ext_resource path="res://assets/mob_state/sprite_states_march01.png" type="Texture" id=8]
 [ext_resource path="res://assets/mob_state/sprite_states_march02.png" type="Texture" id=9]
+[ext_resource path="res://assets/formation/circular_fade.png" type="Texture" id=10]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 0.05
 height = 0.1
 
-[sub_resource type="SpatialMaterial" id=3]
+[sub_resource type="SpatialMaterial" id=2]
 flags_transparent = true
 albedo_color = Color( 0, 0.505882, 1, 0.592157 )
 
-[sub_resource type="CylinderMesh" id=4]
-material = SubResource( 3 )
+[sub_resource type="CylinderMesh" id=3]
+material = SubResource( 2 )
 top_radius = 0.05
 bottom_radius = 0.05
 height = 0.1
 
-[sub_resource type="SpriteFrames" id=2]
+[sub_resource type="SpatialMaterial" id=4]
+params_depth_draw_mode = 3
+params_billboard_mode = 2
+params_billboard_keep_scale = true
+
+[sub_resource type="SpriteFrames" id=5]
 animations = [ {
 "frames": [ ExtResource( 2 ), ExtResource( 3 ) ],
 "loop": true,
@@ -47,17 +53,6 @@ animations = [ {
 "speed": 5.0
 } ]
 
-[sub_resource type="SpatialMaterial" id=6]
-albedo_color = Color( 0.101961, 1, 0, 1 )
-
-[sub_resource type="CylinderMesh" id=5]
-material = SubResource( 6 )
-top_radius = 0.05
-bottom_radius = 0.05
-height = 0.1
-radial_segments = 20
-rings = 1
-
 [node name="UnitPawn" type="KinematicBody"]
 script = ExtResource( 1 )
 
@@ -67,16 +62,18 @@ shape = SubResource( 1 )
 [node name="MeshInstance" type="MeshInstance" parent="CollisionShape"]
 visible = false
 cast_shadow = 0
-mesh = SubResource( 4 )
+mesh = SubResource( 3 )
 material/0 = null
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
 transform = Transform( 0.0282843, 0, 0.707107, 0, 0.04, 0, -0.0282843, 0, 0.707107, 0, 0, 0 )
-frames = SubResource( 2 )
-animation = "wait"
+material_override = SubResource( 4 )
+frames = SubResource( 5 )
+animation = "march"
+frame = 1
 playing = true
 
-[node name="ShadowMesh" type="MeshInstance" parent="."]
-cast_shadow = 3
-mesh = SubResource( 5 )
-material/0 = null
+[node name="Sprite3D" type="Sprite3D" parent="."]
+transform = Transform( 0.07, 0, 0, 0, -3.0598e-09, -0.07, 0, 0.07, -3.0598e-09, 0, -0.05, 0 )
+modulate = Color( 0, 0, 0, 1 )
+texture = ExtResource( 10 )
