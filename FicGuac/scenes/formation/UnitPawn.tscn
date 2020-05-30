@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scenes/formation/UnitPawn.gd" type="Script" id=1]
 [ext_resource path="res://assets/mob_state/sprite_states_wait01.png" type="Texture" id=2]
@@ -9,26 +9,23 @@
 [ext_resource path="res://assets/mob_state/sprite_states_attack02.png" type="Texture" id=7]
 [ext_resource path="res://assets/mob_state/sprite_states_march01.png" type="Texture" id=8]
 [ext_resource path="res://assets/mob_state/sprite_states_march02.png" type="Texture" id=9]
-[ext_resource path="res://assets/formation/circular_fade.png" type="Texture" id=10]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 0.05
-height = 0.1
+height = 0.11
 
-[sub_resource type="SpatialMaterial" id=2]
+[sub_resource type="SpatialMaterial" id=7]
 flags_transparent = true
-albedo_color = Color( 0, 0.505882, 1, 0.592157 )
+albedo_color = Color( 0.870588, 0.870588, 0.870588, 0.501961 )
 
 [sub_resource type="CylinderMesh" id=3]
-material = SubResource( 2 )
+material = SubResource( 7 )
 top_radius = 0.05
 bottom_radius = 0.05
-height = 0.1
+height = 0.11
 
 [sub_resource type="SpatialMaterial" id=4]
 params_depth_draw_mode = 3
-params_billboard_mode = 2
-params_billboard_keep_scale = true
 
 [sub_resource type="SpriteFrames" id=5]
 animations = [ {
@@ -53,27 +50,36 @@ animations = [ {
 "speed": 5.0
 } ]
 
+[sub_resource type="SpatialMaterial" id=8]
+albedo_color = Color( 0, 0.72549, 0.72549, 1 )
+
+[sub_resource type="CylinderMesh" id=6]
+material = SubResource( 8 )
+top_radius = 0.05
+bottom_radius = 0.05
+height = 0.009
+
 [node name="UnitPawn" type="KinematicBody"]
 script = ExtResource( 1 )
 
 [node name="CollisionShape" type="CollisionShape" parent="."]
 shape = SubResource( 1 )
 
-[node name="MeshInstance" type="MeshInstance" parent="CollisionShape"]
+[node name="CollisionRender" type="MeshInstance" parent="CollisionShape"]
 visible = false
-cast_shadow = 0
 mesh = SubResource( 3 )
 material/0 = null
 
-[node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="."]
-transform = Transform( 0.0282843, 0, 0.707107, 0, 0.04, 0, -0.0282843, 0, 0.707107, 0, 0, 0 )
+[node name="PawnSprite" type="AnimatedSprite3D" parent="."]
+transform = Transform( 0.0282843, 0, 0.707107, 0, 0.04, 0, -0.0282843, 0, 0.707107, 0, 0.005, 0 )
 material_override = SubResource( 4 )
 frames = SubResource( 5 )
 animation = "march"
 frame = 1
 playing = true
 
-[node name="Sprite3D" type="Sprite3D" parent="."]
-transform = Transform( 0.07, 0, 0, 0, -3.0598e-09, -0.07, 0, 0.07, -3.0598e-09, 0, -0.05, 0 )
-modulate = Color( 0, 0, 0, 1 )
-texture = ExtResource( 10 )
+[node name="StandRender" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.051, 0 )
+visible = false
+mesh = SubResource( 6 )
+material/0 = null

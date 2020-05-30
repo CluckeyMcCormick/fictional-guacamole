@@ -21,7 +21,7 @@ func _physics_process(body_state):
     var dirs = Vector3.ZERO
     
     if not self.is_on_floor():
-        dirs.y = -0.5
+        dirs.y = -0.05
     
     if move_order and self.global_transform.origin.distance_to(move_order) < GOAL_TOLERANCE:
         move_order = null
