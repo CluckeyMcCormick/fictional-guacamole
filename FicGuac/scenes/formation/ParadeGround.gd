@@ -33,15 +33,10 @@ func _physics_process(delta):
         var space_state = get_world().direct_space_state
         # QUERY, QUERY, QUERY!
         var result = space_state.intersect_ray(mouse_from, mouse_to)
-        
+        # If our query actually got somtething
         if result:
-            # Now, move the sprite to the collision position
-            $Unit/TargetGroup.translation.x = result.position.x
-            $Unit/TargetGroup.translation.z = result.position.z
-            
-            # Set the Unit's move order
-            $Unit/UnitPawn.move_order = Vector3(result.position.x, 0, result.position.z)
-            
+            # Order the unit to move
+            $Unit.order_move(result.position)
             # We did it! Don't have any mouse stuff pending anymore!
             mouse_pending = false
 

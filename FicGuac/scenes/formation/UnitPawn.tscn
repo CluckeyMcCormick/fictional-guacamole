@@ -75,7 +75,6 @@ transform = Transform( 0.0282843, 0, 0.707107, 0, 0.04, 0, -0.0282843, 0, 0.7071
 material_override = SubResource( 4 )
 frames = SubResource( 5 )
 animation = "march"
-frame = 1
 playing = true
 
 [node name="StandRender" type="MeshInstance" parent="."]
