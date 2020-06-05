@@ -4,6 +4,8 @@ extends Spatial
 # var a = 2
 # var b = "text"
 
+# Should we have UnitPawns in this unit colliding with each other?
+export(bool) var intra_unit_collision = false
 # The current count of pawns in the unit
 var pawn_count
 # What is considered to be the Unit's "current" position?
@@ -17,8 +19,21 @@ signal move_ordered(target_position)
 func _ready():
     # Register each Pawn with this Unit
     pawn_count = 0
-    for pawn in $PawnGroup.get_children():
+    
+    # Grab the list of pawns
+    var pawn_list = $PawnGroup.get_children()
+    
+    # For each child (which we'll assume is a UnitPawn)
+    for pawn in pawn_list:
+        # Register it to a unit
         pawn.register_to_unit(self, pawn_count)
+        # If we're NOT colliding the UnitPawns in this unit together...
+        if not intra_unit_collision:
+            # No collide all the fellows with this unit. This might be a bit
+            # inefficient since it's an N x N (matching every node with every
+            # node), but it seems the best solution for us right now
+            pawn.no_collide_with_list(pawn_list)
+        # Increment the count
         pawn_count += 1
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.

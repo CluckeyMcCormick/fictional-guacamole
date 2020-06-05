@@ -70,6 +70,17 @@ func register_to_unit(unit_node, unit_index):
     # move orders hand delivered)
     self.connect("pawn_died", unit_node, "_on_UnitPawn_pawn_died")
 
+# Sets this UnitPawn to not collide with all of the nodes in the provided list.
+# Intended for making sure a UnitPawn doesn't collide with the other UnitPawns
+# in it's fellow unit.
+func no_collide_with_list(node_list):
+    # For each node in the provided node list...
+    for node in node_list:
+        # If the current node in our list is NOT this UnitPawn...
+        if node != self:
+            # Then don't collide this UnitPawn with this other node
+            self.add_collision_exception_with( node )
+
 func _on_Unit_move_ordered(unit_target):
     # Calculate the individual position based on the unit_position, and set the
     # target position using that calculated value
@@ -79,6 +90,10 @@ func _on_Unit_move_ordered(unit_target):
     
     set_target_position(new_target)
 
+# Set the target position for this UnitPawn. This exists so that we have a
+# standardized way of setting the target position. Currently we only need to do
+# this one line - makes this function a bit weird, but we can expand it if we
+# need to.
 func set_target_position(position):
     target_position = position
     

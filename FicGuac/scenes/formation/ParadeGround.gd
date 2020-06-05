@@ -32,7 +32,11 @@ func _physics_process(delta):
         # So, get the space state to query
         var space_state = get_world().direct_space_state
         # QUERY, QUERY, QUERY!
-        var result = space_state.intersect_ray(mouse_from, mouse_to)
+        var result = space_state.intersect_ray(
+            mouse_from, mouse_to, # Ray origin, Ray destination
+            [], # Node exclusion list; we exlude nothing!
+            1 # Collision MASK - what to collide with. BIT 1 is terrain/environ
+        )
         # If our query actually got somtething
         if result:
             # Order the unit to move
