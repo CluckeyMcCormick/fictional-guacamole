@@ -19,7 +19,7 @@ func _ready():
         Vector3(0, 0, 0), Vector3(0, 360, 0), 20,
         Tween.TRANS_LINEAR, Tween.EASE_IN_OUT)
     $FloatBox/SpinTween.start()
-    pass # Replace with function body.
+    pass
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
