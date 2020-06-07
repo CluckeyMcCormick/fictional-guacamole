@@ -1,14 +1,15 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://scenes/formation/UnitPawn.gd" type="Script" id=1]
-[ext_resource path="res://assets/mob_state/sprite_states_wait01.png" type="Texture" id=2]
-[ext_resource path="res://assets/mob_state/sprite_states_wait02.png" type="Texture" id=3]
-[ext_resource path="res://assets/mob_state/sprite_states_brace01.png" type="Texture" id=4]
-[ext_resource path="res://assets/mob_state/sprite_states_brace02.png" type="Texture" id=5]
-[ext_resource path="res://assets/mob_state/sprite_states_attack01.png" type="Texture" id=6]
-[ext_resource path="res://assets/mob_state/sprite_states_attack02.png" type="Texture" id=7]
-[ext_resource path="res://assets/mob_state/sprite_states_march01.png" type="Texture" id=8]
-[ext_resource path="res://assets/mob_state/sprite_states_march02.png" type="Texture" id=9]
+[ext_resource path="res://assets/mob_state/sprite_states_attack01.png" type="Texture" id=2]
+[ext_resource path="res://assets/mob_state/sprite_states_attack02.png" type="Texture" id=3]
+[ext_resource path="res://assets/mob_state/sprite_states_wait01.png" type="Texture" id=4]
+[ext_resource path="res://assets/mob_state/sprite_states_wait02.png" type="Texture" id=5]
+[ext_resource path="res://assets/mob_state/sprite_states_march01.png" type="Texture" id=6]
+[ext_resource path="res://assets/mob_state/sprite_states_march02.png" type="Texture" id=7]
+[ext_resource path="res://assets/mob_state/sprite_states_brace01.png" type="Texture" id=8]
+[ext_resource path="res://assets/mob_state/sprite_states_brace02.png" type="Texture" id=9]
+[ext_resource path="res://assets/surt_sheet/sprite_sheet_line08_blob.tres" type="SpriteFrames" id=10]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 0.05
@@ -31,23 +32,23 @@ params_depth_draw_mode = 3
 animations = [ {
 "frames": [ ExtResource( 2 ), ExtResource( 3 ) ],
 "loop": true,
-"name": "wait",
+"name": "debug_attack",
 "speed": 1.0
 }, {
 "frames": [ ExtResource( 4 ), ExtResource( 5 ) ],
 "loop": true,
-"name": "brace",
+"name": "debug_wait",
 "speed": 1.0
 }, {
 "frames": [ ExtResource( 6 ), ExtResource( 7 ) ],
 "loop": true,
-"name": "attack",
-"speed": 1.0
+"name": "debug_march",
+"speed": 5.0
 }, {
 "frames": [ ExtResource( 8 ), ExtResource( 9 ) ],
 "loop": true,
-"name": "march",
-"speed": 5.0
+"name": "debug_brace",
+"speed": 1.0
 } ]
 
 [sub_resource type="SpatialMaterial" id=6]
@@ -58,6 +59,11 @@ material = SubResource( 6 )
 top_radius = 0.05
 bottom_radius = 0.05
 height = 0.009
+
+[sub_resource type="SpatialMaterial" id=8]
+params_depth_draw_mode = 3
+params_use_alpha_scissor = true
+params_alpha_scissor_threshold = 0.98
 
 [node name="UnitPawn" type="KinematicBody"]
 collision_layer = 8
@@ -72,11 +78,12 @@ visible = false
 mesh = SubResource( 3 )
 material/0 = null
 
-[node name="PawnSprite" type="AnimatedSprite3D" parent="."]
+[node name="StateSprite" type="AnimatedSprite3D" parent="."]
 transform = Transform( 0.0282843, 0, 0.707107, 0, 0.04, 0, -0.0282843, 0, 0.707107, 0, 0.005, 0 )
+visible = false
 material_override = SubResource( 4 )
 frames = SubResource( 5 )
-animation = "march"
+animation = "debug_march"
 playing = true
 
 [node name="StandRender" type="MeshInstance" parent="."]
@@ -84,3 +91,12 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.051, 0 )
 visible = false
 mesh = SubResource( 7 )
 material/0 = null
+
+[node name="VisualSprite" type="AnimatedSprite3D" parent="."]
+transform = Transform( 0.0282843, 0, 0.707107, 0, 0.04, 0, -0.0282843, 0, 0.707107, 0.000464395, 0.00341122, -0.000221983 )
+material_override = SubResource( 8 )
+pixel_size = 0.02
+frames = ExtResource( 10 )
+animation = "south_move"
+frame = 1
+playing = true

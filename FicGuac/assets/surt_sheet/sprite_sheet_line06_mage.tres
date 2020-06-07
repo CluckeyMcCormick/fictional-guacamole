@@ -1,0 +1,162 @@
+[gd_resource type="SpriteFrames" load_steps=26 format=2]
+
+[ext_resource path="res://assets/surt_sheet/sprite_sheet_mix_256x256.png" type="Texture" id=1]
+
+
+[sub_resource type="AtlasTexture" id=16]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 0, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=17]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 128, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=18]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 256, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=19]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 384, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=20]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 512, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=21]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 640, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=22]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 768, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=23]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 896, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=24]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 1024, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=25]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 384, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=35]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 0, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=30]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 768, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=31]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 896, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=32]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 768, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=33]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 1024, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=34]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 768, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=36]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 0, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=37]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 128, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=38]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 0, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=39]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 256, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=26]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 384, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=27]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 512, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=28]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 384, 640, 128, 128 )
+
+[sub_resource type="AtlasTexture" id=29]
+flags = 3
+atlas = ExtResource( 1 )
+region = Rect2( 640, 640, 128, 128 )
+
+[resource]
+animations = [ {
+"frames": [ SubResource( 16 ), SubResource( 17 ), SubResource( 18 ), SubResource( 19 ), SubResource( 20 ), SubResource( 21 ), SubResource( 22 ), SubResource( 23 ), SubResource( 24 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 25 ) ],
+"loop": true,
+"name": "east_idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 35 ) ],
+"loop": true,
+"name": "south_idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 30 ), SubResource( 31 ), SubResource( 32 ), SubResource( 33 ) ],
+"loop": true,
+"name": "north_move",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 34 ) ],
+"loop": true,
+"name": "north_idle",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 36 ), SubResource( 37 ), SubResource( 38 ), SubResource( 39 ) ],
+"loop": true,
+"name": "south_move",
+"speed": 5.0
+}, {
+"frames": [ SubResource( 26 ), SubResource( 27 ), SubResource( 28 ), SubResource( 29 ) ],
+"loop": true,
+"name": "east_move",
+"speed": 5.0
+} ]
