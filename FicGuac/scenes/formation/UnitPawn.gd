@@ -19,6 +19,10 @@ const GOAL_TOLERANCE = .057#.0565
 const PATHING_TOLERANCE = .05
 # How fast do we move? (units/second)
 const MOVE_RATE = 1
+# How tall is this UnitPawn? Might not seem like it but this can actually be a
+# pretty big deal - if this is set incorrectly UnitPawns could be spawning in
+# the floor
+const HEIGHT = 0.11
 
 # What is our target position - where are we trying to go?
 var _target_position = null
@@ -84,7 +88,7 @@ func set_sprite_from_vector(move_vector: Vector3):
         return
     # Otherwise, the UnitPawn must be moving, so we'll need to do some
     # calculating...
-    
+    $CollisionShape/CollisionRender.get_aabb()
     # Move the X and Z fields into a Vector2 so we can easily calculate the
     # sprite's current angular direction. Note that the Z is actually inverted;
     # This makes our angles operate on a CCW turn (like a unit circle)

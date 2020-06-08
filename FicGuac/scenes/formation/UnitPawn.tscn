@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scenes/formation/UnitPawn.gd" type="Script" id=1]
 [ext_resource path="res://assets/mob_state/sprite_states_attack01.png" type="Texture" id=2]
@@ -9,7 +9,6 @@
 [ext_resource path="res://assets/mob_state/sprite_states_march02.png" type="Texture" id=7]
 [ext_resource path="res://assets/mob_state/sprite_states_brace01.png" type="Texture" id=8]
 [ext_resource path="res://assets/mob_state/sprite_states_brace02.png" type="Texture" id=9]
-[ext_resource path="res://assets/surt_sheet/sprite_sheet_line04_dark_knight.tres" type="SpriteFrames" id=10]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 0.05
@@ -80,10 +79,10 @@ material/0 = null
 
 [node name="StateSprite" type="AnimatedSprite3D" parent="."]
 transform = Transform( 0.0282843, 0, 0.707107, 0, 0.04, 0, -0.0282843, 0, 0.707107, 0, 0.005, 0 )
-visible = false
 material_override = SubResource( 4 )
 frames = SubResource( 5 )
 animation = "debug_march"
+frame = 1
 playing = true
 
 [node name="StandRender" type="MeshInstance" parent="."]
@@ -96,6 +95,5 @@ material/0 = null
 transform = Transform( 0.0282843, 0, 0.707107, 0, 0.04, 0, -0.0282843, 0, 0.707107, 0.000464395, 0.00341122, -0.000221983 )
 material_override = SubResource( 8 )
 pixel_size = 0.02
-frames = ExtResource( 10 )
 animation = "south_move"
 playing = true

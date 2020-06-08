@@ -4,6 +4,19 @@ extends Spatial
 # var a = 2
 # var b = "text"
 
+const UNIT_INITIAL_STRENGTH = 25
+
+# Preload our selections for UnitPawns
+const UP_DEFAULT = preload("res://scenes/formation/UnitPawn.tscn")
+const UP_BLOB = preload("res://scenes/formation/unit_pawn_subs/UnitPawnBlob.tscn")
+const UP_DREAD_KNIGHT = preload("res://scenes/formation/unit_pawn_subs/UnitPawnDreadKnight.tscn")
+const UP_MAGE = preload("res://scenes/formation/unit_pawn_subs/UnitPawnMage.tscn")
+const UP_SHROOM = preload("res://scenes/formation/unit_pawn_subs/UnitPawnShroom.tscn")
+const UP_SKELETON = preload("res://scenes/formation/unit_pawn_subs/UnitPawnSkeleton.tscn")
+const UP_SNAKE = preload("res://scenes/formation/unit_pawn_subs/UnitPawnSnake.tscn")
+const UP_SURT = preload("res://scenes/formation/unit_pawn_subs/UnitPawnSurt.tscn")
+const UP_TRUS = preload("res://scenes/formation/unit_pawn_subs/UnitPawnTrus.tscn")
+
 # Should we have UnitPawns in this unit colliding with each other?
 export(bool) var intra_unit_collision = false
 # The current count of pawns in the unit
@@ -17,24 +30,53 @@ signal move_ordered(target_position)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    # Register each Pawn with this Unit
+    # Total count of pawns in this unit
     pawn_count = 0
     
-    # Grab the list of pawns
-    var pawn_list = $PawnGroup.get_children()
+    # Round-robin UnitPawn list.
+    var rr_up_list = [
+        UP_DEFAULT, UP_BLOB, UP_DREAD_KNIGHT, UP_MAGE, UP_SHROOM, UP_SKELETON,
+        UP_SNAKE, UP_SURT, UP_TRUS
+    ]
+    # Shuffle the round robin list
+    rr_up_list.shuffle()
     
     # For each child (which we'll assume is a UnitPawn)
-    for pawn in pawn_list:
-        # Register it to a unit
+    for i in range(UNIT_INITIAL_STRENGTH):
+        # Instance this pawn into existence
+        var pawn = rr_up_list.pop_back()
+        # If we weren't able to get a PackedScene...
+        if pawn == null:
+            # Then the round-robin UnitPawn scene list is empty. Restock it!
+            rr_up_list = [
+                UP_DEFAULT, UP_BLOB, UP_DREAD_KNIGHT, UP_MAGE, UP_SHROOM,
+                UP_SKELETON, UP_SNAKE, UP_SURT, UP_TRUS
+            ]
+            pawn = rr_up_list.pop_back()
+        # Pawn should now be a packed scene - so instance that scene
+        pawn = pawn.instance()
+        # Set the name
+        pawn.set_name("unitpawn" + str(pawn_count))
+        # Attach the pawn to the pawn group
+        $PawnGroup.add_child(pawn)
+        # Register it to the unit
         pawn.register_to_unit(self, pawn_count)
-        # If we're NOT colliding the UnitPawns in this unit together...
-        if not intra_unit_collision:
-            # No collide all the fellows with this unit. This might be a bit
-            # inefficient since it's an N x N (matching every node with every
-            # node), but it seems the best solution for us right now
-            pawn.no_collide_with_list(pawn_list)
+        # Move the pawn over!
+        pawn.translate( get_pawn_index_pos(pawn_count) )
+        # Move it up by half of it's height
+        pawn.translate( Vector3(0, pawn.HEIGHT / 2, 0) )
         # Increment the count
         pawn_count += 1
+    # If we're NOT colliding the UnitPawns in this unit together...
+    if not intra_unit_collision:
+        # Now that all the pawns have been created, we can iterate over all of
+        # them easily - so get that list!
+        var pawn_list = $PawnGroup.get_children()
+        # No collide all the fellows with this unit. This might be a bit
+        # inefficient since it's an N x N (matching every node with every
+        # node), but it seems the best solution for us right now
+        for pawn in pawn_list:
+            pawn.no_collide_with_list(pawn_list)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -53,11 +95,12 @@ func order_move(position):
 
 # The position of each and every Pawn is decided according to a mathematical
 # formula. Given the index of the pawn, we can calculate where exactly it should
-# go.
+# go. Returns a Vector3 indicating relative position/offset, localized to the
+# Unit node and as determined from the Unit's center. 
 func get_pawn_index_pos(pawn_index):
-    # The unit forms up into a square - how many pawns make up one side of the
-    # square?
-    var UNIT_SIZE = 4
+    # How many pawns make up one "line" of the Unit? We want to arrange the unit
+    # in a square/box formation, so we'll round up to the next square root.
+    var UNIT_SIZE = int( ceil( sqrt(UNIT_INITIAL_STRENGTH) ) )
     
     # The x-wise slot for this index
     var unit_x = pawn_index % UNIT_SIZE
