@@ -14,15 +14,15 @@ enum {
 }
 
 # What's our tolerance for meeting our goal
-const GOAL_TOLERANCE = .057#.0565
+const GOAL_TOLERANCE = 0.01
 # What's our tolerance for straying/overshooting on our path to the goal
-const PATHING_TOLERANCE = .05
+const PATHING_TOLERANCE = 0.05
 # How fast do we move? (units/second)
 const MOVE_RATE = 1
 # How tall is this UnitPawn? Might not seem like it but this can actually be a
 # pretty big deal - if this is set incorrectly UnitPawns could be spawning in
 # the floor
-const HEIGHT = 0.11
+const HEIGHT = 0.10
 
 # What is our target position - where are we trying to go?
 var _target_position = null
@@ -88,7 +88,7 @@ func set_sprite_from_vector(move_vector: Vector3):
         return
     # Otherwise, the UnitPawn must be moving, so we'll need to do some
     # calculating...
-    $CollisionShape/CollisionRender.get_aabb()
+    
     # Move the X and Z fields into a Vector2 so we can easily calculate the
     # sprite's current angular direction. Note that the Z is actually inverted;
     # This makes our angles operate on a CCW turn (like a unit circle)
@@ -130,9 +130,15 @@ func _physics_process(body_state):
     if not self.is_on_floor():
         dirs.y = -0.05
     
-    if _target_position != null and self.global_transform.origin.distance_to(_target_position) > GOAL_TOLERANCE:
+    # Our current position (the global_transform) measures where the CENTER of
+    # the UnitPawn is. However, we need to measure the position from the "feet".
+    # To do that, we shift the origin down by half the height
+    var floor_aligned_position = self.global_transform.origin
+    floor_aligned_position.y -= HEIGHT / 2
+    
+    if _target_position != null and floor_aligned_position.distance_to(_target_position) > GOAL_TOLERANCE:
         # Calculate the distance from our current global position
-        dirs = _target_position - self.global_transform.origin
+        dirs = _target_position - floor_aligned_position
         # Use that distance to calculate a direction on each axis - do we need to go
         # positively or negatively?
         if dirs.x != 0 and abs(dirs.x) > PATHING_TOLERANCE:
