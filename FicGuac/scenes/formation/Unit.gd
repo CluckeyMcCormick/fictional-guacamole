@@ -19,6 +19,12 @@ const UP_TRUS = preload("res://scenes/formation/unit_pawn_subs/UnitPawnTrus.tscn
 
 # Should we have UnitPawns in this unit colliding with each other?
 export(bool) var intra_unit_collision = false
+# The unit aligns with an invisible grid of squares - what's the offset of that
+# grid?
+export(float, -0.5, 0.5, 0.05) var grid_snap_offset
+# That invisible grid - how big are the units?
+export(float, 0, 2, 0.05) var grid_snap_size
+
 # The current count of pawns in the unit
 var pawn_count
 # What is considered to be the Unit's "current" position?
@@ -30,6 +36,7 @@ signal move_ordered(target_position)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+    
     # Total count of pawns in this unit
     pawn_count = 0
     
@@ -61,10 +68,10 @@ func _ready():
         $PawnGroup.add_child(pawn)
         # Register it to the unit
         pawn.register_to_unit(self, pawn_count)
-        # Move the pawn over!
-        pawn.translate( get_pawn_index_pos(pawn_count) )
-        # Move it up by half of it's height
+        # Move it up by half of it's height (so it's not in the ground)
         pawn.translate( Vector3(0, pawn.HEIGHT / 2, 0) )
+        # Move the pawn over to the correct position (as determined by index)
+        pawn.translate( get_pawn_index_pos(pawn_count) )
         # Increment the count
         pawn_count += 1
     # If we're NOT colliding the UnitPawns in this unit together...
@@ -84,8 +91,23 @@ func _ready():
 
 # Orders the unit to move to the specified position 
 func order_move(position):
-    # Set the Unit's target position to the position provided
     unit_target_pos = position
+    # Subtract out the offset (since offset is technically added into the pos)
+    unit_target_pos.x -= grid_snap_offset
+    unit_target_pos.z -= grid_snap_offset
+    # Divide it by our snap grid-size
+    unit_target_pos.x /= grid_snap_size
+    unit_target_pos.z /= grid_snap_size
+    # We are now looking at this position purely in grid units - so if we round
+    # the values, we'll snap to the nearest full grid positions
+    unit_target_pos.x = round(unit_target_pos.x)
+    unit_target_pos.z = round(unit_target_pos.z)
+    # Now, we need to convert it back to in-game distance units
+    unit_target_pos.x *= grid_snap_size
+    unit_target_pos.z *= grid_snap_size
+    # And redo the offset
+    unit_target_pos.x += grid_snap_offset
+    unit_target_pos.z += grid_snap_offset  
     
     # Now, move TargetGroup node to reflect
     $TargetGroup.translation.x = unit_target_pos.x
