@@ -110,8 +110,8 @@ func order_move(position):
     unit_target_pos.z += grid_snap_offset  
     
     # Now, move TargetGroup node to reflect
-    $TargetGroup.translation.x = unit_target_pos.x
-    $TargetGroup.translation.z = unit_target_pos.z
+    $TargetGroup.global_transform.origin.x = unit_target_pos.x
+    $TargetGroup.global_transform.origin.z = unit_target_pos.z
     
     emit_signal("move_ordered", unit_target_pos)
 
