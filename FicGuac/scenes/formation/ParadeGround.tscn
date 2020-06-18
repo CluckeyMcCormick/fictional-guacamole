@@ -1,8 +1,8 @@
 [gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://scenes/formation/ParadeGround.gd" type="Script" id=1]
-[ext_resource path="res://assets/formation/cb_mat_midgray.tres" type="Material" id=2]
-[ext_resource path="res://assets/formation/cb_mat_pinkish.tres" type="Material" id=3]
+[ext_resource path="res://assets/formation/valve_grids/cb_mat_s01_magenta.tres" type="Material" id=2]
+[ext_resource path="res://assets/formation/valve_grids/cb_mat_s01_amethyst.tres" type="Material" id=3]
 [ext_resource path="res://scenes/formation/Camera.gd" type="Script" id=4]
 [ext_resource path="res://scenes/formation/Unit.tscn" type="PackedScene" id=5]
 
@@ -37,7 +37,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.25, 0 )
 shape = SubResource( 2 )
 
 [node name="FloatBox" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1, 0.5, 1 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.999084, 0.493798, 1.00054 )
 mesh = SubResource( 3 )
 skeleton = NodePath("")
 material/0 = null

@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/checkerboard.png-543deb2571861b45793009d06278eeaa.s3tc.stex"
-path.etc2="res://.import/checkerboard.png-543deb2571861b45793009d06278eeaa.etc2.stex"
+path.s3tc="res://.import/valve_grid_s101.png-cb57e23e5942c47f8630a78917032a95.s3tc.stex"
+path.etc2="res://.import/valve_grid_s101.png-cb57e23e5942c47f8630a78917032a95.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/formation/checkerboard.png"
-dest_files=[ "res://.import/checkerboard.png-543deb2571861b45793009d06278eeaa.s3tc.stex", "res://.import/checkerboard.png-543deb2571861b45793009d06278eeaa.etc2.stex" ]
+source_file="res://assets/formation/valve_grids/valve_grid_s101.png"
+dest_files=[ "res://.import/valve_grid_s101.png-cb57e23e5942c47f8630a78917032a95.s3tc.stex", "res://.import/valve_grid_s101.png-cb57e23e5942c47f8630a78917032a95.etc2.stex" ]
 
 [params]
 
