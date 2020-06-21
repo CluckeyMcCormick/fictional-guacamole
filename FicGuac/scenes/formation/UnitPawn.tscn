@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scenes/formation/UnitPawn.gd" type="Script" id=1]
 [ext_resource path="res://assets/mob_state/sprite_states_attack01.png" type="Texture" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://assets/mob_state/sprite_states_march02.png" type="Texture" id=7]
 [ext_resource path="res://assets/mob_state/sprite_states_brace01.png" type="Texture" id=8]
 [ext_resource path="res://assets/mob_state/sprite_states_brace02.png" type="Texture" id=9]
+[ext_resource path="res://assets/formation/SpriteShadowMaterial.tres" type="Material" id=10]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 0.05
@@ -23,9 +24,6 @@ material = SubResource( 2 )
 top_radius = 0.05
 bottom_radius = 0.05
 height = 0.1
-
-[sub_resource type="SpatialMaterial" id=4]
-params_depth_draw_mode = 3
 
 [sub_resource type="SpriteFrames" id=5]
 animations = [ {
@@ -59,11 +57,6 @@ top_radius = 0.05
 bottom_radius = 0.05
 height = 0.009
 
-[sub_resource type="SpatialMaterial" id=8]
-params_depth_draw_mode = 3
-params_use_alpha_scissor = true
-params_alpha_scissor_threshold = 0.98
-
 [node name="UnitPawn" type="KinematicBody"]
 collision_layer = 8
 collision_mask = 13
@@ -79,7 +72,7 @@ material/0 = null
 
 [node name="StateSprite" type="AnimatedSprite3D" parent="."]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0 )
-material_override = SubResource( 4 )
+material_override = ExtResource( 10 )
 pixel_size = 0.0004
 frames = SubResource( 5 )
 animation = "debug_march"
@@ -93,7 +86,7 @@ material/0 = null
 
 [node name="VisualSprite" type="AnimatedSprite3D" parent="."]
 transform = Transform( 0.0282843, 0, 0.707107, 0, 0.04, 0, -0.0282843, 0, 0.707107, 0, 0, 0 )
-material_override = SubResource( 8 )
+material_override = ExtResource( 10 )
 pixel_size = 0.02
 animation = "south_move"
 playing = true
