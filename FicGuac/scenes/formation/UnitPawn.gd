@@ -66,63 +66,90 @@ func set_sprite_from_vector(move_vector: Vector3):
     # the camera is north, towards is south, right and left become east and
     # west, etc...  
     
-    # If this vector doesn't actually move anywhere (horizontally)...
-    if move_vector.x == 0 and move_vector.z == 0:
+    is_moving = (move_vector.x != 0) or (move_vector.z != 0)
+    
+    # If this vector is moving horizontally...
+    if is_moving:
+        # Move the X and Z fields into a Vector2 so we can easily calculate the
+        # sprite's current angular direction. Note that the Z is actually inverted;
+        # This makes our angles operate on a CCW turn (like a unit circle)
+        var move_angle = Vector2(move_vector.x, -move_vector.z).angle()
+        # Angles are, by default, in radian form. Good for computers, bad for
+        # humans. Since we're just going to check values, and not do any
+        # calculations or manipulations, let's just convert it to degrees!
+        move_angle = rad2deg(move_angle)
+        # Godot doesn't do angles as 0 to 360 degress, it does -180 to 180. This
+        # makes case-checks harder, so let's just shift things forward by 360 if
+        # we're negative.
+        if move_angle < 0:
+            move_angle += 360
+        
+        # Right! Now we've got an appropriate angle - we just need to set the zones:
+        if move_angle <= 45:
+            _current_horiz_direction = EAST
+        elif move_angle <= 90:
+            _current_horiz_direction = NOR_EAST
+        elif move_angle <= 135:
+            _current_horiz_direction = NORTH
+        elif move_angle <= 180:
+            _current_horiz_direction = NOR_WEST
+        elif move_angle <= 225:
+            _current_horiz_direction = WEST
+        elif move_angle <= 270:
+            _current_horiz_direction = SOU_WEST
+        elif move_angle <= 315:
+            _current_horiz_direction = SOUTH
+        else:
+            _current_horiz_direction = SOU_EAST
+            
+    # Update the sprite state - regardless of whether 
+    _update_sprite_from_direction_state(is_moving)
+    pass
+
+func _update_sprite_from_direction_state(moving: bool):
+        var anim_string
         # Then we need to set the sprite to idle; match the current direction:
         match _current_horiz_direction:
             EAST:
-                $VisualSprite.animation = "east_idle"
+                anim_string = "east"
                 $VisualSprite.flip_h = false
+                $VisualSprite.rotation_degrees.y = 45
+            NOR_EAST:
+                anim_string = "east"
+                $VisualSprite.flip_h = false
+                $VisualSprite.rotation_degrees.y = 90
             NORTH:
-                $VisualSprite.animation = "north_idle"
+                anim_string = "north"
                 $VisualSprite.flip_h = false
+                $VisualSprite.rotation_degrees.y = 45
+            NOR_WEST:
+                anim_string = "north"
+                $VisualSprite.flip_h = false
+                $VisualSprite.rotation_degrees.y = 90
             WEST:
                 # Unfortunately, we currently lack a "west_idle" animation so
                 # we'll have to just flip the sprite on it's horizontal
-                $VisualSprite.animation = "east_idle"
+                anim_string = "east"
                 $VisualSprite.flip_h = true
+                $VisualSprite.rotation_degrees.y = 45
+            SOU_WEST:
+                anim_string = "east"
+                $VisualSprite.flip_h = true
+                $VisualSprite.rotation_degrees.y = 90
             SOUTH:
-                $VisualSprite.animation = "south_idle"
+                anim_string = "south"
                 $VisualSprite.flip_h = false
-        # After that, we're done here!
-        return
-    # Otherwise, the UnitPawn must be moving, so we'll need to do some
-    # calculating...
-    
-    # Move the X and Z fields into a Vector2 so we can easily calculate the
-    # sprite's current angular direction. Note that the Z is actually inverted;
-    # This makes our angles operate on a CCW turn (like a unit circle)
-    var move_angle = Vector2(move_vector.x, -move_vector.z).angle()
-    # Angles are, by default, in radian form. Good for computers, bad for
-    # humans. Since we're just going to check values, and not do any
-    # calculations or manipulations, let's just convert it to degrees!
-    move_angle = rad2deg(move_angle)
-    # Godot doesn't do angles as 0 to 360 degress, it does -180 to 180. This
-    # makes case-checks harder, so let's just shift things forward by 360 if
-    # we're negative.
-    if move_angle < 0:
-        move_angle += 360
-    
-    # Right! Now we've got an appropriate angle - we just need to set the zones:
-    if move_angle < 90:
-        $VisualSprite.animation = "east_move"
-        $VisualSprite.flip_h = false
-        _current_horiz_direction = EAST
-    elif move_angle < 180:
-        $VisualSprite.animation = "north_move"
-        $VisualSprite.flip_h = false
-        _current_horiz_direction = NORTH
-    elif move_angle < 270:
-        # Unfortunately, we currently lack a "west_move" animation so we'll have
-        # to just flip the sprite on it's horizontal
-        $VisualSprite.animation = "east_move"
-        $VisualSprite.flip_h = true
-        _current_horiz_direction = WEST
-    else:
-        $VisualSprite.animation = "south_move"
-        $VisualSprite.flip_h = false
-        _current_horiz_direction = SOUTH
-    pass
+                $VisualSprite.rotation_degrees.y = 45
+            SOU_EAST:
+                anim_string = "south"
+                $VisualSprite.flip_h = false
+                $VisualSprite.rotation_degrees.y = 90
+                pass
+        if is_moving:
+            anim_string += "_move"
+        else:
+            anim_string += "_idle"
+        $VisualSprite.animation = anim_string
 
 func _physics_process(body_state):   
     var dirs = Vector3.ZERO
@@ -193,4 +220,3 @@ func _on_Unit_move_ordered(unit_target):
 # need to.
 func set_target_position(position):
     _target_position = position
-    
