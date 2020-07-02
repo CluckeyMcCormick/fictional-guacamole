@@ -2,7 +2,6 @@
 
 [ext_resource path="res://assets/formation/valve_grids/valve_grid_s102.png" type="Texture" id=1]
 
-
 [resource]
 albedo_color = Color( 0.901961, 0.901961, 0.901961, 1 )
 albedo_texture = ExtResource( 1 )

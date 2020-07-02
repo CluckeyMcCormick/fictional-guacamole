@@ -16,6 +16,7 @@ const UP_SKELETON = preload("res://scenes/formation/unit_pawn_subs/UnitPawnSkele
 const UP_SNAKE = preload("res://scenes/formation/unit_pawn_subs/UnitPawnSnake.tscn")
 const UP_SURT = preload("res://scenes/formation/unit_pawn_subs/UnitPawnSurt.tscn")
 const UP_TRUS = preload("res://scenes/formation/unit_pawn_subs/UnitPawnTrus.tscn")
+const UP_DOOM_MARINE = preload("res://scenes/formation/unit_pawn_subs/UnitPawnDoomMarine.tscn")
 
 # Should we have UnitPawns in this unit colliding with each other?
 export(bool) var intra_unit_collision = false
@@ -57,7 +58,7 @@ func _ready():
             # Then the round-robin UnitPawn scene list is empty. Restock it!
             rr_up_list = [
                 UP_DEFAULT, UP_BLOB, UP_DREAD_KNIGHT, UP_MAGE, UP_SHROOM,
-                UP_SKELETON, UP_SNAKE, UP_SURT, UP_TRUS
+                UP_SKELETON, UP_SNAKE, UP_SURT, UP_TRUS, UP_DOOM_MARINE
             ]
             pawn = rr_up_list.pop_back()
         # Pawn should now be a packed scene - so instance that scene

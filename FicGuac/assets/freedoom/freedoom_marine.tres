@@ -1,0 +1,85 @@
+[gd_resource type="SpriteFrames" load_steps=26 format=2]
+
+[ext_resource path="res://assets/freedoom/playa1.png" type="Texture" id=1]
+[ext_resource path="res://assets/freedoom/playa3a7.png" type="Texture" id=2]
+[ext_resource path="res://assets/freedoom/playb4b6.png" type="Texture" id=3]
+[ext_resource path="res://assets/freedoom/playa5.png" type="Texture" id=4]
+[ext_resource path="res://assets/freedoom/playb3b7.png" type="Texture" id=5]
+[ext_resource path="res://assets/freedoom/playb1.png" type="Texture" id=6]
+[ext_resource path="res://assets/freedoom/playb2b8.png" type="Texture" id=7]
+[ext_resource path="res://assets/freedoom/playb5.png" type="Texture" id=8]
+[ext_resource path="res://assets/freedoom/playc1.png" type="Texture" id=9]
+[ext_resource path="res://assets/freedoom/playc2c8.png" type="Texture" id=10]
+[ext_resource path="res://assets/freedoom/playc3c7.png" type="Texture" id=11]
+[ext_resource path="res://assets/freedoom/playc5.png" type="Texture" id=12]
+[ext_resource path="res://assets/freedoom/playc4c6.png" type="Texture" id=13]
+[ext_resource path="res://assets/freedoom/playd1.png" type="Texture" id=14]
+[ext_resource path="res://assets/freedoom/playd2d8.png" type="Texture" id=15]
+[ext_resource path="res://assets/freedoom/playd5.png" type="Texture" id=16]
+[ext_resource path="res://assets/freedoom/playd3d7.png" type="Texture" id=17]
+[ext_resource path="res://assets/freedoom/playd4d6.png" type="Texture" id=18]
+[ext_resource path="res://assets/freedoom/playe1.png" type="Texture" id=19]
+[ext_resource path="res://assets/freedoom/playe2e8.png" type="Texture" id=20]
+[ext_resource path="res://assets/freedoom/playe3e7.png" type="Texture" id=21]
+[ext_resource path="res://assets/freedoom/playe4e6.png" type="Texture" id=22]
+[ext_resource path="res://assets/freedoom/playe5.png" type="Texture" id=23]
+[ext_resource path="res://assets/freedoom/playa4a6.png" type="Texture" id=24]
+[ext_resource path="res://assets/freedoom/playa2a8.png" type="Texture" id=25]
+
+[resource]
+animations = [ {
+"frames": [ ExtResource( 1 ), ExtResource( 25 ), ExtResource( 2 ), ExtResource( 24 ), ExtResource( 4 ), ExtResource( 6 ), ExtResource( 7 ), ExtResource( 5 ), ExtResource( 3 ), ExtResource( 8 ), ExtResource( 9 ), ExtResource( 10 ), ExtResource( 11 ), ExtResource( 13 ), ExtResource( 12 ), ExtResource( 14 ), ExtResource( 15 ), ExtResource( 17 ), ExtResource( 18 ), ExtResource( 16 ), ExtResource( 19 ), ExtResource( 20 ), ExtResource( 21 ), ExtResource( 22 ), ExtResource( 23 ) ],
+"loop": true,
+"name": "default",
+"speed": 20.0
+}, {
+"frames": [ ExtResource( 24 ), ExtResource( 3 ), ExtResource( 13 ), ExtResource( 18 ) ],
+"loop": true,
+"name": "northwest_move",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 22 ) ],
+"loop": true,
+"name": "northwest_idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 19 ) ],
+"loop": true,
+"name": "south_idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 4 ), ExtResource( 8 ), ExtResource( 12 ), ExtResource( 16 ) ],
+"loop": true,
+"name": "north_move",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 23 ) ],
+"loop": true,
+"name": "north_idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 1 ), ExtResource( 6 ), ExtResource( 9 ), ExtResource( 14 ) ],
+"loop": true,
+"name": "south_move",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 20 ) ],
+"loop": true,
+"name": "southwest_idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 21 ) ],
+"loop": true,
+"name": "west_idle",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ), ExtResource( 5 ), ExtResource( 11 ), ExtResource( 17 ) ],
+"loop": true,
+"name": "west_move",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 25 ), ExtResource( 7 ), ExtResource( 10 ), ExtResource( 15 ) ],
+"loop": true,
+"name": "southwest_move",
+"speed": 5.0
+} ]
