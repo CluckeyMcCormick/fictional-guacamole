@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scenes/formation/UnitPawn.gd" type="Script" id=1]
 [ext_resource path="res://assets/mob_state/sprite_states_attack01.png" type="Texture" id=2]
@@ -24,6 +24,9 @@ material = SubResource( 2 )
 top_radius = 0.05
 bottom_radius = 0.05
 height = 0.1
+
+[sub_resource type="CubeMesh" id=7]
+size = Vector3( 0.125, 0.01, 0.005 )
 
 [sub_resource type="SpriteFrames" id=4]
 animations = [ {
@@ -68,6 +71,14 @@ shape = SubResource( 1 )
 [node name="CollisionRender" type="MeshInstance" parent="CollisionShape"]
 visible = false
 mesh = SubResource( 3 )
+material/0 = null
+
+[node name="DirectionCenter" type="Spatial" parent="."]
+visible = false
+
+[node name="DirectionalRectagonal" type="MeshInstance" parent="DirectionCenter"]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.015, -0.045, -0.015 )
+mesh = SubResource( 7 )
 material/0 = null
 
 [node name="StateSprite" type="AnimatedSprite3D" parent="."]

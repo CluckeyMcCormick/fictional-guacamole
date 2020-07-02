@@ -83,29 +83,41 @@ func set_sprite_from_vector(move_vector: Vector3):
         # humans. Since we're just going to check values, and not do any
         # calculations or manipulations, let's just convert it to degrees!
         move_angle = rad2deg(move_angle)
+        # Both of our sprites start off at 45 degrees on y - so to calculate the
+        # true movement angle, we need rotate BACK 45 degrees.
+        move_angle -= 45
         # Godot doesn't do angles as 0 to 360 degress, it does -180 to 180. This
         # makes case-checks harder, so let's just shift things forward by 360 if
         # we're negative.
         if move_angle < 0:
             move_angle += 360
         
-        # Right! Now we've got an appropriate angle - we just need to set the zones:
-        if move_angle <= 45:
+        # Rotate the directional-debug arrow
+        $DirectionCenter.rotation_degrees.y = move_angle
+        
+        # Right! Now we've got an appropriate angle - we just need to set the
+        # zones. Each eigth-cardinal is allotted 45 degrees, centered around 
+        # increments of 45 - i.e. EAST is at 0, NOR_EAST at 45, NORTH at 90. The
+        # periphery of the zone extends +- 45/2, or 22.5. Ergo, our zone checks
+        # are values coming from 22.5 + (45 * i)
+        if move_angle < 22.5:
             _current_horiz_direction = EAST
-        elif move_angle <= 90:
+        elif move_angle < 67.5:
             _current_horiz_direction = NOR_EAST
-        elif move_angle <= 135:
+        elif move_angle < 112.5:
             _current_horiz_direction = NORTH
-        elif move_angle <= 180:
+        elif move_angle < 157.5:
             _current_horiz_direction = NOR_WEST
-        elif move_angle <= 225:
+        elif move_angle < 202.5:
             _current_horiz_direction = WEST
-        elif move_angle <= 270:
+        elif move_angle < 247.5:
             _current_horiz_direction = SOU_WEST
-        elif move_angle <= 315:
+        elif move_angle < 292.5:
             _current_horiz_direction = SOUTH
-        else:
+        elif move_angle < 337.5:
             _current_horiz_direction = SOU_EAST
+        else:
+            _current_horiz_direction = EAST
             
     # Update the sprite state - regardless of whether 
     _update_sprite_from_direction_state(is_moving)
