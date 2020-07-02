@@ -16,13 +16,18 @@ enum {
 # What's our tolerance for meeting our goal
 const GOAL_TOLERANCE = 0.01
 # What's our tolerance for straying/overshooting on our path to the goal
-const PATHING_TOLERANCE = 0.05
-# How fast do we move? (units/second)
-const MOVE_RATE = 1
+const PATHING_TOLERANCE = 0.001
 # How tall is this UnitPawn? Might not seem like it but this can actually be a
 # pretty big deal - if this is set incorrectly UnitPawns could be spawning in
 # the floor
 const HEIGHT = 0.10
+
+# What's the minimum horizontal speed our units will move at? (Excluding when
+# they come to a full stop). Units/second
+const MIN_HORIZ_SPEED = 0.5
+
+# What's the maximum horizontal speed our units will move at? Units/second
+const MAX_HORIZ_SPEED = 1.5
 
 # What is our target position - where are we trying to go?
 var _target_position = null
@@ -110,41 +115,35 @@ func _update_sprite_from_direction_state(moving: bool):
         var anim_string
         # Then we need to set the sprite to idle; match the current direction:
         match _current_horiz_direction:
+            # Unfortunately, we don't have any "east" facing animations, so we
+            # have to just flip the west-facing ones
+            SOU_EAST:
+                anim_string = "southwest"
+                $VisualSprite.flip_h = true
+                pass
             EAST:
-                anim_string = "east"
-                $VisualSprite.flip_h = false
-                $VisualSprite.rotation_degrees.y = 45
+                anim_string = "west"
+                $VisualSprite.flip_h = true
             NOR_EAST:
-                anim_string = "east"
-                $VisualSprite.flip_h = false
-                $VisualSprite.rotation_degrees.y = 90
+                anim_string = "northwest"
+                $VisualSprite.flip_h = true
+            # End East Block
             NORTH:
                 anim_string = "north"
                 $VisualSprite.flip_h = false
-                $VisualSprite.rotation_degrees.y = 45
             NOR_WEST:
-                anim_string = "north"
+                anim_string = "northwest"
                 $VisualSprite.flip_h = false
-                $VisualSprite.rotation_degrees.y = 90
             WEST:
-                # Unfortunately, we currently lack a "west_idle" animation so
-                # we'll have to just flip the sprite on it's horizontal
-                anim_string = "east"
-                $VisualSprite.flip_h = true
-                $VisualSprite.rotation_degrees.y = 45
+                anim_string = "west"
+                $VisualSprite.flip_h = false
             SOU_WEST:
-                anim_string = "east"
-                $VisualSprite.flip_h = true
-                $VisualSprite.rotation_degrees.y = 90
+                anim_string = "southwest"
+                $VisualSprite.flip_h = false
             SOUTH:
                 anim_string = "south"
                 $VisualSprite.flip_h = false
-                $VisualSprite.rotation_degrees.y = 45
-            SOU_EAST:
-                anim_string = "south"
-                $VisualSprite.flip_h = false
-                $VisualSprite.rotation_degrees.y = 90
-                pass
+                
         if is_moving:
             anim_string += "_move"
         else:
@@ -166,20 +165,17 @@ func _physics_process(body_state):
     if _target_position != null and floor_aligned_position.distance_to(_target_position) > GOAL_TOLERANCE:
         # Calculate the distance from our current global position
         dirs = _target_position - floor_aligned_position
-        # Use that distance to calculate a direction on each axis - do we need to go
-        # positively or negatively?
-        if dirs.x != 0 and abs(dirs.x) > PATHING_TOLERANCE:
-            dirs.x = dirs.x / abs(dirs.x)
-        if dirs.z != 0 and abs(dirs.z) > PATHING_TOLERANCE:
-            dirs.z = dirs.z / abs(dirs.z)
+
+    dirs.x = clamp(abs(dirs.x), 0, MAX_HORIZ_SPEED) * sign(dirs.x)
+    dirs.z = clamp(abs(dirs.z), 0, MAX_HORIZ_SPEED) * sign(dirs.z)
 
     # Set the current velocity
-    _current_velocity = dirs * MOVE_RATE
+    _current_velocity = dirs
     # Only call move and slide if we HAVE to move; not sure what happens if
     # called with Vector Zero and it just FEELS safer
     if dirs != Vector3.ZERO:
         # Move (with snap on the Y-axis)
-        self.move_and_slide_with_snap(dirs * MOVE_RATE, Vector3(0, 1, 0)) 
+        self.move_and_slide_with_snap(dirs, Vector3(0, 1, 0)) 
 
 # Registers this UnitPawn to a Unit node. Assigns the provided index to this
 # UnitPawn

@@ -43,8 +43,8 @@ func _ready():
     
     # Round-robin UnitPawn list.
     var rr_up_list = [
-        UP_DEFAULT, UP_BLOB, UP_DREAD_KNIGHT, UP_MAGE, UP_SHROOM, UP_SKELETON,
-        UP_SNAKE, UP_SURT, UP_TRUS
+        # UP_DEFAULT,
+        UP_DOOM_MARINE
     ]
     # Shuffle the round robin list
     rr_up_list.shuffle()
@@ -57,8 +57,8 @@ func _ready():
         if pawn == null:
             # Then the round-robin UnitPawn scene list is empty. Restock it!
             rr_up_list = [
-                UP_DEFAULT, UP_BLOB, UP_DREAD_KNIGHT, UP_MAGE, UP_SHROOM,
-                UP_SKELETON, UP_SNAKE, UP_SURT, UP_TRUS, UP_DOOM_MARINE
+                # UP_DEFAULT,
+                UP_DOOM_MARINE
             ]
             pawn = rr_up_list.pop_back()
         # Pawn should now be a packed scene - so instance that scene
