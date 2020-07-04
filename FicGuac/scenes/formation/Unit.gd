@@ -4,7 +4,7 @@ extends Spatial
 # var a = 2
 # var b = "text"
 
-const UNIT_INITIAL_STRENGTH = 25
+const UNIT_INITIAL_STRENGTH = 36
 
 # Preload our selections for UnitPawns
 const UP_DEFAULT = preload("res://scenes/formation/UnitPawn.tscn")

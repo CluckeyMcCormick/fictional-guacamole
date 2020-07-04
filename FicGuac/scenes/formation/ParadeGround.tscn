@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/formation/ParadeGround.gd" type="Script" id=1]
 [ext_resource path="res://assets/formation/valve_grids/cb_mat_s01_magenta.tres" type="Material" id=2]
 [ext_resource path="res://assets/formation/valve_grids/cb_mat_s01_amethyst.tres" type="Material" id=3]
 [ext_resource path="res://scenes/formation/Camera.gd" type="Script" id=4]
 [ext_resource path="res://scenes/formation/Unit.tscn" type="PackedScene" id=5]
+[ext_resource path="res://assets/formation/cali_bear.obj" type="ArrayMesh" id=6]
 
 [sub_resource type="PlaneMesh" id=1]
 material = ExtResource( 2 )
@@ -21,6 +22,9 @@ size = Vector3( 0.5, 0.5, 0.5 )
 background_mode = 1
 background_energy = 0.0
 ambient_light_color = Color( 0.75, 0.75, 0.75, 1 )
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_color = Color( 0.964706, 0.592157, 0.294118, 1 )
 
 [node name="ParadeGround" type="Spatial"]
 script = ExtResource( 1 )
@@ -77,3 +81,8 @@ shadow_enabled = true
 shadow_bias = 0.02
 spot_range = 3.75559
 spot_angle = 38.309
+
+[node name="cali_bear" type="MeshInstance" parent="."]
+transform = Transform( 0.093145, 0, 0.0363869, 0, 0.1, 0, -0.0363869, 0, 0.093145, 0.221266, 0.150723, 0.0360359 )
+mesh = ExtResource( 6 )
+material/0 = SubResource( 5 )
