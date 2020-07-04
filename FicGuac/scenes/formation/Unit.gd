@@ -17,6 +17,7 @@ const UP_SNAKE = preload("res://scenes/formation/unit_pawn_subs/UnitPawnSnake.ts
 const UP_SURT = preload("res://scenes/formation/unit_pawn_subs/UnitPawnSurt.tscn")
 const UP_TRUS = preload("res://scenes/formation/unit_pawn_subs/UnitPawnTrus.tscn")
 const UP_DOOM_MARINE = preload("res://scenes/formation/unit_pawn_subs/UnitPawnDoomMarine.tscn")
+const UP_VOMIT_CLOWN = preload("res://scenes/formation/unit_pawn_subs/UnitPawnVomitClown.tscn")
 
 # Should we have UnitPawns in this unit colliding with each other?
 export(bool) var intra_unit_collision = false
@@ -44,7 +45,7 @@ func _ready():
     # Round-robin UnitPawn list.
     var rr_up_list = [
         # UP_DEFAULT,
-        UP_DOOM_MARINE
+        UP_VOMIT_CLOWN
     ]
     # Shuffle the round robin list
     rr_up_list.shuffle()
@@ -58,7 +59,7 @@ func _ready():
             # Then the round-robin UnitPawn scene list is empty. Restock it!
             rr_up_list = [
                 # UP_DEFAULT,
-                UP_DOOM_MARINE
+                UP_VOMIT_CLOWN
             ]
             pawn = rr_up_list.pop_back()
         # Pawn should now be a packed scene - so instance that scene
