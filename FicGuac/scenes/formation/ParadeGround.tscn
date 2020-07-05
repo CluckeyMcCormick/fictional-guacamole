@@ -1,8 +1,8 @@
 [gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://scenes/formation/ParadeGround.gd" type="Script" id=1]
-[ext_resource path="res://assets/formation/valve_grids/cb_mat_s01_magenta.tres" type="Material" id=2]
-[ext_resource path="res://assets/formation/valve_grids/cb_mat_s01_amethyst.tres" type="Material" id=3]
+[ext_resource path="res://assets/surt_terrain/mat_terrain_grass_grid.tres" type="Material" id=2]
+[ext_resource path="res://assets/surt_terrain/mat_terrain_water_grid.tres" type="Material" id=3]
 [ext_resource path="res://scenes/formation/Camera.gd" type="Script" id=4]
 [ext_resource path="res://scenes/formation/Unit.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/formation/cali_bear.obj" type="ArrayMesh" id=6]
@@ -24,7 +24,7 @@ background_energy = 0.0
 ambient_light_color = Color( 0.75, 0.75, 0.75, 1 )
 
 [sub_resource type="SpatialMaterial" id=5]
-albedo_color = Color( 0.964706, 0.592157, 0.294118, 1 )
+albedo_color = Color( 0.360784, 0.184314, 0, 1 )
 
 [node name="ParadeGround" type="Spatial"]
 script = ExtResource( 1 )
