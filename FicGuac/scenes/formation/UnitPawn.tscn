@@ -58,6 +58,7 @@ bottom_radius = 0.05
 height = 0.009
 
 [node name="UnitPawn" type="KinematicBody"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0498406, 0 )
 collision_layer = 8
 collision_mask = 13
 script = ExtResource( 1 )
@@ -84,6 +85,7 @@ material_override = ExtResource( 10 )
 pixel_size = 0.0004
 frames = SubResource( 4 )
 animation = "debug_march"
+frame = 1
 playing = true
 
 [node name="StandRender" type="MeshInstance" parent="."]
@@ -93,8 +95,8 @@ mesh = SubResource( 6 )
 material/0 = null
 
 [node name="VisualSprite" type="AnimatedSprite3D" parent="."]
-transform = Transform( 0.0282843, 0, 0.707107, 0, 0.04, 0, -0.0282843, 0, 0.707107, 0, 0, 0 )
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0 )
 material_override = ExtResource( 10 )
-pixel_size = 0.02
+pixel_size = 0.0008
 animation = "south_move"
 playing = true

@@ -70,8 +70,6 @@ func _ready():
         $PawnGroup.add_child(pawn)
         # Register it to the unit
         pawn.register_to_unit(self, pawn_count)
-        # Move it up by half of it's height (so it's not in the ground)
-        pawn.translate( Vector3(0, pawn.HEIGHT / 2, 0) )
         # Move the pawn over to the correct position (as determined by index)
         pawn.translate( get_pawn_index_pos(pawn_count) )
         # Increment the count

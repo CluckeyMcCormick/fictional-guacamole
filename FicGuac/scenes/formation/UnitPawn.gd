@@ -18,8 +18,8 @@ const GOAL_TOLERANCE = 0.01
 # What's our tolerance for straying/overshooting on our path to the goal
 const PATHING_TOLERANCE = 0.001
 # How tall is this UnitPawn? Might not seem like it but this can actually be a
-# pretty big deal - if this is set incorrectly UnitPawns could be spawning in
-# the floor
+# pretty big deal - if this is set incorrectly UnitPawns might measure their
+# distance-to-target wrong!
 const HEIGHT = 0.10
 
 # What's the minimum horizontal speed our units will move at? (Excluding when
