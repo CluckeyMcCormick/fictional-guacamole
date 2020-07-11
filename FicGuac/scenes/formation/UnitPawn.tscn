@@ -10,22 +10,19 @@
 [ext_resource path="res://assets/mob_state/sprite_states_brace01.png" type="Texture" id=8]
 [ext_resource path="res://assets/mob_state/sprite_states_brace02.png" type="Texture" id=9]
 [ext_resource path="res://assets/formation/SpriteShadowMaterial.tres" type="Material" id=10]
+[ext_resource path="res://assets/formation/CollisionRenderMaterial.tres" type="Material" id=11]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 0.05
 height = 0.1
 
-[sub_resource type="SpatialMaterial" id=2]
-flags_transparent = true
-albedo_color = Color( 0.870588, 0.870588, 0.870588, 0.501961 )
-
-[sub_resource type="CylinderMesh" id=3]
-material = SubResource( 2 )
+[sub_resource type="CylinderMesh" id=2]
+material = ExtResource( 11 )
 top_radius = 0.05
 bottom_radius = 0.05
 height = 0.1
 
-[sub_resource type="CubeMesh" id=7]
+[sub_resource type="CubeMesh" id=3]
 size = Vector3( 0.125, 0.01, 0.005 )
 
 [sub_resource type="SpriteFrames" id=4]
@@ -70,7 +67,7 @@ shape = SubResource( 1 )
 
 [node name="CollisionRender" type="MeshInstance" parent="CollisionShape"]
 visible = false
-mesh = SubResource( 3 )
+mesh = SubResource( 2 )
 material/0 = null
 
 [node name="DirectionCenter" type="Spatial" parent="."]
@@ -78,7 +75,7 @@ visible = false
 
 [node name="DirectionalRectagonal" type="MeshInstance" parent="DirectionCenter"]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.015, -0.045, -0.015 )
-mesh = SubResource( 7 )
+mesh = SubResource( 3 )
 material/0 = null
 
 [node name="StateSprite" type="AnimatedSprite3D" parent="."]
@@ -87,7 +84,6 @@ material_override = ExtResource( 10 )
 pixel_size = 0.0004
 frames = SubResource( 4 )
 animation = "debug_march"
-frame = 1
 playing = true
 
 [node name="StandRender" type="MeshInstance" parent="."]

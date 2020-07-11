@@ -1,0 +1,74 @@
+[gd_scene load_steps=10 format=2]
+
+[ext_resource path="res://assets/formation/CollisionRenderMaterial.tres" type="Material" id=1]
+[ext_resource path="res://assets/formation/SpriteShadowMaterial.tres" type="Material" id=2]
+[ext_resource path="res://assets/surt_terrain/tree_frames.tres" type="SpriteFrames" id=3]
+[ext_resource path="res://scenes/formation/terrain/Tree.gd" type="Script" id=4]
+
+[sub_resource type="CylinderShape" id=1]
+radius = 0.04
+height = 0.52
+
+[sub_resource type="CylinderMesh" id=2]
+material = ExtResource( 1 )
+top_radius = 0.04
+bottom_radius = 0.04
+height = 0.52
+
+[sub_resource type="CylinderShape" id=3]
+radius = 0.04
+height = 0.52
+
+[sub_resource type="CylinderMesh" id=4]
+material = ExtResource( 1 )
+top_radius = 0.04
+bottom_radius = 0.04
+height = 0.52
+
+[sub_resource type="CylinderMesh" id=5]
+material = ExtResource( 1 )
+top_radius = 0.07
+bottom_radius = 0.07
+height = 0.22
+
+[node name="Tree" type="StaticBody"]
+script = ExtResource( 4 )
+
+[node name="Sprite" type="AnimatedSprite3D" parent="."]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.264616, 0 )
+material_override = ExtResource( 2 )
+frames = ExtResource( 3 )
+animation = "elm_light"
+playing = true
+
+[node name="CollisionElm" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.26, 0 )
+shape = SubResource( 1 )
+
+[node name="RenderElm" type="MeshInstance" parent="CollisionElm"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.000343327, 0 )
+visible = false
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="CollisionPine" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.26, 0 )
+visible = false
+shape = SubResource( 3 )
+
+[node name="RenderPine" type="MeshInstance" parent="CollisionPine"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.000343327, 0 )
+visible = false
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="CollisionOak" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.108017, 0 )
+visible = false
+shape = SubResource( 1 )
+
+[node name="RenderOak" type="MeshInstance" parent="CollisionOak"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00153058, 0 )
+visible = false
+mesh = SubResource( 5 )
+material/0 = null

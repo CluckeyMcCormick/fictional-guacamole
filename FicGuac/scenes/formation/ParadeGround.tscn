@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=13 format=2]
 
 [ext_resource path="res://scenes/formation/ParadeGround.gd" type="Script" id=1]
 [ext_resource path="res://assets/surt_terrain/mat_terrain_grass_grid.tres" type="Material" id=2]
@@ -6,6 +6,7 @@
 [ext_resource path="res://scenes/formation/Camera.gd" type="Script" id=4]
 [ext_resource path="res://scenes/formation/Unit.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/formation/cali_bear.obj" type="ArrayMesh" id=6]
+[ext_resource path="res://scenes/formation/terrain/Tree.tscn" type="PackedScene" id=7]
 
 [sub_resource type="PlaneMesh" id=1]
 material = ExtResource( 2 )
@@ -86,3 +87,44 @@ spot_angle = 38.309
 transform = Transform( 0.093145, 0, 0.0363869, 0, 0.1, 0, -0.0363869, 0, 0.093145, 0.221266, 0.150723, 0.0360359 )
 mesh = ExtResource( 6 )
 material/0 = SubResource( 5 )
+
+[node name="Trees" type="Spatial" parent="."]
+
+[node name="Tree" parent="Trees" instance=ExtResource( 7 )]
+
+[node name="Tree2" parent="Trees" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.526235, 0, 1.56117 )
+
+[node name="Tree3" parent="Trees" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.33612, 0, -1.36176 )
+_tree_type = 1
+
+[node name="Tree4" parent="Trees" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.3384, 0, 0.318158 )
+
+[node name="Tree5" parent="Trees" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.02931, 0, 0.581779 )
+
+[node name="Tree6" parent="Trees" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.05528, 0, -0.979394 )
+_tree_type = 1
+
+[node name="Tree7" parent="Trees" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.35986, 0, 1.88356 )
+
+[node name="Tree8" parent="Trees" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.67682, 0, 1.55472 )
+
+[node name="Tree9" parent="Trees" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.29704, -0.00546384, -1.41736 )
+_tree_type = 1
+
+[node name="Tree10" parent="Trees" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.756601, 0, 2.2705 )
+
+[node name="Tree11" parent="Trees" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.11102, 0, 2.53412 )
+
+[node name="Tree12" parent="Trees" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.647509, 0, 0.972944 )
+_tree_type = 1
