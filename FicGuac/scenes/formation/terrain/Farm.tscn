@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://assets/surt_terrain/mat_terrain_dirt_grid.tres" type="Material" id=1]
+[ext_resource path="res://assets/surt_terrain/surt_grass_edge.png" type="Texture" id=2]
+
+[sub_resource type="PlaneMesh" id=1]
+material = ExtResource( 1 )
+size = Vector2( 0.25, 0.25 )
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_texture = ExtResource( 2 )
+
+[sub_resource type="PlaneMesh" id=2]
+material = SubResource( 3 )
+size = Vector2( 0.25, 0.25 )
+
+[node name="Farm" type="Spatial"]
+
+[node name="Dirt" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.125, 0.001, 0.125 )
+visible = false
+mesh = SubResource( 1 )
+material/0 = null
+
+[node name="GrassEdge" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.125, 0.001, 0.125 )
+mesh = SubResource( 2 )
+material/0 = null

@@ -1,12 +1,13 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scenes/formation/ParadeGround.gd" type="Script" id=1]
-[ext_resource path="res://assets/surt_terrain/mat_terrain_grass_grid.tres" type="Material" id=2]
+[ext_resource path="res://assets/surt_terrain/mat_terrain_grass.tres" type="Material" id=2]
 [ext_resource path="res://assets/surt_terrain/mat_terrain_water_grid.tres" type="Material" id=3]
 [ext_resource path="res://scenes/formation/Camera.gd" type="Script" id=4]
 [ext_resource path="res://scenes/formation/Unit.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/formation/cali_bear.obj" type="ArrayMesh" id=6]
 [ext_resource path="res://scenes/formation/terrain/Tree.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/formation/terrain/Farm.tscn" type="PackedScene" id=8]
 
 [sub_resource type="PlaneMesh" id=1]
 material = ExtResource( 2 )
@@ -128,3 +129,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.11102, 0, 2.53412 )
 [node name="Tree12" parent="Trees" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.647509, 0, 0.972944 )
 _tree_type = 1
+
+[node name="Farm" parent="." instance=ExtResource( 8 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
