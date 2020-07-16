@@ -1,7 +1,7 @@
 [gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://scenes/formation/ParadeGround.gd" type="Script" id=1]
-[ext_resource path="res://assets/surt_terrain/mat_terrain_grass.tres" type="Material" id=2]
+[ext_resource path="res://assets/surt_terrain/mat_terrain_grass_grid.tres" type="Material" id=2]
 [ext_resource path="res://assets/surt_terrain/mat_terrain_water_grid.tres" type="Material" id=3]
 [ext_resource path="res://scenes/formation/Camera.gd" type="Script" id=4]
 [ext_resource path="res://scenes/formation/Unit.tscn" type="PackedScene" id=5]
@@ -54,7 +54,7 @@ playback_process_mode = 0
 playback/repeat = true
 
 [node name="Camera" type="Camera" parent="."]
-transform = Transform( 0.707107, -0.5, 0.5, 0, 0.707107, 0.707107, -0.707107, -0.5, 0.5, 3, 4, 3 )
+transform = Transform( 0.707107, -0.408244, 0.577353, 0, 0.816501, 0.577345, -0.707107, -0.408244, 0.577353, 3, 4, 3 )
 projection = 1
 size = 7.0
 script = ExtResource( 4 )
