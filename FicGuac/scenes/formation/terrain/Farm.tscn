@@ -1,28 +1,49 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=10 format=2]
 
-[ext_resource path="res://assets/surt_terrain/mat_terrain_dirt_grid.tres" type="Material" id=1]
-[ext_resource path="res://assets/surt_terrain/surt_grass_edge.png" type="Texture" id=2]
+[ext_resource path="res://assets/terrain/mat_small_plot.tres" type="Material" id=1]
+[ext_resource path="res://assets/terrain/mat_wide_plot.tres" type="Material" id=2]
+[ext_resource path="res://assets/terrain/mat_tall_plot.tres" type="Material" id=3]
+[ext_resource path="res://assets/terrain/mat_large_plot.tres" type="Material" id=4]
+[ext_resource path="res://scenes/formation/terrain/Farm.gd" type="Script" id=5]
 
 [sub_resource type="PlaneMesh" id=1]
 material = ExtResource( 1 )
 size = Vector2( 0.25, 0.25 )
 
-[sub_resource type="SpatialMaterial" id=3]
-albedo_texture = ExtResource( 2 )
-
 [sub_resource type="PlaneMesh" id=2]
-material = SubResource( 3 )
-size = Vector2( 0.25, 0.25 )
+material = ExtResource( 2 )
+size = Vector2( 0.5, 0.25 )
+
+[sub_resource type="PlaneMesh" id=3]
+material = ExtResource( 3 )
+size = Vector2( 0.25, 0.5 )
+
+[sub_resource type="PlaneMesh" id=4]
+material = ExtResource( 4 )
+size = Vector2( 0.5, 0.5 )
 
 [node name="Farm" type="Spatial"]
+script = ExtResource( 5 )
 
-[node name="Dirt" type="MeshInstance" parent="."]
+[node name="SmallPlot" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.125, 0.001, 0.125 )
-visible = false
 mesh = SubResource( 1 )
 material/0 = null
 
-[node name="GrassEdge" type="MeshInstance" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.125, 0.001, 0.125 )
+[node name="WidePlot" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0.001, 0.125 )
+visible = false
 mesh = SubResource( 2 )
+material/0 = null
+
+[node name="TallPlot" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.125, 0.001, 0.25 )
+visible = false
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="LargePlot" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.25, 0.001, 0.25 )
+visible = false
+mesh = SubResource( 4 )
 material/0 = null

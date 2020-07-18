@@ -132,3 +132,4 @@ _tree_type = 1
 
 [node name="Farm" parent="." instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 1 )
+_farm_plot = 3
