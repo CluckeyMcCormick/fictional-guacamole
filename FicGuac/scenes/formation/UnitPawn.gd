@@ -14,14 +14,18 @@ enum {
 }
 
 # What's our tolerance for meeting our goal
-const GOAL_TOLERANCE = 0.01
+const GOAL_TOLERANCE = 0.1
 
 # What's the minimum horizontal speed our units will move at? (Excluding when
 # they come to a full stop). Units/second
 const MIN_HORIZ_SPEED = 1
 
 # What's the maximum horizontal speed our units will move at? Units/second
-const MAX_HORIZ_SPEED = 10
+const MAX_HORIZ_SPEED = 20
+
+# What's our acceleration - for every second, how much does our velocity
+# increase? (Units/second) per second
+const HORIZ_ACCELERATION = 4 
 
 # We can only really measure the position of the UnitPawn from the center of the
 # node. However, our destinations are always on the floor. So, we need a
@@ -44,7 +48,12 @@ var pawn_index = -1
 # The current movement vector. This is set during movement (see _physics_process).
 # It is purely for reading the current movement status (since kinematic bodies
 # don't really report this.)
-var _current_velocity = Vector3.ZERO
+var _combined_velocity = Vector3.ZERO
+
+# While the sprite moves in three dimensions, it speeds up and slows down on a
+# line - like a train.
+var _line_velocity = 0
+
 # Likewise, we may need a quick way to refer our current movement direction
 # (horizontally, at least) without having to derive from the _current_velocity.
 # We'll store that value here. 
@@ -62,8 +71,83 @@ func _ready():
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
-    set_sprite_from_vector(_current_velocity)
+    set_sprite_from_vector(_combined_velocity)
     pass
+
+func _physics_process(delta):
+    var dirs = Vector3.ZERO
+    
+    if not self.is_on_floor():
+        dirs.y = -9.8
+    
+    # Our current position (the global_transform) measures where the CENTER of
+    # the UnitPawn is. However, we need to measure the position from the "feet".
+    # To do that, we shift the origin down by half the height
+    var floor_pos = self.global_transform.origin
+    floor_pos.y -= FLOOR_DISTANCE
+    
+    if _target_position != null and floor_pos.distance_to(_target_position) > GOAL_TOLERANCE:
+        # Calculate the distance from our current global position
+        dirs.x = _target_position.x - floor_pos.x
+        dirs.z = _target_position.z - floor_pos.z
+
+    # If we have something in the vector...
+    if dirs != Vector3.ZERO:
+        # Increment our line velocity with our acceleration
+        _line_velocity += HORIZ_ACCELERATION * delta
+        # Clamp it! Don't want our boy going too fast or too slow
+        _line_velocity = clamp(_line_velocity, MIN_HORIZ_SPEED, MAX_HORIZ_SPEED)
+        # Get the angle of the horizontal dirs
+        var dirs_angle = atan2(dirs.z, dirs.x)
+        # Set the combined velocity to 0 so we can build it piece-meal
+        _combined_velocity = Vector3.ZERO
+        # Start with y, since that's a straight translation
+        _combined_velocity.y = dirs.y
+        
+        # Only do X and Z if we have a target - i.e. we're TRYING to move
+        # somewhere
+        if _target_position != null:
+            # Next comes x. We're working of the unit circle, so use cos() to get
+            # the distance and scale it with our line velocity
+            _combined_velocity.x = cos(dirs_angle) * _line_velocity
+            # Finally, z! Same thing as with x, but this time z is the stand in for
+            # y so we'll use sin() instead.
+            _combined_velocity.z = sin(dirs_angle) * _line_velocity
+        
+        # Move the UnitPawn - don't use move_and_slide_with_snap, since that
+        # upsets our is_on_floor() test 
+        self.move_and_slide(_combined_velocity, Vector3(0, 1, 0))
+        
+    # Otherwise, we ain't moving nowhere.
+    else:
+        _combined_velocity = Vector3.ZERO
+        _line_velocity = 0
+        
+
+# Registers this UnitPawn to a Unit node. Assigns the provided index to this
+# UnitPawn
+func register_to_unit(unit_node, unit_index):
+    # Assign the controlling unit
+    control_unit = unit_node
+    # Assign the unit index
+    pawn_index = unit_index
+    # Register the move_order_callback with our current object (so we can get
+    # move orders hand delivered)
+    control_unit.connect("move_ordered", self, "_on_Unit_move_ordered")
+    # Register the pawn_died signal with our current object (so we can get
+    # move orders hand delivered)
+    self.connect("pawn_died", unit_node, "_on_UnitPawn_pawn_died")
+
+# Sets this UnitPawn to not collide with all of the nodes in the provided list.
+# Intended for making sure a UnitPawn doesn't collide with the other UnitPawns
+# in it's fellow unit.
+func no_collide_with_list(node_list):
+    # For each node in the provided node list...
+    for node in node_list:
+        # If the current node in our list is NOT this UnitPawn...
+        if node != self:
+            # Then don't collide this UnitPawn with this other node
+            self.add_collision_exception_with( node )
 
 # Sets the UnitPawn's VisualSprite, given a movement vector. We treat the vector
 # like a projection from the origin - in that form it gives us a direction (and
@@ -73,8 +157,7 @@ func set_sprite_from_vector(move_vector: Vector3):
     # We need to update the sprite to match the UnitPawn's movement direction.
     # Direction is treated as a compass, relative to the camera. So away from
     # the camera is north, towards is south, right and left become east and
-    # west, etc...  
-    
+    # west, etc...
     is_moving = (move_vector.x != 0) or (move_vector.z != 0)
     
     # If this vector is moving horizontally...
@@ -162,58 +245,6 @@ func _update_sprite_from_direction_state(moving: bool):
         else:
             anim_string += "_idle"
         $VisualSprite.animation = anim_string
-
-func _physics_process(body_state):   
-    var dirs = Vector3.ZERO
-    
-    if not self.is_on_floor():
-        dirs.y = -0.05
-    
-    # Our current position (the global_transform) measures where the CENTER of
-    # the UnitPawn is. However, we need to measure the position from the "feet".
-    # To do that, we shift the origin down by half the height
-    var floor_pos = self.global_transform.origin
-    floor_pos.y -= FLOOR_DISTANCE
-    
-    if _target_position != null and floor_pos.distance_to(_target_position) > GOAL_TOLERANCE:
-        # Calculate the distance from our current global position
-        dirs = _target_position - floor_pos
-
-    dirs.x = clamp(abs(dirs.x), 0, MAX_HORIZ_SPEED) * sign(dirs.x)
-    dirs.z = clamp(abs(dirs.z), 0, MAX_HORIZ_SPEED) * sign(dirs.z)
-
-    # Set the current velocity
-    _current_velocity = dirs
-    # Only call move and slide if we HAVE to move; not sure what happens if
-    # called with Vector Zero and it just FEELS safer
-    if dirs != Vector3.ZERO:
-        # Move (with snap on the Y-axis)
-        self.move_and_slide_with_snap(dirs, Vector3(0, 1, 0)) 
-
-# Registers this UnitPawn to a Unit node. Assigns the provided index to this
-# UnitPawn
-func register_to_unit(unit_node, unit_index):
-    # Assign the controlling unit
-    control_unit = unit_node
-    # Assign the unit index
-    pawn_index = unit_index
-    # Register the move_order_callback with our current object (so we can get
-    # move orders hand delivered)
-    control_unit.connect("move_ordered", self, "_on_Unit_move_ordered")
-    # Register the pawn_died signal with our current object (so we can get
-    # move orders hand delivered)
-    self.connect("pawn_died", unit_node, "_on_UnitPawn_pawn_died")
-
-# Sets this UnitPawn to not collide with all of the nodes in the provided list.
-# Intended for making sure a UnitPawn doesn't collide with the other UnitPawns
-# in it's fellow unit.
-func no_collide_with_list(node_list):
-    # For each node in the provided node list...
-    for node in node_list:
-        # If the current node in our list is NOT this UnitPawn...
-        if node != self:
-            # Then don't collide this UnitPawn with this other node
-            self.add_collision_exception_with( node )
 
 func _on_Unit_move_ordered(unit_target):
     # Calculate the individual position based on the unit_position, and set the
