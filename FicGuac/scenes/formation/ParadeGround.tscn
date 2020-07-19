@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scenes/formation/ParadeGround.gd" type="Script" id=1]
 [ext_resource path="res://assets/surt_terrain/mat_terrain_grass_grid.tres" type="Material" id=2]
@@ -8,6 +8,7 @@
 [ext_resource path="res://assets/formation/cali_bear.obj" type="ArrayMesh" id=6]
 [ext_resource path="res://scenes/formation/terrain/Tree.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/formation/terrain/Farm.tscn" type="PackedScene" id=8]
+[ext_resource path="res://scenes/formation/unit_pawn_subs/UnitPawnVomitClown.tscn" type="PackedScene" id=9]
 
 [sub_resource type="PlaneMesh" id=1]
 material = ExtResource( 2 )
@@ -79,6 +80,8 @@ environment = SubResource( 4 )
 [node name="DirectionalLight" type="DirectionalLight" parent="WorldEnvironment"]
 transform = Transform( -1.62921e-07, -0.707107, 0.707107, 0, 0.707107, 0.707107, -1, 1.15202e-07, -1.15202e-07, 0, 5, 0 )
 shadow_enabled = true
+shadow_contact = 0.4
+directional_shadow_normal_bias = 0.1
 
 [node name="SpotLight" type="SpotLight" parent="."]
 transform = Transform( 0.663535, -0.327261, 0.672772, 0, 0.899253, 0.43743, -0.748146, -0.29025, 0.596685, 1.41481, 1.20783, 1.26788 )
@@ -111,3 +114,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -15 )
 [node name="Farm" parent="." instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 10 )
 _farm_plot = 1
+
+[node name="UnitPawn" parent="." instance=ExtResource( 9 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.8881, 0.815, 3.49407 )
