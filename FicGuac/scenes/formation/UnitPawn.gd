@@ -15,19 +15,20 @@ enum {
 
 # What's our tolerance for meeting our goal
 const GOAL_TOLERANCE = 0.01
-# What's our tolerance for straying/overshooting on our path to the goal
-const PATHING_TOLERANCE = 0.001
-# How tall is this UnitPawn? Might not seem like it but this can actually be a
-# pretty big deal - if this is set incorrectly UnitPawns might measure their
-# distance-to-target wrong!
-const HEIGHT = 0.10
 
 # What's the minimum horizontal speed our units will move at? (Excluding when
 # they come to a full stop). Units/second
-const MIN_HORIZ_SPEED = 0.5
+const MIN_HORIZ_SPEED = 1
 
 # What's the maximum horizontal speed our units will move at? Units/second
-const MAX_HORIZ_SPEED = 1.5
+const MAX_HORIZ_SPEED = 10
+
+# We can only really measure the position of the UnitPawn from the center of the
+# node. However, our destinations are always on the floor. So, we need a
+# constant to calculate our distance to the floor. 0.815 is the initial
+# y-transform, .001396 was the OBSERVED remainder left after adding .815. Not
+# sure where that value is from or why that value is what it is, but it is. 
+const FLOOR_DISTANCE = 0.815 + .001396
 
 # What is our target position - where are we trying to go?
 var _target_position = null
@@ -64,7 +65,10 @@ func _process(delta):
     set_sprite_from_vector(_current_velocity)
     pass
 
-# 
+# Sets the UnitPawn's VisualSprite, given a movement vector. We treat the vector
+# like a projection from the origin - in that form it gives us a direction (and
+# a magnitude but we don't care about that). Using that, we can determine which
+# way the VisualSprite SHOULD be looking and set it from there.
 func set_sprite_from_vector(move_vector: Vector3):
     # We need to update the sprite to match the UnitPawn's movement direction.
     # Direction is treated as a compass, relative to the camera. So away from
@@ -168,12 +172,12 @@ func _physics_process(body_state):
     # Our current position (the global_transform) measures where the CENTER of
     # the UnitPawn is. However, we need to measure the position from the "feet".
     # To do that, we shift the origin down by half the height
-    var floor_aligned_position = self.global_transform.origin
-    floor_aligned_position.y -= HEIGHT / 2
+    var floor_pos = self.global_transform.origin
+    floor_pos.y -= FLOOR_DISTANCE
     
-    if _target_position != null and floor_aligned_position.distance_to(_target_position) > GOAL_TOLERANCE:
+    if _target_position != null and floor_pos.distance_to(_target_position) > GOAL_TOLERANCE:
         # Calculate the distance from our current global position
-        dirs = _target_position - floor_aligned_position
+        dirs = _target_position - floor_pos
 
     dirs.x = clamp(abs(dirs.x), 0, MAX_HORIZ_SPEED) * sign(dirs.x)
     dirs.z = clamp(abs(dirs.z), 0, MAX_HORIZ_SPEED) * sign(dirs.z)
