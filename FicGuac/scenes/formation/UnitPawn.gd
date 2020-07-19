@@ -92,9 +92,6 @@ func set_sprite_from_vector(move_vector: Vector3):
         if move_angle < 0:
             move_angle += 360
         
-        # Rotate the directional-debug arrow
-        $DirectionCenter.rotation_degrees.y = move_angle
-        
         # Right! Now we've got an appropriate angle - we just need to set the
         # zones. Each eigth-cardinal is allotted 45 degrees, centered around 
         # increments of 45 - i.e. EAST is at 0, NOR_EAST at 45, NORTH at 90. The

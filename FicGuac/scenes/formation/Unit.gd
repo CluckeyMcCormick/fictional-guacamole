@@ -7,16 +7,6 @@ extends Spatial
 const UNIT_INITIAL_STRENGTH = 36
 
 # Preload our selections for UnitPawns
-const UP_DEFAULT = preload("res://scenes/formation/UnitPawn.tscn")
-const UP_BLOB = preload("res://scenes/formation/unit_pawn_subs/UnitPawnBlob.tscn")
-const UP_DREAD_KNIGHT = preload("res://scenes/formation/unit_pawn_subs/UnitPawnDreadKnight.tscn")
-const UP_MAGE = preload("res://scenes/formation/unit_pawn_subs/UnitPawnMage.tscn")
-const UP_SHROOM = preload("res://scenes/formation/unit_pawn_subs/UnitPawnShroom.tscn")
-const UP_SKELETON = preload("res://scenes/formation/unit_pawn_subs/UnitPawnSkeleton.tscn")
-const UP_SNAKE = preload("res://scenes/formation/unit_pawn_subs/UnitPawnSnake.tscn")
-const UP_SURT = preload("res://scenes/formation/unit_pawn_subs/UnitPawnSurt.tscn")
-const UP_TRUS = preload("res://scenes/formation/unit_pawn_subs/UnitPawnTrus.tscn")
-const UP_DOOM_MARINE = preload("res://scenes/formation/unit_pawn_subs/UnitPawnDoomMarine.tscn")
 const UP_VOMIT_CLOWN = preload("res://scenes/formation/unit_pawn_subs/UnitPawnVomitClown.tscn")
 
 # Should we have UnitPawns in this unit colliding with each other?

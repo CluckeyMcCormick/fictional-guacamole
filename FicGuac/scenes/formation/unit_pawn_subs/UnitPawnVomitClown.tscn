@@ -5,14 +5,12 @@
 [ext_resource path="res://assets/formation/CollisionRenderMaterial.tres" type="Material" id=3]
 
 [sub_resource type="CylinderShape" id=1]
-radius = 0.0304231
-height = 0.1
+radius = 0.6
 
 [sub_resource type="CylinderMesh" id=2]
 material = ExtResource( 3 )
-top_radius = 0.03
-bottom_radius = 0.03
-height = 0.1
+top_radius = 0.6
+bottom_radius = 0.6
 
 [node name="UnitPawn" instance=ExtResource( 1 )]
 
@@ -22,10 +20,10 @@ shape = SubResource( 1 )
 [node name="CollisionRender" parent="CollisionShape" index="0"]
 mesh = SubResource( 2 )
 
-[node name="StateSprite" parent="." index="2"]
+[node name="StateSprite" parent="." index="1"]
 visible = false
 
-[node name="VisualSprite" parent="." index="4"]
-transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, -0.002, 0 )
-pixel_size = 0.0037
+[node name="VisualSprite" parent="." index="3"]
 frames = ExtResource( 2 )
+animation = "south_move"
+frame = 7

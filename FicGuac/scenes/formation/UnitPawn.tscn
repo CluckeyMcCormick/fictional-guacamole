@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scenes/formation/UnitPawn.gd" type="Script" id=1]
 [ext_resource path="res://assets/mob_state/sprite_states_attack01.png" type="Texture" id=2]
@@ -13,17 +13,9 @@
 [ext_resource path="res://assets/formation/CollisionRenderMaterial.tres" type="Material" id=11]
 
 [sub_resource type="CylinderShape" id=1]
-radius = 0.05
-height = 0.1
 
 [sub_resource type="CylinderMesh" id=2]
 material = ExtResource( 11 )
-top_radius = 0.05
-bottom_radius = 0.05
-height = 0.1
-
-[sub_resource type="CubeMesh" id=3]
-size = Vector3( 0.125, 0.01, 0.005 )
 
 [sub_resource type="SpriteFrames" id=4]
 animations = [ {
@@ -58,7 +50,7 @@ bottom_radius = 0.05
 height = 0.009
 
 [node name="UnitPawn" type="KinematicBody"]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.0498406, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 collision_layer = 8
 collision_mask = 13
 script = ExtResource( 1 )
@@ -71,21 +63,12 @@ visible = false
 mesh = SubResource( 2 )
 material/0 = null
 
-[node name="DirectionCenter" type="Spatial" parent="."]
-visible = false
-
-[node name="DirectionalRectagonal" type="MeshInstance" parent="DirectionCenter"]
-transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.015, -0.045, -0.015 )
-mesh = SubResource( 3 )
-material/0 = null
-
 [node name="StateSprite" type="AnimatedSprite3D" parent="."]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0 )
 material_override = ExtResource( 10 )
-pixel_size = 0.0004
+pixel_size = 0.0078
 frames = SubResource( 4 )
 animation = "debug_march"
-frame = 1
 playing = true
 
 [node name="StandRender" type="MeshInstance" parent="."]
@@ -97,6 +80,5 @@ material/0 = null
 [node name="VisualSprite" type="AnimatedSprite3D" parent="."]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0 )
 material_override = ExtResource( 10 )
-pixel_size = 0.0008
-animation = "south_move"
+pixel_size = 0.0625
 playing = true
