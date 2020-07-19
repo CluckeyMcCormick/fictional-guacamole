@@ -15,7 +15,7 @@ export(bool) var intra_unit_collision = false
 # grid?
 export(float, -0.5, 0.5, 0.05) var grid_snap_offset
 # That invisible grid - how big are the units?
-export(float, 0, 2, 0.05) var grid_snap_size
+export(float, 0, 10, 1) var grid_snap_size
 
 # The current count of pawns in the unit
 var pawn_count
@@ -120,8 +120,8 @@ func get_pawn_index_pos(pawn_index):
     var unit_z = floor( pawn_index / UNIT_SIZE )
     
     # The two lengths of our unit
-    var x_len = 0.5
-    var z_len = 0.5
+    var x_len = 10
+    var z_len = 10
     
     # Every unit is spaced THIS much apart from - we call this the unit place
     # increment ratio, or UPIR

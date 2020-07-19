@@ -9,14 +9,16 @@ extends Camera
 # and that probably comes out to something else BUT I DON'T CARE
 #
 # Used to calculate our movement vector. 
-const BMR = 5
+const BMR = 100
 
 # In orthographic cameras, the scope/scale of visibility is expressed as it's
 # "size". By manipulating the size of the camera, we can approximate zooming in
 # and zooming out. Neat-o! But - what's the minimum and maximum size we can
 # scale to?
-const MIN_SIZE = 1
-const MAX_SIZE = 7
+const MIN_SIZE = 20
+const MAX_SIZE = 140
+
+const ZOOM_STEP = 20
 
 # To move forward, backward, left and right, we need to translate the camera -
 # which we can do with these vectors. Neat!
@@ -56,15 +58,15 @@ func _input(event):
         self.translation = recenter_point
         
     if event.is_action_pressed("camera_zoom_in"):
-        self.size = clamp( self.size - 1, MIN_SIZE, MAX_SIZE)
+        self.size = clamp( self.size - ZOOM_STEP, MIN_SIZE, MAX_SIZE)
         zoom_change = true
         
     if event.is_action_pressed("camera_zoom_out"):
-        self.size = clamp( self.size + 1, MIN_SIZE, MAX_SIZE)
+        self.size = clamp( self.size + ZOOM_STEP, MIN_SIZE, MAX_SIZE)
         zoom_change = true
         
     if event.is_action_pressed("debug_print"):
-        print(self.translation)
+        print(self.size)
         
     if zoom_change:
         # Calculate the (N)ew (M)ove (R)ate - the basic move rate scaled to our
