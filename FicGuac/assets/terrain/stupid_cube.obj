@@ -1,0 +1,31 @@
+# Blender v2.79 (sub 0) OBJ File: 'stupid_cube.blend'
+# www.blender.org
+mtllib stupid_cube.mtl
+o Cube
+v 0.500000 -0.500000 -0.500000
+v 0.500000 -0.500000 0.500000
+v -0.500000 -0.500000 0.500000
+v -0.500000 -0.500000 -0.500000
+v 0.500000 0.500000 -0.500000
+v 0.500000 0.500000 0.500000
+v -0.500000 0.500000 0.500000
+v -0.500000 0.500000 -0.500000
+vn 0.0000 1.0000 0.0000
+vn 1.0000 0.0000 0.0000
+vn 0.0000 -1.0000 0.0000
+vn 0.0000 0.0000 -1.0000
+vn -1.0000 -0.0000 -0.0000
+vn -0.0000 -0.0000 1.0000
+usemtl MaterialTop
+s off
+f 5//1 8//1 7//1 6//1
+usemtl MaterialSideA
+f 1//2 5//2 6//2 2//2
+usemtl MaterialBottom
+f 1//3 2//3 3//3 4//3
+usemtl MaterialSideB
+f 5//4 1//4 4//4 8//4
+usemtl MaterialSideC
+f 3//5 7//5 8//5 4//5
+usemtl MaterialSideD
+f 2//6 6//6 7//6 3//6
