@@ -1,25 +1,10 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scenes/formation/terrain/Farm.gd" type="Script" id=5]
-[ext_resource path="res://assets/terrain/crops/crop_library.meshlib" type="MeshLibrary" id=6]
 [ext_resource path="res://assets/terrain/farm_plots/plot_library.meshlib" type="MeshLibrary" id=7]
 
 [node name="Farm" type="Spatial"]
 script = ExtResource( 5 )
-
-[node name="CropGrid" type="GridMap" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.002, 0 )
-mesh_library = ExtResource( 6 )
-cell_size = Vector3( 1, 1, 1 )
-collision_layer = 2
-collision_mask = 2
-data = {
-"cells": PoolIntArray( 1, 1, 0 )
-}
-__meta__ = {
-"_editor_clip_": 0,
-"_editor_floor_": Vector3( 0, 0, 0 )
-}
 
 [node name="PlotGrid" type="GridMap" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.002, 0 )
@@ -29,9 +14,11 @@ cell_center_y = false
 collision_layer = 2
 collision_mask = 2
 data = {
-"cells": PoolIntArray( 0, 0, 1073741831, 1, 0, 0, 2, 0, 1, 0, 1, 1073741830, 1, 1, 8, 2, 1, 2, 0, 2, 5, 1, 2, 4, 2, 2, 1073741827 )
+"cells": PoolIntArray( 0, 0, 7, 1, 0, 0, 2, 0, 1, 0, 1, 1073741830, 1, 1, 1073741832, 2, 1, 2, 0, 2, 5, 1, 2, 4, 2, 2, 536870915 )
 }
 __meta__ = {
 "_editor_clip_": 0,
 "_editor_floor_": Vector3( 0, 0, 0 )
 }
+
+[node name="Crops" type="Spatial" parent="."]

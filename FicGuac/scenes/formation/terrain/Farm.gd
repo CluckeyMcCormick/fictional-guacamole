@@ -15,10 +15,12 @@ enum CROP_TYPE {
 export(Vector2) var _plot_size = Vector2(3, 3) setget set_plot_size
 export(CROP_TYPE) var _crop_type = CROP_TYPE.wheat setget set_crop_type
 
-# We don't want crops that go on the 3D grid to start at (0, 0) - so what's the
-# offset, in grid units?
-const CROP_GRID_OFFSET = Vector2(1, 1)
+# What's the minimum size for each farm plot, on x and y? Use a Vector2 for
+# flexibility.
 const PLOT_SIZE_MINIMUM = Vector2(3, 3)
+
+# Preload our selections for Crops - the (C)rop (S)cenes
+const CS_WHEAT = preload("res://scenes/formation/terrain/Wheat.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -33,12 +35,14 @@ func _farm_refresh():
     
     # First off, if we don't have a plot or crop grid - which can happen (I
     # think it happens BEFORE the node enters the scene) - we need to back out
-    if $PlotGrid == null or $CropGrid == null:
+    if $PlotGrid == null or $Crops == null:
         return
     
     # Clear both of our grids
     $PlotGrid.clear()
-    $CropGrid.clear()
+    
+    for c in $Crops.get_children():
+        c.queue_free()
     
     # Okay, first thing we gotta do is build the farm plot - that patch of dirt
     # that sits below the crops. To determine which tile to place down as we
@@ -100,16 +104,25 @@ func _farm_refresh():
             tile = $PlotGrid.mesh_library.find_item_by_name(tile)
             $PlotGrid.set_cell_item(x, 0, z, tile)
 
+            # If this is an edge case, back out. We're done here
+            if any_edge:
+                continue
+
             # Now that we've set the ground tile, there's one other thing we can
-            # do - if this isn't an edge, we can place a crop here
-            if not any_edge:
-                match _crop_type:
-                    CROP_TYPE.wheat:
-                        # Set the Crop-grid to wheat
-                        $CropGrid.set_cell_item(x, 0, z, 0)
-                    # Any other type of Crop is invalid, so do nothing
-                    _:
-                        pass  
+            # do - since this isn't an edge tile, we can place a crop.
+            match _crop_type:
+                CROP_TYPE.wheat:
+                    # Instance the scene
+                    tile = CS_WHEAT.instance()
+                # Any other type of Crop is invalid, so do nothing
+                _:
+                    continue
+            # Set the name
+            tile.set_name("crops[" + str(x) + "," + str(z) +"]")
+            # Attach the crop tile to the Crops group
+            $Crops.add_child(tile)
+            # Move the crop over to the correct position
+            tile.translate( Vector3(x + 0.5, 0, z + 0.5) )
 
 func set_plot_size(new_plot_size):
     # Set the size restrictions for the plot; it needs to be AT LEAST EQUAL TO
