@@ -8,7 +8,8 @@ enum FARM_PLOT {
 
 # What type of crop does this farm have?
 enum CROP_TYPE {
-    wheat
+    wheat,
+    barley
 }
 
 # Export the config variables to the editor so we can set them on the fly
@@ -21,6 +22,7 @@ const PLOT_SIZE_MINIMUM = Vector2(3, 3)
 
 # Preload our selections for Crops - the (C)rop (S)cenes
 const CS_WHEAT = preload("res://scenes/formation/terrain/Wheat.tscn")
+const CS_BARLEY = preload("res://scenes/formation/terrain/Barley.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -114,6 +116,9 @@ func _farm_refresh():
                 CROP_TYPE.wheat:
                     # Instance the scene
                     tile = CS_WHEAT.instance()
+                CROP_TYPE.barley:
+                    # Instance the scene
+                    tile = CS_BARLEY.instance()
                 # Any other type of Crop is invalid, so do nothing
                 _:
                     continue
