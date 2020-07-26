@@ -16,18 +16,18 @@ func _ready():
 #    pass
 
 # If something goes through this crop...
-func _on_BarleyArea_body_entered(body):
+func _on_CornArea_body_entered(body):
     # Then we need to "crush" it, so that it looks like something trounced on
     # it.
     # First, disable monitoring on the area, so that this doesn't happen again.
     # Once crushed, this node is crushed.
-    $BarleyArea.monitoring = false
-    $BarleyArea.monitorable = false
-    $BarleyArea/BarleyShape.disabled = true
+    $CornArea.monitoring = false
+    $CornArea.monitorable = false
+    $CornArea/CornShape.disabled = true
     # Hover it just .002 off of the ground
-    $BarleyQuad.translate( Vector3(0, -0.048, 0) )
+    $CornQuad.translate( Vector3(0, -0.998, 0) )
     # Rotate the barley so that it's flat
-    $BarleyQuad.rotation_degrees.x = -90
+    $CornQuad.rotation_degrees.x = -90
     
     # If this body has a combined velocity...
     if body.get("_combined_velocity") != null:
@@ -35,5 +35,5 @@ func _on_BarleyArea_body_entered(body):
         # Let's extract the x and z values.
         var xz_velo = Vector2(body._combined_velocity.x, -body._combined_velocity.z)
         # Then, rotate on y to match the direction
-        $BarleyQuad.rotation_degrees.y = rad2deg( xz_velo.angle() - (PI / 2))
+        $CornQuad.rotation_degrees.y = rad2deg( xz_velo.angle() - (PI / 2))
         

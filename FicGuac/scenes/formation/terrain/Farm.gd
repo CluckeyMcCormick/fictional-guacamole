@@ -1,28 +1,29 @@
 tool
 extends Spatial
 
-# What size/form of this farm?
-enum FARM_PLOT {
-    small, tall, wide, large
-}
-
 # What type of crop does this farm have?
 enum CROP_TYPE {
-    wheat,
+    corn,
+    cabbage,
+    carrot,
+    sunflower,
     barley
 }
 
 # Export the config variables to the editor so we can set them on the fly
 export(Vector2) var _plot_size = Vector2(3, 3) setget set_plot_size
-export(CROP_TYPE) var _crop_type = CROP_TYPE.wheat setget set_crop_type
+export(CROP_TYPE) var _crop_type = CROP_TYPE.barley setget set_crop_type
 
 # What's the minimum size for each farm plot, on x and y? Use a Vector2 for
 # flexibility.
 const PLOT_SIZE_MINIMUM = Vector2(3, 3)
 
 # Preload our selections for Crops - the (C)rop (S)cenes
-const CS_WHEAT = preload("res://scenes/formation/terrain/Wheat.tscn")
 const CS_BARLEY = preload("res://scenes/formation/terrain/Barley.tscn")
+const CS_CORN = preload("res://scenes/formation/terrain/Corn.tscn")
+const CS_CABBAGE = preload("res://scenes/formation/terrain/Cabbage.tscn")
+const CS_CARROT = preload("res://scenes/formation/terrain/Carrot.tscn")
+const CS_SUNFLOWER = preload("res://scenes/formation/terrain/Sunflower.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -111,17 +112,27 @@ func _farm_refresh():
                 continue
 
             # Now that we've set the ground tile, there's one other thing we can
-            # do - since this isn't an edge tile, we can place a crop.
+            # do - since this isn't an edge tile, we can place a crop. Match the
+            # crop type and instance the scene
             match _crop_type:
-                CROP_TYPE.wheat:
-                    # Instance the scene
-                    tile = CS_WHEAT.instance()
                 CROP_TYPE.barley:
-                    # Instance the scene
                     tile = CS_BARLEY.instance()
-                # Any other type of Crop is invalid, so do nothing
+                CROP_TYPE.corn:
+                    tile = CS_CORN.instance()
+                CROP_TYPE.cabbage:
+                    tile = CS_CABBAGE.instance() 
+                CROP_TYPE.carrot:
+                    tile = CS_CARROT.instance()  
+                CROP_TYPE.sunflower:
+                    tile = CS_SUNFLOWER.instance()
+                # Any other type of Crop is invalid, so set it to an invalid
+                # value
                 _:
-                    continue
+                    tile = null
+            # If we have an invalid value, then we need to skip.
+            if tile == null:
+                continue
+            
             # Set the name
             tile.set_name("crops[" + str(x) + "," + str(z) +"]")
             # Attach the crop tile to the Crops group
