@@ -14,7 +14,7 @@ cell_center_y = false
 collision_layer = 2
 collision_mask = 2
 data = {
-"cells": PoolIntArray( 0, 0, 7, 1, 0, 0, 2, 0, 1, 0, 1, 6, 1, 1, 8, 2, 1, 2, 0, 2, 5, 1, 2, 4, 2, 2, 3 )
+"cells": PoolIntArray( 0, 0, 536870919, 1, 0, 0, 2, 0, 1, 0, 1, 6, 1, 1, 8, 2, 1, 536870914, 0, 2, 536870917, 1, 2, 536870916, 2, 2, 536870915 )
 }
 __meta__ = {
 "_editor_clip_": 0,
@@ -22,3 +22,4 @@ __meta__ = {
 }
 
 [node name="Crops" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.002, 0 )
