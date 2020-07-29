@@ -59,6 +59,7 @@ script = ExtResource( 1 )
 shape = SubResource( 1 )
 
 [node name="CollisionRender" type="MeshInstance" parent="CollisionShape"]
+visible = false
 mesh = SubResource( 2 )
 material/0 = null
 

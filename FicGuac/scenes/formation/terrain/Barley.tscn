@@ -8,7 +8,7 @@
 material = ExtResource( 2 )
 height = 1.75
 
-[sub_resource type="BoxShape" id=4]
+[sub_resource type="BoxShape" id=2]
 extents = Vector3( 0.5, 0.5, 0.135 )
 
 [sub_resource type="SpatialMaterial" id=3]
@@ -17,7 +17,7 @@ params_use_alpha_scissor = true
 params_alpha_scissor_threshold = 0.98
 albedo_texture = ExtResource( 1 )
 
-[sub_resource type="QuadMesh" id=2]
+[sub_resource type="QuadMesh" id=4]
 material = SubResource( 3 )
 
 [node name="Barley" type="Spatial"]
@@ -35,10 +35,10 @@ collision_layer = 2
 collision_mask = 14
 
 [node name="BarleyShape" type="CollisionShape" parent="BarleyArea"]
-shape = SubResource( 4 )
+shape = SubResource( 2 )
 
 [node name="BarleyQuad" type="MeshInstance" parent="."]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.5, 0 )
-mesh = SubResource( 2 )
+mesh = SubResource( 4 )
 material/0 = null
 [connection signal="body_entered" from="BarleyArea" to="." method="_on_BarleyArea_body_entered"]

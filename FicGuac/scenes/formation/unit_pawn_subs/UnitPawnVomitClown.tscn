@@ -1,17 +1,11 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://scenes/formation/UnitPawn.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/formation/oh_god_clowns_why.tres" type="SpriteFrames" id=2]
-[ext_resource path="res://assets/formation/CollisionRenderMaterial.tres" type="Material" id=3]
+[ext_resource path="res://scenes/formation/unit_pawn_subs/UnitPawnVomitClown_SizeRef.tres" type="CylinderMesh" id=3]
 
 [sub_resource type="CylinderShape" id=1]
 radius = 0.6
-height = 1.75
-
-[sub_resource type="CylinderMesh" id=2]
-material = ExtResource( 3 )
-top_radius = 0.6
-bottom_radius = 0.6
 height = 1.75
 
 [node name="UnitPawn" instance=ExtResource( 1 )]
@@ -22,11 +16,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.06, 0 )
 shape = SubResource( 1 )
 
 [node name="CollisionRender" parent="CollisionShape" index="0"]
-visible = false
-mesh = SubResource( 2 )
+mesh = ExtResource( 3 )
 
 [node name="StateSprite" parent="." index="1"]
 visible = false
+frame = 0
 
 [node name="VisualSprite" parent="." index="3"]
 frames = ExtResource( 2 )

@@ -15,8 +15,8 @@ const BMR = 100
 # "size". By manipulating the size of the camera, we can approximate zooming in
 # and zooming out. Neat-o! But - what's the minimum and maximum size we can
 # scale to?
-const MIN_SIZE = 20
-const MAX_SIZE = 140
+const MIN_SIZE = 10#20
+const MAX_SIZE = 150
 
 const ZOOM_STEP = 20
 
