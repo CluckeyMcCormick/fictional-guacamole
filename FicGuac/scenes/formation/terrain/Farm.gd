@@ -19,11 +19,11 @@ export(CROP_TYPE) var _crop_type = CROP_TYPE.barley setget set_crop_type
 const PLOT_SIZE_MINIMUM = Vector2(3, 3)
 
 # Preload our selections for Crops - the (C)rop (S)cenes
-const CS_BARLEY = preload("res://scenes/formation/terrain/Barley.tscn")
-const CS_CORN = preload("res://scenes/formation/terrain/Corn.tscn")
-const CS_CABBAGE = preload("res://scenes/formation/terrain/Cabbage.tscn")
-const CS_CARROT = preload("res://scenes/formation/terrain/Carrot.tscn")
-const CS_SUNFLOWER = preload("res://scenes/formation/terrain/Sunflower.tscn")
+const CS_BARLEY = preload("res://scenes/formation/terrain/crops/Barley.tscn")
+const CS_CORN = preload("res://scenes/formation/terrain/crops/Corn.tscn")
+const CS_CABBAGE = preload("res://scenes/formation/terrain/crops/Cabbage.tscn")
+const CS_CARROT = preload("res://scenes/formation/terrain/crops/Carrot.tscn")
+const CS_SUNFLOWER = preload("res://scenes/formation/terrain/crops/Sunflower.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
