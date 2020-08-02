@@ -1,0 +1,74 @@
+To Do:
+------
+
+1.  Build an alternate house
+
+    I added a Minecraft-esque house, but it looked... bad. Like, not even a
+    little bit good. Just bad.
+
+    So, I think I'll have to model a house myself. We're trying to go Medieval
+    here, so a few ideas come to mind. The first would be a simple circular
+    hovel that's almost 90% peaked roof - almost like a tipi or a yurt. I could
+    also design a Saxon-esque 'Hall' or longhouse configuration where
+    everything is in one room. Though, now that I think about it, the tech
+    level we're approximating is much more late-Medieval/early-Renaissance.
+    Maybe a more modern house would be better; just have it textured like a
+    Renaissance house? Think like an impossibly quaint little village in Germany
+    or France, where every single building is a different pastel.
+    'Half-timbered' is the style I'm talking about.
+
+    Of course, we run into a problem with our forced perspective here - we
+    won't be able to see what's behind the houses. For that reason, we should
+    be able to change/recombine parts of the model to make three versions of the
+    house: one complete with the roof, one with the walls slightly cut away, and
+    one where the walls are almost completely absent and only the floor remains.
+
+2. Fix UnitPawn movement
+
+    The UnitPawn movement is really janky. I want them to speed up and slow
+    down - subtly, though, like a person getting up to speed. Total War does a
+    really good job of this, I think.
+
+    Right now, the UnitPawns speed up every second they're moving, and
+    frequently overshoot their targets and generally jitter and freak out.
+
+    In college I worked on a robtoic car and had to design a kinematic feedback
+    model (I think that's what it was called?) that allowed the car to
+    naturally slow down and stop when it needed to. I think that mathematic
+    nightmare might be just what I need here. There's a "Feedback Systems Wiki"
+    that should furnish me with enough information to get what I need.
+
+    Or I'll come up with a better and simpler idea. That seems equally likely.
+
+3. Start using NavigationMesh
+
+    Now that the UnitPawns can move correctly, and we have some terrain sorted
+    out for them to deal with, we need to switch to using a NavigationMesh. I
+    was weighing up what my options were for pathing, but the solution I've been
+    given seems like the best way to go. It was, after all, given to us.
+
+    As part of putting in the NavigationMesh, I suggest removing the whole
+    'Unit' concept. No more ordering around a group of UnitPawns. Instead, we'll
+    have one UnitPawn that repeatedly paths between designated points in the
+    world - just as a test. The UnitPawn, upon arriving at a location, will
+    randomly be assigned a new location to go to from a pool of options.
+
+4. Build and Change a NavigationMesh on the fly
+
+    This is the big one - a problem with Godot that I've seen at least one blog
+    post complaining about is that there is no immediate and obvious way to
+    create NavigationMeshes on the fly.
+
+    However, since I want my prototype to have a dynamic world where trees
+    fall over and block paths, or the player can put down more structures, or
+    UnitPawns slow down when moving through certain areas. It is imperative,
+    then, that I be able to edit and create a NavigationMesh at will.
+
+    The answer is actually avaiable right now - the "Godot Navigation Lite"
+    addon by Miloš Lukić. Looking at it, it has pretty much everything we need,
+    we just need to play with it a little bit more.
+
+    To stress test our little wandering UnitPawn, we should also add the ability
+    to place down things like rocks, trees, or houses. And maybe, with a little
+    bit of fiddling, we can get multiple meshes that recognize danger and the
+    like...
