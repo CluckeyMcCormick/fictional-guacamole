@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/everyone_died.obj-3edaeacaca9d0e7b946c52c4ecdda1bc.mesh"
+
+[deps]
+
+files=[ "res://.import/everyone_died.obj-3edaeacaca9d0e7b946c52c4ecdda1bc.mesh" ]
+
+source_file="res://assets/formation/everyone_died.obj"
+dest_files=[ "res://.import/everyone_died.obj-3edaeacaca9d0e7b946c52c4ecdda1bc.mesh", "res://.import/everyone_died.obj-3edaeacaca9d0e7b946c52c4ecdda1bc.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true
