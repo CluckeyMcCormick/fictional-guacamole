@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=17 format=2]
 
 [ext_resource path="res://scenes/formation/ParadeGround.gd" type="Script" id=1]
 [ext_resource path="res://assets/surt_terrain/mat_terrain_grass_grid.tres" type="Material" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://scenes/formation/terrain/Farm.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/formation/unit_pawn_subs/UnitPawnVomitClown.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/formation/terrain/Rock.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/formation/terrain/buildings/House.tscn" type="PackedScene" id=11]
 
 [sub_resource type="PlaneMesh" id=1]
 material = ExtResource( 2 )
@@ -82,12 +83,14 @@ shadow_contact = 0.4
 directional_shadow_normal_bias = 0.1
 
 [node name="SpotLight" type="SpotLight" parent="."]
-transform = Transform( 0.663535, -0.327261, 0.672772, 0, 0.899253, 0.43743, -0.748146, -0.29025, 0.596685, 1.41481, 1.20783, 1.26788 )
+transform = Transform( 0.829086, -0.244576, 0.502791, 0, 0.899253, 0.43743, -0.559121, -0.362667, 0.745558, 42.8973, 20, 66.7338 )
 visible = false
-light_energy = 4.97
+light_color = Color( 1, 1, 0.784314, 1 )
+light_energy = 2.0
+light_indirect_energy = 2.0
 shadow_enabled = true
-shadow_bias = 0.02
-spot_range = 3.75559
+shadow_bias = 0.3
+spot_range = 154.678
 spot_angle = 38.309
 
 [node name="cali_bear" type="MeshInstance" parent="."]
@@ -132,7 +135,6 @@ _crop_type = 0
 [node name="Farm3" parent="Farms" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, 0 )
 _plot_size = Vector2( 5, 20 )
-_crop_type = 4
 
 [node name="Farm4" parent="Farms" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 0 )
@@ -172,3 +174,6 @@ _rock_size = 2
 
 [node name="LoneClown" parent="." instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.8881, 0.815, 3.49407 )
+
+[node name="House" parent="." instance=ExtResource( 11 )]
+transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -35, 0, 30 )

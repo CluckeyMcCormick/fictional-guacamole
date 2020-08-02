@@ -20,8 +20,7 @@ mesh = ExtResource( 3 )
 
 [node name="StateSprite" parent="." index="1"]
 visible = false
-frame = 0
 
 [node name="VisualSprite" parent="." index="3"]
 frames = ExtResource( 2 )
-animation = "debug_lowest"
+animation = "dead"
