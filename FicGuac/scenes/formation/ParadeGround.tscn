@@ -154,7 +154,6 @@ _rock_size = 2
 
 [node name="Rock2" parent="Rocks" instance=ExtResource( 10 )]
 transform = Transform( -0.637723, 0.348683, -0.701888, -0.0428154, 0.983842, 0.443565, 0.769075, 0.343901, -0.557317, 7.34934, 0, 26.4176 )
-_rock_size = 1
 
 [node name="Rock3" parent="Rocks" instance=ExtResource( 10 )]
 transform = Transform( -0.180885, 0.0778807, -0.980948, -0.975767, -0.151435, 0.169974, -0.123125, 1.08572, 0.0940726, 4.13381, -0.161437, 27.5393 )
