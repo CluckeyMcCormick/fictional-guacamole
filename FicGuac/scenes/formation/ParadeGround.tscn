@@ -1,4 +1,4 @@
-[gd_scene load_steps=17 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scenes/formation/ParadeGround.gd" type="Script" id=1]
 [ext_resource path="res://assets/surt_terrain/mat_terrain_grass_grid.tres" type="Material" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://scenes/formation/unit_pawn_subs/UnitPawnVomitClown.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/formation/terrain/Rock.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/formation/terrain/buildings/House.tscn" type="PackedScene" id=11]
+[ext_resource path="res://scenes/formation/terrain/buildings/OctoHut.tscn" type="PackedScene" id=12]
 
 [sub_resource type="PlaneMesh" id=1]
 material = ExtResource( 2 )
@@ -31,6 +32,7 @@ size = Vector3( 10, 10, 10 )
 background_mode = 1
 background_energy = 0.0
 ambient_light_color = Color( 0.75, 0.75, 0.75, 1 )
+ambient_light_energy = 0.0
 
 [node name="ParadeGround" type="Spatial"]
 script = ExtResource( 1 )
@@ -78,13 +80,13 @@ environment = SubResource( 5 )
 
 [node name="DirectionalLight" type="DirectionalLight" parent="WorldEnvironment"]
 transform = Transform( -1.62921e-07, -0.707107, 0.707107, 0, 0.707107, 0.707107, -1, 1.15202e-07, -1.15202e-07, 0, 5, 0 )
+visible = false
 shadow_enabled = true
 shadow_contact = 0.4
 directional_shadow_normal_bias = 0.1
 
 [node name="SpotLight" type="SpotLight" parent="."]
 transform = Transform( 0.829086, -0.244576, 0.502791, 0, 0.899253, 0.43743, -0.559121, -0.362667, 0.745558, 42.8973, 20, 66.7338 )
-visible = false
 light_color = Color( 1, 1, 0.784314, 1 )
 light_energy = 2.0
 light_indirect_energy = 2.0
@@ -174,5 +176,19 @@ _rock_size = 2
 [node name="LoneClown" parent="." instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.8881, 0.815, 3.49407 )
 
-[node name="House" parent="." instance=ExtResource( 11 )]
+[node name="Houses" type="Spatial" parent="."]
+
+[node name="BlockHouse" parent="Houses" instance=ExtResource( 11 )]
 transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -35, 0, 30 )
+
+[node name="OctoHut" parent="Houses" instance=ExtResource( 12 )]
+transform = Transform( -0.652588, 0, 0.757713, 0, 1, 0, -0.757713, 0, -0.652588, -9.4504, 0, -7.35874 )
+
+[node name="OctoHut2" parent="Houses" instance=ExtResource( 12 )]
+transform = Transform( -0.887003, 0, 0.461764, 0, 1, 0, -0.461764, 0, -0.887003, -16.7088, 0, 3.34597 )
+
+[node name="OctoHut3" parent="Houses" instance=ExtResource( 12 )]
+transform = Transform( -0.031062, 0, 0.999518, 0, 1, 0, -0.999518, 0, -0.031062, 34.0808, 0, -10.4226 )
+
+[node name="OctoHut4" parent="Houses" instance=ExtResource( 12 )]
+transform = Transform( -0.992633, 0, 0.121159, 0, 1, 0, -0.121159, 0, -0.992633, -36.2367, 0, 50.232 )

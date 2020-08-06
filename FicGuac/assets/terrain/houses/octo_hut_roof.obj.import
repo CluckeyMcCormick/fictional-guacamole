@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/octo_hut_roof.obj-33b838d2a39d23048b61619a516a6e1d.mesh"
+
+[deps]
+
+files=[ "res://.import/octo_hut_roof.obj-33b838d2a39d23048b61619a516a6e1d.mesh" ]
+
+source_file="res://assets/terrain/houses/octo_hut_roof.obj"
+dest_files=[ "res://.import/octo_hut_roof.obj-33b838d2a39d23048b61619a516a6e1d.mesh", "res://.import/octo_hut_roof.obj-33b838d2a39d23048b61619a516a6e1d.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

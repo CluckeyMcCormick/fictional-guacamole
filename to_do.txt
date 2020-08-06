@@ -32,6 +32,10 @@ To Do:
     Right now, the UnitPawns speed up every second they're moving, and
     frequently overshoot their targets and generally jitter and freak out.
 
+    I also need the UnitPawns to be able to step up and down small height
+    differences. If they're getting trapped on ledges with a height of .1 there
+    could be some problems down the road.
+
     In college I worked on a robtoic car and had to design a kinematic feedback
     model (I think that's what it was called?) that allowed the car to
     naturally slow down and stop when it needed to. I think that mathematic
