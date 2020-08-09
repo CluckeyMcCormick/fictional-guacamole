@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://scenes/formation/ParadeGround.gd" type="Script" id=1]
 [ext_resource path="res://assets/surt_terrain/mat_terrain_grass_grid.tres" type="Material" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://scenes/formation/terrain/Rock.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/formation/terrain/buildings/House.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/formation/terrain/buildings/OctoHut.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scenes/formation/terrain/buildings/RothenburgHut.tscn" type="PackedScene" id=13]
 
 [sub_resource type="PlaneMesh" id=1]
 material = ExtResource( 2 )
@@ -192,3 +193,6 @@ transform = Transform( -0.031062, 0, 0.999518, 0, 1, 0, -0.999518, 0, -0.031062,
 
 [node name="OctoHut4" parent="Houses" instance=ExtResource( 12 )]
 transform = Transform( -0.992633, 0, 0.121159, 0, 1, 0, -0.121159, 0, -0.992633, -36.2367, 0, 50.232 )
+
+[node name="RothenburgHut" parent="Houses" instance=ExtResource( 13 )]
+transform = Transform( 0.833027, 0, 0.553232, 0, 1, 0, -0.553232, 0, 0.833027, -48.8115, 0, -10.5663 )
