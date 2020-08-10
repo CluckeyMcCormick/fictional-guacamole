@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/playb5.png-b444ee5503bca9131556df1d09ff4e35.s3tc.stex"
-path.etc2="res://.import/playb5.png-b444ee5503bca9131556df1d09ff4e35.etc2.stex"
+path.s3tc="res://.import/surt_tree02_bright.png-b7dd5acfbf0da974ed75ee9b133f93fb.s3tc.stex"
+path.etc2="res://.import/surt_tree02_bright.png-b7dd5acfbf0da974ed75ee9b133f93fb.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/freedoom/playb5.png"
-dest_files=[ "res://.import/playb5.png-b444ee5503bca9131556df1d09ff4e35.s3tc.stex", "res://.import/playb5.png-b444ee5503bca9131556df1d09ff4e35.etc2.stex" ]
+source_file="res://assets/terrain/trees/surt_tree02_bright.png"
+dest_files=[ "res://.import/surt_tree02_bright.png-b7dd5acfbf0da974ed75ee9b133f93fb.s3tc.stex", "res://.import/surt_tree02_bright.png-b7dd5acfbf0da974ed75ee9b133f93fb.etc2.stex" ]
 
 [params]
 

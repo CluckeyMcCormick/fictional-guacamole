@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/sprite_sheet_sample_green.png-3ff3a4ed84ac89bbae4890de38b53ece.s3tc.stex"
-path.etc2="res://.import/sprite_sheet_sample_green.png-3ff3a4ed84ac89bbae4890de38b53ece.etc2.stex"
+path.s3tc="res://.import/surt_tree01_dark.png-51522388fbca9e1688d70a4db0ddb138.s3tc.stex"
+path.etc2="res://.import/surt_tree01_dark.png-51522388fbca9e1688d70a4db0ddb138.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/surt_sheet/sprite_sheet_sample_green.png"
-dest_files=[ "res://.import/sprite_sheet_sample_green.png-3ff3a4ed84ac89bbae4890de38b53ece.s3tc.stex", "res://.import/sprite_sheet_sample_green.png-3ff3a4ed84ac89bbae4890de38b53ece.etc2.stex" ]
+source_file="res://assets/terrain/trees/surt_tree01_dark.png"
+dest_files=[ "res://.import/surt_tree01_dark.png-51522388fbca9e1688d70a4db0ddb138.s3tc.stex", "res://.import/surt_tree01_dark.png-51522388fbca9e1688d70a4db0ddb138.etc2.stex" ]
 
 [params]
 
@@ -23,7 +23,7 @@ compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=true
 flags/filter=false
-flags/mipmaps=true
+flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=2
 process/fix_alpha_border=true

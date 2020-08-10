@@ -1,11 +1,12 @@
 [gd_resource type="SpriteFrames" load_steps=7 format=2]
 
-[ext_resource path="res://assets/surt_terrain/surt_tree01_bright.png" type="Texture" id=1]
-[ext_resource path="res://assets/surt_terrain/surt_tree01_dark.png" type="Texture" id=2]
-[ext_resource path="res://assets/surt_terrain/surt_tree02_bright.png" type="Texture" id=3]
-[ext_resource path="res://assets/surt_terrain/surt_tree02_dark.png" type="Texture" id=4]
-[ext_resource path="res://assets/surt_terrain/surt_tree03_bright.png" type="Texture" id=5]
-[ext_resource path="res://assets/surt_terrain/surt_tree03_dark.png" type="Texture" id=6]
+[ext_resource path="res://assets/terrain/trees/surt_tree01_bright.png" type="Texture" id=1]
+[ext_resource path="res://assets/terrain/trees/surt_tree01_dark.png" type="Texture" id=2]
+[ext_resource path="res://assets/terrain/trees/surt_tree02_bright.png" type="Texture" id=3]
+[ext_resource path="res://assets/terrain/trees/surt_tree02_dark.png" type="Texture" id=4]
+[ext_resource path="res://assets/terrain/trees/surt_tree03_bright.png" type="Texture" id=5]
+[ext_resource path="res://assets/terrain/trees/surt_tree03_dark.png" type="Texture" id=6]
+
 
 [resource]
 animations = [ {
