@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/house_plaster02.png-447c79e3e6b6f99d1636c6076b7210f8.stex"
+path="res://.import/bm_s01_stone_brick01.png-3aaadb9f826ae918c6664f55f49e3f86.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/terrain/houses/house_plaster02.png"
-dest_files=[ "res://.import/house_plaster02.png-447c79e3e6b6f99d1636c6076b7210f8.stex" ]
+source_file="res://assets/terrain/houses/bm_s01_stone_brick01.png"
+dest_files=[ "res://.import/bm_s01_stone_brick01.png-3aaadb9f826ae918c6664f55f49e3f86.stex" ]
 
 [params]
 
@@ -19,16 +19,16 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=0
-flags/filter=true
-flags/mipmaps=false
+flags/repeat=true
+flags/filter=false
+flags/mipmaps=true
 flags/anisotropic=false
-flags/srgb=2
+flags/srgb=1
 process/fix_alpha_border=true
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false
 stream=false
 size_limit=0
-detect_3d=true
+detect_3d=false
 svg/scale=1.0

@@ -139,7 +139,7 @@ surfaces/2 = {
 "vertex_count": 43
 }
 
-[node name="rothenburg_template" type="Spatial"]
+[node name="RotheburgHut" type="Spatial"]
 
 [node name="HouseComponents" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 2.5 )
