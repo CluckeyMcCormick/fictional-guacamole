@@ -1,45 +1,46 @@
 To Do:
 ------
 
-1.  Rebuild the Rothenburg House
+1. Generate a Rothenburg House on the fly
 
-    I built a medieval hovel that I like - the Rothenburg Hut - but the model is
-    kinda wacky. I've really hit the upper limit on what I can accomplish with
-    just flat textures, so now I want to texture the house. However, the house
-    is a disaster. The textures are loopy and upside-down and bent out of shape.
+    I'm sick of wrestling with UV textures and seams and all that other nonsense
+    for what amounts to a bunch of building blocks. I'm convinced that I can do
+    better - programatically!
 
-    That's just not acceptable! We have to redo the hut:
+    My on-the-fly Roth House will need:
+    - Configurable foundation size
+    - Configurable wall thickness (we're gonna do away with the two-tier 
+      thickness, both wall components are gonna be the same thickness)
+    - Configurable height for foundation, lower wall, upper wall, and roof
+      peak
+    - Different textures for walls on the inside versus the outside, as well
+      as the doorframe and wall-tops.
+    - Texture/UV coordinates that are scaled - for example, a quad that goes 6
+      on X & Y has a max UV of (6, 6). This will allow our textures to work
+      with minimal futzing.
+    - Configurable doorway height
+    - Accurate Normals (uh-oh)
+    - ACCURATE collision models that are updated to reflect the new shapes
 
-    - I want to take out the windows (windows will be handled with quads).
-    
-    - The Foundations should be a half-step so we can paint them as a separate
-      "base" texture for the lower walls
+    - Configurable doorway position???
+    - Configurable windows ???
 
-    - We'll need to model a ramp AND a set of stairs into the OpenSCAD
+2. Add in a thatched Rothenburg House
 
-    - Each wall face should have separate UV coordinates (or whatever it is).
-      What I mean is that each wall face may share a common material, but the
-      unwrapped textures should not connect.
+    I like the way the wooden roof tiles look, but I think a thatched roof would
+    look equally good, if not better. We should add an option to our on-the-fly
+    Rothenburg House to generate a couple of alternate roofs. Maybe one that's 
+    like the current roof, and one that's like a pyramid with the point removed
+    (which I could swear was some sorta rectangular prism).
 
-    - There should be separate materials for interior and and exterior walls.
-
-    - Ensure that the textures are not skewed
-
-    - Ensure that the textures are not upside-down
-
-    - Add in roof-crossbeams
-
-    - Add in a thatched roof (curved-squared roof) (ensure it folds correctly so
-      all thatch is point upward/inward)
-
-2. Asset rework: Textures and Clowns
+3. Asset rework: Textures and Clowns
     
     As I've said before, we need to do a major rework of the assets. We need new
     textures that actually have textures! Textured trees, rocks, grass, and all
     the like. I've also had a replacement for the clowns in the pipeline for a
     while; I'd like to get those guys in as part of this overhaul.
 
-3. Fix UnitPawn movement
+4. Fix UnitPawn movement
 
     The UnitPawn movement is really janky. I want them to speed up and slow
     down - subtly, though, like a person getting up to speed. Total War does a
@@ -60,7 +61,7 @@ To Do:
 
     Or I'll come up with a better and simpler idea. That seems equally likely.
 
-4. Start using NavigationMesh
+5. Start using NavigationMesh
 
     Now that the UnitPawns can move correctly, and we have some terrain sorted
     out for them to deal with, we need to switch to using a NavigationMesh. I
@@ -73,7 +74,7 @@ To Do:
     world - just as a test. The UnitPawn, upon arriving at a location, will
     randomly be assigned a new location to go to from a pool of options.
 
-5. Build and Change a NavigationMesh on the fly
+6. Build and Change a NavigationMesh on the fly
 
     This is the big one - a problem with Godot that I've seen at least one blog
     post complaining about is that there is no immediate and obvious way to
