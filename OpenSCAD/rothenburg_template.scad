@@ -26,7 +26,7 @@ Y_FOUNDATION_LEN = 5;
 X_FOUNDATION_LEN = 10;
 
 // How tall is our foundation?
-FOUNDATION_HEIGHT = .1;
+FOUNDATION_HEIGHT = .5;
 
 // How thick are the lower walls?
 LOWER_WALL_THICKNESS = .5;
@@ -57,21 +57,28 @@ ROOF_Y_OVERHANG = .5;
 
 // To create a "Divot" either side of the roof's x length, we create
 // triangular prisms on either end and 'sink' them, cutting them out from the
-// greater triangle. How much do we sink the divot?
+// greater triangle. How much do we sink the divot? (move negative on Z)
 ROOF_DIVOT_OFFSET = 1;
+
+// To add an extra layer of medieval-authenticity, we'll put a crossbeam beneath
+// the apex of the roof - how much do we sink the crossbeam downward?
+ROOF_CROSSBEAM_OFFSET = 2.0;
+// How deep is the crossbeam? (Length on Y Axis)
+ROOF_CROSSBEAM_DEPTH = 0.25;
+// How tall is the crossbeam? (Length on Z Axis)
+ROOF_CROSSBEAM_HEIGHT = 0.5;
+// Now, the crossbeam needs to peek out from underneath the roof's awning; this
+// means the length (Length on X Axis) will AT LEAST be:
+// (ROOF_X_OVERHANG * 2) + X_FOUNDATION_LEN
+// This is the additional length ON TOP OF THAT length, so that the crossbeam
+// hangs out at either end of the roof
+ROOF_CROSSBEAM_OVERHANG = 0.5;
 
 // How wide is the door?
 DOOR_WIDTH = 2;
 
 // How tall is the door? Remember, the door sits atop the foundation!
 DOOR_HEIGHT = 2;
-
-// How tall is each window?
-WINDOW_HEIGHT = 1.5;
-// How wide is each window?
-WINDOW_WIDTH = 1;
-// How high up are the windows set from the lower wall?
-WINDOW_OFFSET = .25;
 
 assert(UPPER_WALL_THICKNESS <= LOWER_WALL_THICKNESS, "Thickness of the upper walls must be less than or equal the thickness of the lower walls!");
 
@@ -81,7 +88,7 @@ module right_triangular_prism(x_len, y_len, h){
             [0,0,0], 
             [x_len,0,0],
             [x_len,y_len,0],
-            [0,y_len,0], 
+            [0,y_len,0],
             [0,y_len,h],
             [x_len,y_len,h]
         ],
@@ -137,68 +144,6 @@ module door_spacing_block(){
 }
 //
 
-module window_carving_block(){
-    translate([0, 0, FOUNDATION_HEIGHT + LOWER_WALL_HEIGHT + WINDOW_OFFSET])
-    cube( [WINDOW_WIDTH, UPPER_WALL_THICKNESS * 2, WINDOW_HEIGHT] );
-}
-//
-
-module window_carving_block_NEGY(){
-    translate([1, 0, 0])
-    window_carving_block();
-    translate([2.25, 0, 0])
-    window_carving_block();
-    translate([6.75, 0, 0])
-    window_carving_block();
-    translate([8, 0, 0])
-    window_carving_block();
-}
-//
-module window_carving_block_POSY(){
-    y_move = Y_FOUNDATION_LEN - UPPER_WALL_THICKNESS;
-    x_move = 3.25;
-
-    translate([x_move, y_move, 0])
-    window_carving_block();
-    translate([x_move + 1.25, y_move, 0])
-    window_carving_block();
-    translate([x_move + 2.5, y_move, 0])
-    window_carving_block();
-}
-//
-
-module window_carving_block_NEGX(){
-    y_move = -1;
-    x_move = .75;
-    rotate([0, 0, 90])
-    union(){
-        translate([x_move, y_move, 0])
-        window_carving_block();
-        translate([x_move + 1.25, y_move, 0])
-        window_carving_block();
-        translate([x_move + 2.5, y_move, 0])
-        window_carving_block();
-    };
-}
-//
-
-module window_carving_block_POSX(){
-    y_move = -1;
-    x_move = .75;
-    
-    translate([X_FOUNDATION_LEN - UPPER_WALL_THICKNESS, 0, 0])
-    rotate([0, 0, 90])
-    union(){
-        translate([x_move, y_move, 0])
-        window_carving_block();
-        translate([x_move + 1.25, y_move, 0])
-        window_carving_block();
-        translate([x_move + 2.5, y_move, 0])
-        window_carving_block();
-    };
-}
-//
-
 // Makes the lower walls, without a door. This is important, since we have to
 // carve the space for the door out of something
 module lower_walls_doorless(){
@@ -221,7 +166,7 @@ module lower_walls_doorless(){
     // Wall thickness.
     carve_factor_x = X_FOUNDATION_LEN - ( 2 * LOWER_WALL_THICKNESS);
     carve_factor_y = Y_FOUNDATION_LEN - ( 2 * LOWER_WALL_THICKNESS);
-    
+
     // The walls are made by carving out a block from the center of a larger
     // block - how do we move that smaller block?
     carver_translation = [
@@ -244,7 +189,7 @@ module lower_walls_doorless(){
 // carve the space for the door out of something
 module upper_walls_doorless(){
     
-    /*
+    /*cube( [carve_size_x, carve_size_y, UPPER_WALL_HEIGHT + .2 ])
         Now, with the Upper Wall, things get tricky. The wall must be centered
         on the lower wall. So, we have basically FOUR rectangles now instead of
         just two. We have the two rectangles we had for the lower walls, A and
@@ -299,8 +244,7 @@ module upper_walls_doorless(){
         cube( [base_size_x, base_size_y, UPPER_WALL_HEIGHT] );
         
         translate(carve_shift)
-        cube( [carve_size_x, carve_size_y, UPPER_WALL_HEIGHT + .2 ])
-        ;
+        cube( [carve_size_x, carve_size_y, UPPER_WALL_HEIGHT + .2 ]);
     }
 }
 //
@@ -325,6 +269,9 @@ module roof(){
     
     ROOF_BASE_HEIGHT = UPPER_WALL_HEIGHT + LOWER_WALL_HEIGHT + FOUNDATION_HEIGHT;
     
+    X_ROOF_LEN = X_FOUNDATION_LEN + (ROOF_X_OVERHANG * 2);
+    Y_ROOF_LEN = Y_FOUNDATION_LEN + (ROOF_Y_OVERHANG * 2);
+    
     difference(){
         difference() {
             translate([
@@ -333,8 +280,8 @@ module roof(){
                 ROOF_BASE_HEIGHT
             ])
             isosceles_triangular_prism(
-                X_FOUNDATION_LEN + (ROOF_X_OVERHANG * 2), 
-                Y_FOUNDATION_LEN + (ROOF_Y_OVERHANG * 2), 
+                X_ROOF_LEN, 
+                Y_ROOF_LEN, 
                 ROOF_PEAK_HEIGHT
             );
             
@@ -345,7 +292,7 @@ module roof(){
             ])
             isosceles_triangular_prism(
                 ROOF_X_OVERHANG, 
-                Y_FOUNDATION_LEN + (ROOF_Y_OVERHANG * 2), 
+                Y_ROOF_LEN, 
                 ROOF_PEAK_HEIGHT
             );
         };
@@ -356,33 +303,44 @@ module roof(){
         ])
         isosceles_triangular_prism(
             ROOF_X_OVERHANG, 
-            Y_FOUNDATION_LEN + (ROOF_Y_OVERHANG * 2), 
+            Y_ROOF_LEN, 
             ROOF_PEAK_HEIGHT
         );
     };
+    //
+    
+    xroof = X_FOUNDATION_LEN + (2 * ROOF_X_OVERHANG);
+    cb_x_len = xroof + (2 * ROOF_CROSSBEAM_OVERHANG);
+    cb_z_len = ROOF_BASE_HEIGHT + ROOF_PEAK_HEIGHT;
+    translate([
+        -(ROOF_X_OVERHANG + ROOF_CROSSBEAM_OVERHANG),
+        (Y_FOUNDATION_LEN / 2) - (ROOF_CROSSBEAM_DEPTH / 2),
+        cb_z_len - ROOF_CROSSBEAM_OFFSET
+    ])
+    cube( [cb_x_len, ROOF_CROSSBEAM_DEPTH, ROOF_CROSSBEAM_HEIGHT]);
 }
 //
 
 // Upper walls, style01: No windows
-module upper_walls_style(){   
+module upper_walls(){   
     difference(){
         upper_walls_doorless();
         door_spacing_block();
-        
-        // Windows
-        window_carving_block_NEGY();
-        window_carving_block_POSY();
-        window_carving_block_NEGX();
-        window_carving_block_POSX();
     }
 }
 //
 
-//color("#0B2545")
-//lower_walls();
-//color("#134074")
-//upper_walls_style();
-//color("#EEF4ED")
-//foundation();
-//color("#13315C")
-roof();
+// Stairs
+//
+
+translate([-X_FOUNDATION_LEN / 2, -Y_FOUNDATION_LEN / 2, 0]){
+    color("#0B2545")
+    lower_walls();
+    color("#134074")
+    upper_walls();
+    color("#EEF4ED")
+    foundation();
+    color("#13315C")
+    roof();
+}
+//

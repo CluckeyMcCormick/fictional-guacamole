@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bm_s01_stone_brick01.png-3aaadb9f826ae918c6664f55f49e3f86.stex"
+path="res://.import/bm_s02_floor_stone01.png-da2111ca15c80bcf09b15cb068711a29.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/terrain/houses/bm_s01_stone_brick01.png"
-dest_files=[ "res://.import/bm_s01_stone_brick01.png-3aaadb9f826ae918c6664f55f49e3f86.stex" ]
+source_file="res://assets/terrain/houses/bm_s02_floor_stone01.png"
+dest_files=[ "res://.import/bm_s02_floor_stone01.png-da2111ca15c80bcf09b15cb068711a29.stex" ]
 
 [params]
 

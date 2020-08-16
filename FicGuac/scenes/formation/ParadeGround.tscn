@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scenes/formation/ParadeGround.gd" type="Script" id=1]
 [ext_resource path="res://assets/surt_terrain/mat_terrain_grass_grid.tres" type="Material" id=2]
@@ -11,8 +11,7 @@
 [ext_resource path="res://scenes/formation/unit_pawn_subs/UnitPawnVomitClown.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/formation/terrain/Rock.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/formation/terrain/buildings/House.tscn" type="PackedScene" id=11]
-[ext_resource path="res://scenes/formation/terrain/buildings/OctoHut.tscn" type="PackedScene" id=12]
-[ext_resource path="res://scenes/formation/terrain/buildings/RothenburgHut.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scenes/formation/terrain/buildings/RothenburgHut.tscn" type="PackedScene" id=12]
 
 [sub_resource type="PlaneMesh" id=1]
 material = ExtResource( 2 )
@@ -181,20 +180,8 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -6.8881, 0.815, 3.49407 )
 [node name="BlockHouse" parent="Houses" instance=ExtResource( 11 )]
 transform = Transform( 0.707107, 0, -0.707107, 0, 1, 0, 0.707107, 0, 0.707107, -35, 0, 30 )
 
-[node name="OctoHut" parent="Houses" instance=ExtResource( 12 )]
-transform = Transform( -0.652588, 0, 0.757713, 0, 1, 0, -0.757713, 0, -0.652588, -9.4504, 0, -7.35874 )
+[node name="RothenburgHut" parent="Houses" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19.921, 0, -12.4765 )
 
-[node name="OctoHut2" parent="Houses" instance=ExtResource( 12 )]
-transform = Transform( -0.887003, 0, 0.461764, 0, 1, 0, -0.461764, 0, -0.887003, -16.7088, 0, 3.34597 )
-
-[node name="OctoHut3" parent="Houses" instance=ExtResource( 12 )]
-transform = Transform( -0.031062, 0, 0.999518, 0, 1, 0, -0.999518, 0, -0.031062, 34.0808, 0, -10.4226 )
-
-[node name="OctoHut4" parent="Houses" instance=ExtResource( 12 )]
-transform = Transform( -0.992633, 0, 0.121159, 0, 1, 0, -0.121159, 0, -0.992633, -36.2367, 0, 50.232 )
-
-[node name="RotheburgHut" parent="Houses" instance=ExtResource( 13 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -33.36 )
-
-[node name="RotheburgHut2" parent="Houses" instance=ExtResource( 13 )]
-transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 17.567, 0, -33.36 )
+[node name="RothenburgHut2" parent="Houses" instance=ExtResource( 12 )]
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, -20.3481, 0, 0.140539 )

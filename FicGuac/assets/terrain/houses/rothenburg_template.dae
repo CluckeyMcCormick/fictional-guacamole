@@ -5,26 +5,364 @@
       <author>Blender User</author>
       <authoring_tool>Blender 2.79.0</authoring_tool>
     </contributor>
-    <created>2020-08-09T16:38:49</created>
-    <modified>2020-08-09T16:38:49</modified>
+    <created>2020-08-15T22:57:22</created>
+    <modified>2020-08-15T22:57:22</modified>
     <unit name="meter" meter="1"/>
     <up_axis>Z_UP</up_axis>
   </asset>
   <library_lights>
-    <light id="Spot-light" name="Spot">
+    <light id="Lamp-light" name="Lamp">
       <technique_common>
-        <spot>
+        <point>
+          <color sid="color">1 1 1</color>
+          <constant_attenuation>1</constant_attenuation>
+          <linear_attenuation>0</linear_attenuation>
+          <quadratic_attenuation>0.00111109</quadratic_attenuation>
+        </point>
+      </technique_common>
+      <extra>
+        <technique profile="blender">
+          <type sid="type" type="int">0</type>
+          <flag sid="flag" type="int">0</flag>
+          <mode sid="mode" type="int">8192</mode>
+          <gamma sid="blender_gamma" type="float">1</gamma>
+          <red sid="red" type="float">1</red>
+          <green sid="green" type="float">1</green>
+          <blue sid="blue" type="float">1</blue>
+          <shadow_r sid="blender_shadow_r" type="float">0</shadow_r>
+          <shadow_g sid="blender_shadow_g" type="float">0</shadow_g>
+          <shadow_b sid="blender_shadow_b" type="float">0</shadow_b>
+          <energy sid="blender_energy" type="float">1</energy>
+          <dist sid="blender_dist" type="float">29.99998</dist>
+          <spotsize sid="spotsize" type="float">75</spotsize>
+          <spotblend sid="spotblend" type="float">0.15</spotblend>
+          <halo_intensity sid="blnder_halo_intensity" type="float">1</halo_intensity>
+          <att1 sid="att1" type="float">0</att1>
+          <att2 sid="att2" type="float">1</att2>
+          <falloff_type sid="falloff_type" type="int">2</falloff_type>
+          <clipsta sid="clipsta" type="float">1.000799</clipsta>
+          <clipend sid="clipend" type="float">30.002</clipend>
+          <bias sid="bias" type="float">1</bias>
+          <soft sid="soft" type="float">3</soft>
+          <compressthresh sid="compressthresh" type="float">0.04999995</compressthresh>
+          <bufsize sid="bufsize" type="int">2880</bufsize>
+          <samp sid="samp" type="int">3</samp>
+          <buffers sid="buffers" type="int">1</buffers>
+          <filtertype sid="filtertype" type="int">0</filtertype>
+          <bufflag sid="bufflag" type="int">0</bufflag>
+          <buftype sid="buftype" type="int">2</buftype>
+          <ray_samp sid="ray_samp" type="int">1</ray_samp>
+          <ray_sampy sid="ray_sampy" type="int">1</ray_sampy>
+          <ray_sampz sid="ray_sampz" type="int">1</ray_sampz>
+          <ray_samp_type sid="ray_samp_type" type="int">0</ray_samp_type>
+          <area_shape sid="area_shape" type="int">1</area_shape>
+          <area_size sid="area_size" type="float">0.1</area_size>
+          <area_sizey sid="area_sizey" type="float">0.1</area_sizey>
+          <area_sizez sid="area_sizez" type="float">1</area_sizez>
+          <adapt_thresh sid="adapt_thresh" type="float">0.000999987</adapt_thresh>
+          <ray_samp_method sid="ray_samp_method" type="int">1</ray_samp_method>
+          <shadhalostep sid="shadhalostep" type="int">0</shadhalostep>
+          <sun_effect_type sid="sun_effect_type" type="int">0</sun_effect_type>
+          <skyblendtype sid="skyblendtype" type="int">1</skyblendtype>
+          <horizon_brightness sid="horizon_brightness" type="float">1</horizon_brightness>
+          <spread sid="spread" type="float">1</spread>
+          <sun_brightness sid="sun_brightness" type="float">1</sun_brightness>
+          <sun_size sid="sun_size" type="float">1</sun_size>
+          <backscattered_light sid="backscattered_light" type="float">1</backscattered_light>
+          <sun_intensity sid="sun_intensity" type="float">1</sun_intensity>
+          <atm_turbidity sid="atm_turbidity" type="float">2</atm_turbidity>
+          <atm_extinction_factor sid="atm_extinction_factor" type="float">1</atm_extinction_factor>
+          <atm_distance_factor sid="atm_distance_factor" type="float">1</atm_distance_factor>
+          <skyblendfac sid="skyblendfac" type="float">1</skyblendfac>
+          <sky_exposure sid="sky_exposure" type="float">1</sky_exposure>
+          <sky_colorspace sid="sky_colorspace" type="int">0</sky_colorspace>
+        </technique>
+      </extra>
+    </light>
+    <light id="Point-light" name="Point">
+      <technique_common>
+        <point>
           <color sid="color">1 1 1</color>
           <constant_attenuation>1</constant_attenuation>
           <linear_attenuation>0</linear_attenuation>
           <quadratic_attenuation>0.001599967</quadratic_attenuation>
-          <falloff_angle sid="fall_off_angle">45</falloff_angle>
-          <falloff_exponent sid="fall_off_exponent">0.15</falloff_exponent>
-        </spot>
+        </point>
       </technique_common>
       <extra>
         <technique profile="blender">
-          <type sid="type" type="int">2</type>
+          <type sid="type" type="int">0</type>
+          <flag sid="flag" type="int">0</flag>
+          <mode sid="mode" type="int">1</mode>
+          <gamma sid="blender_gamma" type="float">1</gamma>
+          <red sid="red" type="float">1</red>
+          <green sid="green" type="float">1</green>
+          <blue sid="blue" type="float">1</blue>
+          <shadow_r sid="blender_shadow_r" type="float">0</shadow_r>
+          <shadow_g sid="blender_shadow_g" type="float">0</shadow_g>
+          <shadow_b sid="blender_shadow_b" type="float">0</shadow_b>
+          <energy sid="blender_energy" type="float">1</energy>
+          <dist sid="blender_dist" type="float">25</dist>
+          <spotsize sid="spotsize" type="float">45</spotsize>
+          <spotblend sid="spotblend" type="float">0.15</spotblend>
+          <halo_intensity sid="blnder_halo_intensity" type="float">1</halo_intensity>
+          <att1 sid="att1" type="float">0</att1>
+          <att2 sid="att2" type="float">1</att2>
+          <falloff_type sid="falloff_type" type="int">2</falloff_type>
+          <clipsta sid="clipsta" type="float">0.5</clipsta>
+          <clipend sid="clipend" type="float">40</clipend>
+          <bias sid="bias" type="float">1</bias>
+          <soft sid="soft" type="float">3</soft>
+          <compressthresh sid="compressthresh" type="float">0.04999995</compressthresh>
+          <bufsize sid="bufsize" type="int">512</bufsize>
+          <samp sid="samp" type="int">3</samp>
+          <buffers sid="buffers" type="int">1</buffers>
+          <filtertype sid="filtertype" type="int">0</filtertype>
+          <bufflag sid="bufflag" type="int">0</bufflag>
+          <buftype sid="buftype" type="int">2</buftype>
+          <ray_samp sid="ray_samp" type="int">1</ray_samp>
+          <ray_sampy sid="ray_sampy" type="int">1</ray_sampy>
+          <ray_sampz sid="ray_sampz" type="int">1</ray_sampz>
+          <ray_samp_type sid="ray_samp_type" type="int">0</ray_samp_type>
+          <area_shape sid="area_shape" type="int">0</area_shape>
+          <area_size sid="area_size" type="float">0.1</area_size>
+          <area_sizey sid="area_sizey" type="float">0.1</area_sizey>
+          <area_sizez sid="area_sizez" type="float">0.1</area_sizez>
+          <adapt_thresh sid="adapt_thresh" type="float">0.000999987</adapt_thresh>
+          <ray_samp_method sid="ray_samp_method" type="int">1</ray_samp_method>
+          <shadhalostep sid="shadhalostep" type="int">0</shadhalostep>
+          <sun_effect_type sid="sun_effect_type" type="int">0</sun_effect_type>
+          <skyblendtype sid="skyblendtype" type="int">1</skyblendtype>
+          <horizon_brightness sid="horizon_brightness" type="float">1</horizon_brightness>
+          <spread sid="spread" type="float">1</spread>
+          <sun_brightness sid="sun_brightness" type="float">1</sun_brightness>
+          <sun_size sid="sun_size" type="float">1</sun_size>
+          <backscattered_light sid="backscattered_light" type="float">1</backscattered_light>
+          <sun_intensity sid="sun_intensity" type="float">1</sun_intensity>
+          <atm_turbidity sid="atm_turbidity" type="float">2</atm_turbidity>
+          <atm_extinction_factor sid="atm_extinction_factor" type="float">1</atm_extinction_factor>
+          <atm_distance_factor sid="atm_distance_factor" type="float">1</atm_distance_factor>
+          <skyblendfac sid="skyblendfac" type="float">1</skyblendfac>
+          <sky_exposure sid="sky_exposure" type="float">1</sky_exposure>
+          <sky_colorspace sid="sky_colorspace" type="int">2</sky_colorspace>
+        </technique>
+      </extra>
+    </light>
+    <light id="Point_001-light" name="Point.001">
+      <technique_common>
+        <point>
+          <color sid="color">1 1 1</color>
+          <constant_attenuation>1</constant_attenuation>
+          <linear_attenuation>0</linear_attenuation>
+          <quadratic_attenuation>0.001599967</quadratic_attenuation>
+        </point>
+      </technique_common>
+      <extra>
+        <technique profile="blender">
+          <type sid="type" type="int">0</type>
+          <flag sid="flag" type="int">0</flag>
+          <mode sid="mode" type="int">1</mode>
+          <gamma sid="blender_gamma" type="float">1</gamma>
+          <red sid="red" type="float">1</red>
+          <green sid="green" type="float">1</green>
+          <blue sid="blue" type="float">1</blue>
+          <shadow_r sid="blender_shadow_r" type="float">0</shadow_r>
+          <shadow_g sid="blender_shadow_g" type="float">0</shadow_g>
+          <shadow_b sid="blender_shadow_b" type="float">0</shadow_b>
+          <energy sid="blender_energy" type="float">1</energy>
+          <dist sid="blender_dist" type="float">25</dist>
+          <spotsize sid="spotsize" type="float">45</spotsize>
+          <spotblend sid="spotblend" type="float">0.15</spotblend>
+          <halo_intensity sid="blnder_halo_intensity" type="float">1</halo_intensity>
+          <att1 sid="att1" type="float">0</att1>
+          <att2 sid="att2" type="float">1</att2>
+          <falloff_type sid="falloff_type" type="int">2</falloff_type>
+          <clipsta sid="clipsta" type="float">0.5</clipsta>
+          <clipend sid="clipend" type="float">40</clipend>
+          <bias sid="bias" type="float">1</bias>
+          <soft sid="soft" type="float">3</soft>
+          <compressthresh sid="compressthresh" type="float">0.04999995</compressthresh>
+          <bufsize sid="bufsize" type="int">512</bufsize>
+          <samp sid="samp" type="int">3</samp>
+          <buffers sid="buffers" type="int">1</buffers>
+          <filtertype sid="filtertype" type="int">0</filtertype>
+          <bufflag sid="bufflag" type="int">0</bufflag>
+          <buftype sid="buftype" type="int">2</buftype>
+          <ray_samp sid="ray_samp" type="int">1</ray_samp>
+          <ray_sampy sid="ray_sampy" type="int">1</ray_sampy>
+          <ray_sampz sid="ray_sampz" type="int">1</ray_sampz>
+          <ray_samp_type sid="ray_samp_type" type="int">0</ray_samp_type>
+          <area_shape sid="area_shape" type="int">0</area_shape>
+          <area_size sid="area_size" type="float">0.1</area_size>
+          <area_sizey sid="area_sizey" type="float">0.1</area_sizey>
+          <area_sizez sid="area_sizez" type="float">0.1</area_sizez>
+          <adapt_thresh sid="adapt_thresh" type="float">0.000999987</adapt_thresh>
+          <ray_samp_method sid="ray_samp_method" type="int">1</ray_samp_method>
+          <shadhalostep sid="shadhalostep" type="int">0</shadhalostep>
+          <sun_effect_type sid="sun_effect_type" type="int">0</sun_effect_type>
+          <skyblendtype sid="skyblendtype" type="int">1</skyblendtype>
+          <horizon_brightness sid="horizon_brightness" type="float">1</horizon_brightness>
+          <spread sid="spread" type="float">1</spread>
+          <sun_brightness sid="sun_brightness" type="float">1</sun_brightness>
+          <sun_size sid="sun_size" type="float">1</sun_size>
+          <backscattered_light sid="backscattered_light" type="float">1</backscattered_light>
+          <sun_intensity sid="sun_intensity" type="float">1</sun_intensity>
+          <atm_turbidity sid="atm_turbidity" type="float">2</atm_turbidity>
+          <atm_extinction_factor sid="atm_extinction_factor" type="float">1</atm_extinction_factor>
+          <atm_distance_factor sid="atm_distance_factor" type="float">1</atm_distance_factor>
+          <skyblendfac sid="skyblendfac" type="float">1</skyblendfac>
+          <sky_exposure sid="sky_exposure" type="float">1</sky_exposure>
+          <sky_colorspace sid="sky_colorspace" type="int">2</sky_colorspace>
+        </technique>
+      </extra>
+    </light>
+    <light id="Point_002-light" name="Point.002">
+      <technique_common>
+        <point>
+          <color sid="color">1 1 1</color>
+          <constant_attenuation>1</constant_attenuation>
+          <linear_attenuation>0</linear_attenuation>
+          <quadratic_attenuation>0.001599967</quadratic_attenuation>
+        </point>
+      </technique_common>
+      <extra>
+        <technique profile="blender">
+          <type sid="type" type="int">0</type>
+          <flag sid="flag" type="int">0</flag>
+          <mode sid="mode" type="int">1</mode>
+          <gamma sid="blender_gamma" type="float">1</gamma>
+          <red sid="red" type="float">1</red>
+          <green sid="green" type="float">1</green>
+          <blue sid="blue" type="float">1</blue>
+          <shadow_r sid="blender_shadow_r" type="float">0</shadow_r>
+          <shadow_g sid="blender_shadow_g" type="float">0</shadow_g>
+          <shadow_b sid="blender_shadow_b" type="float">0</shadow_b>
+          <energy sid="blender_energy" type="float">1</energy>
+          <dist sid="blender_dist" type="float">25</dist>
+          <spotsize sid="spotsize" type="float">45</spotsize>
+          <spotblend sid="spotblend" type="float">0.15</spotblend>
+          <halo_intensity sid="blnder_halo_intensity" type="float">1</halo_intensity>
+          <att1 sid="att1" type="float">0</att1>
+          <att2 sid="att2" type="float">1</att2>
+          <falloff_type sid="falloff_type" type="int">2</falloff_type>
+          <clipsta sid="clipsta" type="float">0.5</clipsta>
+          <clipend sid="clipend" type="float">40</clipend>
+          <bias sid="bias" type="float">1</bias>
+          <soft sid="soft" type="float">3</soft>
+          <compressthresh sid="compressthresh" type="float">0.04999995</compressthresh>
+          <bufsize sid="bufsize" type="int">512</bufsize>
+          <samp sid="samp" type="int">3</samp>
+          <buffers sid="buffers" type="int">1</buffers>
+          <filtertype sid="filtertype" type="int">0</filtertype>
+          <bufflag sid="bufflag" type="int">0</bufflag>
+          <buftype sid="buftype" type="int">2</buftype>
+          <ray_samp sid="ray_samp" type="int">1</ray_samp>
+          <ray_sampy sid="ray_sampy" type="int">1</ray_sampy>
+          <ray_sampz sid="ray_sampz" type="int">1</ray_sampz>
+          <ray_samp_type sid="ray_samp_type" type="int">0</ray_samp_type>
+          <area_shape sid="area_shape" type="int">0</area_shape>
+          <area_size sid="area_size" type="float">0.1</area_size>
+          <area_sizey sid="area_sizey" type="float">0.1</area_sizey>
+          <area_sizez sid="area_sizez" type="float">0.1</area_sizez>
+          <adapt_thresh sid="adapt_thresh" type="float">0.000999987</adapt_thresh>
+          <ray_samp_method sid="ray_samp_method" type="int">1</ray_samp_method>
+          <shadhalostep sid="shadhalostep" type="int">0</shadhalostep>
+          <sun_effect_type sid="sun_effect_type" type="int">0</sun_effect_type>
+          <skyblendtype sid="skyblendtype" type="int">1</skyblendtype>
+          <horizon_brightness sid="horizon_brightness" type="float">1</horizon_brightness>
+          <spread sid="spread" type="float">1</spread>
+          <sun_brightness sid="sun_brightness" type="float">1</sun_brightness>
+          <sun_size sid="sun_size" type="float">1</sun_size>
+          <backscattered_light sid="backscattered_light" type="float">1</backscattered_light>
+          <sun_intensity sid="sun_intensity" type="float">1</sun_intensity>
+          <atm_turbidity sid="atm_turbidity" type="float">2</atm_turbidity>
+          <atm_extinction_factor sid="atm_extinction_factor" type="float">1</atm_extinction_factor>
+          <atm_distance_factor sid="atm_distance_factor" type="float">1</atm_distance_factor>
+          <skyblendfac sid="skyblendfac" type="float">1</skyblendfac>
+          <sky_exposure sid="sky_exposure" type="float">1</sky_exposure>
+          <sky_colorspace sid="sky_colorspace" type="int">2</sky_colorspace>
+        </technique>
+      </extra>
+    </light>
+    <light id="Point_003-light" name="Point.003">
+      <technique_common>
+        <point>
+          <color sid="color">1 1 1</color>
+          <constant_attenuation>1</constant_attenuation>
+          <linear_attenuation>0</linear_attenuation>
+          <quadratic_attenuation>0.001599967</quadratic_attenuation>
+        </point>
+      </technique_common>
+      <extra>
+        <technique profile="blender">
+          <type sid="type" type="int">0</type>
+          <flag sid="flag" type="int">0</flag>
+          <mode sid="mode" type="int">1</mode>
+          <gamma sid="blender_gamma" type="float">1</gamma>
+          <red sid="red" type="float">1</red>
+          <green sid="green" type="float">1</green>
+          <blue sid="blue" type="float">1</blue>
+          <shadow_r sid="blender_shadow_r" type="float">0</shadow_r>
+          <shadow_g sid="blender_shadow_g" type="float">0</shadow_g>
+          <shadow_b sid="blender_shadow_b" type="float">0</shadow_b>
+          <energy sid="blender_energy" type="float">1</energy>
+          <dist sid="blender_dist" type="float">25</dist>
+          <spotsize sid="spotsize" type="float">45</spotsize>
+          <spotblend sid="spotblend" type="float">0.15</spotblend>
+          <halo_intensity sid="blnder_halo_intensity" type="float">1</halo_intensity>
+          <att1 sid="att1" type="float">0</att1>
+          <att2 sid="att2" type="float">1</att2>
+          <falloff_type sid="falloff_type" type="int">2</falloff_type>
+          <clipsta sid="clipsta" type="float">0.5</clipsta>
+          <clipend sid="clipend" type="float">40</clipend>
+          <bias sid="bias" type="float">1</bias>
+          <soft sid="soft" type="float">3</soft>
+          <compressthresh sid="compressthresh" type="float">0.04999995</compressthresh>
+          <bufsize sid="bufsize" type="int">512</bufsize>
+          <samp sid="samp" type="int">3</samp>
+          <buffers sid="buffers" type="int">1</buffers>
+          <filtertype sid="filtertype" type="int">0</filtertype>
+          <bufflag sid="bufflag" type="int">0</bufflag>
+          <buftype sid="buftype" type="int">2</buftype>
+          <ray_samp sid="ray_samp" type="int">1</ray_samp>
+          <ray_sampy sid="ray_sampy" type="int">1</ray_sampy>
+          <ray_sampz sid="ray_sampz" type="int">1</ray_sampz>
+          <ray_samp_type sid="ray_samp_type" type="int">0</ray_samp_type>
+          <area_shape sid="area_shape" type="int">0</area_shape>
+          <area_size sid="area_size" type="float">0.1</area_size>
+          <area_sizey sid="area_sizey" type="float">0.1</area_sizey>
+          <area_sizez sid="area_sizez" type="float">0.1</area_sizez>
+          <adapt_thresh sid="adapt_thresh" type="float">0.000999987</adapt_thresh>
+          <ray_samp_method sid="ray_samp_method" type="int">1</ray_samp_method>
+          <shadhalostep sid="shadhalostep" type="int">0</shadhalostep>
+          <sun_effect_type sid="sun_effect_type" type="int">0</sun_effect_type>
+          <skyblendtype sid="skyblendtype" type="int">1</skyblendtype>
+          <horizon_brightness sid="horizon_brightness" type="float">1</horizon_brightness>
+          <spread sid="spread" type="float">1</spread>
+          <sun_brightness sid="sun_brightness" type="float">1</sun_brightness>
+          <sun_size sid="sun_size" type="float">1</sun_size>
+          <backscattered_light sid="backscattered_light" type="float">1</backscattered_light>
+          <sun_intensity sid="sun_intensity" type="float">1</sun_intensity>
+          <atm_turbidity sid="atm_turbidity" type="float">2</atm_turbidity>
+          <atm_extinction_factor sid="atm_extinction_factor" type="float">1</atm_extinction_factor>
+          <atm_distance_factor sid="atm_distance_factor" type="float">1</atm_distance_factor>
+          <skyblendfac sid="skyblendfac" type="float">1</skyblendfac>
+          <sky_exposure sid="sky_exposure" type="float">1</sky_exposure>
+          <sky_colorspace sid="sky_colorspace" type="int">2</sky_colorspace>
+        </technique>
+      </extra>
+    </light>
+    <light id="Point_004-light" name="Point.004">
+      <technique_common>
+        <point>
+          <color sid="color">1 1 1</color>
+          <constant_attenuation>1</constant_attenuation>
+          <linear_attenuation>0</linear_attenuation>
+          <quadratic_attenuation>0.001599967</quadratic_attenuation>
+        </point>
+      </technique_common>
+      <extra>
+        <technique profile="blender">
+          <type sid="type" type="int">0</type>
           <flag sid="flag" type="int">0</flag>
           <mode sid="mode" type="int">1</mode>
           <gamma sid="blender_gamma" type="float">1</gamma>
@@ -84,7 +422,7 @@
   </library_lights>
   <library_images/>
   <library_effects>
-    <effect id="RoofEdge-effect">
+    <effect id="RothFoundationFloor-effect">
       <profile_COMMON>
         <technique sid="common">
           <phong>
@@ -92,10 +430,10 @@
               <color sid="emission">0 0 0 1</color>
             </emission>
             <ambient>
-              <color sid="ambient">1 1 1 1</color>
+              <color sid="ambient">0 0 0 1</color>
             </ambient>
             <diffuse>
-              <color sid="diffuse">0.64 0 5.20267e-4 1</color>
+              <color sid="diffuse">0.1223409 0.00826386 0.02951157 1</color>
             </diffuse>
             <specular>
               <color sid="specular">0.5 0.5 0.5 1</color>
@@ -110,7 +448,7 @@
         </technique>
       </profile_COMMON>
     </effect>
-    <effect id="RoofWallSupport-effect">
+    <effect id="RothFoundationSides-effect">
       <profile_COMMON>
         <technique sid="common">
           <phong>
@@ -118,10 +456,10 @@
               <color sid="emission">0 0 0 1</color>
             </emission>
             <ambient>
-              <color sid="ambient">1 1 1 1</color>
+              <color sid="ambient">0 0 0 1</color>
             </ambient>
             <diffuse>
-              <color sid="diffuse">0 0.64 0.5378624 1</color>
+              <color sid="diffuse">0.09981747 0.06920038 0.0836932 1</color>
             </diffuse>
             <specular>
               <color sid="specular">0.5 0.5 0.5 1</color>
@@ -136,7 +474,7 @@
         </technique>
       </profile_COMMON>
     </effect>
-    <effect id="RoofTop-effect">
+    <effect id="RothLowerExterior-effect">
       <profile_COMMON>
         <technique sid="common">
           <phong>
@@ -144,7 +482,163 @@
               <color sid="emission">0 0 0 1</color>
             </emission>
             <ambient>
-              <color sid="ambient">1 1 1 1</color>
+              <color sid="ambient">0 0 0 1</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.3517257 0.3742271 0.240435 1</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.5 0.5 0.5 1</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">50</float>
+            </shininess>
+            <index_of_refraction>
+              <float sid="index_of_refraction">1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="RothLowerInterior-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0 0 0 1</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.06920038 0.226519 0.1669095 1</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.5 0.5 0.5 1</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">50</float>
+            </shininess>
+            <index_of_refraction>
+              <float sid="index_of_refraction">1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="RothLowerMid-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0 0 0 1</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.09981747 0.06920038 0.0836932 1</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.5 0.5 0.5 1</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">50</float>
+            </shininess>
+            <index_of_refraction>
+              <float sid="index_of_refraction">1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="RothUpperExterior-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0 0 0 1</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.3517257 0.3742271 0.240435 1</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.5 0.5 0.5 1</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">50</float>
+            </shininess>
+            <index_of_refraction>
+              <float sid="index_of_refraction">1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="RothUpperInterior-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0 0 0 1</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.06920038 0.226519 0.1669095 1</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.5 0.5 0.5 1</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">50</float>
+            </shininess>
+            <index_of_refraction>
+              <float sid="index_of_refraction">1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="RotheUpperMid-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0 0 0 1</color>
+            </ambient>
+            <diffuse>
+              <color sid="diffuse">0.09981747 0.06920038 0.0836932 1</color>
+            </diffuse>
+            <specular>
+              <color sid="specular">0.5 0.5 0.5 1</color>
+            </specular>
+            <shininess>
+              <float sid="shininess">50</float>
+            </shininess>
+            <index_of_refraction>
+              <float sid="index_of_refraction">1</float>
+            </index_of_refraction>
+          </phong>
+        </technique>
+      </profile_COMMON>
+    </effect>
+    <effect id="RothRoofWall-effect">
+      <profile_COMMON>
+        <technique sid="common">
+          <phong>
+            <emission>
+              <color sid="emission">0 0 0 1</color>
+            </emission>
+            <ambient>
+              <color sid="ambient">0 0 0 1</color>
             </ambient>
             <diffuse>
               <color sid="diffuse">0.64 0.64 0.64 1</color>
@@ -162,7 +656,7 @@
         </technique>
       </profile_COMMON>
     </effect>
-    <effect id="FoundationSideBot-effect">
+    <effect id="RothRoofCrossbeam-effect">
       <profile_COMMON>
         <technique sid="common">
           <phong>
@@ -170,10 +664,10 @@
               <color sid="emission">0 0 0 1</color>
             </emission>
             <ambient>
-              <color sid="ambient">1 1 1 1</color>
+              <color sid="ambient">0 0 0 1</color>
             </ambient>
             <diffuse>
-              <color sid="diffuse">0.1616523 0.2252949 0.64 1</color>
+              <color sid="diffuse">0.01817568 5.01076e-4 0.64 1</color>
             </diffuse>
             <specular>
               <color sid="specular">0.5 0.5 0.5 1</color>
@@ -188,7 +682,7 @@
         </technique>
       </profile_COMMON>
     </effect>
-    <effect id="FoundationTop-effect">
+    <effect id="RothRoofSiding-effect">
       <profile_COMMON>
         <technique sid="common">
           <phong>
@@ -196,10 +690,10 @@
               <color sid="emission">0 0 0 1</color>
             </emission>
             <ambient>
-              <color sid="ambient">1 1 1 1</color>
+              <color sid="ambient">0 0 0 1</color>
             </ambient>
             <diffuse>
-              <color sid="diffuse">0.01346669 0.64 0.01388299 1</color>
+              <color sid="diffuse">0.64 0.004959018 0.003944559 1</color>
             </diffuse>
             <specular>
               <color sid="specular">0.5 0.5 0.5 1</color>
@@ -214,7 +708,7 @@
         </technique>
       </profile_COMMON>
     </effect>
-    <effect id="LowerWall-effect">
+    <effect id="RothRoofShingling-effect">
       <profile_COMMON>
         <technique sid="common">
           <phong>
@@ -222,88 +716,10 @@
               <color sid="emission">0 0 0 1</color>
             </emission>
             <ambient>
-              <color sid="ambient">1 1 1 1</color>
+              <color sid="ambient">0 0 0 1</color>
             </ambient>
             <diffuse>
-              <color sid="diffuse">0.64 0.64 0.64 1</color>
-            </diffuse>
-            <specular>
-              <color sid="specular">0.5 0.5 0.5 1</color>
-            </specular>
-            <shininess>
-              <float sid="shininess">50</float>
-            </shininess>
-            <index_of_refraction>
-              <float sid="index_of_refraction">1</float>
-            </index_of_refraction>
-          </phong>
-        </technique>
-      </profile_COMMON>
-    </effect>
-    <effect id="UpperWalls-effect">
-      <profile_COMMON>
-        <technique sid="common">
-          <phong>
-            <emission>
-              <color sid="emission">0 0 0 1</color>
-            </emission>
-            <ambient>
-              <color sid="ambient">1 1 1 1</color>
-            </ambient>
-            <diffuse>
-              <color sid="diffuse">0.07442582 0.5860379 0.64 1</color>
-            </diffuse>
-            <specular>
-              <color sid="specular">0.5 0.5 0.5 1</color>
-            </specular>
-            <shininess>
-              <float sid="shininess">50</float>
-            </shininess>
-            <index_of_refraction>
-              <float sid="index_of_refraction">1</float>
-            </index_of_refraction>
-          </phong>
-        </technique>
-      </profile_COMMON>
-    </effect>
-    <effect id="UpperWindowFrames-effect">
-      <profile_COMMON>
-        <technique sid="common">
-          <phong>
-            <emission>
-              <color sid="emission">0 0 0 1</color>
-            </emission>
-            <ambient>
-              <color sid="ambient">1 1 1 1</color>
-            </ambient>
-            <diffuse>
-              <color sid="diffuse">0.64 0.64 0.64 1</color>
-            </diffuse>
-            <specular>
-              <color sid="specular">0.5 0.5 0.5 1</color>
-            </specular>
-            <shininess>
-              <float sid="shininess">50</float>
-            </shininess>
-            <index_of_refraction>
-              <float sid="index_of_refraction">1</float>
-            </index_of_refraction>
-          </phong>
-        </technique>
-      </profile_COMMON>
-    </effect>
-    <effect id="UpperWallEdgeFrame-effect">
-      <profile_COMMON>
-        <technique sid="common">
-          <phong>
-            <emission>
-              <color sid="emission">0 0 0 1</color>
-            </emission>
-            <ambient>
-              <color sid="ambient">1 1 1 1</color>
-            </ambient>
-            <diffuse>
-              <color sid="diffuse">0.03464067 0.64 0.007514338 1</color>
+              <color sid="diffuse">0 0.64 0.6097043 1</color>
             </diffuse>
             <specular>
               <color sid="specular">0.5 0.5 0.5 1</color>
@@ -320,95 +736,50 @@
     </effect>
   </library_effects>
   <library_materials>
-    <material id="RoofEdge-material" name="RoofEdge">
-      <instance_effect url="#RoofEdge-effect"/>
+    <material id="RothFoundationFloor-material" name="RothFoundationFloor">
+      <instance_effect url="#RothFoundationFloor-effect"/>
     </material>
-    <material id="RoofWallSupport-material" name="RoofWallSupport">
-      <instance_effect url="#RoofWallSupport-effect"/>
+    <material id="RothFoundationSides-material" name="RothFoundationSides">
+      <instance_effect url="#RothFoundationSides-effect"/>
     </material>
-    <material id="RoofTop-material" name="RoofTop">
-      <instance_effect url="#RoofTop-effect"/>
+    <material id="RothLowerExterior-material" name="RothLowerExterior">
+      <instance_effect url="#RothLowerExterior-effect"/>
     </material>
-    <material id="FoundationSideBot-material" name="FoundationSideBot">
-      <instance_effect url="#FoundationSideBot-effect"/>
+    <material id="RothLowerInterior-material" name="RothLowerInterior">
+      <instance_effect url="#RothLowerInterior-effect"/>
     </material>
-    <material id="FoundationTop-material" name="FoundationTop">
-      <instance_effect url="#FoundationTop-effect"/>
+    <material id="RothLowerMid-material" name="RothLowerMid">
+      <instance_effect url="#RothLowerMid-effect"/>
     </material>
-    <material id="LowerWall-material" name="LowerWall">
-      <instance_effect url="#LowerWall-effect"/>
+    <material id="RothUpperExterior-material" name="RothUpperExterior">
+      <instance_effect url="#RothUpperExterior-effect"/>
     </material>
-    <material id="UpperWalls-material" name="UpperWalls">
-      <instance_effect url="#UpperWalls-effect"/>
+    <material id="RothUpperInterior-material" name="RothUpperInterior">
+      <instance_effect url="#RothUpperInterior-effect"/>
     </material>
-    <material id="UpperWindowFrames-material" name="UpperWindowFrames">
-      <instance_effect url="#UpperWindowFrames-effect"/>
+    <material id="RotheUpperMid-material" name="RotheUpperMid">
+      <instance_effect url="#RotheUpperMid-effect"/>
     </material>
-    <material id="UpperWallEdgeFrame-material" name="UpperWallEdgeFrame">
-      <instance_effect url="#UpperWallEdgeFrame-effect"/>
+    <material id="RothRoofWall-material" name="RothRoofWall">
+      <instance_effect url="#RothRoofWall-effect"/>
+    </material>
+    <material id="RothRoofCrossbeam-material" name="RothRoofCrossbeam">
+      <instance_effect url="#RothRoofCrossbeam-effect"/>
+    </material>
+    <material id="RothRoofSiding-material" name="RothRoofSiding">
+      <instance_effect url="#RothRoofSiding-effect"/>
+    </material>
+    <material id="RothRoofShingling-material" name="RothRoofShingling">
+      <instance_effect url="#RothRoofShingling-effect"/>
     </material>
   </library_materials>
   <library_geometries>
-    <geometry id="Rothenburg_Roof-mesh" name="Rothenburg Roof">
-      <mesh>
-        <source id="Rothenburg_Roof-mesh-positions">
-          <float_array id="Rothenburg_Roof-mesh-positions-array" count="54">-0.5 2.5 7.1 -0.5 5.5 3.1 -0.5 4.9 3.1 -0.5 2.5 8.100001 -0.5 -0.5 3.1 -0.5 0.1 3.1 10.5 2.5 8.100001 10.5 -0.5 3.1 10.5 5.5 3.1 10 0.1 3.1 10.5 0.1 3.1 0 0.1 3.1 10 4.9 3.1 10.5 4.9 3.1 0 4.9 3.1 10.5 2.5 7.1 10 2.5 7.1 0 2.5 7.1</float_array>
-          <technique_common>
-            <accessor source="#Rothenburg_Roof-mesh-positions-array" count="18" stride="3">
-              <param name="X" type="float"/>
-              <param name="Y" type="float"/>
-              <param name="Z" type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <source id="Rothenburg_Roof-mesh-normals">
-          <float_array id="Rothenburg_Roof-mesh-normals-array" count="27">-1 0 0 0 -0.857493 0.5144957 0 0.857493 0.5144957 0 0 -1 1 0 0 1 -6.35782e-7 0 0 0.8574929 -0.5144958 0 0.8574929 -0.5144957 0 -0.8574929 -0.5144958</float_array>
-          <technique_common>
-            <accessor source="#Rothenburg_Roof-mesh-normals-array" count="9" stride="3">
-              <param name="X" type="float"/>
-              <param name="Y" type="float"/>
-              <param name="Z" type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <source id="Rothenburg_Roof-mesh-map-0">
-          <float_array id="Rothenburg_Roof-mesh-map-0-array" count="192">0.03528577 0.5309321 0.1355193 0.3720142 0.1390276 0.3971728 0.03528577 0.5309321 1.78399e-4 0.5443308 0.1355193 0.3720142 0.1275888 0.3688392 0.03389227 0.2128191 0.131254 0.3439846 0.03389227 0.2128191 0.1275888 0.3688392 1.78399e-4 0.1990994 0.03622323 0.7068206 0.4912662 0.9480328 0.03622323 0.9480328 0.4912662 0.9480328 0.03622323 0.7068206 0.4912662 0.7068206 0.1835857 0.4572041 0.6386288 0.6984163 0.1835856 0.6984162 0.6386288 0.6984163 0.1835857 0.4572041 0.6386289 0.4572041 0.651793 0.3716573 0.6281191 0.342936 0.6482906 0.3464978 0.5793243 0.1987426 0.1656486 0.1987426 0.5793243 1.78399e-4 0.651793 0.3716573 0.15157 0.3403741 0.6281191 0.342936 0.1275888 0.3688392 0.15157 0.3403741 0.651793 0.3716573 0.15157 0.3403741 0.1275888 0.3688392 0.131254 0.3439846 0.6357498 0.4031817 0.6597245 0.3747111 0.6560651 0.3995666 0.1656485 1.7841e-4 0.5793243 1.78399e-4 0.1656486 0.1987426 0.6357498 0.4031817 0.1591998 0.4007298 0.6597245 0.3747111 0.1355193 0.3720142 0.1591998 0.4007298 0.1390276 0.3971728 0.1591998 0.4007298 0.1355193 0.3720142 0.6597245 0.3747111 0.7534577 0.5307099 0.6597245 0.3747111 0.7871749 0.5444217 0.6597245 0.3747111 0.7534577 0.5307099 0.6560651 0.3995666 0.651793 0.3716573 0.7520638 0.2127619 0.7871745 0.1993711 0.7520638 0.2127619 0.651793 0.3716573 0.6482906 0.3464978 0.5793243 1.78399e-4 0.7447945 0.09946048 0.5793243 0.1987426 0.6482906 0.3464978 0.7343993 0.1993011 0.7520638 0.2127619 0.7343993 0.1993011 0.6482906 0.3464978 0.6281191 0.342936 0.6357498 0.4031817 0.7534577 0.5307099 0.7386067 0.5417347 0.7534577 0.5307099 0.6357498 0.4031817 0.6560651 0.3995666 0.15157 0.3403741 0.03389227 0.2128191 0.04874575 0.2017977 0.03389227 0.2128191 0.15157 0.3403741 0.131254 0.3439846 0.1390276 0.3971728 0.05295336 0.5443887 0.03528577 0.5309321 0.05295336 0.5443887 0.1390276 0.3971728 0.1591998 0.4007298 1.78399e-4 0.09946054 0.1656485 1.7841e-4 0.1656486 0.1987426</float_array>
-          <technique_common>
-            <accessor source="#Rothenburg_Roof-mesh-map-0-array" count="96" stride="2">
-              <param name="S" type="float"/>
-              <param name="T" type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <vertices id="Rothenburg_Roof-mesh-vertices">
-          <input semantic="POSITION" source="#Rothenburg_Roof-mesh-positions"/>
-        </vertices>
-        <triangles material="RoofEdge-material" count="24">
-          <input semantic="VERTEX" source="#Rothenburg_Roof-mesh-vertices" offset="0"/>
-          <input semantic="NORMAL" source="#Rothenburg_Roof-mesh-normals" offset="1"/>
-          <input semantic="TEXCOORD" source="#Rothenburg_Roof-mesh-map-0" offset="2" set="0"/>
-          <p>0 0 0 1 0 1 2 0 2 0 0 3 3 0 4 1 0 5 4 0 6 0 0 7 5 0 8 0 0 9 4 0 10 3 0 11 7 3 24 9 3 25 10 3 26 7 3 30 11 3 31 9 3 32 4 3 33 11 3 34 7 3 35 11 3 36 4 3 37 5 3 38 12 3 39 8 3 40 13 3 41 12 3 45 14 3 46 8 3 47 1 3 48 14 3 49 2 3 50 14 3 51 1 3 52 8 3 53 15 4 54 8 4 55 6 4 56 8 4 57 15 4 58 13 4 59 7 5 60 15 5 61 6 5 62 15 4 63 7 4 64 10 4 65 10 6 69 16 6 70 15 6 71 16 7 72 10 7 73 9 7 74 12 8 75 15 8 76 16 8 77 15 8 78 12 8 79 13 8 80 11 6 81 0 6 82 17 6 83 0 7 84 11 7 85 5 7 86 2 8 87 17 8 88 0 8 89 17 8 90 2 8 91 14 8 92</p>
-        </triangles>
-        <triangles material="RoofWallSupport-material" count="4">
-          <input semantic="VERTEX" source="#Rothenburg_Roof-mesh-vertices" offset="0"/>
-          <input semantic="NORMAL" source="#Rothenburg_Roof-mesh-normals" offset="1"/>
-          <input semantic="TEXCOORD" source="#Rothenburg_Roof-mesh-map-0" offset="2" set="0"/>
-          <p>9 3 27 11 3 28 12 3 29 14 3 42 12 3 43 11 3 44 12 4 66 16 4 67 9 4 68 17 0 93 14 0 94 11 0 95</p>
-        </triangles>
-        <triangles material="RoofTop-material" count="4">
-          <input semantic="VERTEX" source="#Rothenburg_Roof-mesh-vertices" offset="0"/>
-          <input semantic="NORMAL" source="#Rothenburg_Roof-mesh-normals" offset="1"/>
-          <input semantic="TEXCOORD" source="#Rothenburg_Roof-mesh-map-0" offset="2" set="0"/>
-          <p>4 1 12 6 1 13 3 1 14 6 1 15 4 1 16 7 1 17 8 2 18 3 2 19 6 2 20 3 2 21 8 2 22 1 2 23</p>
-        </triangles>
-      </mesh>
-    </geometry>
     <geometry id="Rothenburg_Foundation-mesh" name="Rothenburg Foundation">
       <mesh>
         <source id="Rothenburg_Foundation-mesh-positions">
-          <float_array id="Rothenburg_Foundation-mesh-positions-array" count="36">0 5 0.1 10 0 0.1 10 5 0.1 0 0 0.1 0 0 0 10 5 0 10 0 0 0 5 0 0 0 0.1 10 5 0.1 10 0 0.1 0 5 0.1</float_array>
+          <float_array id="Rothenburg_Foundation-mesh-positions-array" count="24">-5 2.5 0.5 5 -2.5 0.5 5 2.5 0.5 -5 -2.5 0.5 -5 -2.5 0 5 2.5 0 5 -2.5 0 -5 2.5 0</float_array>
           <technique_common>
-            <accessor source="#Rothenburg_Foundation-mesh-positions-array" count="12" stride="3">
+            <accessor source="#Rothenburg_Foundation-mesh-positions-array" count="8" stride="3">
               <param name="X" type="float"/>
               <param name="Y" type="float"/>
               <param name="Z" type="float"/>
@@ -416,7 +787,7 @@
           </technique_common>
         </source>
         <source id="Rothenburg_Foundation-mesh-normals">
-          <float_array id="Rothenburg_Foundation-mesh-normals-array" count="18">0 0 -1 0 -1 0 1 0 0 0 1 0 -1 0 0 0 0 1</float_array>
+          <float_array id="Rothenburg_Foundation-mesh-normals-array" count="18">0 0 1 0 0 -1 0 -1 0 1 0 0 0 1 0 -1 0 0</float_array>
           <technique_common>
             <accessor source="#Rothenburg_Foundation-mesh-normals-array" count="6" stride="3">
               <param name="X" type="float"/>
@@ -426,7 +797,7 @@
           </technique_common>
         </source>
         <source id="Rothenburg_Foundation-mesh-map-0">
-          <float_array id="Rothenburg_Foundation-mesh-map-0-array" count="72">0.03224718 0.6333335 0.6868835 0.3060154 0.6868833 0.6333334 0.6868835 0.3060154 0.03224718 0.6333335 0.03224718 0.3060155 0.03224718 0.6333335 0.6867982 0.6447584 0.03216195 0.6447584 0.6867982 0.6447584 0.03224718 0.6333335 0.6868833 0.6333334 0.6934302 0.6333334 0.6868835 0.3060154 0.6934302 0.3060154 0.6868835 0.3060154 0.6934302 0.6333334 0.6868833 0.6333334 0.6868835 0.3060154 0.0323323 0.2945907 0.6869686 0.2945905 0.0323323 0.2945907 0.6868835 0.3060154 0.03224718 0.3060155 0.03224718 0.6333335 0.02570039 0.3060155 0.03224718 0.3060155 0.02570039 0.3060155 0.03224718 0.6333335 0.02570027 0.6333335 9.52909e-5 0.9999047 0.663873 0.6680159 0.663873 0.9999047 0.663873 0.6680159 9.52909e-5 0.9999047 9.53225e-5 0.668016</float_array>
+          <float_array id="Rothenburg_Foundation-mesh-map-0-array" count="72">0.3335751 0.333285 0.9998549 1.45093e-4 0.9998549 0.3332849 0.9998549 1.45093e-4 0.3335751 0.333285 0.3335751 1.4514e-4 0.3332849 0.666425 1.45109e-4 1.45093e-4 0.3332849 1.4522e-4 1.45109e-4 1.45093e-4 0.3332849 0.666425 1.45093e-4 0.6664249 4.86091e-4 0.6506474 0.6667681 0.683961 4.86122e-4 0.6839613 0.6667681 0.683961 4.86091e-4 0.6506474 0.6667681 0.6506472 0.6668032 0.717432 0.9999442 0.6841182 0.9999442 0.717432 0.9999442 0.6841182 0.6668032 0.717432 0.6668033 0.6841182 4.77433e-4 0.6841102 0.6667594 0.7174242 4.77433e-4 0.7174242 0.6667594 0.7174242 4.77433e-4 0.6841102 0.6667594 0.6841102 0.9999784 0.6506639 0.6668374 0.6839779 0.6668374 0.650664 0.6668374 0.6839779 0.9999784 0.6506639 0.9999784 0.6839778</float_array>
           <technique_common>
             <accessor source="#Rothenburg_Foundation-mesh-map-0-array" count="36" stride="2">
               <param name="S" type="float"/>
@@ -437,24 +808,24 @@
         <vertices id="Rothenburg_Foundation-mesh-vertices">
           <input semantic="POSITION" source="#Rothenburg_Foundation-mesh-positions"/>
         </vertices>
-        <triangles material="FoundationSideBot-material" count="10">
+        <triangles material="RothFoundationFloor-material" count="2">
           <input semantic="VERTEX" source="#Rothenburg_Foundation-mesh-vertices" offset="0"/>
           <input semantic="NORMAL" source="#Rothenburg_Foundation-mesh-normals" offset="1"/>
           <input semantic="TEXCOORD" source="#Rothenburg_Foundation-mesh-map-0" offset="2" set="0"/>
-          <p>4 0 0 5 0 1 6 0 2 5 0 3 4 0 4 7 0 5 4 1 6 1 1 7 3 1 8 1 1 9 4 1 10 6 1 11 1 2 12 5 2 13 2 2 14 5 2 15 1 2 16 6 2 17 5 3 18 0 3 19 2 3 20 0 3 21 5 3 22 7 3 23 4 4 24 0 4 25 7 4 26 0 4 27 4 4 28 3 4 29</p>
+          <p>0 0 0 1 0 1 2 0 2 1 0 3 0 0 4 3 0 5</p>
         </triangles>
-        <triangles material="FoundationTop-material" count="2">
+        <triangles material="RothFoundationSides-material" count="10">
           <input semantic="VERTEX" source="#Rothenburg_Foundation-mesh-vertices" offset="0"/>
           <input semantic="NORMAL" source="#Rothenburg_Foundation-mesh-normals" offset="1"/>
           <input semantic="TEXCOORD" source="#Rothenburg_Foundation-mesh-map-0" offset="2" set="0"/>
-          <p>11 5 30 10 5 31 9 5 32 10 5 33 11 5 34 8 5 35</p>
+          <p>4 1 6 5 1 7 6 1 8 5 1 9 4 1 10 7 1 11 4 2 12 1 2 13 3 2 14 1 2 15 4 2 16 6 2 17 1 3 18 5 3 19 2 3 20 5 3 21 1 3 22 6 3 23 5 4 24 0 4 25 2 4 26 0 4 27 5 4 28 7 4 29 4 5 30 0 5 31 7 5 32 0 5 33 4 5 34 3 5 35</p>
         </triangles>
       </mesh>
     </geometry>
     <geometry id="Rothenburg_Lower-mesh" name="Rothenburg Lower">
       <mesh>
         <source id="Rothenburg_Lower-mesh-positions">
-          <float_array id="Rothenburg_Lower-mesh-positions-array" count="72">0 0 0.1 0 5 1.1 0 5 0.1 0 0 1.1 10 5 1.1 9.5 4.5 1.1 10 0 1.1 0.5 4.5 1.1 0.5 0.5 1.1 9.5 0.5 1.1 6 0 1.1 6 0.5 1.1 4 0 1.1 4 0.5 1.1 10 5 0.1 10 0 0.1 4 0 0.1 0.5 0.5 0.1 4 0.5 0.1 0.5 4.5 0.1 9.5 0.5 0.1 6 0 0.1 6 0.5 0.1 9.5 4.5 0.1</float_array>
+          <float_array id="Rothenburg_Lower-mesh-positions-array" count="72">-5 -2.5 0.5 -5 2.5 1.5 -5 2.5 0.5 -5 -2.5 1.5 5 2.5 1.5 4.5 2 1.5 5 -2.5 1.5 -4.5 2 1.5 -4.5 -2 1.5 4.5 -2 1.5 1 -2.5 1.5 1 -2 1.5 -1 -2.5 1.5 -1 -2 1.5 5 2.5 0.5 5 -2.5 0.5 -1 -2.5 0.5 -4.5 -2 0.5 -1 -2 0.5 -4.5 2 0.5 4.5 -2 0.5 1 -2.5 0.5 1 -2 0.5 4.5 2 0.5</float_array>
           <technique_common>
             <accessor source="#Rothenburg_Lower-mesh-positions-array" count="24" stride="3">
               <param name="X" type="float"/>
@@ -464,9 +835,9 @@
           </technique_common>
         </source>
         <source id="Rothenburg_Lower-mesh-normals">
-          <float_array id="Rothenburg_Lower-mesh-normals-array" count="30">-1 0 0 3.8147e-7 0 1 0 0 1 -3.8147e-7 0 1 1 0 0 0 1 0 0 0 -1 0 0 -1 0 0 -1 0 -1 0</float_array>
+          <float_array id="Rothenburg_Lower-mesh-normals-array" count="18">-1 0 0 0 0 1 1 0 0 0 1 0 0 0 -1 0 -1 0</float_array>
           <technique_common>
-            <accessor source="#Rothenburg_Lower-mesh-normals-array" count="10" stride="3">
+            <accessor source="#Rothenburg_Lower-mesh-normals-array" count="6" stride="3">
               <param name="X" type="float"/>
               <param name="Y" type="float"/>
               <param name="Z" type="float"/>
@@ -474,7 +845,7 @@
           </technique_common>
         </source>
         <source id="Rothenburg_Lower-mesh-map-0">
-          <float_array id="Rothenburg_Lower-mesh-map-0-array" count="264">0.2264369 0.01890677 0.3207689 4.04161e-5 0.3207689 0.01890677 0.3207689 4.04161e-5 0.2264369 0.01890677 0.2264369 4.04369e-5 0.3773924 0.1133161 0.3679592 0.1038829 0.3773924 0.01898419 0.3773924 0.1133161 0.1981616 0.1038829 0.3679592 0.1038829 0.1981616 0.1038829 0.1887284 0.1133161 0.1981615 0.0284174 0.1887284 0.1133161 0.1981616 0.1038829 0.3773924 0.1133161 0.3679592 0.0284174 0.3773924 0.01898419 0.3679592 0.1038829 0.3019267 0.01898413 0.3679592 0.0284174 0.3019267 0.02841734 0.3679592 0.0284174 0.3019267 0.01898413 0.3773924 0.01898419 0.1981615 0.0284174 0.2641938 0.01898419 0.2641938 0.02841734 0.1981615 0.0284174 0.1887283 0.01898425 0.2641938 0.01898419 0.1887283 0.01898425 0.1981615 0.0284174 0.1887284 0.1133161 0.6037659 4.04853e-5 0.5094339 0.01890683 0.5094339 4.05094e-5 0.5094339 0.01890683 0.6037659 4.04853e-5 0.6037659 0.01890683 0.5094339 0.01890683 0.3207689 4.04161e-5 0.5094339 4.05094e-5 0.3207689 4.04161e-5 0.5094339 0.01890683 0.3207689 0.01890677 0.07550597 0.1133199 0.009473681 0.1038867 0.07550591 0.1038867 0.009473681 0.1038867 4.05343e-5 0.1133199 0.009473562 0.02842122 4.05343e-5 0.1133199 0.009473681 0.1038867 0.07550597 0.1133199 0.1887049 0.1133195 0.1792717 0.1038864 0.1887045 0.01898771 0.1132394 0.1133199 0.1792717 0.1038864 0.1887049 0.1133195 0.1792717 0.1038864 0.1132394 0.1133199 0.1132393 0.1038867 0.1792713 0.02842092 0.1887045 0.01898771 0.1792717 0.1038864 0.009473562 0.02842122 0.1887045 0.01898771 0.1792713 0.02842092 0.009473562 0.02842122 4.04161e-5 0.01898801 0.1887045 0.01898771 4.04161e-5 0.01898801 0.009473562 0.02842122 4.05343e-5 0.1133199 0.2264369 0.01890677 0.1509714 4.0443e-5 0.2264369 4.04369e-5 0.1509714 4.0443e-5 0.2264369 0.01890677 0.1509714 0.01890677 0.6792314 0.01890683 0.6037659 4.04853e-5 0.6792314 4.04853e-5 0.6037659 4.04853e-5 0.6792314 0.01890683 0.6037659 0.01890683 0.07550597 4.04732e-5 4.04161e-5 0.01890689 4.04161e-5 4.05155e-5 4.04161e-5 0.01890689 0.07550597 4.04732e-5 0.07550597 0.01890683 0.7546968 0.01890683 0.8301624 4.04611e-5 0.8301624 0.01890683 0.8301624 4.04611e-5 0.7546968 0.01890683 0.7546968 4.05094e-5 0.9999596 0.01890689 0.8301624 4.04611e-5 0.9999596 4.05336e-5 0.8301624 4.04611e-5 0.9999596 0.01890689 0.8301624 0.01890683 0.1415382 0.01890677 0.07550597 4.04732e-5 0.1415382 4.04457e-5 0.07550597 4.04732e-5 0.1415382 0.01890677 0.07550597 0.01890683 0.7546968 0.01890683 0.6886646 4.05094e-5 0.7546968 4.05094e-5 0.6886646 4.05094e-5 0.7546968 0.01890683 0.6886646 0.01890683 0.1509714 4.0443e-5 0.1415382 0.01890677 0.1415382 4.04457e-5 0.1415382 0.01890677 0.1509714 4.0443e-5 0.1509714 0.01890677 0.6792314 0.01890683 0.6886646 4.05094e-5 0.6886646 0.01890683 0.6886646 4.05094e-5 0.6792314 0.01890683 0.6792314 4.04853e-5</float_array>
+          <float_array id="Rothenburg_Lower-mesh-map-0-array" count="264">0.4995983 0.3031338 4.01825e-4 0.4029732 4.01825e-4 0.303134 4.01825e-4 0.4029732 0.4995983 0.3031338 0.4995983 0.4029731 0.9995982 0.3031338 0.9496785 0.3530535 0.5004019 0.3031338 0.9987946 0.3023302 0.05032128 0.2524106 0.9488749 0.2524105 0.4496785 0.8063484 0.4995981 0.8562681 0.0503214 0.8063484 4.01792e-4 0.3023302 0.05032128 0.2524106 0.9987946 0.3023302 0.5503215 0.3530535 0.5004019 0.3031338 0.9496785 0.3530535 0.5004019 0.4045805 0.8498396 0.4545 0.5004019 0.4545001 0.8498396 0.4545 0.5004019 0.4045805 0.8997592 0.4045804 0.5503214 0.9069914 0.8997589 0.8570718 0.8997589 0.9069914 0.5503214 0.9069914 0.5004017 0.8570717 0.8997589 0.8570718 4.01792e-4 0.8562681 0.0503214 0.8063484 0.4995981 0.8562681 4.01792e-4 0.503616 0.4995983 0.4037768 0.4995983 0.5036161 0.4995983 0.4037768 4.01792e-4 0.503616 4.01792e-4 0.4037768 4.01795e-4 4.01795e-4 0.998798 0.1002407 4.01914e-4 0.1002407 0.998798 0.1002407 4.01795e-4 4.01795e-4 0.9987979 4.01795e-4 0.8997588 0.856268 0.5503214 0.8063484 0.8997588 0.8063484 0.0503214 0.9577146 4.01792e-4 0.907795 0.4496784 0.9577146 0.5004017 0.8562681 0.5503214 0.8063484 0.8997588 0.856268 4.01792e-4 0.9069914 0.0503214 0.8570717 0.4995981 0.9069914 0.5004019 0.4037768 0.8498395 0.3538571 0.8997592 0.4037766 0.8498395 0.3538571 0.5004019 0.4037768 0.5004019 0.3538572 0.4496785 0.8570717 0.4995981 0.9069914 0.0503214 0.8570717 0.0503214 0.2516068 0.9987947 0.2016873 0.9488754 0.251607 0.0503214 0.2516068 4.01792e-4 0.2016872 0.9987947 0.2016873 0.4995981 0.907795 0.4496784 0.9577146 4.01792e-4 0.907795 4.01792e-4 0.5044198 0.3997591 0.6042589 4.01792e-4 0.604259 0.3997591 0.6042589 4.01792e-4 0.5044198 0.3997591 0.5044197 4.01792e-4 0.6050626 0.3997591 0.7049018 4.01815e-4 0.7049019 0.3997591 0.7049018 4.01792e-4 0.6050626 0.3997591 0.6050626 0.4005626 0.7049018 0.7999199 0.6050626 0.7999199 0.7049018 0.7999199 0.6050626 0.4005626 0.7049018 0.4005626 0.6050626 0.7999199 0.5044196 0.4005626 0.6042589 0.4005627 0.5044196 0.4005626 0.6042589 0.7999199 0.5044196 0.7999199 0.6042588 4.01792e-4 0.1010443 0.8989551 0.2008836 4.01792e-4 0.2008836 0.8989551 0.2008836 4.01792e-4 0.1010443 0.8989551 0.1010443 4.01795e-4 0.7057055 0.3498391 0.8055447 4.01795e-4 0.8055448 0.3498391 0.8055447 4.01795e-4 0.7057055 0.3498391 0.7057055 0.3506427 0.7057055 0.70008 0.8055448 0.3506427 0.8055448 0.70008 0.8055448 0.3506427 0.7057055 0.70008 0.7057055 0.8007234 0.604259 0.8506431 0.5044197 0.8506431 0.604259 0.8506431 0.5044197 0.8007234 0.604259 0.8007234 0.5044197 0.800723 0.7556251 0.7008836 0.7057055 0.800723 0.7057055 0.7008836 0.7057055 0.800723 0.7556251 0.7008836 0.7556251</float_array>
           <technique_common>
             <accessor source="#Rothenburg_Lower-mesh-map-0-array" count="132" stride="2">
               <param name="S" type="float"/>
@@ -485,129 +856,137 @@
         <vertices id="Rothenburg_Lower-mesh-vertices">
           <input semantic="POSITION" source="#Rothenburg_Lower-mesh-positions"/>
         </vertices>
-        <triangles material="LowerWall-material" count="44">
+        <triangles material="RothLowerExterior-material" count="10">
           <input semantic="VERTEX" source="#Rothenburg_Lower-mesh-vertices" offset="0"/>
           <input semantic="NORMAL" source="#Rothenburg_Lower-mesh-normals" offset="1"/>
           <input semantic="TEXCOORD" source="#Rothenburg_Lower-mesh-map-0" offset="2" set="0"/>
-          <p>0 0 0 1 0 1 2 0 2 1 0 3 0 0 4 3 0 5 4 1 6 5 1 7 6 1 8 4 2 9 7 2 10 5 2 11 7 2 12 1 2 13 8 2 14 1 2 15 7 2 16 4 2 17 9 2 18 6 2 19 5 2 20 10 2 21 9 2 22 11 2 23 9 2 24 10 2 25 6 2 26 8 2 27 12 2 28 13 2 29 8 2 30 3 2 31 12 2 32 3 3 33 8 3 34 1 3 35 6 4 36 14 4 37 4 4 38 14 4 39 6 4 40 15 4 41 14 5 42 1 5 43 4 5 44 1 5 45 14 5 46 2 5 47 16 6 48 17 6 49 18 6 50 17 6 51 0 6 52 19 6 53 0 6 54 17 6 55 16 6 56 15 7 57 20 7 58 14 7 59 21 6 60 20 6 61 15 6 62 20 6 63 21 6 64 22 6 65 23 6 66 14 6 67 20 6 68 19 6 69 14 6 70 23 6 71 19 6 72 2 6 73 14 6 74 2 8 75 19 8 76 0 8 77 0 9 78 12 9 79 3 9 80 12 9 81 0 9 82 16 9 83 21 9 84 6 9 85 10 9 86 6 9 87 21 9 88 15 9 89 8 4 90 19 4 91 7 4 92 19 4 93 8 4 94 17 4 95 20 0 96 5 0 97 23 0 98 5 0 99 20 0 100 9 0 101 19 9 102 5 9 103 7 9 104 5 9 105 19 9 106 23 9 107 18 5 108 8 5 109 13 5 110 8 5 111 18 5 112 17 5 113 20 5 114 11 5 115 9 5 116 11 5 117 20 5 118 22 5 119 12 4 120 18 4 121 13 4 122 18 4 123 12 4 124 16 4 125 21 0 126 11 0 127 22 0 128 11 0 129 21 0 130 10 0 131</p>
+          <p>0 0 0 1 0 1 2 0 2 1 0 3 0 0 4 3 0 5 6 2 36 14 2 37 4 2 38 14 2 39 6 2 40 15 2 41 14 3 42 1 3 43 4 3 44 1 3 45 14 3 46 2 3 47 0 5 78 12 5 79 3 5 80 12 5 81 0 5 82 16 5 83 21 5 84 6 5 85 10 5 86 6 5 87 21 5 88 15 5 89</p>
+        </triangles>
+        <triangles material="RothLowerInterior-material" count="10">
+          <input semantic="VERTEX" source="#Rothenburg_Lower-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Rothenburg_Lower-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Rothenburg_Lower-mesh-map-0" offset="2" set="0"/>
+          <p>8 2 90 19 2 91 7 2 92 19 2 93 8 2 94 17 2 95 20 0 96 5 0 97 23 0 98 5 0 99 20 0 100 9 0 101 19 5 102 5 5 103 7 5 104 5 5 105 19 5 106 23 5 107 18 3 108 8 3 109 13 3 110 8 3 111 18 3 112 17 3 113 20 3 114 11 3 115 9 3 116 11 3 117 20 3 118 22 3 119</p>
+        </triangles>
+        <triangles material="RothLowerMid-material" count="24">
+          <input semantic="VERTEX" source="#Rothenburg_Lower-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Rothenburg_Lower-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Rothenburg_Lower-mesh-map-0" offset="2" set="0"/>
+          <p>4 1 6 5 1 7 6 1 8 4 1 9 7 1 10 5 1 11 7 1 12 1 1 13 8 1 14 1 1 15 7 1 16 4 1 17 9 1 18 6 1 19 5 1 20 10 1 21 9 1 22 11 1 23 9 1 24 10 1 25 6 1 26 8 1 27 12 1 28 13 1 29 8 1 30 3 1 31 12 1 32 3 1 33 8 1 34 1 1 35 16 4 48 17 4 49 18 4 50 17 4 51 0 4 52 19 4 53 0 4 54 17 4 55 16 4 56 15 4 57 20 4 58 14 4 59 21 4 60 20 4 61 15 4 62 20 4 63 21 4 64 22 4 65 23 4 66 14 4 67 20 4 68 19 4 69 14 4 70 23 4 71 19 4 72 2 4 73 14 4 74 2 4 75 19 4 76 0 4 77 12 2 120 18 2 121 13 2 122 18 2 123 12 2 124 16 2 125 21 0 126 11 0 127 22 0 128 11 0 129 21 0 130 10 0 131</p>
         </triangles>
       </mesh>
     </geometry>
-    <geometry id="Rothenburg_Upper_All-mesh" name="Rothenburg Upper All">
+    <geometry id="Rothenburg_Upper-mesh" name="Rothenburg Upper">
       <mesh>
-        <source id="Rothenburg_Upper_All-mesh-positions">
-          <float_array id="Rothenburg_Upper_All-mesh-positions-array" count="384">0 5 1.1 0 4.25 1.35 0 5 3.1 0 3.25 1.35 0 3 1.35 0 3.25 2.85 0 2 1.35 0 1.75 1.35 0 2 2.85 0 0 1.1 0 0.75 1.35 0 0.75 2.85 0 4.25 2.85 0 3 2.85 0 1.75 2.85 0 0 3.1 10 5 3.1 9.5 4.5 3.1 10 0 3.1 0.5 4.5 3.1 0.5 0.5 3.1 9.5 0.5 3.1 10 4.25 2.85 10 5 1.1 10 3.25 2.85 10 3 2.85 10 3.25 1.35 10 2 2.85 10 1.75 2.85 10 2 1.35 10 0.75 2.85 10 0.75 1.35 10 4.25 1.35 10 3 1.35 10 1.75 1.35 10 0 1.1 4.5 5 1.35 4.25 5 2.85 4.5 5 2.85 4.25 5 1.35 5.75 5 1.35 5.5 5 2.85 5.75 5 2.85 5.5 5 1.35 6.75 5 2.85 6.75 5 1.35 3.25 5 2.85 3.25 5 1.35 4 0 1.1 0.5 0.5 1.1 4 0.5 1.1 0.5 4.5 1.1 9.5 0.5 1.1 6 0 1.1 6 0.5 1.1 9.5 4.5 1.1 7.75 0 1.35 8 0 2.85 7.75 0 2.85 8 0 1.35 3.25 0 2.85 4 0 2.1 6.75 0 2.85 3.25 0 1.35 2.25 0 1.35 2 0 1.35 2.25 0 2.85 2 0 2.85 1 0 2.85 1 0 1.35 9 0 2.85 9 0 1.35 6 0 2.1 6.75 0 1.35 0.5 4.25 2.85 0.5 3.25 2.85 0.5 3 2.85 0.5 3.25 1.35 0.5 2 2.85 0.5 1.75 2.85 0.5 2 1.35 0.5 0.75 2.85 0.5 0.75 1.35 0.5 4.25 1.35 0.5 3 1.35 0.5 1.75 1.35 9.5 4.25 1.35 9.5 3.25 1.35 9.5 3 1.35 9.5 3.25 2.85 9.5 2 1.35 9.5 1.75 1.35 9.5 2 2.85 9.5 0.75 1.35 9.5 0.75 2.85 9.5 4.25 2.85 9.5 3 2.85 9.5 1.75 2.85 2.25 0.5 1.35 2 0.5 2.85 2.25 0.5 2.85 2 0.5 1.35 6.75 0.5 2.85 6 0.5 2.1 3.25 0.5 2.85 6.75 0.5 1.35 7.75 0.5 1.35 8 0.5 1.35 7.75 0.5 2.85 8 0.5 2.85 9 0.5 2.85 9 0.5 1.35 1 0.5 2.85 1 0.5 1.35 4 0.5 2.1 3.25 0.5 1.35 5.5 4.5 1.35 5.75 4.5 2.85 5.5 4.5 2.85 5.75 4.5 1.35 4.25 4.5 1.35 4.5 4.5 2.85 4.25 4.5 2.85 4.5 4.5 1.35 3.25 4.5 2.85 3.25 4.5 1.35 6.75 4.5 2.85 6.75 4.5 1.35</float_array>
+        <source id="Rothenburg_Upper-mesh-positions">
+          <float_array id="Rothenburg_Upper-mesh-positions-array" count="72">-5 -2.5 1.5 -5 2.5 3.5 -5 2.5 1.5 -5 -2.5 3.5 5 2.5 3.5 4.5 2 3.5 5 -2.5 3.5 -4.5 2 3.5 -4.5 -2 3.5 4.5 -2 3.5 5 2.5 1.5 5 -2.5 1.5 -1 -2.5 1.5 -4.5 -2 1.5 -1 -2 1.5 -4.5 2 1.5 4.5 -2 1.5 1 -2.5 1.5 1 -2 1.5 4.5 2 1.5 -1 -2.5 2.5 1 -2.5 2.5 1 -2 2.5 -1 -2 2.5</float_array>
           <technique_common>
-            <accessor source="#Rothenburg_Upper_All-mesh-positions-array" count="128" stride="3">
+            <accessor source="#Rothenburg_Upper-mesh-positions-array" count="24" stride="3">
               <param name="X" type="float"/>
               <param name="Y" type="float"/>
               <param name="Z" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <source id="Rothenburg_Upper_All-mesh-normals">
-          <float_array id="Rothenburg_Upper_All-mesh-normals-array" count="36">-1 0 0 0 0 1 1 0 0 1 -3.39084e-6 0 1 3.39084e-6 0 0 1 0 0 0 -1 -3.8147e-7 0 -1 3.8147e-7 0 -1 0 -1 0 -1 1.01725e-5 0 -1 -1.01725e-5 0</float_array>
+        <source id="Rothenburg_Upper-mesh-normals">
+          <float_array id="Rothenburg_Upper-mesh-normals-array" count="18">-1 0 0 0 0 1 1 0 0 0 0 -1 0 -1 0 0 1 0</float_array>
           <technique_common>
-            <accessor source="#Rothenburg_Upper_All-mesh-normals-array" count="12" stride="3">
+            <accessor source="#Rothenburg_Upper-mesh-normals-array" count="6" stride="3">
               <param name="X" type="float"/>
               <param name="Y" type="float"/>
               <param name="Z" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <source id="Rothenburg_Upper_All-mesh-map-0">
-          <float_array id="Rothenburg_Upper_All-mesh-map-0-array" count="1848">0.2523036 0.7897205 0.2145231 0.7774281 0.2515812 0.6892144 0.2523036 0.7897205 0.1642695 0.7777892 0.2145231 0.7774281 0.1642695 0.7777892 0.1517065 0.7778795 0.1637278 0.7024098 0.2523036 0.7897205 0.1517065 0.7778795 0.1642695 0.7777892 0.2523036 0.7897205 0.1014537 0.7782405 0.1517065 0.7778795 0.1014537 0.7782405 0.08889079 0.7783309 0.100912 0.7028613 0.001037776 0.791526 0.1014537 0.7782405 0.2523036 0.7897205 0.1014537 0.7782405 0.001037776 0.791526 0.08889079 0.7783309 0.03863739 0.7786919 0.001037776 0.791526 0.03809565 0.7033128 0.08889079 0.7783309 0.001037776 0.791526 0.03863739 0.7786919 0.2139814 0.7020486 0.2515812 0.6892144 0.2145231 0.7774281 0.1637278 0.7024098 0.2515812 0.6892144 0.2139814 0.7020486 0.1511647 0.7025001 0.1637278 0.7024098 0.1517065 0.7778795 0.1511647 0.7025001 0.2515812 0.6892144 0.1637278 0.7024098 0.100912 0.7028613 0.2515812 0.6892144 0.1511647 0.7025001 0.08834904 0.7029516 0.100912 0.7028613 0.08889079 0.7783309 3.15466e-4 0.6910205 0.100912 0.7028613 0.08834904 0.7029516 3.15466e-4 0.6910205 0.08834904 0.7029516 0.03809565 0.7033128 0.100912 0.7028613 3.15466e-4 0.6910205 0.2515812 0.6892144 3.15466e-4 0.6910205 0.03809565 0.7033128 0.001037776 0.791526 0.4899888 0.5401551 0.4655367 0.5646073 0.2454676 0.5401551 0.7345101 0.5395242 0.2699196 0.5150721 0.710058 0.5150721 0.7106889 0.5401552 0.735141 0.5646073 0.5150719 0.5401551 0.2454676 0.5395242 0.2699196 0.5150721 0.7345101 0.5395242 0.2699197 0.5646072 0.2454676 0.5401551 0.4655367 0.5646073 0.2699196 0.5144411 0.7345101 0.489989 0.7100581 0.5144412 0.2699196 0.5144411 0.2454676 0.489989 0.7345101 0.489989 0.4906197 0.5646073 0.5150719 0.5401551 0.735141 0.5646073 0.7339634 0.6885834 0.6975424 0.675968 0.7351037 0.5910817 0.7339634 0.6885834 0.6487911 0.6753979 0.6975424 0.675968 0.6487911 0.6753979 0.6366036 0.6752553 0.6496463 0.6022717 0.7339634 0.6885834 0.6366036 0.6752553 0.6487911 0.6753979 0.7339634 0.6885834 0.5878531 0.6746851 0.6366036 0.6752553 0.5878531 0.6746851 0.5756656 0.6745426 0.5887082 0.6015592 0.4902088 0.6857324 0.5878531 0.6746851 0.7339634 0.6885834 0.5878531 0.6746851 0.4902088 0.6857324 0.5756656 0.6745426 0.5269145 0.6739723 0.4902088 0.6857324 0.5277697 0.6008465 0.5756656 0.6745426 0.4902088 0.6857324 0.5269145 0.6739723 0.6983977 0.6028419 0.7351037 0.5910817 0.6975424 0.675968 0.6496463 0.6022717 0.7351037 0.5910817 0.6983977 0.6028419 0.6374588 0.6021293 0.6496463 0.6022717 0.6366036 0.6752553 0.6374588 0.6021293 0.7351037 0.5910817 0.6496463 0.6022717 0.5887082 0.6015592 0.7351037 0.5910817 0.6374588 0.6021293 0.5765208 0.6014167 0.5887082 0.6015592 0.5756656 0.6745426 0.4913489 0.5882313 0.5887082 0.6015592 0.5765208 0.6014167 0.4913489 0.5882313 0.5765208 0.6014167 0.5277697 0.6008465 0.5887082 0.6015592 0.4913489 0.5882313 0.7351037 0.5910817 0.4913489 0.5882313 0.5277697 0.6008465 0.4902088 0.6857324 0.4522456 0.7794982 0.4353082 0.7010114 0.4508286 0.700901 0.4353082 0.7010114 0.4522456 0.7794982 0.4366726 0.7792702 0.5266721 0.7792779 0.5101912 0.7005087 0.5257968 0.700679 0.5101912 0.7005087 0.5266721 0.7792779 0.5111174 0.7793323 0.5257968 0.700679 0.714656 0.6893082 0.5724828 0.7005367 0.714656 0.6893082 0.571152 0.7797629 0.5724828 0.7005367 0.7065402 0.791526 0.5266721 0.7792779 0.571152 0.7797629 0.5266721 0.7792779 0.7065402 0.791526 0.5111174 0.7793323 0.5111174 0.7793323 0.7065402 0.791526 0.4522456 0.7794982 0.2523036 0.7897205 0.4522456 0.7794982 0.7065402 0.791526 0.4522456 0.7794982 0.2523036 0.7897205 0.4366726 0.7792702 0.7065402 0.791526 0.571152 0.7797629 0.714656 0.6893082 0.5101912 0.7005087 0.714656 0.6893082 0.5257968 0.700679 0.714656 0.6893082 0.5101912 0.7005087 0.2515812 0.6892144 0.4508286 0.700901 0.2515812 0.6892144 0.5101912 0.7005087 0.4353082 0.7010114 0.2515812 0.6892144 0.4508286 0.700901 0.3899667 0.7006986 0.2515812 0.6892144 0.4353082 0.7010114 0.3912925 0.7792437 0.2515812 0.6892144 0.3899667 0.7006986 0.3912925 0.7792437 0.2523036 0.7897205 0.2515812 0.6892144 0.4366726 0.7792702 0.2523036 0.7897205 0.3912925 0.7792437 3.15493e-4 0.1959327 0.02476763 0.02476763 0.02476757 0.1959327 0.2699197 0.02476751 0.2454676 3.15466e-4 0.4655364 0.02476751 3.15466e-4 3.15466e-4 0.02476763 0.02476763 3.15493e-4 0.1959327 3.15681e-4 0.5871669 0.02476775 0.5627147 0.2448366 0.5871667 3.15573e-4 0.3915497 0.02476775 0.5627147 3.15681e-4 0.5871669 0.02476775 0.5627147 3.15573e-4 0.3915497 0.02476763 0.3915497 0.2203845 0.5627147 0.2448366 0.5871667 0.02476775 0.5627147 0.4655364 0.02476751 0.4899886 0.4893581 0.4655365 0.4649061 0.4655364 0.02476751 0.4899885 3.15466e-4 0.4899886 0.4893581 0.4899885 3.15466e-4 0.4655364 0.02476751 0.2454676 3.15466e-4 0.3815479 0.600226 0.3948233 0.6741052 0.3816655 0.6742721 0.3948233 0.6741052 0.3815479 0.600226 0.3938875 0.6002389 0.1598417 0.6755116 0.1966254 0.638078 0.3325586 0.6745166 0.1590741 0.6012679 0.1966254 0.638078 0.1598417 0.6755116 0.1590741 0.6012679 0.1959482 0.5883613 0.1966254 0.638078 0.1098796 0.6019986 0.1959482 0.5883613 0.1590741 0.6012679 0.09757685 0.602185 0.1109044 0.6758567 0.097777 0.6758475 0.1109044 0.6758567 0.09757685 0.602185 0.1098796 0.6019986 0.097777 0.6758475 0.002820789 0.6885834 0.0501362 0.6762748 0.002820789 0.6885834 0.04902845 0.6029638 0.0501362 0.6762748 3.15466e-4 0.5916079 0.09757685 0.602185 0.04902845 0.6029638 0.1959482 0.5883613 0.09757685 0.602185 3.15466e-4 0.5916079 0.09757685 0.602185 0.1959482 0.5883613 0.1098796 0.6019986 3.15466e-4 0.5916079 0.04902845 0.6029638 0.002820789 0.6885834 0.1109044 0.6758567 0.002820789 0.6885834 0.097777 0.6758475 0.1598417 0.6755116 0.002820789 0.6885834 0.1109044 0.6758567 0.002820789 0.6885834 0.1598417 0.6755116 0.4902088 0.6857324 0.3325586 0.6745166 0.4902088 0.6857324 0.1598417 0.6755116 0.3816655 0.6742721 0.4902088 0.6857324 0.3325586 0.6745166 0.3948233 0.6741052 0.4902088 0.6857324 0.3816655 0.6742721 0.4425835 0.6739585 0.4902088 0.6857324 0.3948233 0.6741052 0.4426074 0.6003262 0.4902088 0.6857324 0.4425835 0.6739585 0.4426074 0.6003262 0.4913489 0.5882313 0.4902088 0.6857324 0.3938875 0.6002389 0.4913489 0.5882313 0.4426074 0.6003262 0.2952367 0.6375393 0.3325586 0.6745166 0.1966254 0.638078 0.2952367 0.6375393 0.3322925 0.6001935 0.3325586 0.6745166 0.2951973 0.5877978 0.3815479 0.600226 0.3322925 0.6001935 0.3815479 0.600226 0.2951973 0.5877978 0.3938875 0.6002389 0.4913489 0.5882313 0.3938875 0.6002389 0.2951973 0.5877978 0.2951973 0.5877978 0.3322925 0.6001935 0.2952367 0.6375393 0.2033118 0.9012436 0.1910987 0.888082 0.2071059 0.7997453 0.2033118 0.9012436 0.1403493 0.8861849 0.1910987 0.888082 0.1403493 0.8861849 0.1276621 0.8857106 0.143195 0.8100613 0.2033118 0.9012436 0.1276621 0.8857106 0.1403493 0.8861849 0.2033118 0.9012436 0.07691323 0.8838134 0.1276621 0.8857106 0.07691323 0.8838134 0.06422603 0.8833391 0.07975894 0.8076899 3.15466e-4 0.8936548 0.07691323 0.8838134 0.2033118 0.9012436 0.07691323 0.8838134 3.15466e-4 0.8936548 0.06422603 0.8833391 0.01347696 0.8814419 3.15466e-4 0.8936548 0.01632267 0.8053185 0.06422603 0.8833391 3.15466e-4 0.8936548 0.01347696 0.8814419 0.1939444 0.8119584 0.2071059 0.7997453 0.1910987 0.888082 0.143195 0.8100613 0.2071059 0.7997453 0.1939444 0.8119584 0.1305078 0.809587 0.143195 0.8100613 0.1276621 0.8857106 0.1305078 0.809587 0.2071059 0.7997453 0.143195 0.8100613 0.07975894 0.8076899 0.2071059 0.7997453 0.1305078 0.809587 0.06707173 0.8072156 0.07975894 0.8076899 0.06422603 0.8833391 0.00410968 0.7921571 0.07975894 0.8076899 0.06707173 0.8072156 0.00410968 0.7921571 0.06707173 0.8072156 0.01632267 0.8053185 0.07975894 0.8076899 0.00410968 0.7921571 0.2071059 0.7997453 0.00410968 0.7921571 0.01632267 0.8053185 3.15466e-4 0.8936548 0.004063069 0.8983536 0.01628947 0.9105799 0.004063069 0.9961636 0.004063069 0.8983536 0.06519448 0.9105799 0.01628947 0.9105799 0.06519448 0.9105799 0.07742071 0.91058 0.06519436 0.9839374 0.004063069 0.8983536 0.07742071 0.91058 0.06519448 0.9105799 0.004063069 0.8983536 0.1263253 0.9105801 0.07742071 0.91058 0.1263253 0.9105801 0.1385515 0.9105801 0.1263253 0.9839373 0.1996827 0.8983541 0.1263253 0.9105801 0.004063069 0.8983536 0.1263253 0.9105801 0.1996827 0.8983541 0.1385515 0.9105801 0.1874564 0.9105803 0.1996827 0.8983541 0.1874563 0.9839373 0.1385515 0.9105801 0.1996827 0.8983541 0.1874564 0.9105803 0.01628923 0.9839373 0.004063069 0.9961636 0.01628947 0.9105799 0.06519436 0.9839374 0.004063069 0.9961636 0.01628923 0.9839373 0.07742071 0.9839374 0.06519436 0.9839374 0.07742071 0.91058 0.07742071 0.9839374 0.004063069 0.9961636 0.06519436 0.9839374 0.1263253 0.9839373 0.004063069 0.9961636 0.07742071 0.9839374 0.1385514 0.9839373 0.1263253 0.9839373 0.1385515 0.9105801 0.1996825 0.9961635 0.1263253 0.9839373 0.1385514 0.9839373 0.1996825 0.9961635 0.1385514 0.9839373 0.1874563 0.9839373 0.1263253 0.9839373 0.1996825 0.9961635 0.004063069 0.9961636 0.1996825 0.9961635 0.1874563 0.9839373 0.1996827 0.8983541 0.5542361 0.9105807 0.5664622 0.9839361 0.5542363 0.9839361 0.5664622 0.9839361 0.5542361 0.9105807 0.5664619 0.9105806 0.3341703 0.9839368 0.3708483 0.9472587 0.5053333 0.9839362 0.3341701 0.9105804 0.3708483 0.9472587 0.3341703 0.9839368 0.3341701 0.9105804 0.3708484 0.8983542 0.3708483 0.9472587 0.2852657 0.9105803 0.3708484 0.8983542 0.3341701 0.9105804 0.2730396 0.9105803 0.2852659 0.983937 0.2730397 0.983937 0.2852659 0.983937 0.2730396 0.9105803 0.2852657 0.9105803 0.2730397 0.983937 0.1996825 0.9961635 0.2241349 0.9839372 0.1996825 0.9961635 0.224135 0.9105803 0.2241349 0.9839372 0.1996827 0.8983541 0.2730396 0.9105803 0.224135 0.9105803 0.2730396 0.9105803 0.1996827 0.8983541 0.2852657 0.9105803 0.3708484 0.8983542 0.2852657 0.9105803 0.1996827 0.8983541 0.1996827 0.8983541 0.224135 0.9105803 0.1996825 0.9961635 0.2852659 0.983937 0.1996825 0.9961635 0.2730397 0.983937 0.3341703 0.9839368 0.1996825 0.9961635 0.2852659 0.983937 0.1996825 0.9961635 0.3341703 0.9839368 0.6398178 0.9961615 0.5053333 0.9839362 0.6398178 0.9961615 0.3341703 0.9839368 0.5542363 0.9839361 0.6398178 0.9961615 0.5053333 0.9839362 0.5664622 0.9839361 0.6398178 0.9961615 0.5542363 0.9839361 0.6153659 0.9839356 0.6398178 0.9961615 0.5664622 0.9839361 0.6153655 0.9105804 0.6398178 0.9961615 0.6153659 0.9839356 0.6153655 0.9105804 0.6398171 0.8983545 0.6398178 0.9961615 0.5664619 0.9105806 0.6398171 0.8983545 0.6153655 0.9105804 0.4686555 0.9472586 0.5053333 0.9839362 0.3708483 0.9472587 0.4686555 0.9472586 0.5053328 0.9105811 0.5053333 0.9839362 0.4686553 0.8983554 0.5542361 0.9105807 0.5053328 0.9105811 0.6398171 0.8983545 0.5542361 0.9105807 0.4686553 0.8983554 0.5542361 0.9105807 0.6398171 0.8983545 0.5664619 0.9105806 0.4686553 0.8983554 0.5053328 0.9105811 0.4686555 0.9472586 0.4367282 0.8064609 0.4557375 0.8844619 0.439972 0.884953 0.4557375 0.8844619 0.4367282 0.8064609 0.4525918 0.806379 0.3659524 0.8081912 0.3846445 0.8863407 0.368775 0.8864508 0.3846445 0.8863407 0.3659524 0.8081912 0.3817426 0.8077277 0.368775 0.8864508 0.2033118 0.9012436 0.3226987 0.8875636 0.2033118 0.9012436 0.3218649 0.8087167 0.3226987 0.8875636 0.2071059 0.7997453 0.3659524 0.8081912 0.3218649 0.8087167 0.3659524 0.8081912 0.2071059 0.7997453 0.3817426 0.8077277 0.3817426 0.8077277 0.2071059 0.7997453 0.4367282 0.8064609 0.6145203 0.792157 0.4367282 0.8064609 0.2071059 0.7997453 0.4367282 0.8064609 0.6145203 0.792157 0.4525918 0.806379 0.2071059 0.7997453 0.3218649 0.8087167 0.2033118 0.9012436 0.3846445 0.8863407 0.2033118 0.9012436 0.368775 0.8864508 0.2033118 0.9012436 0.3846445 0.8863407 0.6182258 0.8927683 0.439972 0.884953 0.6182258 0.8927683 0.3846445 0.8863407 0.4557375 0.8844619 0.6182258 0.8927683 0.439972 0.884953 0.5007503 0.883826 0.6182258 0.8927683 0.4557375 0.8844619 0.49784 0.8053441 0.6182258 0.8927683 0.5007503 0.883826 0.49784 0.8053441 0.6145203 0.792157 0.6182258 0.8927683 0.4525918 0.806379 0.6145203 0.792157 0.49784 0.8053441 0.7414506 0.1714803 0.7659028 0.2448366 0.7414507 0.2448366 0.7659028 0.2448366 0.7414506 0.1714803 0.7659028 0.1714803 0.7659028 3.15466e-4 0.7414506 0.04921966 0.7414506 3.15466e-4 0.7414506 0.04921966 0.7659028 3.15466e-4 0.7659028 0.04921966 0.7659028 0.1225761 0.7414506 0.04921966 0.7659028 0.04921966 0.7414506 0.04921966 0.7659028 0.1225761 0.7414506 0.1225761 0.7659028 0.1225761 0.7414506 0.1714803 0.7414506 0.1225761 0.7414506 0.1714803 0.7659028 0.1225761 0.7659028 0.1714803 0.7602241 0.4410848 0.7846763 0.5144412 0.7602242 0.5144412 0.7846763 0.5144412 0.7602241 0.4410848 0.7846763 0.4410848 0.7846762 0.2699199 0.7602241 0.3188242 0.7602241 0.2699199 0.7602241 0.3188242 0.7846762 0.2699199 0.7846762 0.3188242 0.7846763 0.3921806 0.7602241 0.3188242 0.7846762 0.3188242 0.7602241 0.3188242 0.7846763 0.3921806 0.7602241 0.3921805 0.7846763 0.3921806 0.7602241 0.4410848 0.7602241 0.3921805 0.7602241 0.4410848 0.7846763 0.3921806 0.7846763 0.4410848 0.6404874 0.07367181 0.6160352 3.15466e-4 0.6404874 3.15466e-4 0.6160352 3.15466e-4 0.6404874 0.07367181 0.6160353 0.07367181 0.6160353 0.2448367 0.6404874 0.1959325 0.6404874 0.2448367 0.6404874 0.1959325 0.6160353 0.2448367 0.6160353 0.1959325 0.6160353 0.1225761 0.6404874 0.1959325 0.6160353 0.1959325 0.6404874 0.1959325 0.6160353 0.1225761 0.6404874 0.1225761 0.6160353 0.1225761 0.6404874 0.07367181 0.6404874 0.1225761 0.6404874 0.07367181 0.6160353 0.1225761 0.6160353 0.07367181 0.5909522 0.1225761 0.6154043 0.1959325 0.5909522 0.1959324 0.6154043 0.1959325 0.5909522 0.1225761 0.6154043 0.1225761 0.6154043 0.1959325 0.5909522 0.2448366 0.5909522 0.1959324 0.5909522 0.2448366 0.6154043 0.1959325 0.6154043 0.2448366 0.6154043 0.07367181 0.5909521 3.15466e-4 0.6154043 3.15466e-4 0.5909521 3.15466e-4 0.6154043 0.07367181 0.5909522 0.07367181 0.6154043 0.07367181 0.5909522 0.1225761 0.5909522 0.07367181 0.5909522 0.1225761 0.6154043 0.07367181 0.6154043 0.1225761 0.5150718 0.1225761 0.4906195 0.04921966 0.5150717 0.04921966 0.4906195 0.04921966 0.5150718 0.1225761 0.4906196 0.1225761 0.4906195 0.04921966 0.5150717 3.15466e-4 0.5150717 0.04921966 0.5150717 3.15466e-4 0.4906195 0.04921966 0.4906196 3.15466e-4 0.4906197 0.1714803 0.5150718 0.2448367 0.4906197 0.2448367 0.5150718 0.2448367 0.4906197 0.1714803 0.5150718 0.1714803 0.4906197 0.1714803 0.5150718 0.1225761 0.5150718 0.1714803 0.5150718 0.1225761 0.4906197 0.1714803 0.4906196 0.1225761 0.5401549 0.1225761 0.5157027 0.04921966 0.5401548 0.04921966 0.5157027 0.04921966 0.5401549 0.1225761 0.5157028 0.1225761 0.5157027 0.04921966 0.5401548 3.15466e-4 0.5401548 0.04921966 0.5401548 3.15466e-4 0.5157027 0.04921966 0.5157028 3.15466e-4 0.5157029 0.1714803 0.5401549 0.2448367 0.5157029 0.2448367 0.5401549 0.2448367 0.5157029 0.1714803 0.5401549 0.1714803 0.5157029 0.1714803 0.5401549 0.1225761 0.5401549 0.1714803 0.5401549 0.1225761 0.5157029 0.1714803 0.5157028 0.1225761 0.6411184 0.1959325 0.6655705 0.1225761 0.6655705 0.1959325 0.6655705 0.1225761 0.6411184 0.1959325 0.6411184 0.1225761 0.6411184 0.1959325 0.6655705 0.2448367 0.6411184 0.2448367 0.6655705 0.2448367 0.6411184 0.1959325 0.6655705 0.1959325 0.6411184 0.07367181 0.6655705 3.15466e-4 0.6655705 0.07367181 0.6655705 3.15466e-4 0.6411184 0.07367181 0.6411184 3.15466e-4 0.6655705 0.1225761 0.6411184 0.07367181 0.6655705 0.07367181 0.6411184 0.07367181 0.6655705 0.1225761 0.6411184 0.1225761 0.7163676 0.1959325 0.7408198 0.1225761 0.7408198 0.1959324 0.7408198 0.1225761 0.7163676 0.1959325 0.7163676 0.1225761 0.7163676 0.1959325 0.7408198 0.2448366 0.7163676 0.2448366 0.7408198 0.2448366 0.7163676 0.1959325 0.7408198 0.1959324 0.7163676 0.07367181 0.7408197 3.15466e-4 0.7408198 0.07367181 0.7408197 3.15466e-4 0.7163676 0.07367181 0.7163676 3.15479e-4 0.7408198 0.1225761 0.7163676 0.07367181 0.7408198 0.07367181 0.7163676 0.07367181 0.7408198 0.1225761 0.7163676 0.1225761 0.6662015 0.1959325 0.6906536 0.1225761 0.6906536 0.1959324 0.6906536 0.1225761 0.6662015 0.1959325 0.6662015 0.1225761 0.6662015 0.1959325 0.6906536 0.2448366 0.6662015 0.2448366 0.6906536 0.2448366 0.6662015 0.1959325 0.6906536 0.1959324 0.6662015 0.07367181 0.6906535 3.15466e-4 0.6906536 0.07367181 0.6906535 3.15466e-4 0.6662015 0.07367181 0.6662014 3.15466e-4 0.6906536 0.1225761 0.6662015 0.07367181 0.6906536 0.07367181 0.6662015 0.07367181 0.6906536 0.1225761 0.6662015 0.1225761 0.735141 0.4655368 0.7595932 0.3921805 0.7595932 0.4655368 0.7595932 0.3921805 0.735141 0.4655368 0.735141 0.3921805 0.735141 0.4655368 0.7595931 0.5144411 0.735141 0.5144412 0.7595931 0.5144411 0.735141 0.4655368 0.7595932 0.4655368 0.735141 0.3432763 0.7595931 0.26992 0.7595932 0.3432762 0.7595931 0.26992 0.735141 0.3432763 0.7351412 0.2699199 0.7595932 0.3921805 0.735141 0.3432763 0.7595932 0.3432762 0.735141 0.3432763 0.7595932 0.3921805 0.735141 0.3921805 0.5903211 3.15466e-4 0.565869 0.07367181 0.565869 3.15466e-4 0.565869 0.07367181 0.5903211 3.15466e-4 0.5903212 0.07367175 0.5903213 0.2448366 0.565869 0.1959324 0.5903212 0.1959324 0.565869 0.1959324 0.5903213 0.2448366 0.565869 0.2448366 0.5903212 0.122576 0.565869 0.1959324 0.565869 0.122576 0.565869 0.1959324 0.5903212 0.122576 0.5903212 0.1959324 0.565869 0.07367181 0.5903212 0.122576 0.565869 0.122576 0.5903212 0.122576 0.565869 0.07367181 0.5903212 0.07367175 0.5652381 3.15466e-4 0.540786 0.07367181 0.5407859 3.15466e-4 0.540786 0.07367181 0.5652381 3.15466e-4 0.5652381 0.07367175 0.5652381 0.2448367 0.540786 0.1959324 0.5652381 0.1959324 0.540786 0.1959324 0.5652381 0.2448367 0.540786 0.2448366 0.5652381 0.122576 0.540786 0.1959324 0.540786 0.122576 0.540786 0.1959324 0.5652381 0.122576 0.5652381 0.1959324 0.540786 0.07367181 0.5652381 0.122576 0.540786 0.122576 0.5652381 0.122576 0.540786 0.07367181 0.5652381 0.07367175 0.7157367 3.15466e-4 0.6912845 0.07367181 0.6912845 3.15466e-4 0.6912845 0.07367181 0.7157367 3.15466e-4 0.7157367 0.07367181 0.7157367 0.2448368 0.6912845 0.1959325 0.7157367 0.1959325 0.6912845 0.1959325 0.7157367 0.2448368 0.6912845 0.2448368 0.7157366 0.1225761 0.6912845 0.1959325 0.6912845 0.1225761 0.6912845 0.1959325 0.7157366 0.1225761 0.7157367 0.1959325 0.6912845 0.07367181 0.7157366 0.1225761 0.6912845 0.1225761 0.7157366 0.1225761 0.6912845 0.07367181 0.7157367 0.07367181 3.15479e-4 0.2448369 0.02476757 0.1959327 0.02476757 0.2448369 0.02476757 0.1959327 3.15479e-4 0.2448369 3.15493e-4 0.1959327 3.15479e-4 0.2448369 0.02476763 0.3426454 3.15546e-4 0.3426455 0.02476763 0.3426454 3.15479e-4 0.2448369 0.02476757 0.2448369 3.15573e-4 0.3915497 0.02476763 0.3426454 0.02476763 0.3915497 0.02476763 0.3426454 3.15573e-4 0.3915497 3.15546e-4 0.3426455</float_array>
+        <source id="Rothenburg_Upper-mesh-map-0">
+          <float_array id="Rothenburg_Upper-mesh-map-0-array" count="288">0.3576439 0.5735707 0.714331 0.7162455 0.714331 0.5735707 0.714331 0.7162455 0.3576439 0.5735707 0.3576439 0.7162455 0.6429936 0.7168834 0.6073248 0.7525522 0.2863065 0.7168834 0.713693 0.9321716 0.03598755 0.8965029 0.6780243 0.8965028 0.6073248 0.7894968 0.6429935 0.8251655 0.3219752 0.7894967 3.1898e-4 0.9321716 0.03598755 0.8965029 0.713693 0.9321716 0.3219752 0.7525522 0.2863065 0.7168834 0.6073248 0.7525522 0.03598761 0.9684782 0.7136932 0.9328095 0.6780247 0.9684783 0.03598761 0.9684782 3.1898e-4 0.9328095 0.7136932 0.9328095 0.2863065 0.8251655 0.3219752 0.7894967 0.6429935 0.8251655 3.1898e-4 0.7162455 0.357006 0.5735707 0.357006 0.7162455 0.357006 0.5735707 3.1898e-4 0.7162455 3.1898e-4 0.5735707 0.9283437 0.5385399 0.6786627 0.5028712 0.9283437 0.5028712 0.3219752 0.7888588 0.2863065 0.7531901 0.6073248 0.7888588 0.642994 0.53854 0.6786627 0.5028712 0.9283437 0.5385399 0.642994 0.4659266 0.6786627 0.4302579 0.999681 0.4659266 0.6429941 0.5022333 0.8926751 0.4665645 0.9283438 0.5022332 0.8926751 0.4665645 0.6429941 0.5022333 0.642994 0.4665646 0.9640123 0.4302579 0.999681 0.4659266 0.6786627 0.4302579 0.03598761 0.8958649 0.7136931 0.8601962 0.6780245 0.8958649 0.03598761 0.8958649 3.1898e-4 0.8601962 0.7136931 0.8601962 0.6429935 0.7531901 0.6073248 0.7888588 0.2863065 0.7531901 3.1898e-4 0.286307 0.2856683 0.2149697 0.7136923 0.286307 3.1898e-4 0.1436324 0.2856683 0.2149697 3.1898e-4 0.286307 0.2856683 0.2149697 3.1898e-4 0.1436324 0.2856683 0.1436324 0.4283419 0.2149696 0.7136923 0.286307 0.2856683 0.2149697 0.7136923 0.1436319 0.4283419 0.2149696 0.4283419 0.1436321 0.4283419 0.2149696 0.7136923 0.1436319 0.7136923 0.286307 0.7136931 0.2869451 3.18974e-4 0.4296198 0.7136931 0.4296199 3.18974e-4 0.4296198 0.7136931 0.2869451 3.18974e-4 0.286945 3.18989e-4 0.8595582 0.2856686 0.7168834 0.2856686 0.8595582 0.2856686 0.7168834 3.18989e-4 0.8595582 3.1898e-4 0.7168834 0.6423557 3.19242e-4 0.9277052 0.1429939 0.9277052 3.19242e-4 0.9277052 0.1429939 0.6423557 3.19242e-4 0.6423557 0.1429939 0.6423557 0.1429939 0.3926751 0.07165652 3.18974e-4 0.1429939 0.6423557 3.19242e-4 0.3926751 0.07165652 0.6423557 0.1429939 0.3926751 0.07165652 0.6423557 3.19242e-4 0.3926751 3.19183e-4 0.2500001 0.07165646 3.18974e-4 0.1429939 0.3926751 0.07165652 3.19004e-4 3.18974e-4 0.2500001 0.07165646 0.2500001 3.19004e-4 0.2500001 0.07165646 3.19004e-4 3.18974e-4 3.18974e-4 0.1429939 3.1898e-4 0.430258 0.642356 0.5729326 3.19049e-4 0.5729327 0.642356 0.5729326 3.1898e-4 0.430258 0.6423559 0.4302579 0.7149689 0.7525522 0.6436315 0.7168834 0.7149689 0.7168834 0.6436315 0.7168834 0.7149689 0.7525522 0.6436315 0.7525522 0.7149689 0.7525522 0.8576437 0.7168834 0.8576437 0.752552 0.8576437 0.7168834 0.7149689 0.7525522 0.7149689 0.7168834 0.9289811 0.7525522 0.8576437 0.7168834 0.9289811 0.7168834 0.8576437 0.7168834 0.9289811 0.7525522 0.8576437 0.752552</float_array>
           <technique_common>
-            <accessor source="#Rothenburg_Upper_All-mesh-map-0-array" count="924" stride="2">
+            <accessor source="#Rothenburg_Upper-mesh-map-0-array" count="144" stride="2">
               <param name="S" type="float"/>
               <param name="T" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <vertices id="Rothenburg_Upper_All-mesh-vertices">
-          <input semantic="POSITION" source="#Rothenburg_Upper_All-mesh-positions"/>
+        <vertices id="Rothenburg_Upper-mesh-vertices">
+          <input semantic="POSITION" source="#Rothenburg_Upper-mesh-positions"/>
         </vertices>
-        <triangles material="UpperWalls-material" count="180">
-          <input semantic="VERTEX" source="#Rothenburg_Upper_All-mesh-vertices" offset="0"/>
-          <input semantic="NORMAL" source="#Rothenburg_Upper_All-mesh-normals" offset="1"/>
-          <input semantic="TEXCOORD" source="#Rothenburg_Upper_All-mesh-map-0" offset="2" set="0"/>
-          <p>0 0 0 1 0 1 2 0 2 0 0 3 3 0 4 1 0 5 3 0 6 4 0 7 5 0 8 0 0 9 4 0 10 3 0 11 0 0 12 6 0 13 4 0 14 6 0 15 7 0 16 8 0 17 9 0 18 6 0 19 0 0 20 6 0 21 9 0 22 7 0 23 10 0 24 9 0 25 11 0 26 7 0 27 9 0 28 10 0 29 12 0 30 2 0 31 1 0 32 5 0 33 2 0 34 12 0 35 13 0 36 5 0 37 4 0 38 13 0 39 2 0 40 5 0 41 8 0 42 2 0 43 13 0 44 14 0 45 8 0 46 7 0 47 15 0 48 8 0 49 14 0 50 15 0 51 14 0 52 11 0 53 8 0 54 15 0 55 2 0 56 15 0 57 11 0 58 9 0 59 16 2 84 22 2 85 23 2 86 16 2 87 24 2 88 22 2 89 24 2 90 25 2 91 26 2 92 16 2 93 25 2 94 24 2 95 16 2 96 27 2 97 25 2 98 27 2 99 28 2 100 29 2 101 18 2 102 27 2 103 16 2 104 27 2 105 18 2 106 28 2 107 30 3 108 18 3 109 31 3 110 28 2 111 18 2 112 30 2 113 32 4 114 23 4 115 22 4 116 26 2 117 23 2 118 32 2 119 33 2 120 26 2 121 25 2 122 33 2 123 23 2 124 26 2 125 29 2 126 23 2 127 33 2 128 34 2 129 29 2 130 28 2 131 35 2 132 29 2 133 34 2 134 35 2 135 34 2 136 31 2 137 29 2 138 35 2 139 23 2 140 35 2 141 31 2 142 18 2 143 36 5 144 37 5 145 38 5 146 37 5 147 36 5 148 39 5 149 40 5 150 41 5 151 42 5 152 41 5 153 40 5 154 43 5 155 42 5 156 16 5 157 44 5 158 16 5 159 45 5 160 44 5 161 23 5 162 40 5 163 45 5 164 40 5 165 23 5 166 43 5 167 43 5 168 23 5 169 36 5 170 0 5 171 36 5 172 23 5 173 36 5 174 0 5 175 39 5 176 23 5 177 45 5 178 16 5 179 41 5 180 16 5 181 42 5 182 16 5 183 41 5 184 2 5 185 38 5 186 2 5 187 41 5 188 37 5 189 2 5 190 38 5 191 46 5 192 2 5 193 37 5 194 47 5 195 2 5 196 46 5 197 47 5 198 0 5 199 2 5 200 39 5 201 0 5 202 47 5 203 56 9 234 57 9 235 58 9 236 57 9 237 56 9 238 59 9 239 60 9 240 61 9 241 62 9 242 63 9 243 61 9 244 60 9 245 63 9 246 48 9 247 61 9 248 64 9 249 48 9 250 63 9 251 65 9 252 66 9 253 67 9 254 66 9 255 65 9 256 64 9 257 67 9 258 15 9 259 68 9 260 15 9 261 69 9 262 68 9 263 9 9 264 65 9 265 69 9 266 48 9 267 65 9 268 9 9 269 65 9 270 48 9 271 64 9 272 9 9 273 69 9 274 15 9 275 66 9 276 15 9 277 67 9 278 60 9 279 15 9 280 66 9 281 15 9 282 60 9 283 18 9 284 62 9 285 18 9 286 60 9 287 58 9 288 18 9 289 62 9 290 57 9 291 18 9 292 58 9 293 70 9 294 18 9 295 57 9 296 71 9 297 18 9 298 70 9 299 71 9 300 35 9 301 18 9 302 59 9 303 35 9 304 71 9 305 72 9 306 62 9 307 61 9 308 72 9 309 73 9 310 62 9 311 53 9 312 56 9 313 73 9 314 56 9 315 53 9 316 59 9 317 35 9 318 59 9 319 53 9 320 53 9 321 73 9 322 72 9 323 19 2 324 74 2 325 51 2 326 19 2 327 75 2 328 74 2 329 75 2 330 76 2 331 77 2 332 19 2 333 76 2 334 75 2 335 19 2 336 78 2 337 76 2 338 78 2 339 79 2 340 80 2 341 20 2 342 78 2 343 19 2 344 78 2 345 20 2 346 79 2 347 81 2 348 20 2 349 82 2 350 79 2 351 20 2 352 81 2 353 83 2 354 51 2 355 74 2 356 77 2 357 51 2 358 83 2 359 84 2 360 77 2 361 76 2 362 84 2 363 51 2 364 77 2 365 80 2 366 51 2 367 84 2 368 85 2 369 80 2 370 79 2 371 49 2 372 80 2 373 85 2 374 49 2 375 85 2 376 82 2 377 80 2 378 49 2 379 51 2 380 49 2 381 82 2 382 20 2 383 55 0 384 86 0 385 17 0 386 55 0 387 87 0 388 86 0 389 87 0 390 88 0 391 89 0 392 55 0 393 88 0 394 87 0 395 55 0 396 90 0 397 88 0 398 90 0 399 91 0 400 92 0 401 52 0 402 90 0 403 55 0 404 90 0 405 52 0 406 91 0 407 93 10 408 52 10 409 94 10 410 91 0 411 52 0 412 93 0 413 95 11 414 17 11 415 86 11 416 89 0 417 17 0 418 95 0 419 96 0 420 89 0 421 88 0 422 96 0 423 17 0 424 89 0 425 92 0 426 17 0 427 96 0 428 97 0 429 92 0 430 91 0 431 21 0 432 92 0 433 97 0 434 21 0 435 97 0 436 94 0 437 92 0 438 21 0 439 17 0 440 21 0 441 94 0 442 52 0 443 98 5 444 99 5 445 100 5 446 99 5 447 98 5 448 101 5 449 102 5 450 103 5 451 104 5 452 105 5 453 103 5 454 102 5 455 105 5 456 54 5 457 103 5 458 106 5 459 54 5 460 105 5 461 107 5 462 108 5 463 109 5 464 108 5 465 107 5 466 106 5 467 109 5 468 21 5 469 110 5 470 21 5 471 111 5 472 110 5 473 52 5 474 107 5 475 111 5 476 107 5 477 52 5 478 106 5 479 54 5 480 106 5 481 52 5 482 52 5 483 111 5 484 21 5 485 108 5 486 21 5 487 109 5 488 102 5 489 21 5 490 108 5 491 21 5 492 102 5 493 20 5 494 104 5 495 20 5 496 102 5 497 100 5 498 20 5 499 104 5 500 99 5 501 20 5 502 100 5 503 112 5 504 20 5 505 99 5 506 113 5 507 20 5 508 112 5 509 113 5 510 49 5 511 20 5 512 101 5 513 49 5 514 113 5 515 114 5 516 104 5 517 103 5 518 114 5 519 115 5 520 104 5 521 50 5 522 98 5 523 115 5 524 49 5 525 98 5 526 50 5 527 98 5 528 49 5 529 101 5 530 50 5 531 115 5 532 114 5 533 116 9 534 117 9 535 118 9 536 117 9 537 116 9 538 119 9 539 120 9 540 121 9 541 122 9 542 121 9 543 120 9 544 123 9 545 122 9 546 19 9 547 124 9 548 19 9 549 125 9 550 124 9 551 51 9 552 120 9 553 125 9 554 120 9 555 51 9 556 123 9 557 123 9 558 51 9 559 116 9 560 55 9 561 116 9 562 51 9 563 116 9 564 55 9 565 119 9 566 51 9 567 125 9 568 19 9 569 121 9 570 19 9 571 122 9 572 19 9 573 121 9 574 17 9 575 118 9 576 17 9 577 121 9 578 117 9 579 17 9 580 118 9 581 126 9 582 17 9 583 117 9 584 127 9 585 17 9 586 126 9 587 127 9 588 55 9 589 17 9 590 119 9 591 55 9 592 127 9 593</p>
+        <triangles material="RothUpperExterior-material" count="12">
+          <input semantic="VERTEX" source="#Rothenburg_Upper-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Rothenburg_Upper-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Rothenburg_Upper-mesh-map-0" offset="2" set="0"/>
+          <p>0 0 0 1 0 1 2 0 2 1 0 3 0 0 4 3 0 5 6 2 30 10 2 31 4 2 32 10 2 33 6 2 34 11 2 35 3 4 66 20 4 67 6 4 68 0 4 69 20 4 70 3 4 71 20 4 72 0 4 73 12 4 74 21 4 75 6 4 76 20 4 77 11 4 78 21 4 79 17 4 80 21 4 81 11 4 82 6 4 83 10 5 84 1 5 85 4 5 86 1 5 87 10 5 88 2 5 89</p>
         </triangles>
-        <triangles material="UpperWindowFrames-material" count="104">
-          <input semantic="VERTEX" source="#Rothenburg_Upper_All-mesh-vertices" offset="0"/>
-          <input semantic="NORMAL" source="#Rothenburg_Upper_All-mesh-normals" offset="1"/>
-          <input semantic="TEXCOORD" source="#Rothenburg_Upper_All-mesh-map-0" offset="2" set="0"/>
-          <p>82 5 594 11 5 595 81 5 596 11 5 597 82 5 598 10 5 599 11 6 600 79 6 601 81 6 602 79 6 603 11 6 604 14 6 605 7 9 606 79 9 607 14 9 608 79 9 609 7 9 610 85 9 611 7 1 612 82 1 613 85 1 614 82 1 615 7 1 616 10 1 617 80 5 618 8 5 619 78 5 620 8 5 621 80 5 622 6 5 623 8 6 624 76 6 625 78 6 626 76 6 627 8 6 628 13 6 629 4 9 630 76 9 631 13 9 632 76 9 633 4 9 634 84 9 635 4 1 636 80 1 637 84 1 638 80 1 639 4 1 640 6 1 641 77 5 642 5 5 643 75 5 644 5 5 645 77 5 646 3 5 647 5 6 648 74 6 649 75 6 650 74 6 651 5 6 652 12 6 653 1 9 654 74 9 655 12 9 656 74 9 657 1 9 658 83 9 659 1 1 660 77 1 661 83 1 662 77 1 663 1 1 664 3 1 665 31 5 666 94 5 667 30 5 668 94 5 669 31 5 670 93 5 671 94 6 672 28 6 673 30 6 674 28 6 675 94 6 676 97 6 677 91 9 678 28 9 679 97 9 680 28 9 681 91 9 682 34 9 683 91 1 684 31 1 685 34 1 686 31 1 687 91 1 688 93 1 689 29 5 690 92 5 691 27 5 692 92 5 693 29 5 694 90 5 695 92 6 696 25 6 697 27 6 698 25 6 699 92 6 700 96 6 701 88 9 702 25 9 703 96 9 704 25 9 705 88 9 706 33 9 707 88 1 708 29 1 709 33 1 710 29 1 711 88 1 712 90 1 713 26 5 714 89 5 715 24 5 716 89 5 717 26 5 718 87 5 719 89 6 720 22 6 721 24 6 722 22 6 723 89 6 724 95 6 725 86 9 726 22 9 727 95 9 728 22 9 729 86 9 730 32 9 731 86 1 732 26 1 733 32 1 734 26 1 735 86 1 736 87 1 737 68 2 738 113 2 739 112 2 740 113 2 741 68 2 742 69 2 743 68 6 744 99 6 745 67 6 746 99 6 747 68 6 748 112 6 749 65 0 750 99 0 751 101 0 752 99 0 753 65 0 754 67 0 755 113 1 756 65 1 757 101 1 758 65 1 759 113 1 760 69 1 761 66 2 762 98 2 763 100 2 764 98 2 765 66 2 766 64 2 767 66 6 768 104 6 769 60 6 770 104 6 771 66 6 772 100 6 773 63 0 774 104 0 775 115 0 776 104 0 777 63 0 778 60 0 779 98 1 780 63 1 781 115 1 782 63 1 783 98 1 784 64 1 785 62 2 786 105 2 787 102 2 788 105 2 789 62 2 790 73 2 791 62 6 792 108 6 793 58 6 794 108 6 795 62 6 796 102 6 797 56 0 798 108 0 799 106 0 800 108 0 801 56 0 802 58 0 803 105 1 804 56 1 805 106 1 806 56 1 807 105 1 808 73 1 809 57 2 810 107 2 811 109 2 812 107 2 813 57 2 814 59 2 815 57 6 816 110 6 817 70 6 818 110 6 819 57 6 820 109 6 821 71 0 822 110 0 823 111 0 824 110 0 825 71 0 826 70 0 827 107 1 828 71 1 829 111 1 830 71 1 831 107 1 832 59 1 833 124 2 834 47 2 835 46 2 836 47 2 837 124 2 838 125 2 839 124 6 840 37 6 841 122 6 842 37 6 843 124 6 844 46 6 845 120 0 846 37 0 847 39 0 848 37 0 849 120 0 850 122 0 851 47 1 852 120 1 853 39 1 854 120 1 855 47 1 856 125 1 857 121 2 858 36 2 859 38 2 860 36 2 861 121 2 862 123 2 863 121 6 864 41 6 865 118 6 866 41 6 867 121 6 868 38 6 869 116 0 870 41 0 871 43 0 872 41 0 873 116 0 874 118 0 875 36 1 876 116 1 877 43 1 878 116 1 879 36 1 880 123 1 881 117 2 882 40 2 883 42 2 884 40 2 885 117 2 886 119 2 887 117 6 888 44 6 889 126 6 890 44 6 891 117 6 892 42 6 893 127 0 894 44 0 895 45 0 896 44 0 897 127 0 898 126 0 899 40 1 900 127 1 901 45 1 902 127 1 903 40 1 904 119 1 905</p>
+        <triangles material="RothUpperInterior-material" count="12">
+          <input semantic="VERTEX" source="#Rothenburg_Upper-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Rothenburg_Upper-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Rothenburg_Upper-mesh-map-0" offset="2" set="0"/>
+          <p>8 2 90 15 2 91 7 2 92 15 2 93 8 2 94 13 2 95 16 0 96 5 0 97 19 0 98 5 0 99 16 0 100 9 0 101 9 5 102 22 5 103 8 5 104 16 5 105 22 5 106 9 5 107 22 5 108 16 5 109 18 5 110 23 5 111 8 5 112 22 5 113 13 5 114 23 5 115 14 5 116 23 5 117 13 5 118 8 5 119 15 4 120 5 4 121 7 4 122 5 4 123 15 4 124 19 4 125</p>
         </triangles>
-        <triangles material="UpperWallEdgeFrame-material" count="24">
-          <input semantic="VERTEX" source="#Rothenburg_Upper_All-mesh-vertices" offset="0"/>
-          <input semantic="NORMAL" source="#Rothenburg_Upper_All-mesh-normals" offset="1"/>
-          <input semantic="TEXCOORD" source="#Rothenburg_Upper_All-mesh-map-0" offset="2" set="0"/>
-          <p>16 1 60 17 1 61 18 1 62 16 1 63 19 1 64 17 1 65 19 1 66 2 1 67 20 1 68 2 1 69 19 1 70 16 1 71 21 1 72 18 1 73 17 1 74 20 1 75 18 1 76 21 1 77 20 1 78 15 1 79 18 1 80 15 1 81 20 1 82 2 1 83 48 6 204 49 6 205 50 6 206 49 6 207 9 6 208 51 6 209 9 6 210 49 6 211 48 6 212 35 7 213 52 7 214 23 7 215 53 6 216 52 6 217 35 6 218 52 6 219 53 6 220 54 6 221 55 6 222 23 6 223 52 6 224 51 6 225 23 6 226 55 6 227 51 6 228 0 6 229 23 6 230 0 8 231 51 8 232 9 8 233 61 2 906 50 2 907 114 2 908 50 2 909 61 2 910 48 2 911 61 6 912 103 6 913 72 6 914 103 6 915 61 6 916 114 6 917 53 0 918 103 0 919 54 0 920 103 0 921 53 0 922 72 0 923</p>
+        <triangles material="RotheUpperMid-material" count="24">
+          <input semantic="VERTEX" source="#Rothenburg_Upper-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Rothenburg_Upper-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Rothenburg_Upper-mesh-map-0" offset="2" set="0"/>
+          <p>4 1 6 5 1 7 6 1 8 4 1 9 7 1 10 5 1 11 7 1 12 1 1 13 8 1 14 1 1 15 7 1 16 4 1 17 9 1 18 6 1 19 5 1 20 8 1 21 6 1 22 9 1 23 8 1 24 3 1 25 6 1 26 3 1 27 8 1 28 1 1 29 12 3 36 13 3 37 14 3 38 13 3 39 0 3 40 15 3 41 0 3 42 13 3 43 12 3 44 11 3 45 16 3 46 10 3 47 17 3 48 16 3 49 11 3 50 16 3 51 17 3 52 18 3 53 19 3 54 10 3 55 16 3 56 15 3 57 10 3 58 19 3 59 15 3 60 2 3 61 10 3 62 2 3 63 15 3 64 0 3 65 20 2 126 14 2 127 23 2 128 14 2 129 20 2 130 12 2 131 20 3 132 22 3 133 21 3 134 22 3 135 20 3 136 23 3 137 17 0 138 22 0 139 18 0 140 22 0 141 17 0 142 21 0 143</p>
         </triangles>
       </mesh>
     </geometry>
-    <geometry id="rothenburg_upper_YNG_XNG-mesh" name="rothenburg upper YNG XNG">
+    <geometry id="Rothenburg_Roof-mesh" name="Rothenburg Roof">
       <mesh>
-        <source id="rothenburg_upper_YNG_XNG-mesh-positions">
-          <float_array id="rothenburg_upper_YNG_XNG-mesh-positions-array" count="240">0 5 1.1 0 4.25 1.35 0 5 3.1 0 3.25 1.35 0 3 1.35 0 3.25 2.85 0 2 1.35 0 1.75 1.35 0 2 2.85 0 0 1.1 0 0.75 1.35 0 0.75 2.85 0 4.25 2.85 0 3 2.85 0 1.75 2.85 0 0 3.1 10 5 3.1 9.5 4.5 3.1 10 0 3.1 0.5 4.5 3.1 0.5 0.5 3.1 9.5 0.5 3.1 10 5 1.1 10 0 1.1 4 0 1.1 0.5 0.5 1.1 4 0.5 1.1 0.5 4.5 1.1 9.5 0.5 1.1 6 0 1.1 6 0.5 1.1 9.5 4.5 1.1 7.75 0 1.35 8 0 2.85 7.75 0 2.85 8 0 1.35 3.25 0 2.85 4 0 2.1 6.75 0 2.85 3.25 0 1.35 2.25 0 1.35 2 0 1.35 2.25 0 2.85 2 0 2.85 1 0 2.85 1 0 1.35 9 0 2.85 9 0 1.35 6 0 2.1 6.75 0 1.35 0.5 4.25 2.85 0.5 3.25 2.85 0.5 3 2.85 0.5 3.25 1.35 0.5 2 2.85 0.5 1.75 2.85 0.5 2 1.35 0.5 0.75 2.85 0.5 0.75 1.35 0.5 4.25 1.35 0.5 3 1.35 0.5 1.75 1.35 2.25 0.5 1.35 2 0.5 2.85 2.25 0.5 2.85 2 0.5 1.35 6.75 0.5 2.85 6 0.5 2.1 3.25 0.5 2.85 6.75 0.5 1.35 7.75 0.5 1.35 8 0.5 1.35 7.75 0.5 2.85 8 0.5 2.85 9 0.5 2.85 9 0.5 1.35 1 0.5 2.85 1 0.5 1.35 4 0.5 2.1 3.25 0.5 1.35</float_array>
+        <source id="Rothenburg_Roof-mesh-positions">
+          <float_array id="Rothenburg_Roof-mesh-positions-array" count="102">-5.5 0 7.5 -5.5 3 3.5 -5.5 2.4 3.5 -5.5 0 8.5 -5.5 -3 3.5 -5.5 -2.4 3.5 5.5 0 8.5 5.5 -3 3.5 5.5 3 3.5 5 -2.4 3.5 5.5 -2.4 3.5 -5 -2.4 3.5 5 2.4 3.5 5.5 2.4 3.5 -5 2.4 3.5 5.5 0 7.5 5 0 7.5 5 0.125 7 5 -0.125 7 5 -0.125 6.5 5 0.125 6.5 -5 0 7.5 -5 -0.125 6.5 -5 0.125 6.5 -5 -0.125 7 -5 0.125 7 -6 -0.125 6.5 -6 0.125 7 -6 0.125 6.5 -6 -0.125 7 6 -0.125 7 6 0.125 7 6 0.125 6.5 6 -0.125 6.5</float_array>
           <technique_common>
-            <accessor source="#rothenburg_upper_YNG_XNG-mesh-positions-array" count="80" stride="3">
+            <accessor source="#Rothenburg_Roof-mesh-positions-array" count="34" stride="3">
               <param name="X" type="float"/>
               <param name="Y" type="float"/>
               <param name="Z" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <source id="rothenburg_upper_YNG_XNG-mesh-normals">
-          <float_array id="rothenburg_upper_YNG_XNG-mesh-normals-array" count="24">-1 0 0 0 0 1 1 0 0 0 1 0 0 0 -1 -3.8147e-7 0 -1 3.8147e-7 0 -1 0 -1 0</float_array>
+        <source id="Rothenburg_Roof-mesh-normals">
+          <float_array id="Rothenburg_Roof-mesh-normals-array" count="30">-1 0 0 0 -0.8574929 0.5144957 0 0.8574929 0.5144957 0 0 -1 1 0 0 0 0.8574929 -0.5144958 0 -0.8574929 -0.5144958 0 0 1 0 1 0 0 -1 0</float_array>
           <technique_common>
-            <accessor source="#rothenburg_upper_YNG_XNG-mesh-normals-array" count="8" stride="3">
+            <accessor source="#Rothenburg_Roof-mesh-normals-array" count="10" stride="3">
               <param name="X" type="float"/>
               <param name="Y" type="float"/>
               <param name="Z" type="float"/>
             </accessor>
           </technique_common>
         </source>
-        <vertices id="rothenburg_upper_YNG_XNG-mesh-vertices">
-          <input semantic="POSITION" source="#rothenburg_upper_YNG_XNG-mesh-positions"/>
+        <source id="Rothenburg_Roof-mesh-map-0">
+          <float_array id="Rothenburg_Roof-mesh-map-0-array" count="384">0.9159954 0.2785565 0.8872099 2.97517e-4 0.9159951 0.01756858 0.9159954 0.2785565 0.88721 0.3265323 0.8872099 2.97517e-4 0.6451142 0.6163289 0.616329 0.8945887 0.6163288 0.6336001 0.616329 0.8945887 0.6451142 0.6163289 0.6451143 0.9425641 9.51602e-5 9.51894e-5 0.6534042 0.3464055 9.5131e-5 0.3464056 0.6534042 0.3464055 9.51602e-5 9.51894e-5 0.6534042 9.5131e-5 1.1927e-4 0.346684 0.6534283 0.6929945 1.1927e-4 0.6929944 0.6534283 0.6929945 1.1927e-4 0.346684 0.6534284 0.346684 0.9425616 0.6157339 0.9145872 0.5821644 0.9425618 0.5821645 0.8866148 0.2688515 0.3271271 0.2688515 0.8866148 2.97517e-4 0.9425616 0.6157339 0.3551014 0.5821645 0.9145872 0.5821644 0.3271271 0.6157336 0.3551014 0.5821645 0.9425616 0.6157339 0.3551014 0.5821645 0.3271271 0.6157336 0.3271271 0.5821645 0.9145872 0.5815694 0.9425616 0.5479999 0.9425616 0.5815693 0.3271271 2.97517e-4 0.8866148 2.97517e-4 0.3271271 0.2688515 0.9145872 0.5815694 0.3551015 0.5815693 0.9425616 0.5479999 0.3271271 0.548 0.3551015 0.5815693 0.3271271 0.5815693 0.3551015 0.5815693 0.3271271 0.548 0.9425616 0.5479999 0.6457093 0.8945885 0.6744946 0.6163289 0.6744947 0.942564 0.6744946 0.6163289 0.6457093 0.8945885 0.6457093 0.6336002 0.6750897 0.6163289 0.703875 0.8945885 0.6750897 0.9425641 0.703875 0.8945885 0.6750897 0.6163289 0.7038751 0.6336001 0.6239622 0.5304344 0.644352 0.5100446 0.8542451 0.4076164 0.6239622 0.5304344 0.632358 0.5028483 0.644352 0.5100446 0.632358 0.5028483 0.6239622 0.2694466 0.6467508 0.4788602 0.6239622 0.2694466 0.632358 0.5028483 0.6239622 0.5304344 0.6587448 0.4860566 0.8542451 0.4076164 0.644352 0.5100446 0.6467508 0.4788602 0.8542451 0.4076164 0.6587448 0.4860566 0.8542451 0.4076164 0.6467508 0.4788602 0.6239622 0.2694466 2.97544e-4 0.9997025 0.2612853 0.9717281 0.2612853 0.9997025 0.2612853 0.9717281 2.97544e-4 0.9997025 2.97517e-4 0.971728 0.522273 0.9717281 0.2612853 0.9997025 0.2612853 0.9717281 0.2612853 0.9997025 0.522273 0.9717281 0.522273 0.9997025 2.97517e-4 0.9711329 0.2612853 0.9431586 0.2612853 0.971133 0.2612853 0.9431586 2.97517e-4 0.9711329 2.97517e-4 0.9431585 0.522273 0.9431586 0.2612853 0.971133 0.2612853 0.9431586 0.2612853 0.971133 0.522273 0.9431586 0.522273 0.971133 0.6233672 0.4964264 0.4677747 0.3138164 0.4785438 0.314307 0.4677747 0.3138164 0.3271271 0.4964264 0.467741 0.2974476 0.3271271 0.4964264 0.4677747 0.3138164 0.6233672 0.4964264 0.4784477 0.2974418 0.6233672 0.4964264 0.4785438 0.314307 0.4784477 0.2974418 0.4728738 0.2694466 0.6233672 0.4964264 0.467741 0.2974476 0.4728738 0.2694466 0.4784477 0.2974418 0.4728738 0.2694466 0.467741 0.2974476 0.3271271 0.4964264 0.5247331 0.5110086 0.4967586 0.4970214 0.524733 0.4970214 0.4967586 0.4970214 0.5247331 0.5110086 0.4967586 0.5110086 0.3836709 0.5255907 0.4396196 0.5116035 0.4396196 0.5255907 0.4396196 0.5116035 0.3836709 0.5255907 0.3836709 0.5116035 0.4402148 0.5255907 0.4961635 0.5116035 0.4961635 0.5255907 0.4961635 0.5116035 0.4402148 0.5255907 0.4402148 0.5116035 0.525328 0.5249958 0.5393152 0.4970214 0.5393152 0.5249958 0.5393152 0.4970214 0.525328 0.5249958 0.525328 0.4970214 0.70447 0.7288215 0.7324445 0.6728727 0.7324444 0.7288215 0.7324445 0.6728727 0.70447 0.7288215 0.7044701 0.6728727 0.70447 0.6722777 0.7324445 0.616329 0.7324445 0.6722777 0.7324445 0.616329 0.70447 0.6722777 0.7044701 0.6163289 0.3836709 0.5110086 0.4396197 0.4970214 0.4396197 0.5110086 0.4396197 0.4970214 0.3836709 0.5110086 0.3836709 0.4970214 0.4402148 0.5110086 0.4961636 0.4970214 0.4961636 0.5110086 0.4961636 0.4970214 0.4402148 0.5110086 0.4402148 0.4970214 0.4723738 0.3072307 0.467741 0.2974476 0.4723877 0.3042603 0.467741 0.2974476 0.4723738 0.3072307 0.4677747 0.3138164 0.3271271 0.4970214 0.3830758 0.5249958 0.3271271 0.5249958 0.3830758 0.5249958 0.3271271 0.4970214 0.3830758 0.4970214</float_array>
+          <technique_common>
+            <accessor source="#Rothenburg_Roof-mesh-map-0-array" count="192" stride="2">
+              <param name="S" type="float"/>
+              <param name="T" type="float"/>
+            </accessor>
+          </technique_common>
+        </source>
+        <vertices id="Rothenburg_Roof-mesh-vertices">
+          <input semantic="POSITION" source="#Rothenburg_Roof-mesh-positions"/>
         </vertices>
-        <triangles count="188">
-          <input semantic="VERTEX" source="#rothenburg_upper_YNG_XNG-mesh-vertices" offset="0"/>
-          <input semantic="NORMAL" source="#rothenburg_upper_YNG_XNG-mesh-normals" offset="1"/>
-          <p>0 0 1 0 2 0 0 0 3 0 1 0 3 0 4 0 5 0 0 0 4 0 3 0 0 0 6 0 4 0 6 0 7 0 8 0 9 0 6 0 0 0 6 0 9 0 7 0 10 0 9 0 11 0 7 0 9 0 10 0 12 0 2 0 1 0 5 0 2 0 12 0 13 0 5 0 4 0 13 0 2 0 5 0 8 0 2 0 13 0 14 0 8 0 7 0 15 0 8 0 14 0 15 0 14 0 11 0 8 0 15 0 2 0 15 0 11 0 9 0 16 1 17 1 18 1 16 1 19 1 17 1 19 1 2 1 20 1 2 1 19 1 16 1 21 1 18 1 17 1 20 1 18 1 21 1 20 1 15 1 18 1 15 1 20 1 2 1 18 2 22 2 16 2 22 2 18 2 23 2 22 3 2 3 16 3 2 3 22 3 0 3 24 4 25 4 26 4 25 4 9 4 27 4 9 4 25 4 24 4 23 5 28 5 22 5 29 4 28 4 23 4 28 4 29 4 30 4 31 4 22 4 28 4 27 4 22 4 31 4 27 4 0 4 22 4 0 6 27 6 9 6 32 7 33 7 34 7 33 7 32 7 35 7 36 7 37 7 38 7 39 7 37 7 36 7 39 7 24 7 37 7 40 7 24 7 39 7 41 7 42 7 43 7 42 7 41 7 40 7 43 7 15 7 44 7 15 7 45 7 44 7 9 7 41 7 45 7 24 7 41 7 9 7 41 7 24 7 40 7 9 7 45 7 15 7 42 7 15 7 43 7 36 7 15 7 42 7 15 7 36 7 18 7 38 7 18 7 36 7 34 7 18 7 38 7 33 7 18 7 34 7 46 7 18 7 33 7 47 7 18 7 46 7 47 7 23 7 18 7 35 7 23 7 47 7 48 7 38 7 37 7 48 7 49 7 38 7 29 7 32 7 49 7 32 7 29 7 35 7 23 7 35 7 29 7 29 7 49 7 48 7 19 2 50 2 27 2 19 2 51 2 50 2 51 2 52 2 53 2 19 2 52 2 51 2 19 2 54 2 52 2 54 2 55 2 56 2 20 2 54 2 19 2 54 2 20 2 55 2 57 2 20 2 58 2 55 2 20 2 57 2 59 2 27 2 50 2 53 2 27 2 59 2 60 2 53 2 52 2 60 2 27 2 53 2 56 2 27 2 60 2 61 2 56 2 55 2 25 2 56 2 61 2 25 2 61 2 58 2 56 2 25 2 27 2 25 2 58 2 20 2 28 0 17 0 31 0 17 0 28 0 21 0 62 3 63 3 64 3 63 3 62 3 65 3 66 3 67 3 68 3 69 3 67 3 66 3 69 3 30 3 67 3 70 3 30 3 69 3 71 3 72 3 73 3 72 3 71 3 70 3 73 3 21 3 74 3 21 3 75 3 74 3 28 3 71 3 75 3 71 3 28 3 70 3 30 3 70 3 28 3 28 3 75 3 21 3 72 3 21 3 73 3 66 3 21 3 72 3 21 3 66 3 20 3 68 3 20 3 66 3 64 3 20 3 68 3 63 3 20 3 64 3 76 3 20 3 63 3 77 3 20 3 76 3 77 3 25 3 20 3 65 3 25 3 77 3 78 3 68 3 67 3 78 3 79 3 68 3 26 3 62 3 79 3 25 3 62 3 26 3 62 3 25 3 65 3 26 3 79 3 78 3 27 7 17 7 19 7 17 7 27 7 31 7 58 3 11 3 57 3 11 3 58 3 10 3 11 4 55 4 57 4 55 4 11 4 14 4 7 7 55 7 14 7 55 7 7 7 61 7 7 1 58 1 61 1 58 1 7 1 10 1 56 3 8 3 54 3 8 3 56 3 6 3 8 4 52 4 54 4 52 4 8 4 13 4 4 7 52 7 13 7 52 7 4 7 60 7 4 1 56 1 60 1 56 1 4 1 6 1 53 3 5 3 51 3 5 3 53 3 3 3 5 4 50 4 51 4 50 4 5 4 12 4 1 7 50 7 12 7 50 7 1 7 59 7 1 1 53 1 59 1 53 1 1 1 3 1 44 2 77 2 76 2 77 2 44 2 45 2 44 4 63 4 43 4 63 4 44 4 76 4 41 0 63 0 65 0 63 0 41 0 43 0 77 1 41 1 65 1 41 1 77 1 45 1 42 2 62 2 64 2 62 2 42 2 40 2 42 4 68 4 36 4 68 4 42 4 64 4 39 0 68 0 79 0 68 0 39 0 36 0 62 1 39 1 79 1 39 1 62 1 40 1 38 2 69 2 66 2 69 2 38 2 49 2 38 4 72 4 34 4 72 4 38 4 66 4 32 0 72 0 70 0 72 0 32 0 34 0 69 1 32 1 70 1 32 1 69 1 49 1 33 2 71 2 73 2 71 2 33 2 35 2 33 4 74 4 46 4 74 4 33 4 73 4 47 0 74 0 75 0 74 0 47 0 46 0 71 1 47 1 75 1 47 1 71 1 35 1 37 2 26 2 78 2 26 2 37 2 24 2 37 4 67 4 48 4 67 4 37 4 78 4 29 0 67 0 30 0 67 0 29 0 48 0</p>
+        <triangles material="RothRoofWall-material" count="16">
+          <input semantic="VERTEX" source="#Rothenburg_Roof-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Rothenburg_Roof-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Rothenburg_Roof-mesh-map-0" offset="2" set="0"/>
+          <p>9 3 27 11 3 28 12 3 29 14 3 42 12 3 43 11 3 44 16 4 66 17 4 67 12 4 68 16 4 69 18 4 70 17 4 71 18 4 72 9 4 73 19 4 74 9 4 75 18 4 76 16 4 77 20 4 78 12 4 79 17 4 80 19 4 81 12 4 82 20 4 83 12 4 84 19 4 85 9 4 86 14 0 111 22 0 112 23 0 113 22 0 114 11 0 115 24 0 116 11 0 117 22 0 118 14 0 119 25 0 120 14 0 121 23 0 122 25 0 123 21 0 124 14 0 125 24 0 126 21 0 127 25 0 128 21 0 129 24 0 130 11 0 131</p>
         </triangles>
-      </mesh>
-    </geometry>
-    <geometry id="rothenburg_upper_YNG_XPS-mesh" name="rothenburg upper YNG XPS">
-      <mesh>
-        <source id="rothenburg_upper_YNG_XPS-mesh-positions">
-          <float_array id="rothenburg_upper_YNG_XPS-mesh-positions-array" count="240">0 0 1.1 0 5 3.1 0 5 1.1 0 0 3.1 10 5 3.1 9.5 4.5 3.1 10 0 3.1 0.5 4.5 3.1 0.5 0.5 3.1 9.5 0.5 3.1 10 4.25 2.85 10 5 1.1 10 3.25 2.85 10 3 2.85 10 3.25 1.35 10 2 2.85 10 1.75 2.85 10 2 1.35 10 0.75 2.85 10 0.75 1.35 10 4.25 1.35 10 3 1.35 10 1.75 1.35 10 0 1.1 4 0 1.1 0.5 0.5 1.1 4 0.5 1.1 0.5 4.5 1.1 9.5 0.5 1.1 6 0 1.1 6 0.5 1.1 9.5 4.5 1.1 7.75 0 1.35 8 0 2.85 7.75 0 2.85 8 0 1.35 3.25 0 2.85 4 0 2.1 6.75 0 2.85 3.25 0 1.35 2.25 0 1.35 2 0 1.35 2.25 0 2.85 2 0 2.85 1 0 2.85 1 0 1.35 9 0 2.85 9 0 1.35 6 0 2.1 6.75 0 1.35 9.5 4.25 1.35 9.5 3.25 1.35 9.5 3 1.35 9.5 3.25 2.85 9.5 2 1.35 9.5 1.75 1.35 9.5 2 2.85 9.5 0.75 1.35 9.5 0.75 2.85 9.5 4.25 2.85 9.5 3 2.85 9.5 1.75 2.85 2.25 0.5 1.35 2 0.5 2.85 2.25 0.5 2.85 2 0.5 1.35 6.75 0.5 2.85 6 0.5 2.1 3.25 0.5 2.85 6.75 0.5 1.35 7.75 0.5 1.35 8 0.5 1.35 7.75 0.5 2.85 8 0.5 2.85 9 0.5 2.85 9 0.5 1.35 1 0.5 2.85 1 0.5 1.35 4 0.5 2.1 3.25 0.5 1.35</float_array>
-          <technique_common>
-            <accessor source="#rothenburg_upper_YNG_XPS-mesh-positions-array" count="80" stride="3">
-              <param name="X" type="float"/>
-              <param name="Y" type="float"/>
-              <param name="Z" type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <source id="rothenburg_upper_YNG_XPS-mesh-normals">
-          <float_array id="rothenburg_upper_YNG_XPS-mesh-normals-array" count="36">-1 0 0 0 0 1 1 0 0 1 -3.39084e-6 0 1 3.39084e-6 0 0 1 0 0 0 -1 -3.8147e-7 0 -1 3.8147e-7 0 -1 0 -1 0 -1 1.01725e-5 0 -1 -1.01725e-5 0</float_array>
-          <technique_common>
-            <accessor source="#rothenburg_upper_YNG_XPS-mesh-normals-array" count="12" stride="3">
-              <param name="X" type="float"/>
-              <param name="Y" type="float"/>
-              <param name="Z" type="float"/>
-            </accessor>
-          </technique_common>
-        </source>
-        <vertices id="rothenburg_upper_YNG_XPS-mesh-vertices">
-          <input semantic="POSITION" source="#rothenburg_upper_YNG_XPS-mesh-positions"/>
-        </vertices>
-        <triangles count="188">
-          <input semantic="VERTEX" source="#rothenburg_upper_YNG_XPS-mesh-vertices" offset="0"/>
-          <input semantic="NORMAL" source="#rothenburg_upper_YNG_XPS-mesh-normals" offset="1"/>
-          <p>0 0 1 0 2 0 1 0 0 0 3 0 4 1 5 1 6 1 4 1 7 1 5 1 7 1 1 1 8 1 1 1 7 1 4 1 9 1 6 1 5 1 8 1 6 1 9 1 8 1 3 1 6 1 3 1 8 1 1 1 4 2 10 2 11 2 4 2 12 2 10 2 12 2 13 2 14 2 4 2 13 2 12 2 4 2 15 2 13 2 15 2 16 2 17 2 6 2 15 2 4 2 15 2 6 2 16 2 18 3 6 3 19 3 16 2 6 2 18 2 20 4 11 4 10 4 14 2 11 2 20 2 21 2 14 2 13 2 21 2 11 2 14 2 17 2 11 2 21 2 22 2 17 2 16 2 23 2 17 2 22 2 23 2 22 2 19 2 17 2 23 2 11 2 23 2 19 2 6 2 11 5 1 5 4 5 1 5 11 5 2 5 24 6 25 6 26 6 25 6 0 6 27 6 0 6 25 6 24 6 23 7 28 7 11 7 29 6 28 6 23 6 28 6 29 6 30 6 31 6 11 6 28 6 27 6 11 6 31 6 27 6 2 6 11 6 2 8 27 8 0 8 32 9 33 9 34 9 33 9 32 9 35 9 36 9 37 9 38 9 39 9 37 9 36 9 39 9 24 9 37 9 40 9 24 9 39 9 41 9 42 9 43 9 42 9 41 9 40 9 43 9 3 9 44 9 3 9 45 9 44 9 0 9 41 9 45 9 24 9 41 9 0 9 41 9 24 9 40 9 0 9 45 9 3 9 42 9 3 9 43 9 36 9 3 9 42 9 3 9 36 9 6 9 38 9 6 9 36 9 34 9 6 9 38 9 33 9 6 9 34 9 46 9 6 9 33 9 47 9 6 9 46 9 47 9 23 9 6 9 35 9 23 9 47 9 48 9 38 9 37 9 48 9 49 9 38 9 29 9 32 9 49 9 32 9 29 9 35 9 23 9 35 9 29 9 29 9 49 9 48 9 8 2 27 2 7 2 27 2 8 2 25 2 31 0 50 0 5 0 31 0 51 0 50 0 51 0 52 0 53 0 31 0 52 0 51 0 31 0 54 0 52 0 54 0 55 0 56 0 28 0 54 0 31 0 54 0 28 0 55 0 57 10 28 10 58 10 55 0 28 0 57 0 59 11 5 11 50 11 53 0 5 0 59 0 60 0 53 0 52 0 60 0 5 0 53 0 56 0 5 0 60 0 61 0 56 0 55 0 9 0 56 0 61 0 9 0 61 0 58 0 56 0 9 0 5 0 9 0 58 0 28 0 62 5 63 5 64 5 63 5 62 5 65 5 66 5 67 5 68 5 69 5 67 5 66 5 69 5 30 5 67 5 70 5 30 5 69 5 71 5 72 5 73 5 72 5 71 5 70 5 73 5 9 5 74 5 9 5 75 5 74 5 28 5 71 5 75 5 71 5 28 5 70 5 30 5 70 5 28 5 28 5 75 5 9 5 72 5 9 5 73 5 66 5 9 5 72 5 9 5 66 5 8 5 68 5 8 5 66 5 64 5 8 5 68 5 63 5 8 5 64 5 76 5 8 5 63 5 77 5 8 5 76 5 77 5 25 5 8 5 65 5 25 5 77 5 78 5 68 5 67 5 78 5 79 5 68 5 26 5 62 5 79 5 25 5 62 5 26 5 62 5 25 5 65 5 26 5 79 5 78 5 27 9 5 9 7 9 5 9 27 9 31 9 19 5 58 5 18 5 58 5 19 5 57 5 58 6 16 6 18 6 16 6 58 6 61 6 55 9 16 9 61 9 16 9 55 9 22 9 55 1 19 1 22 1 19 1 55 1 57 1 17 5 56 5 15 5 56 5 17 5 54 5 56 6 13 6 15 6 13 6 56 6 60 6 52 9 13 9 60 9 13 9 52 9 21 9 52 1 17 1 21 1 17 1 52 1 54 1 14 5 53 5 12 5 53 5 14 5 51 5 53 6 10 6 12 6 10 6 53 6 59 6 50 9 10 9 59 9 10 9 50 9 20 9 50 1 14 1 20 1 14 1 50 1 51 1 44 2 77 2 76 2 77 2 44 2 45 2 44 6 63 6 43 6 63 6 44 6 76 6 41 0 63 0 65 0 63 0 41 0 43 0 77 1 41 1 65 1 41 1 77 1 45 1 42 2 62 2 64 2 62 2 42 2 40 2 42 6 68 6 36 6 68 6 42 6 64 6 39 0 68 0 79 0 68 0 39 0 36 0 62 1 39 1 79 1 39 1 62 1 40 1 38 2 69 2 66 2 69 2 38 2 49 2 38 6 72 6 34 6 72 6 38 6 66 6 32 0 72 0 70 0 72 0 32 0 34 0 69 1 32 1 70 1 32 1 69 1 49 1 33 2 71 2 73 2 71 2 33 2 35 2 33 6 74 6 46 6 74 6 33 6 73 6 47 0 74 0 75 0 74 0 47 0 46 0 71 1 47 1 75 1 47 1 71 1 35 1 37 2 26 2 78 2 26 2 37 2 24 2 37 6 67 6 48 6 67 6 37 6 78 6 29 0 67 0 30 0 67 0 29 0 48 0</p>
+        <triangles material="RothRoofCrossbeam-material" count="20">
+          <input semantic="VERTEX" source="#Rothenburg_Roof-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Rothenburg_Roof-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Rothenburg_Roof-mesh-map-0" offset="2" set="0"/>
+          <p>26 0 132 27 0 133 28 0 134 27 0 135 26 0 136 29 0 137 27 7 138 24 7 139 25 7 140 24 7 141 27 7 142 29 7 143 17 7 144 30 7 145 31 7 146 30 7 147 17 7 148 18 7 149 30 4 150 32 4 151 31 4 152 32 4 153 30 4 154 33 4 155 32 8 156 17 8 157 31 8 158 17 8 159 32 8 160 20 8 161 23 8 162 27 8 163 25 8 164 27 8 165 23 8 166 28 8 167 26 3 168 23 3 169 22 3 170 23 3 171 26 3 172 28 3 173 19 3 174 32 3 175 33 3 176 32 3 177 19 3 178 20 3 179 26 9 180 24 9 181 29 9 182 24 9 183 26 9 184 22 9 185 19 9 186 30 9 187 18 9 188 30 9 189 19 9 190 33 9 191</p>
+        </triangles>
+        <triangles material="RothRoofSiding-material" count="24">
+          <input semantic="VERTEX" source="#Rothenburg_Roof-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Rothenburg_Roof-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Rothenburg_Roof-mesh-map-0" offset="2" set="0"/>
+          <p>0 0 0 1 0 1 2 0 2 0 0 3 3 0 4 1 0 5 4 0 6 0 0 7 5 0 8 0 0 9 4 0 10 3 0 11 7 3 24 9 3 25 10 3 26 7 3 30 11 3 31 9 3 32 4 3 33 11 3 34 7 3 35 11 3 36 4 3 37 5 3 38 12 3 39 8 3 40 13 3 41 12 3 45 14 3 46 8 3 47 1 3 48 14 3 49 2 3 50 14 3 51 1 3 52 8 3 53 15 4 54 8 4 55 6 4 56 8 4 57 15 4 58 13 4 59 7 4 60 15 4 61 6 4 62 15 4 63 7 4 64 10 4 65 10 5 87 16 5 88 15 5 89 16 5 90 10 5 91 9 5 92 12 6 93 15 6 94 16 6 95 15 6 96 12 6 97 13 6 98 11 5 99 0 5 100 21 5 101 0 5 102 11 5 103 5 5 104 2 6 105 21 6 106 0 6 107 21 6 108 2 6 109 14 6 110</p>
+        </triangles>
+        <triangles material="RothRoofShingling-material" count="4">
+          <input semantic="VERTEX" source="#Rothenburg_Roof-mesh-vertices" offset="0"/>
+          <input semantic="NORMAL" source="#Rothenburg_Roof-mesh-normals" offset="1"/>
+          <input semantic="TEXCOORD" source="#Rothenburg_Roof-mesh-map-0" offset="2" set="0"/>
+          <p>4 1 12 6 1 13 3 1 14 6 1 15 4 1 16 7 1 17 8 2 18 3 2 19 6 2 20 3 2 21 8 2 22 1 2 23</p>
         </triangles>
       </mesh>
     </geometry>
@@ -615,25 +994,17 @@
   <library_controllers/>
   <library_visual_scenes>
     <visual_scene id="Scene" name="Scene">
-      <node id="Rothenburg_Roof" name="Rothenburg_Roof" type="NODE">
-        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
-        <instance_geometry url="#Rothenburg_Roof-mesh" name="Rothenburg_Roof">
-          <bind_material>
-            <technique_common>
-              <instance_material symbol="RoofEdge-material" target="#RoofEdge-material"/>
-              <instance_material symbol="RoofWallSupport-material" target="#RoofWallSupport-material"/>
-              <instance_material symbol="RoofTop-material" target="#RoofTop-material"/>
-            </technique_common>
-          </bind_material>
-        </instance_geometry>
+      <node id="Lamp" name="Lamp" type="NODE">
+        <matrix sid="transform">-0.2908646 -0.7711008 0.5663932 0.5834947 0.9551712 -0.1998834 0.2183912 -1.497323 -0.05518906 0.6045247 0.7946723 5.903862 0 0 0 1</matrix>
+        <instance_light url="#Lamp-light"/>
       </node>
       <node id="Rothenburg_Foundation" name="Rothenburg_Foundation" type="NODE">
         <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
         <instance_geometry url="#Rothenburg_Foundation-mesh" name="Rothenburg_Foundation">
           <bind_material>
             <technique_common>
-              <instance_material symbol="FoundationSideBot-material" target="#FoundationSideBot-material"/>
-              <instance_material symbol="FoundationTop-material" target="#FoundationTop-material"/>
+              <instance_material symbol="RothFoundationFloor-material" target="#RothFoundationFloor-material"/>
+              <instance_material symbol="RothFoundationSides-material" target="#RothFoundationSides-material"/>
             </technique_common>
           </bind_material>
         </instance_geometry>
@@ -643,34 +1014,57 @@
         <instance_geometry url="#Rothenburg_Lower-mesh" name="Rothenburg_Lower">
           <bind_material>
             <technique_common>
-              <instance_material symbol="LowerWall-material" target="#LowerWall-material"/>
+              <instance_material symbol="RothLowerExterior-material" target="#RothLowerExterior-material"/>
+              <instance_material symbol="RothLowerInterior-material" target="#RothLowerInterior-material"/>
+              <instance_material symbol="RothLowerMid-material" target="#RothLowerMid-material"/>
             </technique_common>
           </bind_material>
         </instance_geometry>
       </node>
-      <node id="Rothenburg_Upper_All" name="Rothenburg_Upper_All" type="NODE">
+      <node id="Rothenburg_Upper" name="Rothenburg_Upper" type="NODE">
         <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
-        <instance_geometry url="#Rothenburg_Upper_All-mesh" name="Rothenburg_Upper_All">
+        <instance_geometry url="#Rothenburg_Upper-mesh" name="Rothenburg_Upper">
           <bind_material>
             <technique_common>
-              <instance_material symbol="UpperWalls-material" target="#UpperWalls-material"/>
-              <instance_material symbol="UpperWindowFrames-material" target="#UpperWindowFrames-material"/>
-              <instance_material symbol="UpperWallEdgeFrame-material" target="#UpperWallEdgeFrame-material"/>
+              <instance_material symbol="RothUpperExterior-material" target="#RothUpperExterior-material"/>
+              <instance_material symbol="RothUpperInterior-material" target="#RothUpperInterior-material"/>
+              <instance_material symbol="RotheUpperMid-material" target="#RotheUpperMid-material"/>
             </technique_common>
           </bind_material>
         </instance_geometry>
       </node>
-      <node id="Rothenburg_Upper_YNG_XNG" name="Rothenburg_Upper_YNG_XNG" type="NODE">
+      <node id="Rothenburg_Roof" name="Rothenburg_Roof" type="NODE">
         <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
-        <instance_geometry url="#rothenburg_upper_YNG_XNG-mesh" name="Rothenburg_Upper_YNG_XNG"/>
+        <instance_geometry url="#Rothenburg_Roof-mesh" name="Rothenburg_Roof">
+          <bind_material>
+            <technique_common>
+              <instance_material symbol="RothRoofWall-material" target="#RothRoofWall-material"/>
+              <instance_material symbol="RothRoofCrossbeam-material" target="#RothRoofCrossbeam-material"/>
+              <instance_material symbol="RothRoofSiding-material" target="#RothRoofSiding-material"/>
+              <instance_material symbol="RothRoofShingling-material" target="#RothRoofShingling-material"/>
+            </technique_common>
+          </bind_material>
+        </instance_geometry>
       </node>
-      <node id="Rothenburg_Upper_YNG_XPS" name="Rothenburg_Upper_YNG_XPS" type="NODE">
-        <matrix sid="transform">1 0 0 0 0 1 0 0 0 0 1 0 0 0 0 1</matrix>
-        <instance_geometry url="#rothenburg_upper_YNG_XPS-mesh" name="Rothenburg_Upper_YNG_XPS"/>
+      <node id="Point" name="Point" type="NODE">
+        <matrix sid="transform">1 0 0 -7.06084 0 1 0 -5.098132 0 0 1 2.746604 0 0 0 1</matrix>
+        <instance_light url="#Point-light"/>
       </node>
-      <node id="Spot" name="Spot" type="NODE">
-        <matrix sid="transform">0.4547719 -0.8721179 -0.180535 4.114619 -0.007742285 0.1988309 -0.9800032 -8.122309 0.8905743 0.4470757 0.08367051 3.554486 0 0 0 1</matrix>
-        <instance_light url="#Spot-light"/>
+      <node id="Point_001" name="Point_001" type="NODE">
+        <matrix sid="transform">1 0 0 6.976024 0 1 0 5.050628 0 0 1 2.029951 0 0 0 1</matrix>
+        <instance_light url="#Point_001-light"/>
+      </node>
+      <node id="Point_002" name="Point_002" type="NODE">
+        <matrix sid="transform">1 0 0 6.39791 0 1 0 -5.098132 0 0 1 2.784574 0 0 0 1</matrix>
+        <instance_light url="#Point_002-light"/>
+      </node>
+      <node id="Point_003" name="Point_003" type="NODE">
+        <matrix sid="transform">1 0 0 -6.355622 0 1 0 4.936656 0 0 1 1.698487 0 0 0 1</matrix>
+        <instance_light url="#Point_003-light"/>
+      </node>
+      <node id="Point_004" name="Point_004" type="NODE">
+        <matrix sid="transform">1 0 0 0.07809448 0 1 0 0.1753324 0 0 1 -3.140624 0 0 0 1</matrix>
+        <instance_light url="#Point_004-light"/>
       </node>
     </visual_scene>
   </library_visual_scenes>
