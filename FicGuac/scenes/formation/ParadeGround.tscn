@@ -1,4 +1,4 @@
-[gd_scene load_steps=18 format=2]
+[gd_scene load_steps=19 format=2]
 
 [ext_resource path="res://scenes/formation/ParadeGround.gd" type="Script" id=1]
 [ext_resource path="res://assets/surt_terrain/mat_terrain_grass_grid.tres" type="Material" id=2]
@@ -12,6 +12,7 @@
 [ext_resource path="res://scenes/formation/terrain/Rock.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/formation/terrain/buildings/House.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/formation/terrain/buildings/RothenburgHut.tscn" type="PackedScene" id=12]
+[ext_resource path="res://scenes/formation/terrain/buildings/RothenburgHutProcedural.tscn" type="PackedScene" id=13]
 
 [sub_resource type="PlaneMesh" id=1]
 material = ExtResource( 2 )
@@ -155,6 +156,7 @@ _rock_size = 2
 
 [node name="Rock2" parent="Rocks" instance=ExtResource( 10 )]
 transform = Transform( -0.637723, 0.348683, -0.701888, -0.0428154, 0.983842, 0.443565, 0.769075, 0.343901, -0.557317, 7.34934, 0, 26.4176 )
+_rock_size = 1
 
 [node name="Rock3" parent="Rocks" instance=ExtResource( 10 )]
 transform = Transform( -0.180885, 0.0778807, -0.980948, -0.975767, -0.151435, 0.169974, -0.123125, 1.08572, 0.0940726, 4.13381, -0.161437, 27.5393 )
@@ -185,3 +187,12 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19.921, 0, -12.4765 )
 
 [node name="RothenburgHut2" parent="Houses" instance=ExtResource( 12 )]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, -20.3481, 0, 0.140539 )
+
+[node name="RothenburgHutProcedual" parent="Houses" instance=ExtResource( 13 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.148, 0, 32.7898 )
+x_size = 5
+wall_thickness = 1.0
+foundation_height = 1.0
+
+[node name="RothenburgHutProcedual2" parent="Houses" instance=ExtResource( 13 )]
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, -20.2727, 0, 42.077 )
