@@ -329,7 +329,7 @@ func adjust_base_collision(spec_node):
     var new_size = Vector3(x_size / 2.0, height / 2.0, z_size / 2.0)
     
     # Reset the foundation back to zero so we know what we're doing
-    $FoundationBaseCollide.transform.origin = Vector3.ZERO
-    $FoundationBaseCollide.shape = BoxShape.new()
-    $FoundationBaseCollide.shape.extents = new_size
-    $FoundationBaseCollide.translate(Vector3(0, height / 2.0, 0))
+    $FoundationCollision.transform.origin = Vector3.ZERO
+    $FoundationCollision.shape = BoxShape.new()
+    $FoundationCollision.shape.extents = new_size
+    $FoundationCollision.translate(Vector3(0, height / 2.0, 0))
