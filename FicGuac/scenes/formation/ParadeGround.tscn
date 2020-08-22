@@ -137,6 +137,7 @@ _crop_type = 0
 [node name="Farm3" parent="Farms" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, 0 )
 _plot_size = Vector2( 5, 20 )
+_crop_type = 4
 
 [node name="Farm4" parent="Farms" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 0 )

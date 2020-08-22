@@ -19,6 +19,10 @@ config/name="FicGuac"
 run/main_scene="res://scenes/formation/ParadeGround.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+PolyGen="*res://scenes/formation/util/PolyGen.gd"
+
 [debug]
 
 settings/stdout/print_fps=true

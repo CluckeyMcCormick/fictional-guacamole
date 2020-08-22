@@ -9,11 +9,9 @@ func build_all(spec_node):
     build_tops(spec_node)
     build_collision(spec_node)
     build_sides(spec_node)
-# generate_stairs
-# foundation_height
-# stair_x_length
-# stair_z_length
-# stair_steps
+
+# Load the PolyGen script
+const PolyGen = preload("res://scenes/formation/util/PolyGen.gd")
 
 func build_tops(spec_node):
     
@@ -54,22 +52,12 @@ func build_tops(spec_node):
         if i == (spec_node.stair_steps - 1):
             far_z = z_base + spec_node.stair_z_length
         
-        # Step Triangle 1
-        verts.push_back( Vector3(left_x, eff_height, near_z) )
-        verts.push_back( Vector3(right_x, eff_height, near_z))
-        verts.push_back( Vector3(right_x, eff_height, far_z) )
-        
-        UVs.push_back( Vector2(left_x, near_z) )
-        UVs.push_back( Vector2(right_x, near_z) )
-        UVs.push_back( Vector2(right_x, far_z) )    
-        
-        # Step Triangle 2
-        verts.push_back( Vector3(left_x, eff_height, far_z) )
-        verts.push_back( Vector3(left_x, eff_height, near_z) )
-        verts.push_back( Vector3(right_x, eff_height, far_z) )
-        UVs.push_back( Vector2(left_x, far_z) )
-        UVs.push_back( Vector2(left_x, near_z) )
-        UVs.push_back( Vector2(right_x, far_z) )  
+        # Create the faces for the tops of the stairs
+        var pd = PolyGen.create_upward_face(
+            Vector2(right_x, far_z), Vector2(left_x, near_z), eff_height
+        )
+        verts.append_array( pd[PolyGen.VECTOR3_KEY] )
+        UVs.append_array( pd[PolyGen.VECTOR2_KEY] )
     
     var st = SurfaceTool.new()
     st.begin(Mesh.PRIMITIVE_TRIANGLES)
@@ -116,8 +104,10 @@ func build_sides(spec_node):
         # We need to do the same thing to caluclate the height, but for the step
         # ahead of us
         var base_height = float(spec_node.stair_steps - (i + 1)) * float(height_step)
+        # Calculate the z length of this step
+        var z_len = float(i + 1) * z_step
         # Calculate the z of our step that's farther from the origin
-        var far_z = z_base + ( float(i + 1) * z_step )
+        var far_z = z_base + z_len
         
         # If we're on the final step, automatically set the far z value to the
         # full z length. This will ensure our stair steps fit FULLY into the
@@ -127,61 +117,26 @@ func build_sides(spec_node):
         
         print("\t" + str(i) + " " + str(top_height) + " " + str(base_height))
         
-        # Triangle 1
-        verts.push_back( Vector3(left_x, top_height, z_base) )
-        verts.push_back( Vector3(left_x, top_height, far_z))
-        verts.push_back( Vector3(left_x, base_height, far_z) )
-        UVs.push_back( Vector2(z_base, top_height) ) 
-        UVs.push_back( Vector2(far_z, top_height) )
-        UVs.push_back( Vector2(far_z, base_height) )
+        # Face 1
+        var pd = PolyGen.create_xlock_face(
+            Vector2(far_z, base_height), Vector2(z_base, top_height), left_x
+        )
+        verts.append_array( pd[PolyGen.VECTOR3_KEY] )
+        UVs.append_array( pd[PolyGen.VECTOR2_KEY] )
         
-        # Triangle 2
-        verts.push_back( Vector3(left_x, top_height, z_base) )
-        verts.push_back( Vector3(left_x, base_height, far_z) )
-        verts.push_back( Vector3(left_x, base_height, z_base) )
-        UVs.push_back( Vector2(z_base, top_height) )
-        UVs.push_back( Vector2(far_z, base_height) )
-        UVs.push_back( Vector2(z_base, base_height) )
-        
-        #
-        #
-        #
-        
-        # Triangle 3
-        verts.push_back( Vector3(left_x, top_height, far_z) )
-        verts.push_back( Vector3(right_x, top_height, far_z))
-        verts.push_back( Vector3(right_x, base_height, far_z) )
-        UVs.push_back( Vector2(left_x, top_height) ) 
-        UVs.push_back( Vector2(right_x, top_height) )
-        UVs.push_back( Vector2(right_x, base_height) )
-        
-        # Triangle 4
-        verts.push_back( Vector3(left_x, top_height, far_z) )
-        verts.push_back( Vector3(right_x, base_height, far_z) )
-        verts.push_back( Vector3(left_x, base_height, far_z) )
-        UVs.push_back( Vector2(left_x, top_height) )
-        UVs.push_back( Vector2(right_x, base_height) )
-        UVs.push_back( Vector2(left_x, base_height) )
-        
-        #
-        #
-        #
-        
-        # Triangle 5
-        verts.push_back( Vector3(right_x, top_height, far_z) )
-        verts.push_back( Vector3(right_x, top_height, z_base))
-        verts.push_back( Vector3(right_x, base_height, z_base) )
-        UVs.push_back( Vector2(far_z, top_height) ) 
-        UVs.push_back( Vector2(z_base, top_height) )
-        UVs.push_back( Vector2(z_base, base_height) )
-        
-        # Triangle 6
-        verts.push_back( Vector3(right_x, top_height, far_z) )
-        verts.push_back( Vector3(right_x, base_height, z_base) )
-        verts.push_back( Vector3(right_x, base_height, far_z) )
-        UVs.push_back( Vector2(far_z, top_height) )
-        UVs.push_back( Vector2(z_base, base_height) )
-        UVs.push_back( Vector2(far_z, base_height) )
+        # Face 2
+        pd = PolyGen.create_zlock_face(
+            Vector2(right_x, base_height), Vector2(left_x, top_height), far_z
+        )
+        verts.append_array( pd[PolyGen.VECTOR3_KEY] )
+        UVs.append_array( pd[PolyGen.VECTOR2_KEY] )
+
+        # Face 3
+        pd = PolyGen.create_xlock_face(
+            Vector2(z_base, base_height), Vector2(far_z, top_height), right_x
+        )
+        verts.append_array( pd[PolyGen.VECTOR3_KEY] )
+        UVs.append_array( pd[PolyGen.VECTOR2_KEY] )
     
     var st = SurfaceTool.new()
     st.begin(Mesh.PRIMITIVE_TRIANGLES)
