@@ -189,7 +189,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19.921, 0, -12.4765 )
 [node name="RothenburgHut2" parent="Houses" instance=ExtResource( 12 )]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, -20.3481, 0, 0.140539 )
 
-[node name="RothenburgHutProcedual" parent="Houses" instance=ExtResource( 13 )]
+[node name="ThickProcHut" parent="Houses" instance=ExtResource( 13 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.148, 0, 32.7898 )
 x_size = 5
 wall_thickness = 1.0
@@ -197,5 +197,13 @@ stair_x_length = 5.0
 stair_z_length = 1.0
 foundation_height = 1.0
 
-[node name="RothenburgHutProcedual2" parent="Houses" instance=ExtResource( 13 )]
+[node name="StandardProcHut" parent="Houses" instance=ExtResource( 13 )]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, -20.2727, 0, 42.077 )
+
+[node name="ThinBackProcHut" parent="Houses" instance=ExtResource( 13 )]
+transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 23, 0, 40 )
+x_size = 8
+z_size = 8
+wall_thickness = 0.2
+generate_stairs = false
+foundation_height = 0.15

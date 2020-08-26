@@ -14,7 +14,6 @@ func build_all(spec_node):
     build_frame(spec_node)
     build_wall(spec_node)
     adjust_base_collision(spec_node)
-    pass
 
 func build_floor(spec_node):
     var new_mesh = Mesh.new()
@@ -149,18 +148,18 @@ func build_wall(spec_node):
     # This is our first truly 3D component, so we'll cut it int two layers. Both
     # layers look like this from the top down:
     #
-    #       1          4
+    #       1----------4
     #       |          |
     #       |          |
     #       2----------3
     #
     # So we'll call the bottom Layer A, and the top layer B. Our polygons thusly
     # look like:
-    #               B1------B2------------------B3------B4
-    #               ||      ||                  ||      ||
-    #               A1------A2------------------A3------A4
+    #        B1------B2------------------B3------B4------------------B1
+    #        ||      ||                  ||      ||                  ||
+    #        A1------A2------------------A3------A4------------------A1
     # So our faces are:
-    #       (A2, B1)    (A3, B2)    (A4, B3)
+    #       (A2, B1)    (A3, B2)    (A4, B3)    (A1, B4)
     
     var height = spec_node.foundation_height
     var x_size = spec_node.x_size
@@ -186,6 +185,14 @@ func build_wall(spec_node):
     pd = PolyGen.create_xlock_face_uv(
         Vector2(-z_size / 2.0, 0), Vector2(z_size / 2.0, height), x_size / 2.0,
         z_size + x_size + z_size, z_size + x_size
+    )
+    verts.append_array( pd[PolyGen.VECTOR3_KEY] )
+    UVs.append_array( pd[PolyGen.VECTOR2_KEY] )    
+
+    # Face 4: A1 -> B4
+    pd = PolyGen.create_zlock_face_uv(
+        Vector2(-x_size / 2.0, 0), Vector2(x_size / 2.0, height), -z_size / 2.0,
+        (z_size * 2) + (x_size * 2), z_size + x_size + z_size
     )
     verts.append_array( pd[PolyGen.VECTOR3_KEY] )
     UVs.append_array( pd[PolyGen.VECTOR2_KEY] )    

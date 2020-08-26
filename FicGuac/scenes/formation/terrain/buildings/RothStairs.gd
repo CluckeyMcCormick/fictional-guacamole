@@ -5,13 +5,19 @@ extends StaticBody
 export(Material) var sides_mat
 export(Material) var tops_mat
 
-func build_all(spec_node):
-    build_tops(spec_node)
-    build_collision(spec_node)
-    build_sides(spec_node)
-
 # Load the PolyGen script
 const PolyGen = preload("res://scenes/formation/util/PolyGen.gd")
+
+func build_all(spec_node):
+    if spec_node.generate_stairs:
+        build_tops(spec_node)
+        build_collision(spec_node)
+        build_sides(spec_node)
+    else:
+        $StairSides.mesh = null
+        $StairTops.mesh = null
+        $StairCollision.shape = null
+        pass
 
 func build_tops(spec_node):
     
@@ -114,8 +120,6 @@ func build_sides(spec_node):
         # appropriate length. 
         if i == (spec_node.stair_steps - 1):
             far_z = z_base + spec_node.stair_z_length
-        
-        print("\t" + str(i) + " " + str(top_height) + " " + str(base_height))
         
         # Face 1
         var pd = PolyGen.create_xlock_face(
