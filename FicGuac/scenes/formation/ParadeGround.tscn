@@ -1,4 +1,4 @@
-[gd_scene load_steps=19 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://scenes/formation/ParadeGround.gd" type="Script" id=1]
 [ext_resource path="res://assets/surt_terrain/mat_terrain_grass_grid.tres" type="Material" id=2]
@@ -12,7 +12,9 @@
 [ext_resource path="res://scenes/formation/terrain/Rock.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/formation/terrain/buildings/House.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/formation/terrain/buildings/RothenburgHut.tscn" type="PackedScene" id=12]
-[ext_resource path="res://scenes/formation/terrain/buildings/RothenburgHutProcedural.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scenes/formation/terrain/buildings/RothGuardpost.tscn" type="PackedScene" id=13]
+[ext_resource path="res://scenes/formation/terrain/buildings/RothStockpile.tscn" type="PackedScene" id=14]
+[ext_resource path="res://scenes/formation/terrain/buildings/RothHouse.tscn" type="PackedScene" id=15]
 
 [sub_resource type="PlaneMesh" id=1]
 material = ExtResource( 2 )
@@ -189,21 +191,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 19.921, 0, -12.4765 )
 [node name="RothenburgHut2" parent="Houses" instance=ExtResource( 12 )]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, -20.3481, 0, 0.140539 )
 
-[node name="ThickProcHut" parent="Houses" instance=ExtResource( 13 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.148, 0, 32.7898 )
-x_size = 5
-wall_thickness = 1.0
-stair_x_length = 5.0
-stair_z_length = 1.0
-foundation_height = 1.0
+[node name="RothGuardpost" parent="Houses" instance=ExtResource( 13 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -12.6736, 0, 30.1719 )
 
-[node name="StandardProcHut" parent="Houses" instance=ExtResource( 13 )]
-transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, -20.2727, 0, 42.077 )
+[node name="RothStockpile" parent="Houses" instance=ExtResource( 14 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25.0261, 0, 35.031 )
 
-[node name="ThinBackProcHut" parent="Houses" instance=ExtResource( 13 )]
-transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 23, 0, 40 )
-x_size = 8
-z_size = 8
-wall_thickness = 0.2
-generate_stairs = false
-foundation_height = 0.15
+[node name="RothHouse" parent="Houses" instance=ExtResource( 15 )]
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, -21.0927, 0, 46.2439 )

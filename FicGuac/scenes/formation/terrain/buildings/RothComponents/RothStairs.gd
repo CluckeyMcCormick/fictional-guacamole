@@ -5,48 +5,93 @@ extends StaticBody
 export(Material) var sides_mat
 export(Material) var tops_mat
 
+export(float, -10, 10, .5) var x_shift = 0 setget set_x_shift
+export(float, 0, 10, .5) var z_shift = 0 setget set_z_shift
+export(float, 1, 10, .25) var x_length = 2 setget set_x_length
+export(float, 1, 10, .25) var z_length = 2 setget set_z_length
+export(int, 1, 10) var steps = 4 setget set_steps 
+export(float, .05, 10, .05) var target_height = .5 setget set_target_height
+
 # Load the PolyGen script
 const PolyGen = preload("res://scenes/formation/util/PolyGen.gd")
 
-func build_all(spec_node):
-    if spec_node.generate_stairs:
-        build_tops(spec_node)
-        build_collision(spec_node)
-        build_sides(spec_node)
-    else:
-        $StairSides.mesh = null
-        $StairTops.mesh = null
-        $StairCollision.shape = null
-        pass
+func _ready():
+    # When we enter the scene for the first time, we have to build out the
+    # stairs
+    self.build_all()
 
-func build_tops(spec_node):
+# --------------------------------------------------------
+#
+# Setters and Getters
+#
+# --------------------------------------------------------
+func set_x_shift(new_shift):
+    x_shift = new_shift
+    if Engine.editor_hint:
+        build_all()
+
+func set_x_length(new_length):
+    x_length = new_length
+    if Engine.editor_hint:
+        build_all()
+        
+func set_z_shift(new_shift):
+    z_shift = new_shift
+    if Engine.editor_hint:
+        build_all()
+
+func set_z_length(new_length):
+    z_length = new_length
+    if Engine.editor_hint:
+        build_all()
+
+func set_steps(new_step_count):
+    steps = new_step_count
+    if Engine.editor_hint:
+        build_all()
+
+func set_target_height(new_target):
+    target_height = new_target
+    if Engine.editor_hint:
+        build_all()
+
+# --------------------------------------------------------
+#
+# Build Functions
+#
+# --------------------------------------------------------
+func build_all():
+    build_tops()
+    build_collision()
+    build_sides()
+
+func build_tops():
     
     # For the purpose of calculating how high each step should be, we consider
     # there to be 1 extra step, since we stop just BEFORE the height of the
     # foundation
-    var height_step = spec_node.foundation_height / float(spec_node.stair_steps + 1)
+    var height_step = self.target_height / float(self.steps + 1)
     
-    # We want the specified number of steps on x, though
-    var z_step = spec_node.stair_z_length / float(spec_node.stair_steps)
+    # We want the specified number of steps on Z, though
+    var z_step = self.z_length / float(self.steps)
     
     # The stairs are positioned at the front of the foundation, so capture the
     # length of the foundation
-    var z_base = spec_node.z_size / 2.0
+    var z_base = self.z_shift
     
     # Pre-calculate our points on the left-and-right-hand side
-    var left_x = -spec_node.stair_x_length / 2.0
-    var right_x = spec_node.stair_x_length / 2.0
+    var left_x = self.x_shift + (-self.x_length / 2.0)
+    var right_x = self.x_shift + (self.x_length / 2.0)
     
     var new_mesh = Mesh.new()
     var verts = PoolVector3Array()
     var UVs = PoolVector2Array()
     
-    for i in range(spec_node.stair_steps):
-        
+    for i in range(self.steps):
         # Calculate the step height. Calculate with our "current step" as the
         # total steps minus the current count; this has the effect of counting 
         # downard as the steps go on - like stairs!
-        var eff_height = float(spec_node.stair_steps - i) * float(height_step)
+        var eff_height = float(self.steps - i) * float(height_step)
         # Calculate the z of our step that's closer to the origin
         var near_z = z_base + (float(i) * z_step)
         # Calculate the z of our step that's farther from the origin
@@ -55,8 +100,8 @@ func build_tops(spec_node):
         # If we're on the final step, automatically set the far z value to the
         # full z length. This will ensure our stair steps fit FULLY into the
         # appropriate length. 
-        if i == (spec_node.stair_steps - 1):
-            far_z = z_base + spec_node.stair_z_length
+        if i == (self.steps - 1):
+            far_z = z_base + self.z_length
         
         # Create the faces for the tops of the stairs
         var pd = PolyGen.create_upward_face(
@@ -79,37 +124,36 @@ func build_tops(spec_node):
     st.commit(new_mesh)
     $StairTops.mesh = new_mesh
 
-func build_sides(spec_node):
+func build_sides():
     
     # For the purpose of calculating how high each step should be, we consider
     # there to be 1 extra step, since we stop just BEFORE the height of the
     # foundation
-    var height_step = spec_node.foundation_height / float(spec_node.stair_steps + 1)
+    var height_step = self.target_height / float(self.steps + 1)
     
-    # We want the specified number of steps on x, though
-    var z_step = spec_node.stair_z_length / float(spec_node.stair_steps)
+    # We want the specified number of steps on Z, though
+    var z_step = self.z_length / float(self.steps)
     
     # The stairs are positioned at the front of the foundation, so capture the
     # length of the foundation
-    var z_base = spec_node.z_size / 2.0
+    var z_base = self.z_shift
     
     # Pre-calculate our points on the left-and-right-hand side
-    var left_x = -spec_node.stair_x_length / 2.0
-    var right_x = spec_node.stair_x_length / 2.0
+    var left_x = self.x_shift + (-self.x_length / 2.0)
+    var right_x = self.x_shift + (self.x_length / 2.0)
     
     var new_mesh = Mesh.new()
     var verts = PoolVector3Array()
     var UVs = PoolVector2Array()
     
-    for i in range(spec_node.stair_steps):
-        
+    for i in range(self.steps):
         # Calculate the upper-step height. Calculate with "current step" as the
         # total steps minus the current count; this has the effect of counting 
         # downard as the steps go on - like stairs!
-        var top_height = float(spec_node.stair_steps - i) * float(height_step)
+        var top_height = float(self.steps - i) * float(height_step)
         # We need to do the same thing to caluclate the height, but for the step
         # ahead of us
-        var base_height = float(spec_node.stair_steps - (i + 1)) * float(height_step)
+        var base_height = float(self.steps - (i + 1)) * float(height_step)
         # Calculate the z length of this step
         var z_len = float(i + 1) * z_step
         # Calculate the z of our step that's farther from the origin
@@ -118,8 +162,8 @@ func build_sides(spec_node):
         # If we're on the final step, automatically set the far z value to the
         # full z length. This will ensure our stair steps fit FULLY into the
         # appropriate length. 
-        if i == (spec_node.stair_steps - 1):
-            far_z = z_base + spec_node.stair_z_length
+        if i == (self.steps - 1):
+            far_z = z_base + self.z_length
         
         # Face 1
         var pd = PolyGen.create_xlock_face(
@@ -157,21 +201,17 @@ func build_sides(spec_node):
     $StairSides.mesh = new_mesh
 
 
-func build_collision(spec_node):
-    
-    # spec_node.foundation_height
-    # spec_node.stair_z_length
+func build_collision():
     
     # The stairs are positioned at the front of the foundation, so capture the
     # length of the foundation
-    var z_base = spec_node.z_size / 2.0
-    var z_end = z_base + spec_node.stair_z_length
-    
-    var height = spec_node.foundation_height
+    var z_base = self.z_shift
+    var z_end = z_base + self.z_length
+    var height = self.target_height
     
     # Pre-calculate our points on the left-and-right-hand side
-    var left_x = -spec_node.stair_x_length / 2.0
-    var right_x = spec_node.stair_x_length / 2.0
+    var left_x = self.x_shift + (-self.x_length / 2.0)
+    var right_x = self.x_shift + (self.x_length / 2.0)
     
     var new_shape = ConvexPolygonShape.new()
     var verts = PoolVector3Array()
