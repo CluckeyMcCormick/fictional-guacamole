@@ -1,16 +1,9 @@
-[gd_scene load_steps=8 format=2]
+[gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://assets/terrain/houses/RothFoundationSides.material" type="Material" id=1]
 [ext_resource path="res://scenes/formation/terrain/buildings/RothComponents/RothFoundation.tscn" type="PackedScene" id=2]
-[ext_resource path="res://scenes/formation/terrain/buildings/RothComponents/RothStairs.tscn" type="PackedScene" id=3]
 [ext_resource path="res://assets/terrain/houses/RothFoundationFloor.material" type="Material" id=4]
 [ext_resource path="res://assets/terrain/houses/RothFoundationFrame.material" type="Material" id=5]
-
-[sub_resource type="SpatialMaterial" id=1]
-albedo_color = Color( 0.313726, 0.301961, 0.647059, 1 )
-
-[sub_resource type="SpatialMaterial" id=2]
-albedo_color = Color( 1, 0.913725, 0, 1 )
 
 [node name="RothStockpile" type="Spatial"]
 
@@ -20,38 +13,3 @@ doorframe_mat = ExtResource( 5 )
 floor_mat = ExtResource( 4 )
 z_size = 10
 foundation_height = 0.15
-
-[node name="RothStairsA" parent="." instance=ExtResource( 3 )]
-sides_mat = SubResource( 1 )
-tops_mat = SubResource( 2 )
-z_shift = 5.0
-x_length = 9.0
-z_length = 1.0
-target_height = 0.15
-
-[node name="RothStairsB" parent="." instance=ExtResource( 3 )]
-transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, 0, 0, 0 )
-sides_mat = SubResource( 1 )
-tops_mat = SubResource( 2 )
-z_shift = 5.0
-x_length = 9.0
-z_length = 1.0
-target_height = 0.15
-
-[node name="RothStairsC" parent="." instance=ExtResource( 3 )]
-transform = Transform( -1, 0, -3.25841e-07, 0, 1, 0, 3.25841e-07, 0, -1, 0, 0, 0 )
-sides_mat = SubResource( 1 )
-tops_mat = SubResource( 2 )
-z_shift = 5.0
-x_length = 9.0
-z_length = 1.0
-target_height = 0.15
-
-[node name="RothStairsD" parent="." instance=ExtResource( 3 )]
-transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 0, 0, 0 )
-sides_mat = SubResource( 1 )
-tops_mat = SubResource( 2 )
-z_shift = 5.0
-x_length = 9.0
-z_length = 1.0
-target_height = 0.15

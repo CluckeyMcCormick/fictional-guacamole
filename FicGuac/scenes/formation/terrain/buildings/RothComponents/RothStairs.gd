@@ -5,8 +5,6 @@ extends StaticBody
 export(Material) var sides_mat
 export(Material) var tops_mat
 
-export(float, -10, 10, .5) var x_shift = 0 setget set_x_shift
-export(float, 0, 10, .5) var z_shift = 0 setget set_z_shift
 export(float, 1, 10, .25) var x_length = 2 setget set_x_length
 export(float, 1, 10, .25) var z_length = 2 setget set_z_length
 export(int, 1, 10) var steps = 4 setget set_steps 
@@ -25,18 +23,8 @@ func _ready():
 # Setters and Getters
 #
 # --------------------------------------------------------
-func set_x_shift(new_shift):
-    x_shift = new_shift
-    if Engine.editor_hint:
-        build_all()
-
 func set_x_length(new_length):
     x_length = new_length
-    if Engine.editor_hint:
-        build_all()
-        
-func set_z_shift(new_shift):
-    z_shift = new_shift
     if Engine.editor_hint:
         build_all()
 
@@ -77,11 +65,11 @@ func build_tops():
     
     # The stairs are positioned at the front of the foundation, so capture the
     # length of the foundation
-    var z_base = self.z_shift
+    var z_base = -self.z_length / 2.0
     
     # Pre-calculate our points on the left-and-right-hand side
-    var left_x = self.x_shift + (-self.x_length / 2.0)
-    var right_x = self.x_shift + (self.x_length / 2.0)
+    var left_x = -self.x_length / 2.0
+    var right_x = self.x_length / 2.0
     
     var new_mesh = Mesh.new()
     var verts = PoolVector3Array()
@@ -136,11 +124,11 @@ func build_sides():
     
     # The stairs are positioned at the front of the foundation, so capture the
     # length of the foundation
-    var z_base = self.z_shift
+    var z_base = -self.z_length / 2.0
     
     # Pre-calculate our points on the left-and-right-hand side
-    var left_x = self.x_shift + (-self.x_length / 2.0)
-    var right_x = self.x_shift + (self.x_length / 2.0)
+    var left_x = -self.x_length / 2.0
+    var right_x = self.x_length / 2.0
     
     var new_mesh = Mesh.new()
     var verts = PoolVector3Array()
@@ -205,13 +193,13 @@ func build_collision():
     
     # The stairs are positioned at the front of the foundation, so capture the
     # length of the foundation
-    var z_base = self.z_shift
+    var z_base = -self.z_length / 2.0
     var z_end = z_base + self.z_length
     var height = self.target_height
     
     # Pre-calculate our points on the left-and-right-hand side
-    var left_x = self.x_shift + (-self.x_length / 2.0)
-    var right_x = self.x_shift + (self.x_length / 2.0)
+    var left_x = -self.x_length / 2.0
+    var right_x = self.x_length / 2.0
     
     var new_shape = ConvexPolygonShape.new()
     var verts = PoolVector3Array()
