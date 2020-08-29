@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bm_s01_window01.png-19d62deef748c3ca5cd354c4aab3e6b8.stex"
+path="res://.import/bm_s02_floor_stone01.png-82e5babde86dbec9cd3b028052d72b17.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/terrain/houses/bm_s01_window01.png"
-dest_files=[ "res://.import/bm_s01_window01.png-19d62deef748c3ca5cd354c4aab3e6b8.stex" ]
+source_file="res://assets/terrain/buildings/bm_s02_floor_stone01.png"
+dest_files=[ "res://.import/bm_s02_floor_stone01.png-82e5babde86dbec9cd3b028052d72b17.stex" ]
 
 [params]
 
@@ -21,7 +21,7 @@ compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=true
 flags/filter=false
-flags/mipmaps=false
+flags/mipmaps=true
 flags/anisotropic=false
 flags/srgb=1
 process/fix_alpha_border=true

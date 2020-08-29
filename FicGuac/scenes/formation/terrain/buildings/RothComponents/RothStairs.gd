@@ -25,7 +25,6 @@ func _ready():
 # --------------------------------------------------------
 func set_sides(new_sides):
     sides_mat = new_sides
-    
     if Engine.editor_hint:
         build_all()
         
@@ -187,7 +186,7 @@ func build_sides():
     
     var st = SurfaceTool.new()
     st.begin(Mesh.PRIMITIVE_TRIANGLES)
-    #st.set_material(sides_mat)
+    st.set_material(sides_mat)
 
     for v in verts.size():
         st.add_uv(UVs[v])

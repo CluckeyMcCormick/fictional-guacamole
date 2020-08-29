@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/bm_s02_floor_wood01.png-de1730eeec0f18a4db8a8f090fabf683.s3tc.stex"
-path.etc2="res://.import/bm_s02_floor_wood01.png-de1730eeec0f18a4db8a8f090fabf683.etc2.stex"
+path.s3tc="res://.import/bm_s01_plaster_wall01.png-3fbd689ac06e73bf567957fd978deeeb.s3tc.stex"
+path.etc2="res://.import/bm_s01_plaster_wall01.png-3fbd689ac06e73bf567957fd978deeeb.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://assets/terrain/houses/bm_s02_floor_wood01.png"
-dest_files=[ "res://.import/bm_s02_floor_wood01.png-de1730eeec0f18a4db8a8f090fabf683.s3tc.stex", "res://.import/bm_s02_floor_wood01.png-de1730eeec0f18a4db8a8f090fabf683.etc2.stex" ]
+source_file="res://assets/terrain/buildings/bm_s01_plaster_wall01.png"
+dest_files=[ "res://.import/bm_s01_plaster_wall01.png-3fbd689ac06e73bf567957fd978deeeb.s3tc.stex", "res://.import/bm_s01_plaster_wall01.png-3fbd689ac06e73bf567957fd978deeeb.etc2.stex" ]
 
 [params]
 

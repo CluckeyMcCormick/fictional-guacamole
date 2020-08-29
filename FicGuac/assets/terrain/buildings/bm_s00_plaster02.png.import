@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bm_s00_plaster02.png-fcc8a42bd9f39314b73c76d22e6834d2.stex"
+path="res://.import/bm_s00_plaster02.png-58db7af8b867a647363be940030ce8b3.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/terrain/houses/bm_s00_plaster02.png"
-dest_files=[ "res://.import/bm_s00_plaster02.png-fcc8a42bd9f39314b73c76d22e6834d2.stex" ]
+source_file="res://assets/terrain/buildings/bm_s00_plaster02.png"
+dest_files=[ "res://.import/bm_s00_plaster02.png-58db7af8b867a647363be940030ce8b3.stex" ]
 
 [params]
 

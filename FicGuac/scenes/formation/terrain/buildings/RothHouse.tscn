@@ -1,15 +1,24 @@
-[gd_scene load_steps=13 format=2]
+[gd_scene load_steps=16 format=2]
 
 [ext_resource path="res://scenes/formation/terrain/buildings/RothComponents/RothStairs.tscn" type="PackedScene" id=1]
-[ext_resource path="res://assets/terrain/houses/RothFoundationSides.material" type="Material" id=2]
-[ext_resource path="res://assets/terrain/houses/RothFoundationFloor.material" type="Material" id=3]
+[ext_resource path="res://assets/terrain/buildings/bm_s01_stone_brick02.png" type="Texture" id=2]
+[ext_resource path="res://assets/terrain/buildings/bm_s02_floor_stone01.png" type="Texture" id=3]
 [ext_resource path="res://scenes/formation/terrain/buildings/RothComponents/RothFoundation.tscn" type="PackedScene" id=4]
-[ext_resource path="res://assets/terrain/houses/RothFoundationFrame.material" type="Material" id=5]
+[ext_resource path="res://assets/terrain/buildings/bm_s02_floor_wood01.png" type="Texture" id=5]
 [ext_resource path="res://scenes/formation/terrain/buildings/RothComponents/RothWallBasic.tscn" type="PackedScene" id=6]
-[ext_resource path="res://assets/terrain/houses/RothUpperInterior.material" type="Material" id=7]
-[ext_resource path="res://assets/terrain/houses/RothUpperExterior.material" type="Material" id=8]
-[ext_resource path="res://assets/terrain/houses/RothLowerExterior.material" type="Material" id=9]
-[ext_resource path="res://assets/terrain/houses/RothLowerInterior.material" type="Material" id=10]
+[ext_resource path="res://assets/terrain/buildings/house_materials/RothUpperInterior.material" type="Material" id=7]
+[ext_resource path="res://assets/terrain/buildings/house_materials/RothUpperExterior.material" type="Material" id=8]
+[ext_resource path="res://assets/terrain/buildings/house_materials/HouseLowerExterior.material" type="Material" id=9]
+[ext_resource path="res://assets/terrain/buildings/house_materials/HouseLowerInterior.material" type="Material" id=10]
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_texture = ExtResource( 2 )
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_texture = ExtResource( 3 )
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_texture = ExtResource( 5 )
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_color = Color( 0.345098, 0, 0.556863, 1 )
@@ -20,9 +29,9 @@ albedo_color = Color( 0.458824, 0.458824, 0.458824, 1 )
 [node name="RothHouse" type="Spatial"]
 
 [node name="Foundation" parent="." instance=ExtResource( 4 )]
-wall_mat = ExtResource( 2 )
-frame_mat = ExtResource( 5 )
-floor_mat = ExtResource( 3 )
+wall_mat = SubResource( 3 )
+frame_mat = SubResource( 4 )
+floor_mat = SubResource( 5 )
 
 [node name="Stairs" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.5 )
