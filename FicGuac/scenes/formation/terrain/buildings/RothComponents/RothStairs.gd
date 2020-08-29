@@ -154,21 +154,21 @@ func build_sides():
             far_z = z_base + self.z_length
         
         # Face 1
-        var pd = PolyGen.create_xlock_face(
+        var pd = PolyGen.create_xlock_face_simple(
             Vector2(far_z, base_height), Vector2(z_base, top_height), left_x
         )
         verts.append_array( pd[PolyGen.VECTOR3_KEY] )
         UVs.append_array( pd[PolyGen.VECTOR2_KEY] )
         
         # Face 2
-        pd = PolyGen.create_zlock_face(
+        pd = PolyGen.create_zlock_face_simple(
             Vector2(right_x, base_height), Vector2(left_x, top_height), far_z
         )
         verts.append_array( pd[PolyGen.VECTOR3_KEY] )
         UVs.append_array( pd[PolyGen.VECTOR2_KEY] )
 
         # Face 3
-        pd = PolyGen.create_xlock_face(
+        pd = PolyGen.create_xlock_face_simple(
             Vector2(z_base, base_height), Vector2(far_z, top_height), right_x
         )
         verts.append_array( pd[PolyGen.VECTOR3_KEY] )

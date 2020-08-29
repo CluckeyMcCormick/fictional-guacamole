@@ -206,25 +206,25 @@ func build_wall():
     var dz_size = self.z_size
     
     # Face 1: A2 -> B1
-    var pd = PolyGen.create_xlock_face_uv(
+    var pd = PolyGen.create_xlock_face_linear(
         Vector2(dz_size / 2.0, 0), Vector2(-dz_size / 2.0, dheight), # A & B
         -dx_size / 2.0, # X-Lock Position
-        (dz_size * 1), 0 # UV Coords
+        (dz_size * 1), 0 # UV Horizontal Coords
     )
     verts.append_array( pd[PolyGen.VECTOR3_KEY] )
     UVs.append_array( pd[PolyGen.VECTOR2_KEY] )    
     
     # Face 2: A3 -> B2
-    pd = PolyGen.create_zlock_face_uv(
+    pd = PolyGen.create_zlock_face_linear(
         Vector2(dx_size / 2.0, 0), Vector2(-dx_size / 2.0, dheight), # A & B
         dz_size / 2.0, # Z-Lock Position
-        (dz_size * 1) + (dx_size * 1), (dz_size * 1)
+        (dz_size * 1) + (dx_size * 1), (dz_size * 1) # UV Horizontal Coords
     )
     verts.append_array( pd[PolyGen.VECTOR3_KEY] )
     UVs.append_array( pd[PolyGen.VECTOR2_KEY] )   
     
     # Face 3: A4 -> B3
-    pd = PolyGen.create_xlock_face_uv(
+    pd = PolyGen.create_xlock_face_linear(
         Vector2(-dz_size / 2.0, 0), Vector2(dz_size / 2.0, dheight), # A & B
         dx_size / 2.0, # X-Lock Position
         (dz_size * 2) + (dx_size * 1),  (dz_size * 1) + (dx_size * 1)
@@ -233,7 +233,7 @@ func build_wall():
     UVs.append_array( pd[PolyGen.VECTOR2_KEY] )    
 
     # Face 4: A1 -> B4
-    pd = PolyGen.create_zlock_face_uv(
+    pd = PolyGen.create_zlock_face_linear(
         Vector2(-dx_size / 2.0, 0), Vector2(dx_size / 2.0, dheight), # A & B
         -dz_size / 2.0, # Z-Lock Position
         (dz_size * 2) + (dx_size * 2), (dz_size * 2) + (dx_size * 1)
