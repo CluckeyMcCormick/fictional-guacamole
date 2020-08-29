@@ -1,15 +1,19 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=6 format=2]
 
-[ext_resource path="res://assets/terrain/houses/RothFoundationSides.material" type="Material" id=1]
+[ext_resource path="res://assets/terrain/houses/bm_s01_stone_brick02.png" type="Texture" id=1]
 [ext_resource path="res://scenes/formation/terrain/buildings/RothComponents/RothFoundation.tscn" type="PackedScene" id=2]
 [ext_resource path="res://assets/terrain/houses/RothFoundationFloor.material" type="Material" id=4]
 [ext_resource path="res://assets/terrain/houses/RothFoundationFrame.material" type="Material" id=5]
 
+[sub_resource type="SpatialMaterial" id=1]
+resource_name = "RothFoundationSides"
+albedo_texture = ExtResource( 1 )
+
 [node name="RothStockpile" type="Spatial"]
 
 [node name="RothFoundation" parent="." instance=ExtResource( 2 )]
-wall_mat = ExtResource( 1 )
-doorframe_mat = ExtResource( 5 )
+wall_mat = SubResource( 1 )
+frame_mat = ExtResource( 5 )
 floor_mat = ExtResource( 4 )
 z_size = 10
 foundation_height = 0.15

@@ -21,7 +21,7 @@ albedo_color = Color( 0.458824, 0.458824, 0.458824, 1 )
 
 [node name="Foundation" parent="." instance=ExtResource( 4 )]
 wall_mat = ExtResource( 2 )
-doorframe_mat = ExtResource( 5 )
+frame_mat = ExtResource( 5 )
 floor_mat = ExtResource( 3 )
 
 [node name="Stairs" parent="." instance=ExtResource( 1 )]

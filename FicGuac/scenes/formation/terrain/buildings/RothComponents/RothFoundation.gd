@@ -2,9 +2,9 @@ tool
 extends StaticBody
 
 # Required materials
-export(Material) var wall_mat
-export(Material) var doorframe_mat
-export(Material) var floor_mat
+export(Material) var wall_mat setget set_wall
+export(Material) var frame_mat setget set_frame
+export(Material) var floor_mat setget set_floor
 
 export(int, 5, 20) var x_size = 10 setget set_x_size
 export(int, 5, 20) var z_size = 5 setget set_z_size
@@ -24,6 +24,21 @@ func _ready():
 # Setters and Getters
 #
 # --------------------------------------------------------
+func set_wall(new_wall):
+    wall_mat = new_wall
+    if Engine.editor_hint:
+        build_all()
+
+func set_frame(new_frame):
+    frame_mat = new_frame
+    if Engine.editor_hint:
+        build_all() 
+
+func set_floor(new_floor):
+    floor_mat = new_floor
+    if Engine.editor_hint:
+        build_all() 
+
 func set_x_size(new_x):
     x_size = new_x
     if Engine.editor_hint:
@@ -168,7 +183,7 @@ func build_frame():
 
     var st = SurfaceTool.new()
     st.begin(Mesh.PRIMITIVE_TRIANGLES)
-    st.set_material(doorframe_mat)
+    st.set_material(frame_mat)
 
     for v in verts.size():
         st.add_uv(UVs[v])

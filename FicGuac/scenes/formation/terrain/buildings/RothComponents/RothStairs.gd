@@ -23,6 +23,17 @@ func _ready():
 # Setters and Getters
 #
 # --------------------------------------------------------
+func set_sides(new_sides):
+    sides_mat = new_sides
+    
+    if Engine.editor_hint:
+        build_all()
+        
+func set_tops(new_tops):
+    tops_mat = new_tops
+    if Engine.editor_hint:
+        build_all()  
+        
 func set_x_length(new_length):
     x_length = new_length
     if Engine.editor_hint:
@@ -176,7 +187,7 @@ func build_sides():
     
     var st = SurfaceTool.new()
     st.begin(Mesh.PRIMITIVE_TRIANGLES)
-    st.set_material(sides_mat)
+    #st.set_material(sides_mat)
 
     for v in verts.size():
         st.add_uv(UVs[v])
@@ -187,7 +198,6 @@ func build_sides():
 
     st.commit(new_mesh)
     $StairSides.mesh = new_mesh
-
 
 func build_collision():
     
