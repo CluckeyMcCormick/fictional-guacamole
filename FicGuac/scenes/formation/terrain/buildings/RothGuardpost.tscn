@@ -43,9 +43,8 @@ foundation_height = 1.0
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.5 )
 sides_mat = SubResource( 4 )
 tops_mat = SubResource( 5 )
+full_top_step = true
 x_length = 1.5
-z_length = 2.0
-steps = 3
 target_height = 1.0
 
 [node name="RothWallBasicZNeg" parent="." instance=ExtResource( 6 )]
