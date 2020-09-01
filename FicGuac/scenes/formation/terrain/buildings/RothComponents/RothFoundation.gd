@@ -80,7 +80,7 @@ func build_floor():
     var dz_size = (self.z_size - (self.frame_thickness * 2)) / 2.0
     
     # Create the vertex and UV points
-    var points = PolyGen.create_upward_face(
+    var points = PolyGen.create_ylock_face_simple(
         Vector2(dx_size, dz_size), Vector2(-dx_size, -dz_size), dheight
     )
     # Unpack the dictionary we got back
@@ -162,22 +162,22 @@ func build_frame():
     var pd
     
     # Face 1
-    pd = PolyGen.create_upward_face(point_A_2, point_B_2, dheight)
+    pd = PolyGen.create_ylock_face_simple(point_A_2, point_B_2, dheight)
     verts.append_array( pd[PolyGen.VECTOR3_KEY] )
     UVs.append_array( pd[PolyGen.VECTOR2_KEY] )
     
     # Face 2
-    pd = PolyGen.create_upward_face(point_G_2, point_C_2, dheight)
+    pd = PolyGen.create_ylock_face_simple(point_G_2, point_C_2, dheight)
     verts.append_array( pd[PolyGen.VECTOR3_KEY] )
     UVs.append_array( pd[PolyGen.VECTOR2_KEY] )
 
     # Face 3
-    pd = PolyGen.create_upward_face(point_E_2, point_D_2, dheight)
+    pd = PolyGen.create_ylock_face_simple(point_E_2, point_D_2, dheight)
     verts.append_array( pd[PolyGen.VECTOR3_KEY] )
     UVs.append_array( pd[PolyGen.VECTOR2_KEY] )
     
     # Face 4
-    pd = PolyGen.create_upward_face(point_F_2, point_H_2, dheight)
+    pd = PolyGen.create_ylock_face_simple(point_F_2, point_H_2, dheight)
     verts.append_array( pd[PolyGen.VECTOR3_KEY] )
     UVs.append_array( pd[PolyGen.VECTOR2_KEY] )
 

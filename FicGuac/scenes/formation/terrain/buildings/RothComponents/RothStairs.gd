@@ -102,7 +102,7 @@ func build_tops():
             far_z = z_base + self.z_length
         
         # Create the faces for the tops of the stairs
-        var pd = PolyGen.create_upward_face(
+        var pd = PolyGen.create_ylock_face_simple(
             Vector2(right_x, far_z), Vector2(left_x, near_z), eff_height
         )
         verts.append_array( pd[PolyGen.VECTOR3_KEY] )

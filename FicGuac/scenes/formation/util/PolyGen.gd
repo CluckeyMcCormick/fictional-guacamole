@@ -19,29 +19,81 @@ const VECTOR2_KEY = "uv_pool_array"
 # We'll use the designations A-derivative ("Ad") and B-derivative ("Bd") to
 # refer to the derived points as designated above.
 
-static func create_upward_face(pointA : Vector2, pointB : Vector2, height : float):
+# Creates a face where the position on the Y-axis is locked. The user can
+# control what direction is "upwards" by manipulating pointA and pointB
+# appropriately. UV coordinates must be provided as uvA and uvB.
+static func create_ylock_face(
+    pointA : Vector2, pointB : Vector2, y_pos : float,
+    uvA : Vector2, uvB : Vector2
+):
     var v2 = PoolVector2Array()
     var v3 = PoolVector3Array()
     
-    # Triangle 1
-    v3.append( Vector3(pointA.x, height, pointA.y) ) # A
-    v3.append( Vector3(pointB.x, height, pointB.y) ) # B
-    v3.append( Vector3(pointA.x, height, pointB.y) ) # Ad
-    v2.append( pointA ) # A
-    v2.append( pointB ) # B
-    v2.append( Vector2(pointA.x, pointB.y) ) # Ad
-    
-    # Triangle 2
-    v3.append( Vector3(pointA.x, height, pointA.y) ) # A
-    v3.append( Vector3(pointB.x, height, pointA.y) ) # Bd
-    v3.append( Vector3(pointB.x, height, pointB.y) ) # B
-    v2.append( pointA ) # A
-    v2.append( Vector2(pointB.x, pointA.y) ) # Bd
-    v2.append( pointB ) # B
+    var A3 = Vector3(pointA.x, y_pos, pointA.y)
+    var B3 = Vector3(pointB.x, y_pos, pointB.y)
+    var Ad3 = Vector3(pointA.x, y_pos, pointB.y)
+    var Bd3 = Vector3(pointB.x, y_pos, pointA.y)
 
-    # Pack the pool arrays into a dictionary
+    var A2 = uvA
+    var B2 = uvB
+    var Ad2 = Vector2(uvA.x, uvB.y)
+    var Bd2 = Vector2(uvB.x, uvA.y)
+    
+    # Triangle 1
+    v3.append( A3 ) # A
+    v3.append( B3 ) # B
+    v3.append( Ad3 ) # Ad
+    v2.append( A2 ) # A
+    v2.append( B2 ) # B
+    v2.append( Ad2 ) # Ad
+
+    # Triangle 2
+    v3.append( A3 ) # A
+    v3.append( Bd3 ) # Bd
+    v3.append( B3 ) # B
+    v2.append( A2 ) # A
+    v2.append( Bd2 ) # Bd
+    v2.append( B2 ) # B
+
     return {VECTOR3_KEY: v3, VECTOR2_KEY: v2}
 
+# Wrapper for the above function - allows the user to specify just floats for
+# the UV coordinates, rather than Vector2 types. The y values are taken from the
+# two vertex points.
+static func create_ylock_face_linear(
+    pointA : Vector2, pointB : Vector2, y_pos : float,
+    uvA: float, uvB : float
+):
+    var new_uvA = Vector2(uvA, pointA.y)
+    var new_uvB = Vector2(uvB, pointB.y)
+    return create_ylock_face(pointA, pointB, y_pos, new_uvA, new_uvB)
+
+# Wrapper for the regular create_xlock_face function. This one passes the
+# two vertex points as the UV points, but shifts them by the appropriate values
+# in the uv_shift vector. This creates a face that is shifted from it's position
+# in texture space. This is intended as a workaround for shifting textures when
+# the face was constructed away from it's intended destination. Or we just wanna
+# shift the texture around.
+static func create_ylock_face_shifted(
+    pointA : Vector2, pointB : Vector2, y_pos : float,
+    uv_shift: Vector3
+):
+    # Determine the degree of shifting
+    var boiled_shift = Vector2(uv_shift.x, uv_shift.z)
+    # Calculate the new UV coordinates
+    var uvA = pointA + boiled_shift
+    var uvB = pointB + boiled_shift
+    
+    return create_ylock_face(pointA, pointB, y_pos, uvA, uvB)
+
+# Wrapper for the regular create_xlock_face function, but this one passes the
+# two vertex points as the UV points, creating a face that has the UV values
+# aligned with it's initial position in space. 
+static func create_ylock_face_simple(
+    pointA : Vector2, pointB : Vector2, y_pos : float
+):
+    return create_ylock_face(pointA, pointB, y_pos, pointA, pointB)
+  
 # Creates a face where the position on the X-axis is locked. The user can
 # control what direction is the "front" by manipulating pointA and pointB
 # appropriately. I've also observed that the texture of vertical faces is often

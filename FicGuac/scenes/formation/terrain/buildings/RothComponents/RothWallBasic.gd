@@ -156,7 +156,7 @@ func build_cutaway_sides():
     var pointB = Vector2( thickness / 2.0, height)
     
     # Make the positive X-face
-    var pd = PolyGen.create_xlock_face_simple(pointA, pointB, length / 2.0)
+    var pd = PolyGen.create_xlock_face_shifted(pointA, pointB, length / 2.0, uv_shift)
     verts.append_array( pd[PolyGen.VECTOR3_KEY] )
     UVs.append_array( pd[PolyGen.VECTOR2_KEY] )
     
@@ -164,7 +164,7 @@ func build_cutaway_sides():
     pointA = Vector2( thickness / 2.0, 0)
     pointB = Vector2(-thickness / 2.0, height)
     # Create the negative X-face
-    pd = PolyGen.create_xlock_face_simple(pointA, pointB, -length / 2.0)
+    pd = PolyGen.create_xlock_face_shifted(pointA, pointB, -length / 2.0, uv_shift)
     verts.append_array( pd[PolyGen.VECTOR3_KEY] )
     UVs.append_array( pd[PolyGen.VECTOR2_KEY] )
     
@@ -195,7 +195,7 @@ func build_cutaway_top():
     var pointB = Vector2(length / 2.0, thickness / 2.0)
     
     # Make the positive X-face
-    var pd = PolyGen.create_upward_face(pointA, pointB, height)
+    var pd = PolyGen.create_ylock_face_shifted(pointA, pointB, height, uv_shift)
     verts.append_array( pd[PolyGen.VECTOR3_KEY] )
     UVs.append_array( pd[PolyGen.VECTOR2_KEY] )
     
