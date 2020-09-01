@@ -1,4 +1,4 @@
-[gd_scene load_steps=15 format=2]
+[gd_scene load_steps=18 format=2]
 
 [ext_resource path="res://scenes/formation/terrain/buildings/RothComponents/RothStairs.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/terrain/buildings/bm_s01_stone_brick02.png" type="Texture" id=2]
@@ -9,37 +9,42 @@
 [ext_resource path="res://assets/terrain/buildings/guardpost_materials/GuardpostLowerMid.material" type="Material" id=7]
 [ext_resource path="res://assets/terrain/buildings/guardpost_materials/GuardpostLowerInterior.material" type="Material" id=8]
 [ext_resource path="res://assets/terrain/buildings/guardpost_materials/GuardpostLowerExterior.material" type="Material" id=9]
+[ext_resource path="res://scenes/formation/terrain/buildings/RothComponents/RothColumn.tscn" type="PackedScene" id=10]
+[ext_resource path="res://assets/terrain/buildings/guardpost_materials/GuardpostColumnTop.material" type="Material" id=11]
+[ext_resource path="res://assets/terrain/buildings/guardpost_materials/GuardpostColumnSides.material" type="Material" id=12]
 
-[sub_resource type="SpatialMaterial" id=4]
+[sub_resource type="SpatialMaterial" id=1]
 albedo_texture = ExtResource( 2 )
 
-[sub_resource type="SpatialMaterial" id=5]
+[sub_resource type="SpatialMaterial" id=2]
 albedo_texture = ExtResource( 3 )
 
-[sub_resource type="SpatialMaterial" id=6]
+[sub_resource type="SpatialMaterial" id=3]
 albedo_texture = ExtResource( 5 )
 
-[sub_resource type="SpatialMaterial" id=3]
+[sub_resource type="SpatialMaterial" id=4]
 albedo_color = Color( 0.0941176, 0.603922, 0.639216, 1 )
 
-[sub_resource type="SpatialMaterial" id=2]
+[sub_resource type="SpatialMaterial" id=5]
 albedo_color = Color( 0.807843, 0.101961, 0.101961, 1 )
 
 [node name="RothGuardpost" type="Spatial"]
 
 [node name="RothFoundation" parent="." instance=ExtResource( 4 )]
-wall_mat = SubResource( 4 )
-frame_mat = SubResource( 5 )
-floor_mat = SubResource( 6 )
+wall_mat = SubResource( 1 )
+frame_mat = SubResource( 2 )
+floor_mat = SubResource( 3 )
 x_size = 5
+z_size = 5
 frame_thickness = 1.0
 foundation_height = 1.0
 
 [node name="RothStairs" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.5 )
-sides_mat = SubResource( 3 )
-tops_mat = SubResource( 2 )
+sides_mat = SubResource( 4 )
+tops_mat = SubResource( 5 )
 x_length = 1.5
+z_length = 2.0
 steps = 3
 target_height = 1.0
 
@@ -68,4 +73,28 @@ cutaway_top_mat = ExtResource( 7 )
 interior_mat = ExtResource( 8 )
 exterior_mat = ExtResource( 9 )
 length = 3.0
+height = 0.75
+
+[node name="RothColumnXNegZPos" parent="." instance=ExtResource( 10 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, 2 )
+top_mat = ExtResource( 11 )
+sides_mat = ExtResource( 12 )
+height = 0.75
+
+[node name="RothColumnXPosZPos" parent="." instance=ExtResource( 10 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, 2 )
+top_mat = ExtResource( 11 )
+sides_mat = ExtResource( 12 )
+height = 0.75
+
+[node name="RothColumnXNegZNeg" parent="." instance=ExtResource( 10 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1, -2 )
+top_mat = ExtResource( 11 )
+sides_mat = ExtResource( 12 )
+height = 0.75
+
+[node name="RothColumnXPosZNeg" parent="." instance=ExtResource( 10 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1, -2 )
+top_mat = ExtResource( 11 )
+sides_mat = ExtResource( 12 )
 height = 0.75

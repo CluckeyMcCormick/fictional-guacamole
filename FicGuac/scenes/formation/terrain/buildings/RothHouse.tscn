@@ -1,4 +1,4 @@
-[gd_scene load_steps=16 format=2]
+[gd_scene load_steps=22 format=2]
 
 [ext_resource path="res://scenes/formation/terrain/buildings/RothComponents/RothStairs.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/terrain/buildings/bm_s01_stone_brick02.png" type="Texture" id=2]
@@ -10,76 +10,47 @@
 [ext_resource path="res://assets/terrain/buildings/house_materials/RothUpperExterior.material" type="Material" id=8]
 [ext_resource path="res://assets/terrain/buildings/house_materials/HouseLowerExterior.material" type="Material" id=9]
 [ext_resource path="res://assets/terrain/buildings/house_materials/HouseLowerInterior.material" type="Material" id=10]
-
-[sub_resource type="SpatialMaterial" id=3]
-albedo_texture = ExtResource( 2 )
-
-[sub_resource type="SpatialMaterial" id=4]
-albedo_texture = ExtResource( 3 )
-
-[sub_resource type="SpatialMaterial" id=5]
-albedo_texture = ExtResource( 5 )
+[ext_resource path="res://scenes/formation/terrain/buildings/RothComponents/RothColumn.tscn" type="PackedScene" id=11]
+[ext_resource path="res://assets/terrain/buildings/house_materials/RothLowerColSides.material" type="Material" id=12]
+[ext_resource path="res://assets/terrain/buildings/house_materials/RothLowerColTop.material" type="Material" id=13]
+[ext_resource path="res://assets/terrain/buildings/house_materials/RothUpperColSides.material" type="Material" id=14]
+[ext_resource path="res://assets/terrain/buildings/house_materials/RothUpperCutawaySides.material" type="Material" id=15]
+[ext_resource path="res://assets/terrain/buildings/house_materials/RothLowerCutawaySides.material" type="Material" id=16]
 
 [sub_resource type="SpatialMaterial" id=1]
-albedo_color = Color( 0.345098, 0, 0.556863, 1 )
+albedo_texture = ExtResource( 2 )
 
 [sub_resource type="SpatialMaterial" id=2]
+albedo_texture = ExtResource( 3 )
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_texture = ExtResource( 5 )
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_color = Color( 0.345098, 0, 0.556863, 1 )
+
+[sub_resource type="SpatialMaterial" id=5]
 albedo_color = Color( 0.458824, 0.458824, 0.458824, 1 )
 
 [node name="RothHouse" type="Spatial"]
 
 [node name="Foundation" parent="." instance=ExtResource( 4 )]
-wall_mat = SubResource( 3 )
-frame_mat = SubResource( 4 )
-floor_mat = SubResource( 5 )
+wall_mat = SubResource( 1 )
+frame_mat = SubResource( 2 )
+floor_mat = SubResource( 3 )
+x_size = 10
+z_size = 5
+frame_thickness = 0.5
+foundation_height = 0.5
 
 [node name="Stairs" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.5 )
-sides_mat = SubResource( 1 )
-tops_mat = SubResource( 2 )
-
-[node name="UpperWallNegX" parent="." instance=ExtResource( 6 )]
-transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, -4.75, 1, 0 )
-interior_mat = ExtResource( 7 )
-exterior_mat = ExtResource( 8 )
-length = 4.0
-thickness = 0.5
-
-[node name="UpperWallNegZ" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -2.25 )
-interior_mat = ExtResource( 7 )
-exterior_mat = ExtResource( 8 )
-length = 9.0
-thickness = 0.5
-
-[node name="UpperWallPosX" parent="." instance=ExtResource( 6 )]
-transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 4.75, 1, 0 )
-interior_mat = ExtResource( 7 )
-exterior_mat = ExtResource( 8 )
-length = 4.0
-thickness = 0.5
-
-[node name="UpperWallPosZA" parent="." instance=ExtResource( 6 )]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -2.75, 1, 2.25 )
-interior_mat = ExtResource( 7 )
-exterior_mat = ExtResource( 8 )
-length = 3.5
-thickness = 0.5
-
-[node name="UpperWallPosZB" parent="." instance=ExtResource( 6 )]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.75, 1, 2.25 )
-interior_mat = ExtResource( 7 )
-exterior_mat = ExtResource( 8 )
-length = 3.5
-thickness = 0.5
-
-[node name="UpperWallPosZC" parent="." instance=ExtResource( 6 )]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 2.25, 2.25 )
-interior_mat = ExtResource( 7 )
-exterior_mat = ExtResource( 8 )
-uv_shift = Vector3( 0, 1.25, 0 )
-thickness = 0.5
-height = 0.75
+sides_mat = SubResource( 4 )
+tops_mat = SubResource( 5 )
+x_length = 2.0
+z_length = 2.0
+steps = 4
+target_height = 0.5
 
 [node name="LowerWall" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.5 )
@@ -102,6 +73,7 @@ height = 0.5
 
 [node name="PosZA" parent="LowerWall" instance=ExtResource( 6 )]
 transform = Transform( -1, 0, 3.25841e-07, 0, 1, 0, -3.25841e-07, 0, -1, -2.75, 0.5, -1.25 )
+cutaway_sides_mat = ExtResource( 16 )
 interior_mat = ExtResource( 10 )
 exterior_mat = ExtResource( 9 )
 length = 3.5
@@ -110,6 +82,7 @@ height = 0.5
 
 [node name="PosZB" parent="LowerWall" instance=ExtResource( 6 )]
 transform = Transform( -1, 0, 3.25841e-07, 0, 1, 0, -3.25841e-07, 0, -1, 2.75, 0.5, -1.25 )
+cutaway_sides_mat = ExtResource( 16 )
 interior_mat = ExtResource( 10 )
 exterior_mat = ExtResource( 9 )
 length = 3.5
@@ -123,3 +96,104 @@ exterior_mat = ExtResource( 9 )
 length = 4.0
 thickness = 0.5
 height = 0.5
+
+[node name="Columns" type="Spatial" parent="LowerWall"]
+
+[node name="PosZPosX" parent="LowerWall/Columns" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.75, 0.5, -1.25 )
+top_mat = ExtResource( 13 )
+sides_mat = ExtResource( 12 )
+side_length = 0.5
+height = 0.5
+
+[node name="NegZPosX" parent="LowerWall/Columns" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.75, 0.5, -5.75 )
+top_mat = ExtResource( 13 )
+sides_mat = ExtResource( 12 )
+side_length = 0.5
+height = 0.5
+
+[node name="PosZNegX" parent="LowerWall/Columns" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.75, 0.5, -1.25 )
+top_mat = ExtResource( 13 )
+sides_mat = ExtResource( 12 )
+side_length = 0.5
+height = 0.5
+
+[node name="NegZNegX" parent="LowerWall/Columns" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.75, 0.5, -5.75 )
+top_mat = ExtResource( 13 )
+sides_mat = ExtResource( 12 )
+side_length = 0.5
+height = 0.5
+
+[node name="UpperWall" type="Spatial" parent="."]
+
+[node name="NegX" parent="UpperWall" instance=ExtResource( 6 )]
+transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, -4.75, 1, 0 )
+interior_mat = ExtResource( 7 )
+exterior_mat = ExtResource( 8 )
+length = 4.0
+thickness = 0.5
+
+[node name="NegZ" parent="UpperWall" instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, -2.25 )
+interior_mat = ExtResource( 7 )
+exterior_mat = ExtResource( 8 )
+length = 9.0
+thickness = 0.5
+
+[node name="PosX" parent="UpperWall" instance=ExtResource( 6 )]
+transform = Transform( -1.62921e-07, 0, -1, 0, 1, 0, 1, 0, -1.62921e-07, 4.75, 1, 0 )
+interior_mat = ExtResource( 7 )
+exterior_mat = ExtResource( 8 )
+length = 4.0
+thickness = 0.5
+
+[node name="PosZA" parent="UpperWall" instance=ExtResource( 6 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, -2.75, 1, 2.25 )
+cutaway_sides_mat = ExtResource( 15 )
+interior_mat = ExtResource( 7 )
+exterior_mat = ExtResource( 8 )
+length = 3.5
+thickness = 0.5
+
+[node name="PosZB" parent="UpperWall" instance=ExtResource( 6 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 2.75, 1, 2.25 )
+cutaway_sides_mat = ExtResource( 15 )
+interior_mat = ExtResource( 7 )
+exterior_mat = ExtResource( 8 )
+length = 3.5
+thickness = 0.5
+
+[node name="PosZC" parent="UpperWall" instance=ExtResource( 6 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 2.25, 2.25 )
+cutaway_sides_mat = ExtResource( 15 )
+interior_mat = ExtResource( 7 )
+exterior_mat = ExtResource( 8 )
+uv_shift = Vector3( 0, 1.25, 0 )
+thickness = 0.5
+height = 0.75
+
+[node name="Columns" type="Spatial" parent="UpperWall"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.5 )
+
+[node name="PosZPosX" parent="UpperWall/Columns" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.75, 1, -1.25 )
+sides_mat = ExtResource( 14 )
+side_length = 0.5
+
+[node name="NegZPosX" parent="UpperWall/Columns" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.75, 1, -5.75 )
+sides_mat = ExtResource( 14 )
+side_length = 0.5
+
+[node name="PosZNegX" parent="UpperWall/Columns" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.75, 1, -1.25 )
+sides_mat = ExtResource( 14 )
+side_length = 0.5
+
+[node name="NegZNegX" parent="UpperWall/Columns" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.75, 1, -5.75 )
+sides_mat = ExtResource( 14 )
+side_length = 0.5
