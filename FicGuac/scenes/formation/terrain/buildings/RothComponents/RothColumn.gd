@@ -5,12 +5,18 @@ export(Material) var top_mat setget set_top
 export(Material) var sides_mat setget set_sides
 
 # How long are the sides of the column?
-export(float, .25, 10, .25) var side_length = 1 setget set_length
+export(float) var side_length = 1 setget set_length
 # How tall is this column?
-export(float, .25, 10, .25) var height = 2 setget set_height
+export(float) var height = 2 setget set_height
 
 # Load the PolyGen script
 const PolyGen = preload("res://scenes/formation/util/PolyGen.gd")
+
+# What's the minimum length for a column?
+const MIN_LEN = 0.01
+
+# What's the minimum height for a column?
+const MIN_HEIGHT = 0.01
 
 func _ready():
     # When we enter the scene for the first time, we have to build out the
@@ -33,12 +39,14 @@ func set_sides(new_mat):
         build_all()
 
 func set_length(new_length):
-    side_length = new_length
+    # Side length MUST at LEAST be MIN_LEN
+    side_length = max(new_length, MIN_LEN)
     if Engine.editor_hint:
         build_all()
 
 func set_height(new_height):
-    height = new_height
+    # Height MUST BE AN ACTUAL POSITIVE value!
+    height = max(new_height, MIN_HEIGHT)
     if Engine.editor_hint:
         build_all()
 

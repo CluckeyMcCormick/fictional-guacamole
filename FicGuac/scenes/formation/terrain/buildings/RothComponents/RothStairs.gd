@@ -8,13 +8,20 @@ export(Material) var tops_mat
 
 export(bool) var full_top_step = true setget set_full_top
 
-export(float, 1, 10, .25) var x_length = 2 setget set_x_length
-export(float, 1, 10, .25) var z_length = 2 setget set_z_length
-export(int, 1, 10) var steps = 4 setget set_steps 
-export(float, .05, 10, .05) var target_height = .5 setget set_target_height
+export(float) var x_length = 2 setget set_x_length
+export(float) var z_length = 2 setget set_z_length
+export(int) var steps = 4 setget set_steps 
+export(float) var target_height = .5 setget set_target_height
 
 # Load the PolyGen script
 const PolyGen = preload("res://scenes/formation/util/PolyGen.gd")
+
+# What's the minimum length for a side?
+const MIN_LEN = 0.01
+# What's the minimum amount of steps?
+const MIN_STEPS = 1
+# What's the minimum height for the steps?
+const MIN_HEIGHT = 0.01
 
 func _ready():
     # When we enter the scene for the first time, we have to build out the
@@ -37,22 +44,26 @@ func set_tops(new_tops):
         build_all()  
         
 func set_x_length(new_length):
-    x_length = new_length
+    # Length MUST at LEAST be MIN_LEN
+    x_length = max(new_length, MIN_LEN)
     if Engine.editor_hint:
         build_all()
 
 func set_z_length(new_length):
-    z_length = new_length
+    # Length MUST at LEAST be MIN_LEN
+    z_length = max(new_length, MIN_LEN)
     if Engine.editor_hint:
         build_all()
 
 func set_steps(new_step_count):
-    steps = new_step_count
+    # There must be at LEAST MIN_STEPS
+    steps = max(new_step_count, MIN_STEPS)
     if Engine.editor_hint:
         build_all()
 
 func set_target_height(new_target):
-    target_height = new_target
+    # The stairs have to be at LEAST MIN_HEIGHT
+    target_height = max(new_target, MIN_HEIGHT)
     if Engine.editor_hint:
         build_all()
 

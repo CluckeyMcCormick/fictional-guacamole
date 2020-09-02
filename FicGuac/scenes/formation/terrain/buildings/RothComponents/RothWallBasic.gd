@@ -10,18 +10,25 @@ export(Material) var exterior_mat setget set_exterior
 # neighbors. This Vector3 should solve that.
 export(Vector3) var uv_shift setget set_uv_shift
 # How long is the wall?
-export(float, .25, 10, .25) var length = 2 setget set_length
+export(float) var length = 2 setget set_length
 # How thick is the wall?
-export(float, .25, 10, .25) var thickness = 1 setget set_thickness
+export(float) var thickness = 1 setget set_thickness
 # How high is the wall?
-export(float, .25, 10, .25) var height = 2 setget set_height
+export(float) var height = 2 setget set_height
 
 # Load the PolyGen script
 const PolyGen = preload("res://scenes/formation/util/PolyGen.gd")
 
+# What's the minimum length for the wall?
+const MIN_LEN = 0.01
+# At a minimum, how thick must the wall be?
+const MIN_THICKNESS = .01
+# What's the minimum height for the wall?
+const MIN_HEIGHT = 0.01
+
 func _ready():
     # When we enter the scene for the first time, we have to build out the
-    # stairs
+    # walls
     self.build_all()
 
 # --------------------------------------------------------
@@ -55,17 +62,20 @@ func set_uv_shift(new_shift):
         build_all()
 
 func set_length(new_length):
-    length = new_length
+    # Length MUST at LEAST be MIN_LEN
+    length = max(new_length, MIN_LEN)
     if Engine.editor_hint:
         build_all()
 
 func set_thickness(new_thickness):
-    thickness = new_thickness
+    # Thickness MUST at LEAST be MIN_THICKNESS
+    thickness = max(new_thickness, MIN_THICKNESS)
     if Engine.editor_hint:
         build_all()
 
 func set_height(new_height):
-    height = new_height
+    # Height MUST at LEAST be MIN_HEIGHT
+    height = max(new_height, MIN_HEIGHT)
     if Engine.editor_hint:
         build_all()
 

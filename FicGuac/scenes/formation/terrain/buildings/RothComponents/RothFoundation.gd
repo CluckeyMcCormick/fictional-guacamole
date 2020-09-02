@@ -6,13 +6,23 @@ export(Material) var wall_mat setget set_wall
 export(Material) var frame_mat setget set_frame
 export(Material) var floor_mat setget set_floor
 
-export(int, 5, 20) var x_size = 10 setget set_x_size
-export(int, 5, 20) var z_size = 5 setget set_z_size
-export(float, .05, 1, .05) var frame_thickness = .5 setget set_frame_thickness
-export(float, .05, 1, .05) var foundation_height = .5 setget set_foundation_height
+export(int) var x_size = 10 setget set_x_size
+export(int) var z_size = 5 setget set_z_size
+export(float) var frame_thickness = .5 setget set_frame_thickness
+export(float) var foundation_height = .5 setget set_foundation_height
 
 # Load the PolyGen script
 const PolyGen = preload("res://scenes/formation/util/PolyGen.gd")
+
+# What's the minimum length for a side of the foundation?
+const MIN_LEN = 1
+# At a minimum, how thick must the frame be?
+const MIN_FRAME_SIZE = .01
+# What's the minimum size the floor can be? The user doesn't set the directly,
+# this is just used to clamp the size of the frame.
+const MIN_FLOOR_SIZE = .1
+# What's the minimum height for the foundation?
+const MIN_HEIGHT = .01
 
 func _ready():
     # When we enter the scene for the first time, we have to build out the
@@ -40,22 +50,32 @@ func set_floor(new_floor):
         build_all() 
 
 func set_x_size(new_x):
-    x_size = new_x
+    # Length MUST at LEAST be MIN_LEN
+    x_size = max(new_x, MIN_LEN)
     if Engine.editor_hint:
         build_all()
 
 func set_z_size(new_z):
-    z_size = new_z
+    # Length MUST at LEAST be MIN_LEN
+    z_size = max(new_z, MIN_LEN)
     if Engine.editor_hint:
         build_all()
 
 func set_frame_thickness(new_thickness):
-    frame_thickness = new_thickness
+    # Take the shortest side and subtract the minimum floor size - this is our
+    # current maximum size for the frame!
+    var max_frame_size = min(x_size, z_size) - MIN_FLOOR_SIZE
+    # Of course, since the floor is in the middle of the foundation, our true
+    # maximum size is what we calculated above - but halved!
+    max_frame_size /= 2.0
+    # Clamp it!
+    frame_thickness = clamp(new_thickness, MIN_FRAME_SIZE, max_frame_size)
     if Engine.editor_hint:
         build_all()
 
 func set_foundation_height(new_height):
-    foundation_height = new_height
+    # Height MUST at LEAST be MIN_HEIGHT
+    foundation_height = max(new_height, MIN_HEIGHT)
     if Engine.editor_hint:
         build_all()
 

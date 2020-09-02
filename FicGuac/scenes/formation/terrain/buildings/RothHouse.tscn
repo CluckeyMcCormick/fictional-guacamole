@@ -38,16 +38,11 @@ albedo_color = Color( 0.458824, 0.458824, 0.458824, 1 )
 wall_mat = SubResource( 1 )
 frame_mat = SubResource( 2 )
 floor_mat = SubResource( 3 )
-x_size = 10
-z_size = 5
-frame_thickness = 0.5
-foundation_height = 0.5
 
 [node name="Stairs" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.5 )
 sides_mat = SubResource( 4 )
 tops_mat = SubResource( 5 )
-full_top_step = true
 
 [node name="LowerWall" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.5 )
