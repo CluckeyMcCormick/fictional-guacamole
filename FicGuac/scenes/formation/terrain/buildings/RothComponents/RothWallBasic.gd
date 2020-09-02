@@ -131,8 +131,8 @@ func build_exterior():
     var z_lock = -thickness / 2.0
     
     # Create our points
-    var pointA = Vector2(-length / 2.0 + uv_shift.x, 0)
-    var pointB = Vector2( length / 2.0 + uv_shift.x, height)
+    var pointA = Vector2(-length / 2.0, 0)
+    var pointB = Vector2( length / 2.0, height)
     
     # Make the face
     var pd = PolyGen.create_zlock_face_shifted(pointA, pointB, z_lock, uv_shift)
