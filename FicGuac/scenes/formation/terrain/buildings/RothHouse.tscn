@@ -1,4 +1,4 @@
-[gd_scene load_steps=23 format=2]
+[gd_scene load_steps=24 format=2]
 
 [ext_resource path="res://scenes/formation/terrain/buildings/RothComponents/RothStairs.tscn" type="PackedScene" id=1]
 [ext_resource path="res://assets/terrain/buildings/bm_s01_stone_brick02.png" type="Texture" id=2]
@@ -17,6 +17,7 @@
 [ext_resource path="res://assets/terrain/buildings/house_materials/RothUpperCutawaySides.material" type="Material" id=15]
 [ext_resource path="res://assets/terrain/buildings/house_materials/RothLowerCutawaySides.material" type="Material" id=16]
 [ext_resource path="res://scenes/formation/terrain/buildings/RothComponents/RothWallOpenGap.tscn" type="PackedScene" id=17]
+[ext_resource path="res://scenes/formation/terrain/buildings/RothComponents/RothWallCloseGap.tscn" type="PackedScene" id=18]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_texture = ExtResource( 2 )
@@ -134,23 +135,6 @@ exterior_mat = ExtResource( 8 )
 length = 4.0
 thickness = 0.5
 
-[node name="PosZC" parent="UpperWall" instance=ExtResource( 6 )]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 2.25, 2.25 )
-cutaway_sides_mat = ExtResource( 15 )
-interior_mat = ExtResource( 7 )
-exterior_mat = ExtResource( 8 )
-uv_shift = Vector3( 0, 1.25, 0 )
-thickness = 0.5
-height = 0.75
-
-[node name="PosZ" parent="UpperWall" instance=ExtResource( 17 )]
-transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1, 2.25 )
-cutaway_sides_mat = ExtResource( 15 )
-interior_mat = ExtResource( 7 )
-exterior_mat = ExtResource( 8 )
-wall_length = 9.0
-thickness = 0.5
-
 [node name="Columns" type="Spatial" parent="UpperWall"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.5 )
 
@@ -173,3 +157,12 @@ side_length = 0.5
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.75, 1, -5.75 )
 sides_mat = ExtResource( 14 )
 side_length = 0.5
+
+[node name="PosZ" parent="UpperWall" instance=ExtResource( 18 )]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 1, 2.25 )
+cutaway_sides_mat = ExtResource( 15 )
+interior_mat = ExtResource( 7 )
+exterior_mat = ExtResource( 8 )
+wall_length = 9.0
+thickness = 0.5
+gap_height = 1.25
