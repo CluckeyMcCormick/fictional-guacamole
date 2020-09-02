@@ -52,12 +52,30 @@ func set_floor(new_floor):
 func set_x_size(new_x):
     # Length MUST at LEAST be MIN_LEN
     x_size = max(new_x, MIN_LEN)
+    # Since we updated the size of x, we need to ensure the frame thickness is
+    # correct! Take the shortest side and subtract the minimum floor size - this
+    # is our current maximum size for the frame!
+    var max_frame_size = min(x_size, z_size) - MIN_FLOOR_SIZE
+    # Of course, since the floor is in the middle of the foundation, our true
+    # maximum size is what we calculated above - but halved!
+    max_frame_size /= 2.0
+    # Clamp it!
+    frame_thickness = clamp(frame_thickness, MIN_FRAME_SIZE, max_frame_size)
     if Engine.editor_hint:
         build_all()
 
 func set_z_size(new_z):
     # Length MUST at LEAST be MIN_LEN
     z_size = max(new_z, MIN_LEN)
+    # Since we updated the size of z, we need to ensure the frame thickness is
+    # correct! Take the shortest side and subtract the minimum floor size - this
+    # is our current maximum size for the frame!
+    var max_frame_size = min(x_size, z_size) - MIN_FLOOR_SIZE
+    # Of course, since the floor is in the middle of the foundation, our true
+    # maximum size is what we calculated above - but halved!
+    max_frame_size /= 2.0
+    # Clamp it!
+    frame_thickness = clamp(frame_thickness, MIN_FRAME_SIZE, max_frame_size)
     if Engine.editor_hint:
         build_all()
 
