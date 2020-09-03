@@ -44,8 +44,7 @@ const MIN_GAP_LEN = .01
 const MIN_GAP_HEIGHT = .01
 
 # Preload the two varieties of fourth wall
-const OPEN_GAP_WALL = preload("res://scenes/formation/terrain/buildings/RothComponents/RothWallOpenGap.tscn")
-const CLOSE_GAP_WALL = preload("res://scenes/formation/terrain/buildings/RothComponents/RothWallCloseGap.tscn")
+const GAP_WALL = preload("res://scenes/formation/terrain/buildings/RothComponents/RothWallGap.tscn")
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -152,14 +151,16 @@ func build_all():
         # If there's supposed to be an open wall, create the node and then set
         # the length of the gap
         WallStyles.OPEN_GAP:
-            fourth_wall_node = OPEN_GAP_WALL.instance()
+            fourth_wall_node = GAP_WALL.instance()
+            fourth_wall_node.generate_cap_wall = false
             self.add_child(fourth_wall_node)
             fourth_wall_node.set_owner(self)
             fourth_wall_node.gap_length = self.gap_length
         # If there's supposed to be an open wall, create the node and then set
         # the length of the gap AND the height of the gap
         WallStyles.CLOSED_GAP:
-            fourth_wall_node = CLOSE_GAP_WALL.instance()
+            fourth_wall_node = GAP_WALL.instance()
+            fourth_wall_node.generate_cap_wall = true
             self.add_child(fourth_wall_node)
             fourth_wall_node.set_owner(self)
             fourth_wall_node.gap_length = self.gap_length

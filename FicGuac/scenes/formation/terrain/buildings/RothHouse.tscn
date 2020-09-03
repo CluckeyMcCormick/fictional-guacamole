@@ -28,38 +28,38 @@ albedo_color = Color( 0.345098, 0, 0.556863, 1 )
 [sub_resource type="SpatialMaterial" id=5]
 albedo_color = Color( 0.458824, 0.458824, 0.458824, 1 )
 
-[sub_resource type="SpatialMaterial" id=13]
+[sub_resource type="SpatialMaterial" id=6]
 albedo_texture = ExtResource( 6 )
 uv1_offset = Vector3( 0.25, 0, 0 )
 
-[sub_resource type="SpatialMaterial" id=14]
+[sub_resource type="SpatialMaterial" id=7]
 albedo_texture = ExtResource( 9 )
 
-[sub_resource type="SpatialMaterial" id=15]
+[sub_resource type="SpatialMaterial" id=8]
 albedo_texture = ExtResource( 9 )
 
-[sub_resource type="SpatialMaterial" id=16]
+[sub_resource type="SpatialMaterial" id=9]
 albedo_texture = ExtResource( 6 )
 uv1_offset = Vector3( 0.25, 0.25, 0 )
 
-[sub_resource type="SpatialMaterial" id=17]
+[sub_resource type="SpatialMaterial" id=10]
 albedo_texture = ExtResource( 16 )
 uv1_offset = Vector3( 0.25, 0, 0 )
 
-[sub_resource type="SpatialMaterial" id=9]
+[sub_resource type="SpatialMaterial" id=11]
 albedo_texture = ExtResource( 10 )
 uv1_scale = Vector3( 0.5, 0.5, 0.5 )
 uv1_offset = Vector3( -0.625, 0, 0 )
 
-[sub_resource type="SpatialMaterial" id=10]
+[sub_resource type="SpatialMaterial" id=12]
 albedo_texture = ExtResource( 17 )
 uv1_scale = Vector3( 0.5, 0.5, 0.5 )
 
-[sub_resource type="SpatialMaterial" id=11]
+[sub_resource type="SpatialMaterial" id=13]
 albedo_texture = ExtResource( 20 )
 uv1_scale = Vector3( 0.5, 0.5, 0.5 )
 
-[sub_resource type="SpatialMaterial" id=12]
+[sub_resource type="SpatialMaterial" id=14]
 albedo_texture = ExtResource( 10 )
 uv1_scale = Vector3( 0.5, 0.5, 0.5 )
 uv1_offset = Vector3( 0.375, 0, 0 )
@@ -70,29 +70,39 @@ uv1_offset = Vector3( 0.375, 0, 0 )
 wall_mat = SubResource( 1 )
 frame_mat = SubResource( 2 )
 floor_mat = SubResource( 3 )
+x_size = 10
+z_size = 5
+frame_thickness = 0.5
+foundation_height = 0.5
 
 [node name="Stairs" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.5 )
+forwards_mat = null
 sides_mat = SubResource( 4 )
 tops_mat = SubResource( 5 )
+full_top_step = true
+x_length = 2.0
+z_length = 2.0
+steps = 4
+target_height = 0.5
 
 [node name="LowerWallSet" parent="." instance=ExtResource( 19 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
-wall_cutaway_sides_mat = SubResource( 13 )
-wall_interior_mat = SubResource( 14 )
-wall_exterior_mat = SubResource( 15 )
-col_top_mat = SubResource( 16 )
-col_sides_mat = SubResource( 17 )
+wall_cutaway_sides_mat = SubResource( 6 )
+wall_interior_mat = SubResource( 7 )
+wall_exterior_mat = SubResource( 8 )
+col_top_mat = SubResource( 9 )
+col_sides_mat = SubResource( 10 )
 fourth_wall_style = 1
 thickness = 0.5
 height = 0.5
 
 [node name="UpperWallSet" parent="." instance=ExtResource( 19 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
-wall_cutaway_sides_mat = SubResource( 9 )
-wall_interior_mat = SubResource( 10 )
-wall_exterior_mat = SubResource( 11 )
-col_sides_mat = SubResource( 12 )
+wall_cutaway_sides_mat = SubResource( 11 )
+wall_interior_mat = SubResource( 12 )
+wall_exterior_mat = SubResource( 13 )
+col_sides_mat = SubResource( 14 )
 fourth_wall_style = 2
 thickness = 0.5
 gap_height = 1.25
