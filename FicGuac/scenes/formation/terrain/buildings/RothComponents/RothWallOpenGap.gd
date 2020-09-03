@@ -14,7 +14,7 @@ export(float) var wall_length = 6 setget set_wall_length
 # How thick is the wall?
 export(float) var thickness = 1 setget set_thickness
 # How high is the wall?
-export(float) var height = 2 setget set_height
+export(float) var wall_height = 2 setget set_wall_height
 # How big is the gap?
 export(float) var gap_length = 2 setget set_gap_length
 
@@ -85,15 +85,15 @@ func set_wall_length(new_length):
 
 func set_thickness(new_thickness):
     thickness = max(new_thickness, MIN_THICKNESS)
-    $WallA.thickness = new_thickness
-    $WallB.thickness = new_thickness
+    $WallA.thickness = thickness
+    $WallB.thickness = thickness
     if Engine.editor_hint:
         build_all()
 
-func set_height(new_height):
-    height = max(new_height, MIN_HEIGHT)
-    $WallA.height = new_height
-    $WallB.height = new_height
+func set_wall_height(new_height):
+    wall_height = max(new_height, MIN_HEIGHT)
+    $WallA.height = wall_height
+    $WallB.height = wall_height
     if Engine.editor_hint:
         build_all()
 
@@ -121,8 +121,8 @@ func build_all():
     $WallB.length = subwall_length
     
     # Step 2: Ensure the height of each wall is correct
-    $WallA.height = height
-    $WallB.height = height
+    $WallA.height = wall_height
+    $WallB.height = wall_height
     
     # Step 3: Ensure the thickness of each wall is correct
     $WallA.thickness = thickness
