@@ -7,6 +7,11 @@ extends Node
 const VECTOR3_KEY = "vertex_pool_array"
 const VECTOR2_KEY = "uv_pool_array"
 
+# --------------------------------------------------------
+#
+# Simple Face Creation
+#
+# --------------------------------------------------------
 # Most of the functions in this utility script draw rectangular polygons using
 # only two points: A and B. That's because we can draw simple rectangular faces
 # like so:
