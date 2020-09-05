@@ -8,22 +8,10 @@ script = ExtResource( 2 )
 
 [node name="WallA" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0 )
-cutaway_sides_mat = null
-cutaway_top_mat = null
-interior_mat = null
-exterior_mat = null
 uv_shift = Vector3( -2, 0, 0 )
-length = 2.0
-thickness = 1.0
-height = 2.0
+update_on_value_change = false
 
 [node name="WallB" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 0, 0 )
-cutaway_sides_mat = null
-cutaway_top_mat = null
-interior_mat = null
-exterior_mat = null
 uv_shift = Vector3( 2, 0, 0 )
-length = 2.0
-thickness = 1.0
-height = 2.0
+update_on_value_change = false

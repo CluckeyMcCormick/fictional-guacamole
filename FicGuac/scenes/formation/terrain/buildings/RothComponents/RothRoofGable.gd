@@ -21,7 +21,7 @@ export(float) var overhang_x = .5 setget set_overhang_x
 # In total, how much do the fascia overhang from the roof, on z?
 export(float) var overhang_z = .5 setget set_overhang_z
 
-# Should we update the polygon anytime something is updated?
+# Should we update the polygons anytime something is updated?
 export(bool) var update_on_value_change = true
 
 # Load the PolyGen script

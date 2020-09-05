@@ -11,6 +11,9 @@ export(int) var z_size = 5 setget set_z_size
 export(float) var frame_thickness = .5 setget set_frame_thickness
 export(float) var foundation_height = .5 setget set_foundation_height
 
+# Should we update the polygons anytime something is updated?
+export(bool) var update_on_value_change = true
+
 # Load the PolyGen script
 const PolyGen = preload("res://scenes/formation/util/PolyGen.gd")
 
@@ -36,17 +39,17 @@ func _ready():
 # --------------------------------------------------------
 func set_wall(new_wall):
     wall_mat = new_wall
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_frame(new_frame):
     frame_mat = new_frame
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all() 
 
 func set_floor(new_floor):
     floor_mat = new_floor
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all() 
 
 func set_x_size(new_x):
@@ -61,7 +64,7 @@ func set_x_size(new_x):
     max_frame_size /= 2.0
     # Clamp it!
     frame_thickness = clamp(frame_thickness, MIN_FRAME_SIZE, max_frame_size)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_z_size(new_z):
@@ -76,7 +79,7 @@ func set_z_size(new_z):
     max_frame_size /= 2.0
     # Clamp it!
     frame_thickness = clamp(frame_thickness, MIN_FRAME_SIZE, max_frame_size)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_frame_thickness(new_thickness):
@@ -88,13 +91,13 @@ func set_frame_thickness(new_thickness):
     max_frame_size /= 2.0
     # Clamp it!
     frame_thickness = clamp(new_thickness, MIN_FRAME_SIZE, max_frame_size)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_foundation_height(new_height):
     # Height MUST at LEAST be MIN_HEIGHT
     foundation_height = max(new_height, MIN_HEIGHT)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 # --------------------------------------------------------

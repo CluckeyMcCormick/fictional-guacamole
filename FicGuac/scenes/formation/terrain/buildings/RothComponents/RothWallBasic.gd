@@ -16,6 +16,9 @@ export(float) var thickness = 1 setget set_thickness
 # How high is the wall?
 export(float) var height = 2 setget set_height
 
+# Should we update the polygons anytime something is updated?
+export(bool) var update_on_value_change = true
+
 # Load the PolyGen script
 const PolyGen = preload("res://scenes/formation/util/PolyGen.gd")
 
@@ -38,45 +41,45 @@ func _ready():
 # --------------------------------------------------------
 func set_cutaway_sides(new_mat):
     cutaway_sides_mat = new_mat
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_cutaway_top(new_mat):
     cutaway_top_mat = new_mat
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_interior(new_mat):
     interior_mat = new_mat
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_exterior(new_mat):
     exterior_mat = new_mat
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_uv_shift(new_shift):
     uv_shift = new_shift
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_length(new_length):
     # Length MUST at LEAST be MIN_LEN
     length = max(new_length, MIN_LEN)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_thickness(new_thickness):
     # Thickness MUST at LEAST be MIN_THICKNESS
     thickness = max(new_thickness, MIN_THICKNESS)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_height(new_height):
     # Height MUST at LEAST be MIN_HEIGHT
     height = max(new_height, MIN_HEIGHT)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 # --------------------------------------------------------

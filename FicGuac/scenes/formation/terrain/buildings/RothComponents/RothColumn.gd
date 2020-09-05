@@ -9,6 +9,9 @@ export(float) var side_length = 1 setget set_length
 # How tall is this column?
 export(float) var height = 2 setget set_height
 
+# Should we update the polygons anytime something is updated?
+export(bool) var update_on_value_change = true
+
 # Load the PolyGen script
 const PolyGen = preload("res://scenes/formation/util/PolyGen.gd")
 
@@ -30,24 +33,24 @@ func _ready():
 # --------------------------------------------------------
 func set_top(new_mat):
     top_mat = new_mat
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_sides(new_mat):
     sides_mat = new_mat
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_length(new_length):
     # Side length MUST at LEAST be MIN_LEN
     side_length = max(new_length, MIN_LEN)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_height(new_height):
     # Height MUST BE AN ACTUAL POSITIVE value!
     height = max(new_height, MIN_HEIGHT)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 # --------------------------------------------------------

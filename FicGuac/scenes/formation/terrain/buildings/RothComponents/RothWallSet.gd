@@ -32,6 +32,9 @@ export(float) var gap_length = 2 setget set_gap_length
 # How tall is the gap?
 export(float) var gap_height = 1 setget set_gap_height
 
+# Should we update the polygons anytime something is updated?
+export(bool) var update_on_value_change = true
+
 # What's the minimum length for the wall?
 const MIN_SIZE = 1
 # At a minimum, how thick must the wall be?
@@ -57,32 +60,32 @@ func _ready():
 # --------------------------------------------------------
 func set_cutaway_sides(new_mat):
     wall_cutaway_sides_mat = new_mat
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_cutaway_top(new_mat):
     wall_cutaway_top_mat = new_mat
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_interior(new_mat):
     wall_interior_mat = new_mat
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_exterior(new_mat):
     wall_exterior_mat = new_mat
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
         
 func set_top(new_mat):
     col_top_mat = new_mat
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_sides(new_mat):
     col_sides_mat = new_mat
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 # --------------------------------------------------------
@@ -92,37 +95,37 @@ func set_sides(new_mat):
 # --------------------------------------------------------
 func set_fourth_wall(new_wall_type):
     fourth_wall_style = new_wall_type
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_x_size(new_size):
     x_size = max(new_size, MIN_SIZE)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
         
 func set_z_size(new_size):
     z_size = max(new_size, MIN_SIZE)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_thickness(new_thickness):
     thickness = max(new_thickness, MIN_THICKNESS)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_wall_height(new_height):
     height = max(new_height, MIN_HEIGHT)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_gap_length(new_length):
     gap_length = max(new_length, MIN_GAP_LEN)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_gap_height(new_height):
     gap_height = max(new_height, MIN_GAP_HEIGHT)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 # --------------------------------------------------------
@@ -152,6 +155,7 @@ func build_all():
         # the length of the gap
         WallStyles.OPEN_GAP:
             fourth_wall_node = GAP_WALL.instance()
+            fourth_wall_node.update_on_value_change = false
             fourth_wall_node.generate_cap_wall = false
             self.add_child(fourth_wall_node)
             fourth_wall_node.set_owner(self)
@@ -160,6 +164,7 @@ func build_all():
         # the length of the gap AND the height of the gap
         WallStyles.CLOSED_GAP:
             fourth_wall_node = GAP_WALL.instance()
+            fourth_wall_node.update_on_value_change = false
             fourth_wall_node.generate_cap_wall = true
             self.add_child(fourth_wall_node)
             fourth_wall_node.set_owner(self)

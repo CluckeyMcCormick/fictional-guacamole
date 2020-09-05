@@ -13,6 +13,9 @@ export(float) var z_length = 2 setget set_z_length
 export(int) var steps = 4 setget set_steps 
 export(float) var target_height = .5 setget set_target_height
 
+# Should we update the polygons anytime something is updated?
+export(bool) var update_on_value_change = true
+
 # Load the PolyGen script
 const PolyGen = preload("res://scenes/formation/util/PolyGen.gd")
 

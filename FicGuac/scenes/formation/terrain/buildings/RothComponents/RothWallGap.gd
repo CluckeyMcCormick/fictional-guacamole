@@ -22,6 +22,9 @@ export(bool) var generate_cap_wall = false setget set_generate_cap_wall
 # How tall is the gap?
 export(float) var gap_height = 1 setget set_gap_height
 
+# Should we update the polygons anytime something is updated?
+export(bool) var update_on_value_change = true
+
 # What's the minimum length for the wall?
 const MIN_LEN = .04
 # At a minimum, how thick must the wall be?
@@ -52,27 +55,27 @@ func _ready():
 # --------------------------------------------------------
 func set_cutaway_sides(new_mat):
     cutaway_sides_mat = new_mat
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_cutaway_top(new_mat):
     cutaway_top_mat = new_mat
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_interior(new_mat):
     interior_mat = new_mat
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_exterior(new_mat):
     exterior_mat = new_mat
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_uv_shift(new_shift):
     uv_shift = new_shift
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_wall_length(new_length):
@@ -82,12 +85,12 @@ func set_wall_length(new_length):
     var max_gap_length = wall_length - MIN_LEN
     # Clamp it!
     gap_length = clamp(gap_length, MIN_GAP_LEN, max_gap_length)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_thickness(new_thickness):
     thickness = max(new_thickness, MIN_THICKNESS)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_wall_height(new_height):
@@ -96,7 +99,7 @@ func set_wall_height(new_height):
     var max_gap_height = wall_height - MIN_GAP_HEIGHT
     # Clamp it!
     gap_height = clamp(gap_height, MIN_GAP_HEIGHT, max_gap_height)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_gap_length(new_length):
@@ -104,12 +107,12 @@ func set_gap_length(new_length):
     var max_gap_length = wall_length - MIN_LEN
     # Clamp it!
     gap_length = clamp(new_length, MIN_GAP_LEN, max_gap_length)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_generate_cap_wall(new_option):
     generate_cap_wall = new_option
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_gap_height(new_height):
@@ -117,7 +120,7 @@ func set_gap_height(new_height):
     var max_gap_height = wall_height - MIN_GAP_HEIGHT
     # Clamp it!
     gap_height = clamp(new_height, MIN_GAP_HEIGHT, max_gap_height)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
     
 # --------------------------------------------------------
@@ -136,6 +139,7 @@ func build_all():
         
     if generate_cap_wall:
         cap_wall_node = WALL_SCENE.instance()
+        cap_wall_node.update_on_value_change = false
         self.add_child(cap_wall_node)
         cap_wall_node.set_owner(self)
 
