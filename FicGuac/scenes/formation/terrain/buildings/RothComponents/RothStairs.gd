@@ -2,9 +2,9 @@ tool
 extends StaticBody
 
 # Required materials
-export(Material) var forwards_mat
-export(Material) var sides_mat
-export(Material) var tops_mat
+export(Material) var forwards_mat setget set_forwards
+export(Material) var sides_mat setget set_sides
+export(Material) var tops_mat setget set_tops
 
 export(bool) var full_top_step = true setget set_full_top
 
@@ -36,43 +36,48 @@ func _ready():
 # Setters and Getters
 #
 # --------------------------------------------------------
+func set_forwards(new_forwards):
+    forwards_mat = new_forwards
+    if Engine.editor_hint and update_on_value_change:
+        build_all()
+
 func set_sides(new_sides):
     sides_mat = new_sides
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
         
 func set_tops(new_tops):
     tops_mat = new_tops
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()  
         
 func set_x_length(new_length):
     # Length MUST at LEAST be MIN_LEN
     x_length = max(new_length, MIN_LEN)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_z_length(new_length):
     # Length MUST at LEAST be MIN_LEN
     z_length = max(new_length, MIN_LEN)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_steps(new_step_count):
     # There must be at LEAST MIN_STEPS
     steps = max(new_step_count, MIN_STEPS)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_target_height(new_target):
     # The stairs have to be at LEAST MIN_HEIGHT
     target_height = max(new_target, MIN_HEIGHT)
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 func set_full_top(new_val):
     full_top_step = new_val
-    if Engine.editor_hint:
+    if Engine.editor_hint and update_on_value_change:
         build_all()
 
 # --------------------------------------------------------
