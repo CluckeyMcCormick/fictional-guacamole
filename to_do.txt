@@ -1,46 +1,14 @@
 To Do:
 ------
 
-1. Generate a Rothenburg House on the fly
-
-    I'm sick of wrestling with UV textures and seams and all that other nonsense
-    for what amounts to a bunch of building blocks. I'm convinced that I can do
-    better - programatically!
-
-    My on-the-fly Roth House will need:
-    - Configurable foundation size
-    - Configurable wall thickness (we're gonna do away with the two-tier 
-      thickness, both wall components are gonna be the same thickness)
-    - Configurable height for foundation, lower wall, upper wall, and roof
-      peak
-    - Different textures for walls on the inside versus the outside, as well
-      as the doorframe and wall-tops.
-    - Texture/UV coordinates that are scaled - for example, a quad that goes 6
-      on X & Y has a max UV of (6, 6). This will allow our textures to work
-      with minimal futzing.
-    - Configurable doorway height
-    - Accurate Normals (uh-oh)
-    - ACCURATE collision models that are updated to reflect the new shapes
-
-    - Configurable doorway position???
-    - Configurable windows ???
-
-2. Add in a thatched Rothenburg House
-
-    I like the way the wooden roof tiles look, but I think a thatched roof would
-    look equally good, if not better. We should add an option to our on-the-fly
-    Rothenburg House to generate a couple of alternate roofs. Maybe one that's 
-    like the current roof, and one that's like a pyramid with the point removed
-    (which I could swear was some sorta rectangular prism).
-
-3. Asset rework: Textures and Clowns
+1. Asset rework: Textures and Clowns
     
     As I've said before, we need to do a major rework of the assets. We need new
     textures that actually have textures! Textured trees, rocks, grass, and all
     the like. I've also had a replacement for the clowns in the pipeline for a
     while; I'd like to get those guys in as part of this overhaul.
 
-4. Fix UnitPawn movement
+2. Fix UnitPawn movement
 
     The UnitPawn movement is really janky. I want them to speed up and slow
     down - subtly, though, like a person getting up to speed. Total War does a
@@ -61,7 +29,7 @@ To Do:
 
     Or I'll come up with a better and simpler idea. That seems equally likely.
 
-5. Start using NavigationMesh
+3. Start using NavigationMesh
 
     Now that the UnitPawns can move correctly, and we have some terrain sorted
     out for them to deal with, we need to switch to using a NavigationMesh. I
@@ -74,7 +42,7 @@ To Do:
     world - just as a test. The UnitPawn, upon arriving at a location, will
     randomly be assigned a new location to go to from a pool of options.
 
-6. Build and Change a NavigationMesh on the fly
+4. Build and Change a NavigationMesh on the fly
 
     This is the big one - a problem with Godot that I've seen at least one blog
     post complaining about is that there is no immediate and obvious way to
