@@ -1,6 +1,7 @@
 [gd_resource type="SpriteFrames" load_steps=81 format=2]
 
-[ext_resource path="res://assets/formation/vomit_clown_army.png" type="Texture" id=1]
+[ext_resource path="res://assets/formation/clown_bot_army.png" type="Texture" id=1]
+
 
 [sub_resource type="AtlasTexture" id=1]
 flags = 3

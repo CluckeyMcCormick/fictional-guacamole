@@ -100,7 +100,7 @@ frame_mat = SubResource( 2 )
 floor_mat = SubResource( 3 )
 x_size = 6
 z_size = 6
-frame_thickness = 0.5
+frame_thickness = 0.45
 foundation_height = 0.5
 update_on_value_change = true
 
