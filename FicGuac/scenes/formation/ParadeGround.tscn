@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://scenes/formation/ParadeGround.gd" type="Script" id=1]
 [ext_resource path="res://assets/surt_terrain/mat_terrain_grass_grid.tres" type="Material" id=2]
@@ -11,6 +11,7 @@
 [ext_resource path="res://scenes/formation/unit_pawn_subs/UnitPawnVomitClown.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/formation/terrain/Rock.tscn" type="PackedScene" id=10]
 [ext_resource path="res://scenes/formation/terrain/buildings/House.tscn" type="PackedScene" id=11]
+[ext_resource path="res://scenes/formation/terrain/buildings/RothHut.tscn" type="PackedScene" id=12]
 [ext_resource path="res://scenes/formation/terrain/buildings/RothGuardpost.tscn" type="PackedScene" id=13]
 [ext_resource path="res://scenes/formation/terrain/buildings/RothStockpile.tscn" type="PackedScene" id=14]
 [ext_resource path="res://scenes/formation/terrain/buildings/RothHouse.tscn" type="PackedScene" id=15]
@@ -192,3 +193,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25.0261, 0, 35.031 )
 
 [node name="RothHouse" parent="Houses" instance=ExtResource( 15 )]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, -21.0927, 0, 46.2439 )
+
+[node name="RothHut" parent="Houses" instance=ExtResource( 12 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -6 )
