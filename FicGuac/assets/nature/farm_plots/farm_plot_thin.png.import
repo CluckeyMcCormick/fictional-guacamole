@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/sprite_sunflower.png-893b4ef3e7a7aeac70747abbe04561d9.stex"
+path="res://.import/farm_plot_thin.png-d6275ae252ca5ebf7b79e08f6a795c94.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/nature/crops/sprite_sunflower.png"
-dest_files=[ "res://.import/sprite_sunflower.png-893b4ef3e7a7aeac70747abbe04561d9.stex" ]
+source_file="res://assets/nature/farm_plots/farm_plot_thin.png"
+dest_files=[ "res://.import/farm_plot_thin.png-d6275ae252ca5ebf7b79e08f6a795c94.stex" ]
 
 [params]
 
@@ -21,7 +21,7 @@ compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=true
 flags/filter=false
-flags/mipmaps=false
+flags/mipmaps=true
 flags/anisotropic=false
 flags/srgb=1
 process/fix_alpha_border=true

@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/surt_thatch.png-2f31e067b5c647fa5a05b8cedee844d4.stex"
+path="res://.import/farm_plot_thick.png-88779c04ff7e2026ae64efcc6a83b40c.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://assets/surt_terrain/surt_thatch.png"
-dest_files=[ "res://.import/surt_thatch.png-2f31e067b5c647fa5a05b8cedee844d4.stex" ]
+source_file="res://assets/nature/farm_plots/farm_plot_thick.png"
+dest_files=[ "res://.import/farm_plot_thick.png-88779c04ff7e2026ae64efcc6a83b40c.stex" ]
 
 [params]
 
