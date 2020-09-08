@@ -2,8 +2,9 @@
 
 [ext_resource path="res://assets/nature/rocks.obj" type="ArrayMesh" id=1]
 [ext_resource path="res://scenes/nature/Rock.gd" type="Script" id=2]
-[ext_resource path="res://assets/surt_terrain/mat_terrain_stone_grid.tres" type="Material" id=3]
+[ext_resource path="res://assets/terrain/mat_terrain_stone_grid.tres" type="Material" id=3]
 [ext_resource path="res://scenes/formation/unit_pawn_subs/UnitPawnVomitClown_SizeRef.tres" type="CylinderMesh" id=5]
+
 
 
 

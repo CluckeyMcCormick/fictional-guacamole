@@ -1,0 +1,6 @@
+All the textures in this folder are original works. However, they were created
+using the Fantasy24 pallette, by Gabriel C.
+
+I retrieved the pallette from Lospec:
+
+https://lospec.com/palette-list/fantasy-24
