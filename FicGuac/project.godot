@@ -16,12 +16,12 @@ _global_script_class_icons={
 [application]
 
 config/name="FicGuac"
-run/main_scene="res://scenes/formation/ParadeGround.tscn"
+run/main_scene="res://scenes/ParadeGround.tscn"
 config/icon="res://icon.png"
 
 [autoload]
 
-PolyGen="*res://scenes/formation/util/PolyGen.gd"
+PolyGen="*res://scenes/util/PolyGen.gd"
 
 [debug]
 

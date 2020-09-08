@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://scenes/nature/Farm.gd" type="Script" id=5]
+[ext_resource path="res://assets/nature/farm_plots/plot_library.meshlib" type="MeshLibrary" id=7]
+
+[node name="Farm" type="Spatial"]
+script = ExtResource( 5 )
+
+[node name="PlotGrid" type="GridMap" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.002, 0 )
+mesh_library = ExtResource( 7 )
+cell_size = Vector3( 1, 1, 1 )
+cell_center_y = false
+collision_layer = 2
+collision_mask = 2
+data = {
+"cells": PoolIntArray( 0, 0, 7, 1, 0, 0, 2, 0, 1, 0, 1, 6, 1, 1, 8, 2, 1, 1073741826, 0, 2, 5, 1, 2, 1073741828, 2, 2, 3 )
+}
+__meta__ = {
+"_editor_clip_": 0,
+"_editor_floor_": Vector3( 0, 0, 0 )
+}
+
+[node name="Crops" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.002, 0 )

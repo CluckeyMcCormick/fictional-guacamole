@@ -1,0 +1,46 @@
+[gd_resource type="SpriteFrames" load_steps=7 format=2]
+
+[ext_resource path="res://assets/nature/trees/surt_tree01_bright.png" type="Texture" id=1]
+[ext_resource path="res://assets/nature/trees/surt_tree02_dark.png" type="Texture" id=2]
+[ext_resource path="res://assets/nature/trees/surt_tree01_dark.png" type="Texture" id=3]
+[ext_resource path="res://assets/nature/trees/surt_tree02_bright.png" type="Texture" id=4]
+[ext_resource path="res://assets/nature/trees/surt_tree03_bright.png" type="Texture" id=5]
+[ext_resource path="res://assets/nature/trees/surt_tree03_dark.png" type="Texture" id=6]
+
+[resource]
+animations = [ {
+"frames": [ ExtResource( 1 ), ExtResource( 3 ), ExtResource( 4 ), ExtResource( 2 ), ExtResource( 5 ), ExtResource( 6 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 4 ) ],
+"loop": false,
+"name": "pine_light",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 5 ) ],
+"loop": false,
+"name": "oak_light",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 3 ) ],
+"loop": false,
+"name": "elm_dark",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 1 ) ],
+"loop": false,
+"name": "elm_light",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ) ],
+"loop": false,
+"name": "pine_dark",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 6 ) ],
+"loop": false,
+"name": "oak_dark",
+"speed": 5.0
+} ]
