@@ -14,7 +14,7 @@ dest_files=[ "res://.import/bm_s01_stone_brick01.png-bb349648ed5b7491a709e607e0c
 
 [params]
 
-compress/mode=3
+compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0

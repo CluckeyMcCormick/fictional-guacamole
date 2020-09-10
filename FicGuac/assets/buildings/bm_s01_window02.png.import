@@ -14,7 +14,7 @@ dest_files=[ "res://.import/bm_s01_window02.png-08fc2578dae02418c42e8f99aa760323
 
 [params]
 
-compress/mode=3
+compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0

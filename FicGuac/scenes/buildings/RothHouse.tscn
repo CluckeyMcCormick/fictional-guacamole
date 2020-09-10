@@ -1,4 +1,4 @@
-[gd_scene load_steps=38 format=2]
+[gd_scene load_steps=39 format=2]
 
 [ext_resource path="res://scenes/buildings/RothComponents/RothWallSet.tscn" type="PackedScene" id=1]
 [ext_resource path="res://scenes/buildings/RothComponents/RothRoofGable.tscn" type="PackedScene" id=2]
@@ -17,6 +17,7 @@
 [ext_resource path="res://assets/buildings/bm_s01_plaster_wall03.png" type="Texture" id=15]
 [ext_resource path="res://assets/buildings/bm_s00_stair_forward_x2h.5_stone.png" type="Texture" id=16]
 [ext_resource path="res://assets/buildings/bm_s01_wood_roof01.png" type="Texture" id=17]
+[ext_resource path="res://assets/buildings/bm_s01_plaster_wall05.png" type="Texture" id=18]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_texture = ExtResource( 3 )
@@ -43,19 +44,19 @@ uv1_scale = Vector3( 0.5, 0.5, 0.5 )
 uv1_offset = Vector3( 0.5, -0.5, 0 )
 
 [sub_resource type="SpatialMaterial" id=7]
-albedo_color = Color( 0.937255, 0.847059, 0.631373, 1 )
+albedo_texture = ExtResource( 18 )
 
 [sub_resource type="SpatialMaterial" id=8]
 albedo_texture = ExtResource( 17 )
 
 [sub_resource type="SpatialMaterial" id=9]
-albedo_color = Color( 0.447059, 0.254902, 0.0745098, 1 )
+albedo_color = Color( 0.619608, 0.270588, 0.223529, 1 )
 
 [sub_resource type="SpatialMaterial" id=10]
-albedo_color = Color( 0.447059, 0.254902, 0.0745098, 1 )
+albedo_color = Color( 0.619608, 0.270588, 0.223529, 1 )
 
 [sub_resource type="SpatialMaterial" id=11]
-albedo_color = Color( 0.447059, 0.254902, 0.0745098, 1 )
+albedo_color = Color( 0.619608, 0.270588, 0.223529, 1 )
 
 [sub_resource type="SpatialMaterial" id=12]
 albedo_texture = ExtResource( 8 )

@@ -1,4 +1,4 @@
-[gd_scene load_steps=37 format=2]
+[gd_scene load_steps=40 format=2]
 
 [ext_resource path="res://assets/buildings/bm_s01_stone_brick02.png" type="Texture" id=1]
 [ext_resource path="res://scenes/buildings/RothComponents/RothStairs.tscn" type="PackedScene" id=2]
@@ -9,6 +9,7 @@
 [ext_resource path="res://scenes/buildings/RothComponents/RothWallSet.tscn" type="PackedScene" id=7]
 [ext_resource path="res://assets/buildings/bm_s01_stone_brick01.png" type="Texture" id=8]
 [ext_resource path="res://scenes/buildings/RothComponents/RothRoofGable.tscn" type="PackedScene" id=9]
+[ext_resource path="res://assets/buildings/bm_s01_plaster_wall05.png" type="Texture" id=10]
 [ext_resource path="res://assets/buildings/bm_s00_columns01.png" type="Texture" id=11]
 [ext_resource path="res://assets/buildings/bm_s00_stonecap07.png" type="Texture" id=12]
 [ext_resource path="res://assets/buildings/bm_s00_stair_side_L2H.5.png" type="Texture" id=13]
@@ -16,10 +17,8 @@
 [ext_resource path="res://assets/buildings/bm_s01_plaster_wall01.png" type="Texture" id=15]
 [ext_resource path="res://assets/buildings/bm_s01_plaster_wall03.png" type="Texture" id=16]
 [ext_resource path="res://assets/buildings/bm_s00_stair_forward_x2h.5_stone.png" type="Texture" id=17]
-
-
-
-
+[ext_resource path="res://assets/buildings/bm_s00_thatch_roof_board.png" type="Texture" id=18]
+[ext_resource path="res://assets/buildings/bm_s00_thatch_roof01.png" type="Texture" id=19]
 
 [sub_resource type="SpatialMaterial" id=1]
 albedo_texture = ExtResource( 1 )
@@ -46,19 +45,19 @@ uv1_scale = Vector3( 0.5, 0.5, 0.5 )
 uv1_offset = Vector3( 0.5, -0.5, 0 )
 
 [sub_resource type="SpatialMaterial" id=7]
-albedo_color = Color( 0.937255, 0.847059, 0.631373, 1 )
+albedo_texture = ExtResource( 10 )
 
 [sub_resource type="SpatialMaterial" id=8]
-albedo_color = Color( 0.937255, 0.67451, 0.156863, 1 )
+albedo_texture = ExtResource( 19 )
 
 [sub_resource type="SpatialMaterial" id=9]
-albedo_color = Color( 0.937255, 0.67451, 0.156863, 1 )
+albedo_texture = ExtResource( 19 )
 
 [sub_resource type="SpatialMaterial" id=10]
-albedo_color = Color( 0.937255, 0.67451, 0.156863, 1 )
+albedo_texture = ExtResource( 19 )
 
 [sub_resource type="SpatialMaterial" id=11]
-albedo_color = Color( 0.670588, 0.360784, 0.109804, 1 )
+albedo_texture = ExtResource( 18 )
 
 [sub_resource type="SpatialMaterial" id=12]
 albedo_texture = ExtResource( 4 )
@@ -113,6 +112,12 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4 )
 forwards_mat = SubResource( 4 )
 sides_mat = SubResource( 5 )
 tops_mat = SubResource( 6 )
+full_top_step = true
+x_length = 2.0
+z_length = 2.0
+steps = 4
+target_height = 0.5
+update_on_value_change = true
 
 [node name="Roof" parent="." instance=ExtResource( 9 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 3, 0 )
@@ -132,7 +137,6 @@ update_on_value_change = true
 [node name="LowerWallSet" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
 wall_cutaway_sides_mat = SubResource( 12 )
-wall_cutaway_top_mat = null
 wall_interior_mat = SubResource( 13 )
 wall_exterior_mat = SubResource( 14 )
 col_top_mat = SubResource( 15 )
@@ -142,23 +146,15 @@ x_size = 6.0
 z_size = 6.0
 thickness = 0.5
 height = 0.5
-gap_length = 2.0
-gap_height = 1.0
-update_on_value_change = true
 
 [node name="UpperWallSet" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 wall_cutaway_sides_mat = SubResource( 17 )
-wall_cutaway_top_mat = null
 wall_interior_mat = SubResource( 18 )
 wall_exterior_mat = SubResource( 19 )
-col_top_mat = null
 col_sides_mat = SubResource( 20 )
 fourth_wall_style = 2
 x_size = 6.0
 z_size = 6.0
 thickness = 0.5
-height = 2.0
-gap_length = 2.0
 gap_height = 1.25
-update_on_value_change = true
