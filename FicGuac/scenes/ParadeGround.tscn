@@ -105,15 +105,43 @@ material/0 = null
 
 [node name="Tree" parent="Trees" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 5 )
+_tree_type = 1
 
 [node name="Tree2" parent="Trees" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 35 )
+_tree_type = 1
+
+[node name="Tree5" parent="Trees" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 51.7, 0, 26.5 )
+_tree_type = 1
+
+[node name="Tree6" parent="Trees" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 50.159, -9.53674e-07, 30.397 )
+_tree_type = 1
+
+[node name="Tree7" parent="Trees" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 54.068, -9.53674e-07, 28.2081 )
+_tree_type = 1
+
+[node name="Tree8" parent="Trees" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 51.0578, 9.53674e-07, 34.2928 )
+_tree_type = 1
+
+[node name="Tree10" parent="Trees" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 47.4922, 9.53674e-07, 35.3827 )
+_tree_type = 1
+
+[node name="Tree9" parent="Trees" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 55.1876, 9.53674e-07, 31.2586 )
+_tree_type = 1
 
 [node name="Tree3" parent="Trees" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 40 )
+_tree_type = 1
 
 [node name="Tree4" parent="Trees" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -15 )
+_tree_type = 1
 
 [node name="Farms" type="Spatial" parent="."]
 

@@ -5,11 +5,6 @@
 [ext_resource path="res://assets/nature/trees/tree_frames.tres" type="SpriteFrames" id=3]
 [ext_resource path="res://scenes/nature/Tree.gd" type="Script" id=4]
 
-
-
-
-
-
 [sub_resource type="CylinderShape" id=1]
 radius = 0.8
 height = 10.4
@@ -51,7 +46,7 @@ transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0
 material_override = ExtResource( 2 )
 pixel_size = 0.2
 frames = ExtResource( 3 )
-animation = "elm_light"
+animation = "elm"
 playing = true
 
 [node name="CollisionElm" type="CollisionShape" parent="."]
