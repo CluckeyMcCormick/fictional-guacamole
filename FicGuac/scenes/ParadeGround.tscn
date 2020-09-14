@@ -6,7 +6,7 @@
 [ext_resource path="res://scenes/Camera.gd" type="Script" id=4]
 [ext_resource path="res://scenes/formation/Unit.tscn" type="PackedScene" id=5]
 [ext_resource path="res://assets/formation/cali_bear.obj" type="ArrayMesh" id=6]
-[ext_resource path="res://scenes/nature/Tree.tscn" type="PackedScene" id=7]
+[ext_resource path="res://scenes/nature/PineTree.tscn" type="PackedScene" id=7]
 [ext_resource path="res://scenes/nature/Farm.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/formation/unit_pawn_subs/UnitPawnVomitClown.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/nature/Rock.tscn" type="PackedScene" id=10]
@@ -131,7 +131,19 @@ _tree_type = 1
 
 [node name="Tree9" parent="Trees" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 55.1876, 9.53674e-07, 31.2586 )
-_tree_type = 1
+_tree_type = 2
+
+[node name="Tree11" parent="Trees" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 48.3228, 9.53674e-07, 31.7503 )
+_tree_type = 2
+
+[node name="Tree12" parent="Trees" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 44.7572, 9.53674e-07, 32.8402 )
+_tree_type = 2
+
+[node name="Tree13" parent="Trees" instance=ExtResource( 7 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 52.4526, 9.53674e-07, 28.7161 )
+_tree_type = 2
 
 [node name="Tree3" parent="Trees" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 40 )

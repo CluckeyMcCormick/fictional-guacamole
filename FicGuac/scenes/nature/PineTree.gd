@@ -4,14 +4,14 @@ extends StaticBody
 
 # What type of tree is this?
 enum TREE_TYPE {
-    elm, pine, oak
+    pine_a, pine_b, pine_c
 }
 
 # Declare member variables here. Examples:
 # var a = 2
 # var b = "text"
 
-export(TREE_TYPE) var _tree_type = TREE_TYPE.elm setget set_tree_type
+export(TREE_TYPE) var _tree_type = TREE_TYPE.pine_a setget set_tree_type
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -19,27 +19,16 @@ func _ready():
     _tree_refresh()
 
 func _tree_refresh():
-    # Disable and hide all the collision models - we'll give ourselves a clean
-    # slate.
-    # ELM
-    $CollisionElm.disabled = true
-    $CollisionElm.visible = false
-    # PINE
-    $CollisionPine.disabled = true
-    $CollisionPine.visible = false
-    
     var sprite_string = ""
     
     # Set the collision status and get
     match _tree_type:
-        TREE_TYPE.elm:
-            $CollisionElm.disabled = false
-            $CollisionElm.visible = true
-            sprite_string = "elm"
-        TREE_TYPE.pine:
-            $CollisionPine.disabled = false
-            $CollisionPine.visible = true
-            sprite_string = "pine"
+        TREE_TYPE.pine_a:
+            sprite_string = "pine_fc_a"
+        TREE_TYPE.pine_b:
+            sprite_string = "pine_fc_b"
+        TREE_TYPE.pine_c:
+            sprite_string = "pine_fc_c"
             
     $Sprite.animation = sprite_string
 
