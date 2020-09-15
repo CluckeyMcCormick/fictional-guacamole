@@ -122,7 +122,7 @@ _tree_type = 1
 
 [node name="Woods" parent="Trees" instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 25 )
-_woods_size = Vector2( 10, 10 )
+_woods_size = Vector2( 20, 30 )
 
 [node name="Farms" type="Spatial" parent="."]
 
