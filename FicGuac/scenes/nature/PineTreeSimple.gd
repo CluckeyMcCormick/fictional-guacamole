@@ -1,6 +1,6 @@
 # Set this as a tool so that we see the trees change in the editor
 tool
-extends StaticBody
+extends Spatial
 
 # What type of tree is this?
 enum TREE_TYPE {

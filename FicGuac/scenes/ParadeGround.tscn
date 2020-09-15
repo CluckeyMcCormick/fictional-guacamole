@@ -1,4 +1,4 @@
-[gd_scene load_steps=20 format=2]
+[gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://scenes/ParadeGround.gd" type="Script" id=1]
 [ext_resource path="res://assets/terrain/mat_terrain_grass_textured.tres" type="Material" id=2]
@@ -10,6 +10,7 @@
 [ext_resource path="res://scenes/nature/Farm.tscn" type="PackedScene" id=8]
 [ext_resource path="res://scenes/formation/unit_pawn_subs/UnitPawnVomitClown.tscn" type="PackedScene" id=9]
 [ext_resource path="res://scenes/nature/Rock.tscn" type="PackedScene" id=10]
+[ext_resource path="res://scenes/nature/Woods.tscn" type="PackedScene" id=11]
 [ext_resource path="res://scenes/buildings/RothHut.tscn" type="PackedScene" id=12]
 [ext_resource path="res://scenes/buildings/RothGuardpost.tscn" type="PackedScene" id=13]
 [ext_resource path="res://scenes/buildings/RothStockpile.tscn" type="PackedScene" id=14]
@@ -101,56 +102,27 @@ transform = Transform( 3.7258, 0, 1.45548, 0, 4, 0, -1.45548, 0, 3.7258, 12, 8, 
 mesh = ExtResource( 6 )
 material/0 = null
 
+[node name="cali_bear2" type="MeshInstance" parent="."]
+transform = Transform( 0.93145, 0, 0.36387, 0, 1, 0, -0.36387, 0, 0.93145, 41.7, 1.1, 31.1 )
+mesh = ExtResource( 6 )
+material/0 = null
+
 [node name="Trees" type="Spatial" parent="."]
 
-[node name="Tree" parent="Trees" instance=ExtResource( 7 )]
+[node name="Tree1" parent="Trees" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 15, 0, 5 )
 _tree_type = 1
 
 [node name="Tree2" parent="Trees" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 35 )
-_tree_type = 1
-
-[node name="Tree5" parent="Trees" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 51.7, 0, 26.5 )
-
-[node name="Tree6" parent="Trees" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 50.159, -9.53674e-07, 30.397 )
-_tree_type = 1
-
-[node name="Tree7" parent="Trees" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 54.068, -9.53674e-07, 28.2081 )
-_tree_type = 1
-
-[node name="Tree8" parent="Trees" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 51.0578, 9.53674e-07, 34.2928 )
-
-[node name="Tree10" parent="Trees" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 47.4922, 9.53674e-07, 35.3827 )
-_tree_type = 1
-
-[node name="Tree9" parent="Trees" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 55.1876, 9.53674e-07, 31.2586 )
-_tree_type = 2
-
-[node name="Tree11" parent="Trees" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 48.3228, 9.53674e-07, 31.7503 )
-_tree_type = 2
-
-[node name="Tree12" parent="Trees" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 44.7572, 9.53674e-07, 32.8402 )
-_tree_type = 2
-
-[node name="Tree13" parent="Trees" instance=ExtResource( 7 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 52.4526, 9.53674e-07, 28.7161 )
-_tree_type = 2
-
-[node name="Tree3" parent="Trees" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 40 )
 
-[node name="Tree4" parent="Trees" instance=ExtResource( 7 )]
+[node name="Tree3" parent="Trees" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -15 )
 _tree_type = 1
+
+[node name="Woods" parent="Trees" instance=ExtResource( 11 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 25 )
+_woods_size = Vector2( 10, 10 )
 
 [node name="Farms" type="Spatial" parent="."]
 

@@ -21,31 +21,31 @@ uv1_offset = Vector3( 0.5, 0, 0 )
 material = SubResource( 3 )
 size = Vector2( 1, 1 )
 
-[sub_resource type="SpatialMaterial" id=19]
+[sub_resource type="SpatialMaterial" id=5]
 albedo_texture = ExtResource( 2 )
 uv1_scale = Vector3( 0.25, 0.25, 0.25 )
 uv1_offset = Vector3( 0.5, 0.25, 0 )
 
 [sub_resource type="PlaneMesh" id=6]
-material = SubResource( 19 )
+material = SubResource( 5 )
 size = Vector2( 1, 1 )
 
-[sub_resource type="SpatialMaterial" id=21]
+[sub_resource type="SpatialMaterial" id=7]
 albedo_texture = ExtResource( 2 )
 uv1_scale = Vector3( 0.25, 0.25, 0.25 )
 uv1_offset = Vector3( 0.5, 0.5, 0 )
 
 [sub_resource type="PlaneMesh" id=8]
-material = SubResource( 21 )
+material = SubResource( 7 )
 size = Vector2( 1, 1 )
 
-[sub_resource type="SpatialMaterial" id=22]
+[sub_resource type="SpatialMaterial" id=9]
 albedo_texture = ExtResource( 2 )
 uv1_scale = Vector3( 0.25, 0.25, 0.25 )
 uv1_offset = Vector3( 0.25, 0.5, 0 )
 
 [sub_resource type="PlaneMesh" id=10]
-material = SubResource( 22 )
+material = SubResource( 9 )
 size = Vector2( 1, 1 )
 
 [sub_resource type="SpatialMaterial" id=11]
@@ -57,74 +57,74 @@ uv1_offset = Vector3( 0, 0.5, 0 )
 material = SubResource( 11 )
 size = Vector2( 1, 1 )
 
-[sub_resource type="SpatialMaterial" id=23]
+[sub_resource type="SpatialMaterial" id=13]
 albedo_texture = ExtResource( 2 )
 uv1_scale = Vector3( 0.25, 0.25, 0.25 )
 uv1_offset = Vector3( 0, 0.25, 0 )
 
 [sub_resource type="PlaneMesh" id=14]
-material = SubResource( 23 )
+material = SubResource( 13 )
 size = Vector2( 1, 1 )
 
-[sub_resource type="SpatialMaterial" id=18]
+[sub_resource type="SpatialMaterial" id=15]
 albedo_texture = ExtResource( 2 )
 uv1_scale = Vector3( 0.25, 0.25, 0.25 )
 
 [sub_resource type="PlaneMesh" id=16]
-material = SubResource( 18 )
+material = SubResource( 15 )
 size = Vector2( 1, 1 )
 
-[sub_resource type="SpatialMaterial" id=20]
+[sub_resource type="SpatialMaterial" id=17]
 albedo_texture = ExtResource( 2 )
 uv1_scale = Vector3( 0.25, 0.25, 0.25 )
 uv1_offset = Vector3( 0.25, 0.25, 0 )
 
-[sub_resource type="PlaneMesh" id=17]
-material = SubResource( 20 )
+[sub_resource type="PlaneMesh" id=18]
+material = SubResource( 17 )
 size = Vector2( 1, 1 )
 
-[node name="Spatial" type="Spatial"]
+[node name="GrassToDirtLibrary" type="Spatial"]
 
-[node name="NorthEastPlotSiding" type="MeshInstance" parent="."]
+[node name="ZNegSiding" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.5 )
 mesh = SubResource( 2 )
 material/0 = null
 
-[node name="EastPlotCorner" type="MeshInstance" parent="."]
+[node name="ZNegXPosCorner" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, -2.5 )
 mesh = SubResource( 4 )
 material/0 = null
 
-[node name="SouthEastPlotSiding" type="MeshInstance" parent="."]
+[node name="XPosSiding" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 0 )
 mesh = SubResource( 6 )
 material/0 = null
 
-[node name="SouthPlotCorner" type="MeshInstance" parent="."]
+[node name="ZPosXPosCorner" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 2.5 )
 mesh = SubResource( 8 )
 material/0 = null
 
-[node name="SouthWestPlotSiding" type="MeshInstance" parent="."]
+[node name="ZPosSiding" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.5 )
 mesh = SubResource( 10 )
 material/0 = null
 
-[node name="WestPlotCorner" type="MeshInstance" parent="."]
+[node name="ZPosXNegCorner" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, 2.5 )
 mesh = SubResource( 12 )
 material/0 = null
 
-[node name="NorthWestPlotSiding" type="MeshInstance" parent="."]
+[node name="XNegSiding" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.50191, 0, 0 )
 mesh = SubResource( 14 )
 material/0 = null
 
-[node name="NorthPlotCorner" type="MeshInstance" parent="."]
+[node name="ZNegXNegCorner" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, -2.5 )
 mesh = SubResource( 16 )
 material/0 = null
 
-[node name="DirtPadding" type="MeshInstance" parent="."]
-mesh = SubResource( 17 )
+[node name="DirtFill" type="MeshInstance" parent="."]
+mesh = SubResource( 18 )
 material/0 = null

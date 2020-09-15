@@ -1,50 +1,36 @@
 tool
 extends Spatial
 
-# What type of crop does this farm have?
-enum CROP_TYPE {
-    corn,
-    cabbage,
-    carrot,
-    sunflower,
-    barley
-}
-
 # Export the config variables to the editor so we can set them on the fly
-export(Vector2) var _plot_size = Vector2(3, 3) setget set_plot_size
-export(CROP_TYPE) var _crop_type = CROP_TYPE.barley setget set_crop_type
+export(Vector2) var _woods_size = Vector2(3, 3) setget set_woods_size
 
 # What's the minimum size for each farm plot, on x and y? Use a Vector2 for
 # flexibility.
-const PLOT_SIZE_MINIMUM = Vector2(3, 3)
+const WOODS_SIZE_MINIMUM = Vector2(3, 3)
 
-# Preload our selections for Crops - the (C)rop (S)cenes
-const CS_BARLEY = preload("res://scenes/nature/crops/Barley.tscn")
-const CS_CORN = preload("res://scenes/nature/crops/Corn.tscn")
-const CS_CABBAGE = preload("res://scenes/nature/crops/Cabbage.tscn")
-const CS_CARROT = preload("res://scenes/nature/crops/Carrot.tscn")
-const CS_SUNFLOWER = preload("res://scenes/nature/crops/Sunflower.tscn")
+# Preload our selections for the Trees - the (T)ree (S)cenes
+const TS_PINE = preload("res://scenes/nature/PineTreeSimple.tscn") 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    _farm_refresh()
+    _woods_refresh()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
 #    pass
 
 # Refreshes the farm to reflect our new settings - i.e. plot size, crop type
-func _farm_refresh():
+func _woods_refresh():
     
     # First off, if we don't have a plot or crop grid - which can happen (I
     # think it happens BEFORE the node enters the scene) - we need to back out
-    if $PlotGrid == null or $Crops == null:
+    if $GrassGrid == null or $Trees == null:
         return
     
     # Clear both of our grids
-    $PlotGrid.clear()
+    $GrassGrid.clear()
     
-    for c in $Crops.get_children():
+    for c in $Trees.get_children():
         c.queue_free()
     
     # Okay, first thing we gotta do is build the farm plot - that patch of dirt
@@ -65,14 +51,14 @@ func _farm_refresh():
     var tile = ""
     
     # Now, let's iterate over the size of the plot
-    for x in range(_plot_size.x):
-        for z in range(_plot_size.y):
+    for x in range(_woods_size.x):
+        for z in range(_woods_size.y):
             # Test where we are on each axis - are we at the base edge, or are
             # we at the far edge?
             x_low_edge = x == 0
-            x_high_edge = x == (_plot_size.x - 1)
+            x_high_edge = x == (_woods_size.x - 1)
             z_low_edge = z == 0
-            z_high_edge = z == (_plot_size.y - 1)
+            z_high_edge = z == (_woods_size.y - 1)
             
             # Test all of the edges - we'll use this later!
             any_edge = x_low_edge or x_high_edge or z_low_edge or z_high_edge
@@ -102,55 +88,35 @@ func _farm_refresh():
             # Otherwise, we have to be in the middle somewhere - and that's just
             # dirt!
             else:
-                tile = "DirtFill"
+                tile = "DarkGrassFill"
             
-            tile = $PlotGrid.mesh_library.find_item_by_name(tile)
-            $PlotGrid.set_cell_item(x, 0, z, tile)
-
+            tile = $GrassGrid.mesh_library.find_item_by_name(tile)
+            $GrassGrid.set_cell_item(x, 0, z, tile)
+            
             # If this is an edge case, back out. We're done here
             if any_edge:
                 continue
-
-            # Now that we've set the ground tile, there's one other thing we can
-            # do - since this isn't an edge tile, we can place a crop. Match the
-            # crop type and instance the scene
-            match _crop_type:
-                CROP_TYPE.barley:
-                    tile = CS_BARLEY.instance()
-                CROP_TYPE.corn:
-                    tile = CS_CORN.instance()
-                CROP_TYPE.cabbage:
-                    tile = CS_CABBAGE.instance() 
-                CROP_TYPE.carrot:
-                    tile = CS_CARROT.instance()  
-                CROP_TYPE.sunflower:
-                    tile = CS_SUNFLOWER.instance()
-                # Any other type of Crop is invalid, so set it to an invalid
-                # value
-                _:
-                    tile = null
-            # If we have an invalid value, then we need to skip.
-            if tile == null:
-                continue
+            
+            # Spawn in a pine tree for this tile
+            tile = TS_PINE.instance()
+            
+            # Change the color on a dice roll
+            tile._tree_type = randi() % 3
             
             # Set the name
-            tile.set_name("crops[" + str(x) + "," + str(z) +"]")
+            tile.set_name("trees[" + str(x) + "," + str(z) +"]")
             # Attach the crop tile to the Crops group
-            $Crops.add_child(tile)
+            $Trees.add_child(tile)
             # Move the crop over to the correct position
             tile.translate( Vector3(x + 0.5, 0, z + 0.5) )
 
-func set_plot_size(new_plot_size):
+func set_woods_size(new_woods_size):
     # Set the size restrictions for the plot; it needs to be AT LEAST EQUAL TO
     # the minimum size.
-    if new_plot_size.x < PLOT_SIZE_MINIMUM.x:
-        new_plot_size.x = PLOT_SIZE_MINIMUM.x
-    if new_plot_size.y < PLOT_SIZE_MINIMUM.y:
-        new_plot_size.y = PLOT_SIZE_MINIMUM.y
+    if new_woods_size.x < WOODS_SIZE_MINIMUM.x:
+        new_woods_size.x = WOODS_SIZE_MINIMUM.x
+    if new_woods_size.y < WOODS_SIZE_MINIMUM.y:
+        new_woods_size.y = WOODS_SIZE_MINIMUM.y
     
-    _plot_size = new_plot_size
-    _farm_refresh()
-    
-func set_crop_type(new_crop_type):
-    _crop_type = new_crop_type
-    _farm_refresh()
+    _woods_size = new_woods_size
+    _woods_refresh()
