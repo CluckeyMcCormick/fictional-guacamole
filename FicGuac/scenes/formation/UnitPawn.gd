@@ -9,30 +9,37 @@ extends KinematicBody
 enum {
     # The Primary Cardinals
     EAST = 0, NORTH = 2, WEST = 4, SOUTH = 6,
-    # The Intercardinals (currently unused)
+    # The Intercardinals
     NOR_EAST = 1, NOR_WEST = 3, SOU_WEST = 5, SOU_EAST = 7
 }
 
 # What's our tolerance for meeting our goal
 const GOAL_TOLERANCE = 0.1
 
-# What's the minimum horizontal speed our units will move at? (Excluding when
-# they come to a full stop). Units/second
-const MIN_HORIZ_SPEED = 1
+# How fast do the UnitPawns move, horizontally? Units/second
+const HORIZ_SPEED = 10
 
-# What's the maximum horizontal speed our units will move at? Units/second
-const MAX_HORIZ_SPEED = 20
+# How fast do the UnitPawns fall, when they do fall?
+const FALL_SPEED = 9.8
 
-# What's our acceleration - for every second, how much does our velocity
-# increase? (Units/second) per second
-const HORIZ_ACCELERATION = 4 
+# To test that we're on the ground, we need to do a collision-cast downward -
+# what's the magnitude of that downward cast? In game-units
+const FALL_CAST_LENGTH = 9.8
 
 # We can only really measure the position of the UnitPawn from the center of the
 # node. However, our destinations are always on the floor. So, we need a
-# constant to calculate our distance to the floor. 0.815 is the initial
-# y-transform, .001396 was the OBSERVED remainder left after adding .815. Not
-# sure where that value is from or why that value is what it is, but it is. 
-const FLOOR_DISTANCE = 0.815 + .001396
+# constant to calculate our distance to the floor. 1 is the initial
+# y-transform, .001396 was the OBSERVED remainder left after adding 1. This
+# was also observed as the typical distance between the floor an object is
+# sitting on and it's downward raycast-collision. Not sure where that value is
+# from or why that value is what it is, but it is. 
+const FLOOR_DISTANCE = 1 + .001396 
+
+# Everytime we cast downward, we'll usually get a collision value back - even if
+# we're actually on what we'd consider the floor! So, to rectify that, we're
+# only going to move downwards if the distance moved MEETS OR EXCEEDS this
+# value. 
+const MINIMUM_FALL_HEIGHT = .002
 
 # What is our target position - where are we trying to go?
 var _target_position = null
@@ -49,10 +56,6 @@ var pawn_index = -1
 # It is purely for reading the current movement status (since kinematic bodies
 # don't really report this.)
 var _combined_velocity = Vector3.ZERO
-
-# While the sprite moves in three dimensions, it speeds up and slows down on a
-# line - like a train.
-var _line_velocity = 0
 
 # Likewise, we may need a quick way to refer our current movement direction
 # (horizontally, at least) without having to derive from the _current_velocity.
@@ -72,57 +75,82 @@ func _ready():
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
     set_sprite_from_vector(_combined_velocity)
-    pass
 
 func _physics_process(delta):
-    var dirs = Vector3.ZERO
+    # What's the vector for our new movement? Each value is a measure in
+    # units/sec
+    var new_move = Vector3.ZERO
+    # Did we get a collision result from our most recent move attempt?
+    var collision = null
+    # What's our position, measured from the MIDDLE of the BASE of the UnitPawn?
+    var floor_pos = self.global_transform.origin - Vector3(0, FLOOR_DISTANCE, 0)
     
-    if not self.is_on_floor():
-        dirs.y = -9.8
     
-    # Our current position (the global_transform) measures where the CENTER of
-    # the UnitPawn is. However, we need to measure the position from the "feet".
-    # To do that, we shift the origin down by half the height
-    var floor_pos = self.global_transform.origin
-    floor_pos.y -= FLOOR_DISTANCE
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # Step 1: Check if we're on the ground / if we need to fall
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # If we aren't on the ground, we need to move down!
+    # Do a fake move downward just to determine if we're on the ground
+    collision = move_and_collide( Vector3(0, -FALL_CAST_LENGTH, 0), true, true, true)
+    # If we didn't collide, then we're not on the floor. MOVE DOWN!
+    if not collision:
+        new_move.y = -FALL_SPEED
+    # Alternatively, we did actually find the floor; in that case, we need to
+    # move down if the floor is MEETS OR EXCEEDS our minimum fall height
+    elif collision.travel.length() >= MINIMUM_FALL_HEIGHT:
+        new_move.y = -FALL_SPEED
     
-    if _target_position != null and floor_pos.distance_to(_target_position) > GOAL_TOLERANCE:
-        # Calculate the distance from our current global position
-        dirs.x = _target_position.x - floor_pos.x
-        dirs.z = _target_position.z - floor_pos.z
-
-    # If we have something in the vector...
-    if dirs != Vector3.ZERO:
-        # Increment our line velocity with our acceleration
-        _line_velocity += HORIZ_ACCELERATION * delta
-        # Clamp it! Don't want our boy going too fast or too slow
-        _line_velocity = clamp(_line_velocity, MIN_HORIZ_SPEED, MAX_HORIZ_SPEED)
-        # Get the angle of the horizontal dirs
-        var dirs_angle = atan2(dirs.z, dirs.x)
-        # Set the combined velocity to 0 so we can build it piece-meal
-        _combined_velocity = Vector3.ZERO
-        # Start with y, since that's a straight translation
-        _combined_velocity.y = dirs.y
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # Step 2: If we have a target position, then move towards that target
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # If we have a target, we need to move towards the target.
+    if self._target_position:
+        # How far are we from our target position?
+        var distance_to = _target_position - floor_pos
+        # We really only care about the X and Z, so we're gonna re-package them
+        # into a Vector2.
+        var normal_dist = Vector2(distance_to.x, distance_to.z).normalized()
         
-        # Only do X and Z if we have a target - i.e. we're TRYING to move
-        # somewhere
-        if _target_position != null:
-            # Next comes x. We're working of the unit circle, so use cos() to get
-            # the distance and scale it with our line velocity
-            _combined_velocity.x = cos(dirs_angle) * _line_velocity
-            # Finally, z! Same thing as with x, but this time z is the stand in for
-            # y so we'll use sin() instead.
-            _combined_velocity.z = sin(dirs_angle) * _line_velocity
+        # Now for something a bit more wacky - we don't want to overshoot our
+        # target, so we'll fine-tune our values
+        var projected_travel = normal_dist.length() * HORIZ_SPEED * delta
         
-        # Move the UnitPawn - don't use move_and_slide_with_snap, since that
-        # upsets our is_on_floor() test 
-        self.move_and_slide(_combined_velocity, Vector3(0, 1, 0))
+        # If we're projected to move straight past the goal...
+        if projected_travel > distance_to.length():
+            # In that case, we'll use the horizontal speed and delta to
+            normal_dist.x = distance_to.x / (HORIZ_SPEED * delta)
+            normal_dist.y = distance_to.z / (HORIZ_SPEED * delta)
+            
+        # Finally, set our final x & z values
+        new_move.x = normal_dist.x * HORIZ_SPEED
+        new_move.z = normal_dist.y * HORIZ_SPEED
+    
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # Step 3: Do the move!
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    if new_move != Vector3.ZERO:
+        # Now that we've built a move vector - MOVE!
+        collision = move_and_collide(new_move * delta)
         
-    # Otherwise, we ain't moving nowhere.
+        # Update our "watch" stats
+        self.is_moving = true
+        _combined_velocity = new_move
     else:
-        _combined_velocity = Vector3.ZERO
-        _line_velocity = 0
+        # Update our "watch" stats
+        self.is_moving = false
+        _combined_velocity = new_move
         
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # Step 4: Reset target position if necessary
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # Update the floor position
+    floor_pos = self.global_transform.origin - Vector3(0, FLOOR_DISTANCE, 0)
+    # If we have a target position...
+    if _target_position:
+        # ...AND we're close enough to that target position...
+        if (_target_position - floor_pos).length() <= GOAL_TOLERANCE:
+            # ...then we're done here!
+            _target_position = null
 
 # Registers this UnitPawn to a Unit node. Assigns the provided index to this
 # UnitPawn

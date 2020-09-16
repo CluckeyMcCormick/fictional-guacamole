@@ -136,20 +136,33 @@ update_on_value_change = true
 [node name="LowerWallSet" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
 wall_cutaway_sides_mat = SubResource( 12 )
+wall_cutaway_top_mat = null
 wall_interior_mat = SubResource( 13 )
 wall_exterior_mat = SubResource( 14 )
 col_top_mat = SubResource( 15 )
 col_sides_mat = SubResource( 16 )
 fourth_wall_style = 1
+x_size = 10.0
+z_size = 5.0
 thickness = 0.5
 height = 0.5
+gap_length = 2.0
+gap_height = 1.0
+update_on_value_change = true
 
 [node name="UpperWallSet" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 wall_cutaway_sides_mat = SubResource( 17 )
+wall_cutaway_top_mat = null
 wall_interior_mat = SubResource( 18 )
 wall_exterior_mat = SubResource( 19 )
+col_top_mat = null
 col_sides_mat = SubResource( 20 )
 fourth_wall_style = 2
+x_size = 10.0
+z_size = 5.0
 thickness = 0.5
+height = 2.0
+gap_length = 2.0
 gap_height = 1.25
+update_on_value_change = true
