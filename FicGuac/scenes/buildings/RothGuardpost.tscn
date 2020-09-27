@@ -13,10 +13,6 @@
 [ext_resource path="res://assets/buildings/bm_s00_stair_top_x1.5z2_stone.png" type="Texture" id=11]
 [ext_resource path="res://assets/buildings/bm_s00_stair_forward_x1.5h1_stone.png" type="Texture" id=12]
 
-
-
-
-
 [sub_resource type="SpatialMaterial" id=1]
 albedo_texture = ExtResource( 2 )
 
@@ -73,15 +69,26 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.5 )
 forwards_mat = SubResource( 4 )
 sides_mat = SubResource( 5 )
 tops_mat = SubResource( 6 )
+full_top_step = true
 x_length = 1.5
+z_length = 2.0
+steps = 4
 target_height = 1.0
+update_on_value_change = true
 
 [node name="RothWallSet" parent="." instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+wall_cutaway_sides_mat = null
 wall_cutaway_top_mat = SubResource( 7 )
 wall_interior_mat = SubResource( 8 )
 wall_exterior_mat = SubResource( 9 )
 col_top_mat = SubResource( 10 )
 col_sides_mat = SubResource( 11 )
+fourth_wall_style = 0
 x_size = 5.0
+z_size = 5.0
+thickness = 1.0
 height = 0.75
+gap_length = 2.0
+gap_height = 1.0
+update_on_value_change = true

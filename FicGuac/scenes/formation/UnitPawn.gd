@@ -28,12 +28,16 @@ const FALL_CAST_LENGTH = 9.8
 
 # We can only really measure the position of the UnitPawn from the center of the
 # node. However, our destinations are always on the floor. So, we need a
-# constant to calculate our distance to the floor. 1 is the initial
-# y-transform, .001396 was the OBSERVED remainder left after adding 1. This
-# was also observed as the typical distance between the floor an object is
-# sitting on and it's downward raycast-collision. Not sure where that value is
-# from or why that value is what it is, but it is. 
-const FLOOR_DISTANCE = 1 + .001396 
+# constant to calculate our distance to the floor. Even accounting for our
+# initial y-transform, .001396 was the OBSERVED remainder. This was also
+# observed as the typical distance between the floor an object is sitting on and
+# it's downward raycast-collision. Not sure where that value is from or why that
+# value is what it is, but it is. 
+const FLOOR_DISTANCE_ADD = .001396
+
+# Sometimes we run into a wall and we need to step up to the top of that wall -
+# what is the maximum height that we'll be willing to step up?
+const MAX_STEP_UP_HEIGHT = .25
 
 # Everytime we cast downward, we'll usually get a collision value back - even if
 # we're actually on what we'd consider the floor! So, to rectify that, we're
@@ -41,8 +45,20 @@ const FLOOR_DISTANCE = 1 + .001396
 # value. 
 const MINIMUM_FALL_HEIGHT = .002
 
+# What's the minimum and maximum angle for a slope that this UnitPawn can slide
+# up?
+const SLOPE_MIN_ANGLE = 0
+const SLOPE_MAX_ANGLE = 45
+
+# These values used to be constants, but needed to dynamically respond to
+# changes in the how the UnitPawn is sized (and stuff like that).
+# What's the total height of this UnitPawn?
+var _TOTAL_HEIGHT = NAN
+# How far is the floor from the origin of the UnitPawn?
+var _FLOOR_DISTANCE = NAN
+
 # What is our target position - where are we trying to go?
-var _target_position = null
+var target_position = null setget settarget_position
 
 # What is this pawn's unit? Who's feeding it the orders? Who is determining
 # where it should be to be "in formation"?
@@ -63,14 +79,35 @@ var _combined_velocity = Vector3.ZERO
 var _current_horiz_direction = SOUTH
 # Are we currently moving?
 var is_moving = false
+# Are we currently on the floor?
+var on_floor = true
 
 # Signal issued when this pawn dies. Arguments passed include the specific Pawn,
 # the assigned Unit, and the Unit Index.
 signal pawn_died(pawn, unit, unit_index)
 
+# Signal issued when this pawn reaches it's target. Includes the specific Pawn
+# and the pawn's current position (which will be effectively the same as the
+# previous target).
+signal target_reached(pawn, position)
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    pass # Replace with function body.
+    update_move_values()
+
+# Certain variables are key to how we handle movement, but are derived from
+# values that [we can't access / don't exist] before the UnitPawn spawns in.
+# Ergo, we'll call this function to create those values.
+func update_move_values():
+    # Extract the shape from the
+    var current_shape = $CollisionCapsule.shape
+    
+    # Floor distance is intial-local y offset, plus the additive we identified
+    _FLOOR_DISTANCE = (current_shape.height / 2) + FLOOR_DISTANCE_ADD
+    
+    # Total Height is the extent of the shape, doubled
+    _TOTAL_HEIGHT = current_shape.height
+    
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -83,30 +120,38 @@ func _physics_process(delta):
     # Did we get a collision result from our most recent move attempt?
     var collision = null
     # What's our position, measured from the MIDDLE of the BASE of the UnitPawn?
-    var floor_pos = self.global_transform.origin - Vector3(0, FLOOR_DISTANCE, 0)
-    
+    var floor_pos = self.global_transform.origin - Vector3(0, _FLOOR_DISTANCE, 0)   
+    # Get the space state so we can raycast query
+    var space_state = get_world().direct_space_state
     
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # Step 1: Check if we're on the ground / if we need to fall
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # If we aren't on the ground, we need to move down!
-    # Do a fake move downward just to determine if we're on the ground
-    collision = move_and_collide( Vector3(0, -FALL_CAST_LENGTH, 0), true, true, true)
+    # Do a fake move downward just to determine if we're on the ground. We do
+    # this instead of a raycast because this counts the whole collision model.
+    collision = move_and_collide(
+        Vector3(0, -FALL_CAST_LENGTH, 0), true, true, true
+    )
     # If we didn't collide, then we're not on the floor. MOVE DOWN!
     if not collision:
         new_move.y = -FALL_SPEED
+        on_floor = false
     # Alternatively, we did actually find the floor; in that case, we need to
     # move down if the floor is MEETS OR EXCEEDS our minimum fall height
     elif collision.travel.length() >= MINIMUM_FALL_HEIGHT:
         new_move.y = -FALL_SPEED
+        on_floor = false
+    else:
+        on_floor = true
     
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # Step 2: If we have a target position, then move towards that target
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # If we have a target, we need to move towards the target.
-    if self._target_position:
+    if self.target_position:
         # How far are we from our target position?
-        var distance_to = _target_position - floor_pos
+        var distance_to = target_position - floor_pos
         # We really only care about the X and Z, so we're gonna re-package them
         # into a Vector2.
         var normal_dist = Vector2(distance_to.x, distance_to.z).normalized()
@@ -129,8 +174,48 @@ func _physics_process(delta):
     # Step 3: Do the move!
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     if new_move != Vector3.ZERO:
+        #collision = move_and_slide(new_move)
         # Now that we've built a move vector - MOVE!
         collision = move_and_collide(new_move * delta)
+        
+        # If we collided with something, and we still have a ways to go...
+        if collision and collision.remainder.length() != 0:
+            # Get the remaining movement
+            var next_movement = collision.remainder
+
+            # To determine what type of surface this is, we need to calculate
+            # the angle from the origin - this is the best tool we have for
+            # determining what kind of slope we have
+            var normal_at_level = Vector3.ZERO
+            normal_at_level.x = collision.normal.x
+            normal_at_level.z = collision.normal.z
+            
+            # Calculate the angle
+            var normal_angle = normal_at_level.angle_to(collision.normal)
+
+            # Test if the angle is in range
+            var in_angle = SLOPE_MIN_ANGLE <= rad2deg(normal_angle)
+            in_angle = in_angle and rad2deg(normal_angle) <= SLOPE_MAX_ANGLE
+
+            # If we're in the golden zone, or we can't step up, then we gotta
+            # slide!
+            if in_angle:
+                # Slide along the normal
+                next_movement = next_movement.slide( collision.normal )
+                # Normalize it
+                next_movement = next_movement.normalized()
+                # Scale it to the length of the previous remaining movement
+                next_movement = next_movement * collision.remainder.length()
+            
+                # Now we need to slide - divide out our delta from the remainder
+                # and then slide on up
+                move_and_collide(next_movement)
+                # Finally, the next movement is technically our "new move"
+                new_move = next_movement
+                
+            # Otherwise, step up
+            else:
+                pass
         
         # Update our "watch" stats
         self.is_moving = true
@@ -144,13 +229,20 @@ func _physics_process(delta):
     # Step 4: Reset target position if necessary
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # Update the floor position
-    floor_pos = self.global_transform.origin - Vector3(0, FLOOR_DISTANCE, 0)
+    floor_pos = self.global_transform.origin - Vector3(0, _FLOOR_DISTANCE, 0)
     # If we have a target position...
-    if _target_position:
+    if target_position:
+        print(transform.origin, " ", floor_pos, " ", (target_position - floor_pos).length())
         # ...AND we're close enough to that target position...
-        if (_target_position - floor_pos).length() <= GOAL_TOLERANCE:
-            # ...then we're done here!
-            _target_position = null
+        if (target_position - floor_pos).length() <= GOAL_TOLERANCE:
+            # ...then we're done here! Save the target position
+            var pos_save = target_position
+            # Clear the target
+            target_position = null
+            # Now emit the "target reached" signal using the position we saved.
+            # It's important we do it this way, since anything receiving the
+            # signal could change the variable out from under us.
+            emit_signal("target_reached", self, target_position)
 
 # Registers this UnitPawn to a Unit node. Assigns the provided index to this
 # UnitPawn
@@ -280,11 +372,11 @@ func _on_Unit_move_ordered(unit_target):
     var new_target = self.control_unit.get_pawn_index_pos(self.pawn_index)
     new_target.x += unit_target.x
     new_target.z += unit_target.z
-    set_target_position(new_target)
+    settarget_position(new_target)
 
 # Set the target position for this UnitPawn. This exists so that we have a
 # standardized way of setting the target position. Currently we only need to do
 # this one line - makes this function a bit weird, but we can expand it if we
 # need to.
-func set_target_position(position):
-    _target_position = position
+func settarget_position(position):
+    target_position = position
