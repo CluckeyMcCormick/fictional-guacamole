@@ -686,4 +686,5 @@ size_flags_vertical = 3
 max_value = 5.0
 value = 2.5
 percent_visible = false
+[connection signal="target_reached" from="Pawn" to="." method="_on_Pawn_target_reached"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

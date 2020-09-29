@@ -15,11 +15,11 @@
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 0.5, 0.85, 0.5 )
 
-[sub_resource type="CapsuleShape" id=5]
+[sub_resource type="CapsuleShape" id=2]
 radius = 0.688269
 height = 0.51
 
-[sub_resource type="SpriteFrames" id=2]
+[sub_resource type="SpriteFrames" id=3]
 animations = [ {
 "frames": [ ExtResource( 10 ), ExtResource( 7 ) ],
 "loop": true,
@@ -42,11 +42,11 @@ animations = [ {
 "speed": 1.0
 } ]
 
-[sub_resource type="SpatialMaterial" id=3]
+[sub_resource type="SpatialMaterial" id=4]
 albedo_color = Color( 0, 0.72549, 0.72549, 1 )
 
-[sub_resource type="CylinderMesh" id=4]
-material = SubResource( 3 )
+[sub_resource type="CylinderMesh" id=5]
+material = SubResource( 4 )
 height = 0.1
 
 [node name="UnitPawn" type="KinematicBody"]
@@ -56,26 +56,28 @@ collision_mask = 13
 script = ExtResource( 4 )
 
 [node name="CollideBox" type="CollisionShape" parent="."]
+visible = false
 shape = SubResource( 1 )
 disabled = true
 
 [node name="CollisionCapsule" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.0924889, 0 )
-shape = SubResource( 5 )
+shape = SubResource( 2 )
 
 [node name="StateSprite" type="AnimatedSprite3D" parent="."]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0 )
 visible = false
 material_override = ExtResource( 3 )
 pixel_size = 0.0078
-frames = SubResource( 2 )
+frames = SubResource( 3 )
 animation = "debug_march"
+frame = 1
 playing = true
 
 [node name="StandRender" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.95, 0 )
 visible = false
-mesh = SubResource( 4 )
+mesh = SubResource( 5 )
 material/0 = null
 
 [node name="VisualSprite" type="AnimatedSprite3D" parent="."]

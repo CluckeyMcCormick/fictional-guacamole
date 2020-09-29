@@ -207,7 +207,7 @@ func set_pawn_target(target_node : Spatial):
 # This is the real bread and butter of our tests - most of the path-following
 # happens in this particular function, which gets called in response to the Pawn
 # reaching it's target position.
-func _on_UnitPawn_target_reached(pawn, position):
+func _on_Pawn_target_reached(pawn, position):
     # Different states, different responses - MATCH! THAT! STATE!
     match test_state:
         # If we were trying to reach the start...
@@ -264,4 +264,3 @@ func _on_Timer_timeout():
     test_state = FAIL_RETURN
     # Also, just in case, make sure we stop the timer
     $Timer.stop()
-    
