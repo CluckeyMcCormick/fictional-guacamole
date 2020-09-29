@@ -169,6 +169,36 @@ func _ready():
     current_test_path = all_tests[test_index].duplicate()
     set_pawn_target( current_test_path.pop_front() )
 
+# Update the GUI so we know what's up
+func _process(delta):
+    # Set the test text
+    $Items/TestLabel/Info.text = str(test_index)
+    # Set the progress bar to reflect the passage of  T I M E
+    $Items/TimerLabel/ProgressBar.value = $Timer.wait_time - $Timer.time_left
+    # Set the target label to the target vector
+    $Items/TargetLabel/Info.text = str( $Pawn.target_position )
+    # Set the position label to the position vector
+    $Items/PositionLabel/Info.text = str( $Pawn.global_transform.origin )
+    # Set the distance to the target vector
+    if $Pawn.target_position:
+        $Items/DistanceLabel/Info.text = str(
+            $Pawn.global_transform.origin.distance_to( $Pawn.target_position )
+        )
+    else:
+        $Items/DistanceLabel/Info.text = "NAN"
+        
+    # Set the State bar to the current state
+    if test_state == TO_START:
+        $Items/StateLabel/Info.text = "TO START!"
+    elif test_state == IN_PROGRESS:
+        $Items/StateLabel/Info.text = "IN PROGRESS!"
+    elif test_state == SUCCESS_RETURN:
+        $Items/StateLabel/Info.text = "SUCCESSFUL, RETURNING!"
+    elif test_state == FAIL_RETURN:
+        $Items/StateLabel/Info.text = "FAILURE, RETURNING!"
+    else:
+        $Items/StateLabel/Info.text = "INVALID STATE!"
+
 # Utility function for telling the pawn to go somewhere, given a node
 func set_pawn_target(target_node : Spatial):
     var position = target_node.global_transform.origin
@@ -183,8 +213,7 @@ func _on_UnitPawn_target_reached(pawn, position):
         # If we were trying to reach the start...
         TO_START:
             # Then we have to be at the start - neat! So we just have to start
-            # the test!
-            # print("Test Start!")
+            # the test!          
             # Start by setting the target to the next one on the path
             set_pawn_target( current_test_path.pop_front() )
             # The test is now in progress!

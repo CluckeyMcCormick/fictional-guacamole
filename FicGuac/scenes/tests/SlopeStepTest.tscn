@@ -558,4 +558,132 @@ material/0 = null
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 5.0
+
+[node name="Items" type="HBoxContainer" parent="."]
+anchor_top = 1.0
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 10.0
+margin_top = -42.0
+margin_right = -10.0
+margin_bottom = -10.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="StateLabel" type="VBoxContainer" parent="Items"]
+margin_right = 164.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Items/StateLabel"]
+margin_right = 164.0
+margin_bottom = 14.0
+text = "Current State:"
+align = 1
+
+[node name="Info" type="Label" parent="Items/StateLabel"]
+margin_top = 18.0
+margin_right = 164.0
+margin_bottom = 32.0
+text = "+++++++++++"
+align = 1
+
+[node name="TestLabel" type="VBoxContainer" parent="Items"]
+margin_left = 168.0
+margin_right = 332.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Items/TestLabel"]
+margin_right = 164.0
+margin_bottom = 14.0
+text = "Test Index:"
+align = 1
+
+[node name="Info" type="Label" parent="Items/TestLabel"]
+margin_top = 18.0
+margin_right = 164.0
+margin_bottom = 32.0
+text = "1"
+align = 1
+
+[node name="TargetLabel" type="VBoxContainer" parent="Items"]
+margin_left = 336.0
+margin_right = 500.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Items/TargetLabel"]
+margin_right = 164.0
+margin_bottom = 14.0
+text = "Target:"
+align = 1
+
+[node name="Info" type="Label" parent="Items/TargetLabel"]
+margin_top = 18.0
+margin_right = 164.0
+margin_bottom = 32.0
+text = "(0, 0, 0)"
+align = 1
+
+[node name="PositionLabel" type="VBoxContainer" parent="Items"]
+margin_left = 504.0
+margin_right = 668.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Items/PositionLabel"]
+margin_right = 164.0
+margin_bottom = 14.0
+text = "Position:"
+align = 1
+
+[node name="Info" type="Label" parent="Items/PositionLabel"]
+margin_top = 18.0
+margin_right = 164.0
+margin_bottom = 32.0
+text = "(0, 0, 0)"
+align = 1
+
+[node name="DistanceLabel" type="VBoxContainer" parent="Items"]
+margin_left = 672.0
+margin_right = 836.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Items/DistanceLabel"]
+margin_right = 164.0
+margin_bottom = 14.0
+text = "Distance:"
+align = 1
+
+[node name="Info" type="Label" parent="Items/DistanceLabel"]
+margin_top = 18.0
+margin_right = 164.0
+margin_bottom = 32.0
+text = "1"
+align = 1
+
+[node name="TimerLabel" type="VBoxContainer" parent="Items"]
+margin_left = 840.0
+margin_right = 1004.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Items/TimerLabel"]
+margin_right = 164.0
+margin_bottom = 14.0
+text = "Time left in test:"
+align = 1
+
+[node name="ProgressBar" type="ProgressBar" parent="Items/TimerLabel"]
+margin_top = 18.0
+margin_right = 164.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+max_value = 5.0
+value = 2.5
+percent_visible = false
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
