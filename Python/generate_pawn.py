@@ -96,6 +96,19 @@ HEAD_TRI_HEIGHT = 5
 # How tall is the rectangular component that sits atop the triangular component?
 HEAD_RECT_HEIGHT = 25
 
+# Each separate body part needs an identifiable name - that's a Blender
+# requirement. So, what's the name for each of our parts?
+FOOT_L_STR = "footLeft"
+FOOT_R_STR = "footRight"
+LEG_L_STR = "legLeft"
+LEG_R_STR = "legRight"
+ARM_L_STR = "armLeft"
+ARM_R_STR = "armRight"
+HAND_L_STR = "handLeft"
+HAND_R_STR = "handRight"
+BODY_STR = "body"
+HEAD_STR = "head"
+
 # Adds a new object to the scene and prepares for mesh operations (if we need to
 # do any mesh preparations). Returns the new object.
 def prep_object(mesh_name, object_name):
@@ -195,8 +208,8 @@ def build_both_feet():
     vectorX = mathutils.Vector((moveX, 0.0, 0.0))
     
     # Build them feets
-    left_foot = build_foot("footLeftMesh", "footLeft")
-    right_foot = build_foot("footRightMesh", "footRight")
+    left_foot = build_foot( FOOT_L_STR + "Mesh", FOOT_L_STR)
+    right_foot = build_foot( FOOT_R_STR + "Mesh", FOOT_R_STR)
     # Move them feets
     left_foot.location = left_foot.location + vectorX
     left_foot.location = left_foot.location + vectorY
@@ -224,8 +237,8 @@ def build_both_legs():
     vectorZ = mathutils.Vector((0.0, 0.0, moveZ))
     
     # Build them feets
-    left_leg = build_leg("legLeftMesh", "legLeft")
-    right_leg = build_leg("legRightMesh", "legRight")
+    left_leg = build_leg( LEG_L_STR + "Mesh", LEG_L_STR)
+    right_leg = build_leg( LEG_R_STR + "Mesh", LEG_R_STR)
     # Move them feets
     left_leg.location = left_leg.location + vectorZ
     left_leg.location = left_leg.location + vectorY
@@ -246,7 +259,7 @@ def build_body():
     moveZ = (FEET_HEIGHT + LEG_HEIGHT) / float(MM_PER_WORLD_UNIT)
     vectorZ = mathutils.Vector((0.0, 0.0, moveZ))
 
-    body = build_rectangulon(wuX, wuY, wuZ, "bodyMesh", "body")
+    body = build_rectangulon(wuX, wuY, wuZ, BODY_STR + "Mesh", BODY_STR)
     body.location = body.location + vectorZ
 
 def build_arm(mesh_name, object_name):
@@ -286,8 +299,8 @@ def build_both_arms():
     vectorZ = mathutils.Vector((0.0, 0.0, moveZ))
     
     # Build them feets
-    left_arm = build_arm("armLeftMesh", "armLeft")
-    right_arm = build_arm("armRightMesh", "armRight")
+    left_arm = build_arm(ARM_L_STR + "Mesh", ARM_L_STR)
+    right_arm = build_arm(ARM_R_STR + "Mesh", ARM_R_STR)
 
     # Move things around, up down, left, gone to ground
     left_arm.location = left_arm.location + vectorY
@@ -338,8 +351,8 @@ def build_both_hands():
     vectorZ = mathutils.Vector((0.0, 0.0, moveZ))
     
     # Build them feets
-    left_hand = build_hand("handLeftMesh", "handLeft")
-    right_hand = build_hand("handRightMesh", "handRight")
+    left_hand = build_hand( HAND_L_STR + "Mesh", HAND_L_STR )
+    right_hand = build_hand( HAND_R_STR + "Mesh", HAND_R_STR )
 
     # Move things around, up down, left, gone to ground
     left_hand.location = left_hand.location + vectorY
@@ -396,7 +409,7 @@ def build_head():
         (CORNER_C, CORNER_D, CORNER_Y, CORNER_X),
     ]
     # Create the object and mesh for us to work with.
-    head_obj = prep_object("headMesh", "head")
+    head_obj = prep_object(HEAD_STR + "Mesh", HEAD_STR)
     # Create a mesh so we can edit stuff
     work_mesh = bmesh.new()
     # We need to save the vertex object/references as we make them, so we'll
@@ -450,5 +463,4 @@ build_body()
 build_both_arms()
 build_both_hands()
 build_head()
-
 
