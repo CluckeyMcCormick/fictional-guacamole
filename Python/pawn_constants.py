@@ -68,7 +68,7 @@ ARM_HEIGHT = 20
 # When setting the arms down from the top of the body, we need to shift the arms
 # down, so it looks like the pawn has shoulders. How much should we move the
 # shoulders down by? (measured 5mm)
-ARM_SHOULDER_OFFSET = 5
+ARM_SHOULDER_OFFSET = 7 # To match diameter
 # Each cylinder needs a specified number of segements/faces. The more faces, the
 # more round the cylinder. So 3 would be a weird triangle, 4 a square-prism, 8
 # an octagonal prism, and so on. (Original 64)
