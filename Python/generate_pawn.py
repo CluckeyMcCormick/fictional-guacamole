@@ -1,113 +1,32 @@
 # Blender-specific imports
 import bpy
 import bmesh
-import math
 import mathutils
 
-# ~~~~~~~~~~~
-# Constants!
-# ~~~~~~~~~~
+# Other imports
+import math
+import os
+import sys
+import imp
 
-# Of course, our handy reference is about 110 millimeters tall (11 cm) - how
-# many millimeters are there in a world unit? (This is mostly for reference)
-MM_PER_WORLD_UNIT = 70
+# This is the path to where the other Python scripts are stored. You will need
+# to update this if it doesn't match your exact project path.
+SCRIPTS_PATH = "godot/fictional-guacamole/Python" # Change me!
 
-# The body is divided into six different types of relatively simple polygonal
-# components, for a total of 10 components overall. Each individual component
-# has it's own mesh, and each type of component is governed by several specific
-# component constants. They are also governed by several relational constants in
-# addition to being influenced by the constants of other components.
+# In order to ensure our code is portable/good, expand the path using abspath().
+SCRIPTS_PATH = os.path.abspath(SCRIPTS_PATH)
+# Apparently, there's a chance that the path we got above isn't a string or
+# bytes, so we'll pass it through fspath just to be sure.
+SCRIPTS_PATH = os.fspath(SCRIPTS_PATH)
 
-# The components are:
-# 2 Feet, 2 Legs, 1 Body, 2 Arms, 2 Hands, 1 Head
+if not SCRIPTS_PATH in sys.path:
+    sys.path.append(SCRIPTS_PATH)
 
-### Feet Constants!
-# The feet are sort of like tissue boxes or sardine cans
-# How long are the feet, in millimeters? (Original 39mm)
-FEET_LENGTH = 39
-# How wide are the feet, in millimeters? (Original 18mm)
-FEET_WIDTH = 18
-# How tall are the feet, in pixels? (Original 8mm)
-FEET_HEIGHT = 8
-# How far apart are the feet from each other? The distance from the edge of the
-# feet to the x-axis is this value / 2. Keep in mind that the "position" of the
-# feet are measured from the center of the foot. Ergo, it should exceed
-# FEET_WIDTH - and probably then some. (Original ~23mm, Measured 5mm)  
-FEET_DISTANCE = 23
-# To help us position the feet, we shift them back and forth on the x-axis - how
-# much do we move the feet by (in millimeters)? 
-FEET_X_SHIFT = FEET_LENGTH / 4.0
-
-### Leg Constants!
-# The legs are rectangular prisms with square ends, but they're rotated by 45
-# degrees.
-# What's the measurement on one side of said square? In other words, how wide is
-# each leg? (Original 11mm)
-LEG_WIDTH = 11
-# How tall are the prisms/legs? (Original 20mm) Keep in mind these sit on top of
-# the feet!
-LEG_HEIGHT = 20
-
-### Body Constants!
-# The body is also a rectangular prism.
-# What's the width (y-length) of this body? (Original 39mm)
-BODY_WIDTH = 39
-# What's the depth (x-length) of this body? (Original 16mm)
-BODY_DEPTH = 16
-# What's the height (z-length) of this body? (Original 50mm)
-BODY_HEIGHT = 50
-
-### Arm Constants!
-# The arms are just like the legs, in that they are rectangular-square prisms
-# and are rotated at 45 degrees.
-# How wide is one side of the arm-prism? (Original 11mm)
-ARM_WIDTH = 11
-# How tall are the prisms/arms? (Original 20mm)
-ARM_HEIGHT = 20
-# When setting the arms down from the top of the body, we need to shift the arms
-# down, so it looks like the pawn has shoulders. How much should we move the
-# shoulders down by? (measured 5mm)
-ARM_SHOULDER_OFFSET = 5
-
-### Hand Constants!
-# The hands are little cubes attached at the end of the arms. They are rotated
-# so that they are sort of like little diamonds - basically so that one of the
-# points contacts the arm and that is the joint.
-# Since the side of the hand is made up of a little cube, what's the measurement
-# on one side of that cube? (Original 10mm)
-HAND_SIDE = 10
-
-### Head Constants!
-# The head is a much more complex shape than    *----*
-# the rest of the body. The face is sort of     |    |
-# a shield shape, as seen on the right. This    *    *
-# shape is extruded in to create some sorta      \  /
-# prism shape.                                    **
-# 
-# Since the head is a prism/extruded shape, we need to give it a thickness - but
-# how thick should it be? (Original 25mm)
-HEAD_THICKNESS = 25
-# How wide/fat is the pawn's head?
-HEAD_WIDTH = 25
-# Okay, so the head can be cut up into two parts - the lower part which is a
-# sloping triangle coming to a point, and the upper part of which is
-# rectangular. How tall is the triangular component?
-HEAD_TRI_HEIGHT = 5
-# How tall is the rectangular component that sits atop the triangular component?
-HEAD_RECT_HEIGHT = 25
-
-# Each separate body part needs an identifiable name - that's a Blender
-# requirement. So, what's the name for each of our parts?
-FOOT_L_STR = "footLeft"
-FOOT_R_STR = "footRight"
-LEG_L_STR = "legLeft"
-LEG_R_STR = "legRight"
-ARM_L_STR = "armLeft"
-ARM_R_STR = "armRight"
-HAND_L_STR = "handLeft"
-HAND_R_STR = "handRight"
-BODY_STR = "body"
-HEAD_STR = "head"
+# Now that we've added our path to the Python-path, we can import our constants.
+import pawn_constants as PC
+# Just in case it changed (Blender scripting doesn't re-import, or uses some
+# sort of caching, I guess), we'll do a real quick reload.
+imp.reload(PC)
 
 # Adds a new object to the scene and prepares for mesh operations (if we need to
 # do any mesh preparations). Returns the new object.
@@ -184,32 +103,31 @@ def build_rectangulon(wuX, wuY, wuZ, mesh_name, object_name, translate_up=True):
     # If we have to translate this rectangulus upward (so that it's sitting
     # atop the floor-grid), then MAKE IT SO
     if translate_up:
-        base_obj.location = base_obj.location = (0, 0, wuZ / 2.0)
-        pass
+        base_obj.location = (0, 0, wuZ / 2.0)
 
     return base_obj
 
 def build_foot(mesh_name, object_name):
     # First, let's convert our constraint measurements from mm to world
     # units
-    wuX = FEET_LENGTH / float(MM_PER_WORLD_UNIT)
-    wuY = FEET_WIDTH / float(MM_PER_WORLD_UNIT)
-    wuZ = FEET_HEIGHT / float(MM_PER_WORLD_UNIT)
+    wuX = PC.FEET_LENGTH / float(PC.MM_PER_WORLD_UNIT)
+    wuY = PC.FEET_WIDTH / float(PC.MM_PER_WORLD_UNIT)
+    wuZ = PC.FEET_HEIGHT / float(PC.MM_PER_WORLD_UNIT)
 
     return build_rectangulon(wuX, wuY, wuZ, mesh_name, object_name)
 
 def build_both_feet():
-    # We need to move each foot to the side, based on FEET_DISTANCE.
-    moveY = (FEET_DISTANCE / float(MM_PER_WORLD_UNIT)) / 2
+    # We need to move each foot to the side.
+    moveY = PC.FOOT_SHIFT_Y / float(PC.MM_PER_WORLD_UNIT)
     # We also need to shift the feet forward and backward.
-    moveX = FEET_X_SHIFT / float(MM_PER_WORLD_UNIT)
+    moveX = PC.FEET_X_SHIFT / float(PC.MM_PER_WORLD_UNIT)
     # Pack the above into vectors so we can easily translate our feets
     vectorY = mathutils.Vector((0.0, moveY, 0.0))
     vectorX = mathutils.Vector((moveX, 0.0, 0.0))
     
     # Build them feets
-    left_foot = build_foot( FOOT_L_STR + "Mesh", FOOT_L_STR)
-    right_foot = build_foot( FOOT_R_STR + "Mesh", FOOT_R_STR)
+    left_foot = build_foot(PC.FOOT_L_STR + "Mesh", PC.FOOT_L_STR)
+    right_foot = build_foot(PC.FOOT_R_STR + "Mesh", PC.FOOT_R_STR)
     # Move them feets
     left_foot.location = left_foot.location + vectorX
     left_foot.location = left_foot.location + vectorY
@@ -219,26 +137,24 @@ def build_both_feet():
 def build_leg(mesh_name, object_name):
     # First, let's convert our constraint measurements from mm to world
     # units
-    wuX = LEG_WIDTH / float(MM_PER_WORLD_UNIT)
-    wuY = LEG_WIDTH / float(MM_PER_WORLD_UNIT)
-    wuZ = LEG_HEIGHT / float(MM_PER_WORLD_UNIT)
+    wuX = PC.LEG_WIDTH / float(PC.MM_PER_WORLD_UNIT)
+    wuY = PC.LEG_WIDTH / float(PC.MM_PER_WORLD_UNIT)
+    wuZ = PC.LEG_HEIGHT / float(PC.MM_PER_WORLD_UNIT)
 
     return build_rectangulon(wuX, wuY, wuZ, mesh_name, object_name)
 
 def build_both_legs():
-    # Both legs need to be moved to the center of each leg. Ergo, our move value
-    # on Y is the same as it was for the feet: FEET_DISTANCE (divided by 2).
-    moveY = (FEET_DISTANCE / float(MM_PER_WORLD_UNIT)) / 2
-    # We also need to shift the legs upward so the sit on top of the feet -
-    # that's the FEET_HEIGHT!
-    moveZ = FEET_HEIGHT / float(MM_PER_WORLD_UNIT)
+    # Both legs need to be moved to the center of each leg.
+    moveY = PC.LEG_SHIFT_Y / float(PC.MM_PER_WORLD_UNIT)
+    # We also need to shift the legs upward.
+    moveZ = PC.LEG_SHIFT_Z / float(PC.MM_PER_WORLD_UNIT)
     # Pack the above into vectors so we can easily translate our feets
     vectorY = mathutils.Vector((0.0, moveY, 0.0))
     vectorZ = mathutils.Vector((0.0, 0.0, moveZ))
     
     # Build them feets
-    left_leg = build_leg( LEG_L_STR + "Mesh", LEG_L_STR)
-    right_leg = build_leg( LEG_R_STR + "Mesh", LEG_R_STR)
+    left_leg = build_leg( PC.LEG_L_STR + "Mesh", PC.LEG_L_STR)
+    right_leg = build_leg( PC.LEG_R_STR + "Mesh", PC.LEG_R_STR)
     # Move them feets
     left_leg.location = left_leg.location + vectorZ
     left_leg.location = left_leg.location + vectorY
@@ -250,57 +166,39 @@ def build_both_legs():
 def build_body():
     # First, let's convert our constraint measurements from mm to world
     # units
-    wuX = BODY_DEPTH / float(MM_PER_WORLD_UNIT)
-    wuY = BODY_WIDTH / float(MM_PER_WORLD_UNIT)
-    wuZ = BODY_HEIGHT / float(MM_PER_WORLD_UNIT)
+    wuX = PC.BODY_DEPTH / float(PC.MM_PER_WORLD_UNIT)
+    wuY = PC.BODY_WIDTH / float(PC.MM_PER_WORLD_UNIT)
+    wuZ = PC.BODY_HEIGHT / float(PC.MM_PER_WORLD_UNIT)
 
     # We also need to shift the legs upward so the sit on top of the feet -
     # that's the FEET_HEIGHT!
-    moveZ = (FEET_HEIGHT + LEG_HEIGHT) / float(MM_PER_WORLD_UNIT)
+    moveZ = PC.BODY_SHIFT_Z / float(PC.MM_PER_WORLD_UNIT)
     vectorZ = mathutils.Vector((0.0, 0.0, moveZ))
 
-    body = build_rectangulon(wuX, wuY, wuZ, BODY_STR + "Mesh", BODY_STR)
+    body = build_rectangulon(wuX, wuY, wuZ, PC.BODY_STR + "Mesh", PC.BODY_STR)
     body.location = body.location + vectorZ
 
 def build_arm(mesh_name, object_name):
     # First, let's convert our constraint measurements from mm to world
     # units
-    wuX = ARM_WIDTH / float(MM_PER_WORLD_UNIT)
-    wuY = ARM_WIDTH / float(MM_PER_WORLD_UNIT)
-    wuZ = ARM_HEIGHT / float(MM_PER_WORLD_UNIT)
+    wuX = PC.ARM_WIDTH / float(PC.MM_PER_WORLD_UNIT)
+    wuY = PC.ARM_WIDTH / float(PC.MM_PER_WORLD_UNIT)
+    wuZ = PC.ARM_HEIGHT / float(PC.MM_PER_WORLD_UNIT)
 
     return build_rectangulon(wuX, wuY, wuZ, mesh_name, object_name)
 
 def build_both_arms():
-    # The position of the arms is more complex than other body components.
-    # First, we need to move the arm to the sides of the body.
-    moveY = BODY_WIDTH / float(MM_PER_WORLD_UNIT)
-    # Next, we need to move the arms out by the arm's width, so that the arms do
-    # not clip into the body. However, since we rotate the arms at a 45 degree
-    # angle (so that the contact is along the ridge of the arm), the true
-    # distance/width to use is the hypotenuse.
-    moveY += math.hypot(ARM_WIDTH, ARM_WIDTH) / float(MM_PER_WORLD_UNIT)
-    # Then, since we're doing this to either side, we need to cut the move
-    # vector in half.
-    moveY /= 2
-
-    # We also need to shift the arms upward using a specific formula based on
-    # all the previous height values.
-    moveZ = FEET_HEIGHT + LEG_HEIGHT + BODY_HEIGHT
-    # We then shift them downward by the height of the arm (this drops the top
-    # of the arm to be level with the body top) AND the shoulder offset
-    # configurable
-    moveZ -= ARM_HEIGHT + ARM_SHOULDER_OFFSET
-    # Now convert from millimeters to world units
-    moveZ /= float(MM_PER_WORLD_UNIT)
+    # Get/convert the pre calculated arm shifts on Y and Z
+    moveY = PC.ARM_SHIFT_Y / float(PC.MM_PER_WORLD_UNIT)
+    moveZ = PC.ARM_SHIFT_Z / float(PC.MM_PER_WORLD_UNIT)
     
     # Pack the above into vectors so we can easily translate our feets
     vectorY = mathutils.Vector((0.0, moveY, 0.0))
     vectorZ = mathutils.Vector((0.0, 0.0, moveZ))
     
     # Build them feets
-    left_arm = build_arm(ARM_L_STR + "Mesh", ARM_L_STR)
-    right_arm = build_arm(ARM_R_STR + "Mesh", ARM_R_STR)
+    left_arm = build_arm(PC.ARM_L_STR + "Mesh", PC.ARM_L_STR)
+    right_arm = build_arm(PC.ARM_R_STR + "Mesh", PC.ARM_R_STR)
 
     # Move things around, up down, left, gone to ground
     left_arm.location = left_arm.location + vectorY
@@ -312,47 +210,25 @@ def build_both_arms():
 
 def build_hand(mesh_name, object_name):
     # First, let's convert our constraint measurements from mm to world
-    # units
-    wuX = HAND_SIDE / float(MM_PER_WORLD_UNIT)
-    wuY = HAND_SIDE / float(MM_PER_WORLD_UNIT)
-    wuZ = HAND_SIDE / float(MM_PER_WORLD_UNIT)
+    # units.
+    wuX = PC.HAND_SIDE / float(PC.MM_PER_WORLD_UNIT)
+    wuY = PC.HAND_SIDE / float(PC.MM_PER_WORLD_UNIT)
+    wuZ = PC.HAND_SIDE / float(PC.MM_PER_WORLD_UNIT)
 
     return build_rectangulon(wuX, wuY, wuZ, mesh_name, object_name)
 
 def build_both_hands():
-    # The positions of the hands are more complex than other body components,
-    # but mirror many of the same movements we make for the arms (since they're
-    # attached and whatnot.)
-    # First, we need to move the arm to the sides of the body.
-    moveY = BODY_WIDTH / float(MM_PER_WORLD_UNIT)
-    # Next, we need to move the hands out by the arm's width, so that the hands
-    # connect at the middle of the arms. However, since we rotate the arms at a
-    # 45 degree angle (so that the contact is along the ridge of the arm), the
-    # true distance/width to use is the hypotenuse.
-    moveY += math.hypot(ARM_WIDTH, ARM_WIDTH) / float(MM_PER_WORLD_UNIT)
-    # Then, since we're doing this to either side, we need to cut the move
-    # vector in half.
-    moveY /= 2
-
-    # We also need to shift the hands upwards and downwards using a specific
-    # formula based on all the previous height values.
-    moveZ = FEET_HEIGHT + LEG_HEIGHT + BODY_HEIGHT
-    # We then shift them downward by the height of the arm (this drops the top
-    # of the arm to be level with the body top) AND the shoulder offset
-    # configurable
-    moveZ -= ARM_HEIGHT + ARM_SHOULDER_OFFSET
-    # Now, lower the hands down by the whole of their size
-    moveZ -= HAND_SIDE
-    # Finally, convert from millimeters to world units
-    moveZ /= float(MM_PER_WORLD_UNIT)
+    # Get/convert the pre calculated arm shifts on Y and Z
+    moveY = PC.HAND_SHIFT_Y / float(PC.MM_PER_WORLD_UNIT)
+    moveZ = PC.HAND_SHIFT_Z / float(PC.MM_PER_WORLD_UNIT)
     
     # Pack the above into vectors so we can easily translate our feets
     vectorY = mathutils.Vector((0.0, moveY, 0.0))
     vectorZ = mathutils.Vector((0.0, 0.0, moveZ))
     
     # Build them feets
-    left_hand = build_hand( HAND_L_STR + "Mesh", HAND_L_STR )
-    right_hand = build_hand( HAND_R_STR + "Mesh", HAND_R_STR )
+    left_hand = build_hand( PC.HAND_L_STR + "Mesh", PC.HAND_L_STR )
+    right_hand = build_hand( PC.HAND_R_STR + "Mesh", PC.HAND_R_STR )
 
     # Move things around, up down, left, gone to ground
     left_hand.location = left_hand.location + vectorY
@@ -367,14 +243,14 @@ def build_head():
 
     # First, calculate our world unit measurements. We're gonna need THREE
     # separate measurements just for the height of the head.
-    wuX = HEAD_THICKNESS / float(MM_PER_WORLD_UNIT)
-    wuY = HEAD_WIDTH / float(MM_PER_WORLD_UNIT)
-    wuZ_pointA = HEAD_TRI_HEIGHT / float(MM_PER_WORLD_UNIT)
-    wuZ_pointB = wuZ_pointA + (HEAD_RECT_HEIGHT / float(MM_PER_WORLD_UNIT))
+    wuX = PC.HEAD_THICKNESS / float(PC.MM_PER_WORLD_UNIT)
+    wuY = PC.HEAD_WIDTH / float(PC.MM_PER_WORLD_UNIT)
+    wuZ_pointA = PC.HEAD_TRI_HEIGHT / float(PC.MM_PER_WORLD_UNIT)
+    wuZ_pointB = PC.TOTAL_HEAD_HEIGHT / float(PC.MM_PER_WORLD_UNIT)
 
     # Next, calculate how much we have to move the head by and then pack that
-    # into 
-    moveZ = (FEET_HEIGHT + LEG_HEIGHT + BODY_HEIGHT) / float(MM_PER_WORLD_UNIT)
+    # into a vector
+    moveZ = PC.HEAD_SHIFT_Z / float(PC.MM_PER_WORLD_UNIT)
     vectorZ = mathutils.Vector((0.0, 0.0, moveZ))
 
     # Now then, the shield has 5 points across 2 layers...
@@ -409,7 +285,7 @@ def build_head():
         (CORNER_C, CORNER_D, CORNER_Y, CORNER_X),
     ]
     # Create the object and mesh for us to work with.
-    head_obj = prep_object(HEAD_STR + "Mesh", HEAD_STR)
+    head_obj = prep_object( PC.HEAD_STR + "Mesh", PC.HEAD_STR )
     # Create a mesh so we can edit stuff
     work_mesh = bmesh.new()
     # We need to save the vertex object/references as we make them, so we'll

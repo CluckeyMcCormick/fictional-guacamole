@@ -1,40 +1,53 @@
 # Blender-specific imports
 import bpy
 
-# ~~~~~~~~~~~
-# Constants!
-# ~~~~~~~~~~
+# Import so we can re-import the constants script
+import imp
+import os
+import sys
 
-# Each separate body part needs an identifiable name - that's a Blender
-# requirement. So, what's the name for each of our parts?
-FOOT_L_STR = "footLeft"
-FOOT_R_STR = "footRight"
-LEG_L_STR = "legLeft"
-LEG_R_STR = "legRight"
-ARM_L_STR = "armLeft"
-ARM_R_STR = "armRight"
-HAND_L_STR = "handLeft"
-HAND_R_STR = "handRight"
-BODY_STR = "body"
-HEAD_STR = "head"
+# This is the path to where the other Python scripts are stored. You will need
+# to update this if it doesn't match your exact project path.
+SCRIPTS_PATH = "godot/fictional-guacamole/Python" # Change me!
+
+# In order to ensure our code is portable/good, expand the path using abspath().
+SCRIPTS_PATH = os.path.abspath(SCRIPTS_PATH)
+# Apparently, there's a chance that the path we got above isn't a string or
+# bytes, so we'll pass it through fspath just to be sure.
+SCRIPTS_PATH = os.fspath(SCRIPTS_PATH)
+
+if not SCRIPTS_PATH in sys.path:
+    sys.path.append(SCRIPTS_PATH)
+
+# Now that we've added our path to the Python-path, we can import our constants.
+import pawn_constants as PC
+# Just in case it changed (Blender scripting doesn't re-import, or uses some
+# sort of caching, I guess), we'll do a real quick reload.
+imp.reload(PC)
+
+# ~~~~~~~~~~~
+#
+# Actual Code
+#
+# ~~~~~~~~~~~
 
 # Now then, we're gonna arrange each component so that everything is where it's
 # supposed to be. First, let's just get  E V E R Y T H I N G.
-foot_l = bpy.data.objects[FOOT_L_STR]
-foot_r= bpy.data.objects[FOOT_R_STR]
+foot_l = bpy.data.objects[PC.FOOT_L_STR]
+foot_r= bpy.data.objects[PC.FOOT_R_STR]
 
-leg_l = bpy.data.objects[LEG_L_STR]
-leg_r = bpy.data.objects[LEG_R_STR]
+leg_l = bpy.data.objects[PC.LEG_L_STR]
+leg_r = bpy.data.objects[PC.LEG_R_STR]
 
-arm_l = bpy.data.objects[ARM_L_STR]
-arm_r = bpy.data.objects[ARM_R_STR]
+arm_l = bpy.data.objects[PC.ARM_L_STR]
+arm_r = bpy.data.objects[PC.ARM_R_STR]
 
-hand_l = bpy.data.objects[HAND_L_STR]
-hand_r = bpy.data.objects[HAND_R_STR]
+hand_l = bpy.data.objects[PC.HAND_L_STR]
+hand_r = bpy.data.objects[PC.HAND_R_STR]
 
-head = bpy.data.objects[HEAD_STR]
+head = bpy.data.objects[PC.HEAD_STR]
 
-body = bpy.data.objects[BODY_STR]
+body = bpy.data.objects[PC.BODY_STR]
 
 # Now, ASSIGN THE PARENTS
 foot_l.parent = leg_l
