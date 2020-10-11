@@ -28,6 +28,12 @@ import pawn_constants as PC
 # sort of caching, I guess), we'll do a real quick reload.
 imp.reload(PC)
 
+#~~~~~~~~~~~~~~~~~~~~~
+#
+# UTILITY FUNCTIONS!
+#
+#~~~~~~~~~~~~~~~~~~~~~
+
 # Adds a new object to the scene and prepares for mesh operations (if we need to
 # do any mesh preparations). Returns the new object.
 def prep_object(mesh_name, object_name):
@@ -107,6 +113,12 @@ def build_rectangulon(wuX, wuY, wuZ, mesh_name, object_name, translate_up=True):
 
     return base_obj
 
+#~~~~~~~~~~~~~~~~~~~~~
+#
+# FOOT FUNCTIONS!
+#
+#~~~~~~~~~~~~~~~~~~~~~
+
 def build_foot(mesh_name, object_name):
     # First, let's convert our constraint measurements from mm to world
     # units
@@ -129,19 +141,53 @@ def build_both_feet():
     left_foot = build_foot(PC.FOOT_L_STR + "Mesh", PC.FOOT_L_STR)
     right_foot = build_foot(PC.FOOT_R_STR + "Mesh", PC.FOOT_R_STR)
     # Move them feets
-    left_foot.location = left_foot.location + vectorX
-    left_foot.location = left_foot.location + vectorY
-    right_foot.location = right_foot.location + vectorX
-    right_foot.location = right_foot.location - vectorY
+    left_foot.location += vectorX + vectorY
+    right_foot.location += vectorX - vectorY
+
+#~~~~~~~~~~~~~~~~~~~~~
+#
+# LEG FUNCTIONS!
+#
+#~~~~~~~~~~~~~~~~~~~~~
 
 def build_leg(mesh_name, object_name):
     # First, let's convert our constraint measurements from mm to world
-    # units
-    wuX = PC.LEG_WIDTH / float(PC.MM_PER_WORLD_UNIT)
-    wuY = PC.LEG_WIDTH / float(PC.MM_PER_WORLD_UNIT)
-    wuZ = PC.LEG_HEIGHT / float(PC.MM_PER_WORLD_UNIT)
+    # units.
+    diameter = PC.LEG_DIAMETER / float(PC.MM_PER_WORLD_UNIT)
+    height = PC.LEG_HEIGHT / float(PC.MM_PER_WORLD_UNIT)
 
-    return build_rectangulon(wuX, wuY, wuZ, mesh_name, object_name)
+    # Create the object and mesh for us to work with.
+    base_obj = prep_object(mesh_name, object_name)
+    # Create a mesh so we can edit stuff
+    work_mesh = bmesh.new()
+
+    # Create a... cone? Yes, a cone. Blender doesn't have a function for a
+    # cylinder, so you have to create a cone with the top and bottom diameters
+    # equal - note how diameter is provided as an argument twice.
+    bmesh.ops.create_cone(
+        # bm (The bmesh to operate on)
+        work_mesh,
+        # Whether or not to fill in the ends with faces
+        cap_ends=True,
+        # Fill ends with triangles instead of ngons. I know what that means, but
+        # I'm unsure of the impact. Most likely minimal
+        cap_tris=False,
+        # "Undocumented.", says the documentation. In reality, the number of
+        # sides for the cylinder. More sides, more round.
+        segments=PC.LEG_SEGMENTS,
+        # Diameter of end 1 and end 2.
+        diameter1=diameter, diameter2=diameter,
+        # "Depth" - what they really mean is the height.
+        depth= height 
+    )
+
+    work_mesh.to_mesh(base_obj.data) 
+    work_mesh.free()
+
+    # Shift the leg upwards so that it's base is sitting on z = 0
+    base_obj.location = (0, 0, height / 2.0)
+
+    return base_obj
 
 def build_both_legs():
     # Both legs need to be moved to the center of each leg.
@@ -156,12 +202,14 @@ def build_both_legs():
     left_leg = build_leg( PC.LEG_L_STR + "Mesh", PC.LEG_L_STR)
     right_leg = build_leg( PC.LEG_R_STR + "Mesh", PC.LEG_R_STR)
     # Move them feets
-    left_leg.location = left_leg.location + vectorZ
-    left_leg.location = left_leg.location + vectorY
-    left_leg.rotation_euler = (0, 0, math.radians(45))
-    right_leg.location = right_leg.location + vectorZ
-    right_leg.location = right_leg.location - vectorY
-    right_leg.rotation_euler = (0, 0, math.radians(45))
+    left_leg.location += vectorZ + vectorY
+    right_leg.location += vectorZ - vectorY
+
+#~~~~~~~~~~~~~~~~~~~~~
+#
+# BODY FUNCTIONS!
+#
+#~~~~~~~~~~~~~~~~~~~~~
 
 def build_body():
     # First, let's convert our constraint measurements from mm to world
@@ -176,16 +224,52 @@ def build_body():
     vectorZ = mathutils.Vector((0.0, 0.0, moveZ))
 
     body = build_rectangulon(wuX, wuY, wuZ, PC.BODY_STR + "Mesh", PC.BODY_STR)
-    body.location = body.location + vectorZ
+    body.location += vectorZ
+
+#~~~~~~~~~~~~~~~~~~~~~
+#
+# ARM FUNCTIONS!
+#
+#~~~~~~~~~~~~~~~~~~~~~
 
 def build_arm(mesh_name, object_name):
     # First, let's convert our constraint measurements from mm to world
     # units
-    wuX = PC.ARM_WIDTH / float(PC.MM_PER_WORLD_UNIT)
-    wuY = PC.ARM_WIDTH / float(PC.MM_PER_WORLD_UNIT)
-    wuZ = PC.ARM_HEIGHT / float(PC.MM_PER_WORLD_UNIT)
+    diameter = PC.ARM_DIAMETER / float(PC.MM_PER_WORLD_UNIT)
+    height = PC.ARM_HEIGHT / float(PC.MM_PER_WORLD_UNIT)
 
-    return build_rectangulon(wuX, wuY, wuZ, mesh_name, object_name)
+    # Create the object and mesh for us to work with.
+    base_obj = prep_object(mesh_name, object_name)
+    # Create a mesh so we can edit stuff
+    work_mesh = bmesh.new()
+
+    # Create a... cone? Yes, a cone. Blender doesn't have a function for a
+    # cylinder, so you have to create a cone with the top and bottom diameters
+    # equal - note how diameter is provided as an argument twice.
+    bmesh.ops.create_cone(
+        # bm (The bmesh to operate on)
+        work_mesh,
+        # Whether or not to fill in the ends with faces
+        cap_ends=True,
+        # Fill ends with triangles instead of ngons. I know what that means, but
+        # I'm unsure of the impact. Most likely minimal
+        cap_tris=False,
+        # "Undocumented.", says the documentation. In reality, the number of
+        # sides for the cylinder. More sides, more round.
+        segments=PC.ARM_SEGMENTS,
+        # Diameter of end 1 and end 2.
+        diameter1=diameter, diameter2=diameter,
+        # "Depth" - what they really mean is the height.
+        depth= height 
+    )
+
+    work_mesh.to_mesh(base_obj.data) 
+    work_mesh.free()
+
+    # Shift the leg upwards so that it's base is sitting on z = 0
+    base_obj.location = (0, 0, height / 2.0)
+
+    return base_obj
 
 def build_both_arms():
     # Get/convert the pre calculated arm shifts on Y and Z
@@ -201,21 +285,44 @@ def build_both_arms():
     right_arm = build_arm(PC.ARM_R_STR + "Mesh", PC.ARM_R_STR)
 
     # Move things around, up down, left, gone to ground
-    left_arm.location = left_arm.location + vectorY
-    left_arm.location = left_arm.location + vectorZ
-    left_arm.rotation_euler = (0, 0, math.radians(45))
-    right_arm.location = right_arm.location - vectorY
-    right_arm.location = right_arm.location + vectorZ
-    right_arm.rotation_euler = (0, 0, math.radians(45))
+    left_arm.location += vectorZ + vectorY 
+    right_arm.location += vectorZ - vectorY
+
+#~~~~~~~~~~~~~~~~~~~~~
+#
+# HAND FUNCTIONS!
+#
+#~~~~~~~~~~~~~~~~~~~~~
 
 def build_hand(mesh_name, object_name):
     # First, let's convert our constraint measurements from mm to world
     # units.
-    wuX = PC.HAND_SIDE / float(PC.MM_PER_WORLD_UNIT)
-    wuY = PC.HAND_SIDE / float(PC.MM_PER_WORLD_UNIT)
-    wuZ = PC.HAND_SIDE / float(PC.MM_PER_WORLD_UNIT)
+    diameter = PC.HAND_DIAMETER / float(PC.MM_PER_WORLD_UNIT)
 
-    return build_rectangulon(wuX, wuY, wuZ, mesh_name, object_name)
+    # Create the object and mesh for us to work with.
+    base_obj = prep_object(mesh_name, object_name)
+    # Create a mesh so we can edit stuff
+    work_mesh = bmesh.new()
+
+    # Create a... cone? Yes, a cone. Blender doesn't have a function for a
+    # cylinder, so you have to create a cone with the top and bottom diameters
+    # equal - note how diameter is provided as an argument twice.
+    bmesh.ops.create_icosphere(
+        # bm (The bmesh to operate on)
+        work_mesh,
+        # "How many times to recursively subdivide the sphere"
+        subdivisions=PC.HAND_SUBDIVISIONS,
+        # Diameter!
+        diameter=diameter
+    )
+
+    work_mesh.to_mesh(base_obj.data) 
+    work_mesh.free()
+
+    # Shift the leg upwards so that it's base is sitting on z = 0
+    base_obj.location = (0, 0, diameter / 2.0)
+
+    return base_obj
 
 def build_both_hands():
     # Get/convert the pre calculated arm shifts on Y and Z
@@ -231,10 +338,14 @@ def build_both_hands():
     right_hand = build_hand( PC.HAND_R_STR + "Mesh", PC.HAND_R_STR )
 
     # Move things around, up down, left, gone to ground
-    left_hand.location = left_hand.location + vectorY
-    left_hand.location = left_hand.location + vectorZ
-    right_hand.location = right_hand.location - vectorY
-    right_hand.location = right_hand.location + vectorZ
+    left_hand.location += vectorZ + vectorY
+    right_hand.location += vectorZ - vectorY
+
+#~~~~~~~~~~~~~~~~~~~~~
+#
+# HEAD FUNCTIONS!
+#
+#~~~~~~~~~~~~~~~~~~~~~
 
 def build_head():
     # Unfortunately for us, the head is a pretty complex shape - a sort of
@@ -330,7 +441,13 @@ def build_head():
     work_mesh.free()
 
     # Translate our head object - get that head on those shoulders!
-    head_obj.location = head_obj.location + vectorZ
+    head_obj.location += vectorZ
+
+#~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# ACTUAL FUNCTION CALLS!
+#
+#~~~~~~~~~~~~~~~~~~~~~~~~
 
 # Build the whole of everything!
 build_both_feet()

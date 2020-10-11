@@ -1,7 +1,3 @@
-
-# IMPORTS! WEEP IN TERROR AS WE USE  M A T H 
-import math
-
 # The body is divided into six different types of relatively simple polygonal
 # components, for a total of 10 components overall. Each individual component
 # has it's own mesh, and each type of component is governed by several specific
@@ -39,18 +35,18 @@ FEET_DISTANCE = 23
 FEET_X_SHIFT = FEET_LENGTH / 4.0
 
 ### Leg Constants!
-# The legs are rectangular prisms with square ends, but they're rotated by a
-# configurable amount.
-# What's the measurement on one side of said square? In other words, how wide is
-# each leg? (Original 11mm)
-LEG_WIDTH = 11
+# The legs are cylinders.
+# What's the diameter of each cylindrical leg? (Original 11mm)
+# Note that, although the documentation SAYS diameter, I feel like this value
+# has been acting more like a radius...
+LEG_DIAMETER = 7
 # How tall are the prisms/legs? (Original 20mm) Keep in mind these sit on top of
 # the feet!
 LEG_HEIGHT = 20
-# To what DEGREE are the legs rotated? We do this so that the legs look a bit 
-# different from the feet and the body - that way they don't form a continous
-# plane, which would look a bit odd.
-LEG_ROTATION = 45
+# Each cylinder needs a specified number of segements/faces. The more faces, the
+# more round the cylinder. So 3 would be a weird triangle, 4 a square-prism, 8
+# an octagonal prism, and so on. (Original 64)
+LEG_SEGMENTS = 64
 
 ### Body Constants!
 # The body is also a rectangular prism.
@@ -62,27 +58,30 @@ BODY_DEPTH = 16
 BODY_HEIGHT = 50
 
 ### Arm Constants!
-# The arms are just like the legs, in that they are rectangular-square prisms
-# and are rotated.
-# How wide is one side of the arm-prism? (Original 11mm)
-ARM_WIDTH = 11
+# The arms are just like the legs, in that they are cylinders.
+# What ism the diameter of an arm-cylinder? (Original 11mm)
+# Note that, although the documentation SAYS diameter, I feel like this value
+# has been acting more like a radius...
+ARM_DIAMETER = 7
 # How tall are the prisms/arms? (Original 20mm)
 ARM_HEIGHT = 20
 # When setting the arms down from the top of the body, we need to shift the arms
 # down, so it looks like the pawn has shoulders. How much should we move the
 # shoulders down by? (measured 5mm)
 ARM_SHOULDER_OFFSET = 5
-# To what DEGREE are the arms rotated? Like the legs, we're trying to avoid the
-# appearance of a flat, continous plane.
-ARM_ROTATION = 45
+# Each cylinder needs a specified number of segements/faces. The more faces, the
+# more round the cylinder. So 3 would be a weird triangle, 4 a square-prism, 8
+# an octagonal prism, and so on. (Original 64)
+ARM_SEGMENTS = 64
 
 ### Hand Constants!
-# The hands are little cubes attached at the end of the arms. They are rotated
-# so that they are sort of like little diamonds - basically so that one of the
-# points contacts the arm and that is the joint.
-# Since the side of the hand is made up of a little cube, what's the measurement
-# on one side of that cube? (Original 10mm)
-HAND_SIDE = 10
+# The hands are little ico-spheres - like spheres, but with more obvious faces.
+# What is the diameter of one of these little spheres? (Original 10mm)
+HAND_DIAMETER = 7
+# Ico-spheres are lumpy and polygonal by default. The more subdivisions you
+# have, the more the faces are divided, and the smoother the hand-spheres
+# become. 5 and above results in a more-or-less normal sphere. (Original 0)
+HAND_SUBDIVISIONS = 0
 
 ### Head Constants!
 # The head is a much more complex shape than    *----*
@@ -141,13 +140,9 @@ LEG_SHIFT_Z = FEET_HEIGHT
 # The body sits atop the legs, which sit atop the feet
 BODY_SHIFT_Z = FEET_HEIGHT + LEG_HEIGHT
 
-# The position of the arms is more complex than other body components.
-# First, we need to move the arm to the sides of the body. Next, we need to move
-# the arms out by the arm's width, so that the arms do not clip into the body.
-# However, since we rotate the arms at a 45 degree angle (so that the contact is
-# along the ridge of the arm), the true distance/width to use is the hypotenuse.
-# Also, since we're moving the arms to either side, we need to halve.
-ARM_SHIFT_Y = (BODY_WIDTH + math.hypot(ARM_WIDTH, ARM_WIDTH)) / 2.0
+# We need to move the arm to the sides of the body - since we're at the middle
+# the body, we only need to move by half. Then, move out by the diameter.
+ARM_SHIFT_Y = (BODY_WIDTH / 2.0) + ARM_DIAMETER 
 
 # We also need to shift the arms upward using a specific formula based on
 # the previous height values, plus the height of the body. We then shift them
@@ -160,8 +155,11 @@ ARM_SHIFT_Z = BODY_SHIFT_Z + BODY_HEIGHT - (ARM_HEIGHT + ARM_SHOULDER_OFFSET)
 HAND_SHIFT_Y = ARM_SHIFT_Y
 
 # The hands, being connected to the arms, also move in a similar way. Just one
-# extra tidbit - we shift downward by the size of the hands.
-HAND_SHIFT_Z = ARM_SHIFT_Z - HAND_SIDE
+# extra tidbit - we shift downward by the size of the hands. Now, I'm not quite
+# sure why I have to use the hand diameter * 1.5 to get it so that the peak/top
+# of the icosphere isn't clipping with the arms. I feel like the "diameter"
+# isn't exactly what the documentation claims.
+HAND_SHIFT_Z = ARM_SHIFT_Z - (HAND_DIAMETER * 1.5)
 
 # How much do we shift the head up by?
 HEAD_SHIFT_Z = BODY_SHIFT_Z + BODY_HEIGHT
