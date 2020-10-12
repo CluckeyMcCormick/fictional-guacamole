@@ -20,7 +20,7 @@ MM_PER_WORLD_UNIT = 70
 ### Feet Constants!
 # The feet are sort of like tissue boxes or sardine cans
 # How long are the feet, in millimeters? (Original 39mm)
-FEET_LENGTH = 39
+FEET_LENGTH = 37
 # How wide are the feet, in millimeters? (Original 18mm)
 FEET_WIDTH = 18
 # How tall are the feet, in pixels? (Original 8mm)
