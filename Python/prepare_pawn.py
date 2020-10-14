@@ -9,10 +9,11 @@ import sys
 
 # This is the path to where the other Python scripts are stored. You will need
 # to update this if it doesn't match your exact project path.
-SCRIPTS_PATH = "godot/fictional-guacamole/Python" # Change me!
+SCRIPTS_PATH = "~/godot/fictional-guacamole/Python" # Change me!
 
-# In order to ensure our code is portable/good, expand the path using abspath().
-SCRIPTS_PATH = os.path.abspath(SCRIPTS_PATH)
+# In order to ensure our code is portable/good, expand the path using
+# expanduser().
+SCRIPTS_PATH = os.path.expanduser(SCRIPTS_PATH)
 # Apparently, there's a chance that the path we got above isn't a string or
 # bytes, so we'll pass it through fspath just to be sure.
 SCRIPTS_PATH = os.fspath(SCRIPTS_PATH)
