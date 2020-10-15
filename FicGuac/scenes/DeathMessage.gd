@@ -54,6 +54,8 @@ func _ready():
         TWEEN_DURATION, TWEEN_TRANS, TWEEN_EASE
     )
     $BounceTween.start()
+    
+    $Clown.play()
 
 
 func _on_Tween_tween_step(object, key, elapsed, value):

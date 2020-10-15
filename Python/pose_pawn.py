@@ -80,6 +80,14 @@ RIGHT_LEG_DEFAULT_LOC = mathutils.Vector((
     (PC.LEG_SHIFT_Z + PC.LEG_HEIGHT) / float(PC.MM_PER_WORLD_UNIT)
 ))
 
+BODY_DEFAULT_LOC = mathutils.Vector((
+    0.0, 
+    0.0,
+    PC.BODY_SHIFT_Z / float(PC.MM_PER_WORLD_UNIT)
+))
+
+# Default rotation. Pretty uncontroversial.
+DEFAULT_ROT = (0, 0, 0)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -88,19 +96,23 @@ RIGHT_LEG_DEFAULT_LOC = mathutils.Vector((
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 def left_arm_default():
     arm_l.location = LEFT_ARM_DEFAULT_LOC
-    arm_l.rotation_euler = (0, 0, 0)
+    arm_l.rotation_euler = DEFAULT_ROT
 
 def right_arm_default():
     arm_r.location = RIGHT_ARM_DEFAULT_LOC
-    arm_r.rotation_euler = (0, 0, 0)
+    arm_r.rotation_euler = DEFAULT_ROT
 
 def left_leg_default():
     leg_l.location = LEFT_LEG_DEFAULT_LOC
-    leg_l.rotation_euler = (0, 0, 0)
+    leg_l.rotation_euler = DEFAULT_ROT
 
 def right_leg_default():
     leg_r.location = RIGHT_LEG_DEFAULT_LOC
-    leg_r.rotation_euler = (0, 0, 0)
+    leg_r.rotation_euler = DEFAULT_ROT
+
+def body_default():
+    body.location = BODY_DEFAULT_LOC
+    body.rotation_euler = DEFAULT_ROT
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -152,12 +164,16 @@ def right_arm_upward():
 # Leg Functions
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Each leg has 5 positions:
+# Each leg has 5 walking positions that we number like so:
 #
 # 1 |-- * --| 5  Note that Position 3 is the default position.
 #     / | \
 #    \  -  /
 #    2  3  4
+#
+# Any leg positions that use these swing points will be numbered as such. We
+# also have other leg positions that aren't numbered since they are outside the
+# walk cycle.
 def left_leg_pos5():
     leg_l.location = LEFT_LEG_DEFAULT_LOC + mathutils.Vector((
         -(PC.BODY_DEPTH / 2.0) / float(PC.MM_PER_WORLD_UNIT), 
@@ -228,6 +244,29 @@ def right_leg_pos1():
     ))
     leg_r.rotation_euler = (0, math.radians(-90), 0)
 
+# Turns the left leg so that it goes outward, below the arm
+def left_leg_outward():
+    leg_l.location = LEFT_LEG_DEFAULT_LOC
+    leg_l.rotation_euler = (0, 0, math.radians(90))
+
+# Turns the right leg so that it goes outward, below the arm
+def right_leg_outward():
+    leg_r.location = RIGHT_LEG_DEFAULT_LOC
+    leg_r.rotation_euler = (0, 0, math.radians(-90))
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Body Functions
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~
+def body_on_floor():
+    body.location = mathutils.Vector((
+        -(PC.BODY_HEIGHT * .4) / float(PC.MM_PER_WORLD_UNIT), 
+        0.0,
+        (PC.BODY_DEPTH / 2) / float(PC.MM_PER_WORLD_UNIT)
+    ))
+    body.rotation_euler = (0, math.radians(-90), 0)
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Code Go Here
@@ -237,5 +276,5 @@ left_arm_outstretched()
 right_arm_outstretched()
 left_leg_pos1()
 right_leg_pos1()
-
+body_on_floor()
 

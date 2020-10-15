@@ -1,35 +1,12 @@
 To Do:
 ------
+1. Fix UnitPawn movement
 
-1. Asset rework: Textures and Clowns
-    
-    As I've said before, we need to do a major rework of the assets. We need new
-    textures that actually have textures! Textured trees, rocks, grass, and all
-    the like. I've also had a replacement for the clowns in the pipeline for a
-    while; I'd like to get those guys in as part of this overhaul.
+    I fixed the janky movement, but now the UnitPawns need to be able to move up
+    sloped surfaces and stair-like steps. Once they can do that, I can say
+    they're movement is ready for pathing.
 
-2. Fix UnitPawn movement
-
-    The UnitPawn movement is really janky. I want them to speed up and slow
-    down - subtly, though, like a person getting up to speed. Total War does a
-    really good job of this, I think.
-
-    Right now, the UnitPawns speed up every second they're moving, and
-    frequently overshoot their targets and generally jitter and freak out.
-
-    I also need the UnitPawns to be able to step up and down small height
-    differences. If they're getting trapped on ledges with a height of .1 there
-    could be some problems down the road.
-
-    In college I worked on a robtoic car and had to design a kinematic feedback
-    model (I think that's what it was called?) that allowed the car to
-    naturally slow down and stop when it needed to. I think that mathematic
-    nightmare might be just what I need here. There's a "Feedback Systems Wiki"
-    that should furnish me with enough information to get what I need.
-
-    Or I'll come up with a better and simpler idea. That seems equally likely.
-
-3. Start using NavigationMesh
+2. Start using NavigationMesh
 
     Now that the UnitPawns can move correctly, and we have some terrain sorted
     out for them to deal with, we need to switch to using a NavigationMesh. I
@@ -42,7 +19,7 @@ To Do:
     world - just as a test. The UnitPawn, upon arriving at a location, will
     randomly be assigned a new location to go to from a pool of options.
 
-4. Build and Change a NavigationMesh on the fly
+3. Build and Change a NavigationMesh on the fly
 
     This is the big one - a problem with Godot that I've seen at least one blog
     post complaining about is that there is no immediate and obvious way to
