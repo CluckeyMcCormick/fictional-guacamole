@@ -103,7 +103,7 @@ func update_move_values():
     var current_shape = $CollisionCapsule.shape
     
     # Floor distance is intial-local y offset, plus the additive we identified
-    _FLOOR_DISTANCE = 0.85228# (current_shape.height / 2) + FLOOR_DISTANCE_ADD
+    _FLOOR_DISTANCE = 0.747353
     
     # Total Height is the extent of the shape, doubled
     _TOTAL_HEIGHT = current_shape.height
