@@ -9,7 +9,7 @@ import sys
 
 # This is the path to where the other Python scripts are stored. You will need
 # to update this if it doesn't match your exact project path.
-SCRIPTS_PATH = "~/godot/fictional-guacamole/Python" # Change me!
+SCRIPTS_PATH = "~/godot/fictional-guacamole/scripts/Blender" # Change me!
 
 # In order to ensure our code is portable/good, expand the path using
 # expanduser().

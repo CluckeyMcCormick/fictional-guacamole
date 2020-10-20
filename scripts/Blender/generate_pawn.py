@@ -11,7 +11,7 @@ import imp
 
 # This is the path to where the other Python scripts are stored. You will need
 # to update this if it doesn't match your exact project path.
-SCRIPTS_PATH = "~/godot/fictional-guacamole/Python" # Change me!
+SCRIPTS_PATH = "~/godot/fictional-guacamole/scripts/Blender" # Change me!
 
 # In order to ensure our code is portable/good, expand the path using
 # expanduser().
@@ -198,8 +198,8 @@ def build_both_legs():
     vectorZ = mathutils.Vector((0.0, 0.0, moveZ))
     
     # Build them feets
-    left_leg = build_leg( PC.LEG_L_STR + "Mesh", PC.LEG_L_STR)
-    right_leg = build_leg( PC.LEG_R_STR + "Mesh", PC.LEG_R_STR)
+    left_leg = build_leg( PC.LEG_L_STR + "Mesh", PC.LEG_L_STR )
+    right_leg = build_leg( PC.LEG_R_STR + "Mesh", PC.LEG_R_STR )
     # Move them feets
     left_leg.location += vectorZ + vectorY
     right_leg.location += vectorZ - vectorY
