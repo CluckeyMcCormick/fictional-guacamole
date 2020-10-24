@@ -267,14 +267,14 @@ def body_on_floor():
     ))
     body.rotation_euler = (0, math.radians(-90), 0)
 
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Code Go Here
+# Code Go Here - Sample Provided
 #
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~
-left_arm_outstretched()
-right_arm_outstretched()
-left_leg_pos1()
-right_leg_pos1()
-body_on_floor()
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#left_arm_outstretched()
+#right_arm_outstretched()
+#left_leg_pos1()
+#right_leg_pos1()
+#body_on_floor()
 

@@ -79,6 +79,12 @@ CAMERA_Z_ROTATION = 135
 # camera up and down - by how much?
 CAMERA_Z_HEIGHT = 12
 
+# Once the camera is in position, we can shift the frame up and down using these
+# values
+ISO_CAMERA_Y_SHIFT = -0.015
+FORWARD_CAMERA_Y_SHIFT = -0.015
+TOP_DOWN_CAMERA_Y_SHIFT = 0
+
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Utilities and Preparation
@@ -204,6 +210,7 @@ temp.matrix_parent_inverse = empty_rig.matrix_world.inverted()
 
 temp.data.type = 'ORTHO'
 temp.data.ortho_scale = CAMERA_SCALE
+temp.data.shift_y = ISO_CAMERA_Y_SHIFT
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -222,6 +229,7 @@ temp.matrix_parent_inverse = empty_rig.matrix_world.inverted()
 
 temp.data.type = 'ORTHO'
 temp.data.ortho_scale = CAMERA_SCALE
+temp.data.shift_y = FORWARD_CAMERA_Y_SHIFT
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -236,6 +244,7 @@ temp.matrix_parent_inverse = empty_rig.matrix_world.inverted()
 
 temp.data.type = 'ORTHO'
 temp.data.ortho_scale = CAMERA_SCALE
+temp.data.shift_y = TOP_DOWN_CAMERA_Y_SHIFT
 
 # ~~~~~~~~~~~~~~~~~~~~
 #

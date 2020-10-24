@@ -74,6 +74,15 @@ The intention is that you mix-and-match function calls to create your ideal
 pose, and then register that pose as a keyframe. You can then change the
 function calls to create a new pose, and so on and so on.
 
+### animate_pawn.py
+This script is a natural extension of `pose_pawn.py` - where that script has
+controls for setting the position of the pawn's components, this script offers
+utilities for bundling those pose functions together, and then creating all of
+the keyframes necessary for that animations at all 8 angles.
+
+That's right - this script even handles keyframing the multiple angle you'll
+need! You just have to figure out how get all those frames into a spritesheet...
+
 ## Execution Order
 In case you couldn't tell from our description of each script, they are meant
 to be run in a particular order, like so:
@@ -82,12 +91,13 @@ to be run in a particular order, like so:
 1. Run `generate_pawn.py`
 1. Run `prepare_pawn.py`
 1. Run `scene_configuration.py`
-1. Use `pose_pawn.py` for posing as desired
+1. Edit `pose_pawn.py` for posing as desired
+1. Edit and run `animate.py`
 
 ## Running the scripts
 These scripts were meant to be loaded into Blender's text file window, and
 then ran in sequence. However, there are is one special caveat, and it concerns
-the `pawn_constants.py`.
+`pawn_constants.py`.
 
 To ensure consistency between the scripts, we actually add the file-path to the
 constants script to Python's file path. That might not mean anything to you
@@ -111,3 +121,7 @@ version of `pawn_constants.py` is in that directory. So, if you load
 `pawn_constants.py` into Blender and make changes but don't somehow update the
 actual file in the actual directory, the changes will not propagate! That's why
 it's recommended you edit that file first before running the other scripts.
+
+Note that `animate_pawn.py` relies on `pose_pawn.py` in the same way.
+
+
