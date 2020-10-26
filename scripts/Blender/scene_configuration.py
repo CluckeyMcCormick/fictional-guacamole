@@ -154,7 +154,11 @@ empty_rig.empty_display_size = EMPTY_SIZE
 empty_rig.empty_display_type = 'CUBE'
 
 # Move the empty rig to the middle of the body
-empty_rig.location = mathutils.Vector(( 0.0, 0.0, body.location.z ))
+empty_rig.location = mathutils.Vector((
+    0.0, 
+    0.0,
+    (PC.BODY_SHIFT_Z + (PC.BODY_HEIGHT / 2)) / PC.MM_PER_WORLD_UNIT
+))
 
 # ~~~~~~~~~~~~~~~~~~
 #

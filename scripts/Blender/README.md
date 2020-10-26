@@ -80,8 +80,10 @@ controls for setting the position of the pawn's components, this script offers
 utilities for bundling those pose functions together, and then creating all of
 the keyframes necessary for that animations at all 8 angles.
 
-That's right - this script even handles keyframing the multiple angle you'll
-need! You just have to figure out how get all those frames into a spritesheet...
+That's right - this script even handles keyframing the multiple angles you'll
+need! Once you export the animation as a series of images, you just have to
+pack it all into a spritesheet. I used
+[Simplepacker by Maciej Lechowski](https://github.com/lchsk/simplepacker).
 
 ## Execution Order
 In case you couldn't tell from our description of each script, they are meant

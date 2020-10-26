@@ -55,6 +55,7 @@ ANGLES = [
     math.radians(-45),  # South
     math.radians(-90),  # Southeast
 ]
+
 # Get all of the body components
 foot_l = bpy.data.objects[PC.FOOT_L_STR]
 foot_r = bpy.data.objects[PC.FOOT_R_STR]
@@ -232,28 +233,15 @@ def animation_to_keyframes(anim):
 """
 Right Leg Swing
 """
-walk_frame01 = Pose([pose_lib.left_leg_pos3, pose_lib.right_leg_pos5])
-walk_frame02 = Pose([pose_lib.left_leg_pos3, pose_lib.right_leg_pos4])
-walk_frame03 = Pose([pose_lib.left_leg_pos3, pose_lib.right_leg_pos3])
-walk_frame04 = Pose([pose_lib.left_leg_pos3, pose_lib.right_leg_pos2])
-walk_frame05 = Pose([pose_lib.left_leg_pos3, pose_lib.right_leg_pos1])
-
-"""
-Left Leg Swing
-"""
-walk_frame06 = Pose([pose_lib.left_leg_pos5, pose_lib.right_leg_pos3])
-walk_frame07 = Pose([pose_lib.left_leg_pos4, pose_lib.right_leg_pos3])
-walk_frame08 = Pose([pose_lib.left_leg_pos3, pose_lib.right_leg_pos3])
-walk_frame09 = Pose([pose_lib.left_leg_pos2, pose_lib.right_leg_pos3])
-walk_frame10 = Pose([pose_lib.left_leg_pos1, pose_lib.right_leg_pos3])
+walk_frame01 = Pose([pose_lib.left_leg_pos2, pose_lib.right_leg_pos4])
+walk_frame02 = Pose([pose_lib.left_leg_pos3, pose_lib.right_leg_pos3])
+walk_frame03 = Pose([pose_lib.left_leg_pos4, pose_lib.right_leg_pos2])
+walk_frame04 = Pose([pose_lib.left_leg_pos3, pose_lib.right_leg_pos3])
 
 """
 Put together into an animation
 """
-animo = Animation([
-    walk_frame01, walk_frame02, walk_frame03, walk_frame04, walk_frame05,
-    walk_frame06, walk_frame07, walk_frame08, walk_frame09, walk_frame10
-])
+animo = Animation([walk_frame01, walk_frame02, walk_frame03, walk_frame04])
 
 # A N I M A T E
 animation_to_keyframes(animo)

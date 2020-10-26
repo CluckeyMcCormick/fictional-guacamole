@@ -20,7 +20,7 @@ MM_PER_WORLD_UNIT = 70
 ### Feet Constants!
 # The feet are sort of like tissue boxes or sardine cans
 # How long are the feet, in millimeters? (Original 39mm)
-FEET_LENGTH = 37
+FEET_LENGTH = 27
 # How wide are the feet, in millimeters? (Original 18mm)
 FEET_WIDTH = 18
 # How tall are the feet, in pixels? (Original 8mm)
@@ -32,7 +32,7 @@ FEET_HEIGHT = 8
 FEET_DISTANCE = 23
 # To help us position the feet, we shift them back and forth on the x-axis - how
 # much do we move the feet by (in millimeters)? 
-FEET_X_SHIFT = FEET_LENGTH / 4.0
+FEET_X_SHIFT = FEET_LENGTH / 4.5
 
 ### Leg Constants!
 # The legs are cylinders.
