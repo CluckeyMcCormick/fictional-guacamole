@@ -1,0 +1,19 @@
+[remap]
+
+importer="wavefront_obj"
+type="Mesh"
+path="res://.import/cali_bear.obj-0993eb675ab6de432660dc17597c2186.mesh"
+
+[deps]
+
+files=[ "res://.import/cali_bear.obj-0993eb675ab6de432660dc17597c2186.mesh" ]
+
+source_file="res://motion_ai/bear/cali_bear.obj"
+dest_files=[ "res://.import/cali_bear.obj-0993eb675ab6de432660dc17597c2186.mesh", "res://.import/cali_bear.obj-0993eb675ab6de432660dc17597c2186.mesh" ]
+
+[params]
+
+generate_tangents=true
+scale_mesh=Vector3( 1, 1, 1 )
+offset_mesh=Vector3( 0, 0, 0 )
+optimize_mesh=true

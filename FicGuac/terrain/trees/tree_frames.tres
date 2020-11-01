@@ -1,0 +1,29 @@
+[gd_resource type="SpriteFrames" load_steps=4 format=2]
+
+[ext_resource path="res://terrain/trees/textures/ztree01_fc_a.png" type="Texture" id=1]
+[ext_resource path="res://terrain/trees/textures/ztree01_fc_c.png" type="Texture" id=2]
+[ext_resource path="res://terrain/trees/textures/ztree01_fc_b.png" type="Texture" id=3]
+
+
+[resource]
+animations = [ {
+"frames": [ ExtResource( 1 ), ExtResource( 3 ), ExtResource( 2 ) ],
+"loop": true,
+"name": "default",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 1 ) ],
+"loop": true,
+"name": "pine_fc_a",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 3 ) ],
+"loop": true,
+"name": "pine_fc_b",
+"speed": 5.0
+}, {
+"frames": [ ExtResource( 2 ) ],
+"loop": true,
+"name": "pine_fc_c",
+"speed": 5.0
+} ]

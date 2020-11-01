@@ -1,0 +1,25 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://terrain/farm/grass_to_dirt_library.meshlib" type="MeshLibrary" id=1]
+[ext_resource path="res://terrain/farm/Farm.gd" type="Script" id=5]
+
+[node name="Farm" type="Spatial"]
+script = ExtResource( 5 )
+
+[node name="PlotGrid" type="GridMap" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.002, 0 )
+mesh_library = ExtResource( 1 )
+cell_size = Vector3( 1, 1, 1 )
+cell_center_y = false
+collision_layer = 2
+collision_mask = 2
+data = {
+"cells": PoolIntArray( 0, 0, 7, 1, 0, 0, 2, 0, 1, 0, 1, 6, 1, 1, 1610612744, 2, 1, 2, 0, 2, 5, 1, 2, 4, 2, 2, 3 )
+}
+__meta__ = {
+"_editor_clip_": 0,
+"_editor_floor_": Vector3( 0, 0, 0 )
+}
+
+[node name="Crops" type="Spatial" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.002, 0 )

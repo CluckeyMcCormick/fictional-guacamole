@@ -1,0 +1,132 @@
+[gd_scene load_steps=20 format=2]
+
+[ext_resource path="res://terrain/farm/farm_plot_thin.png" type="Texture" id=2]
+
+
+
+[sub_resource type="SpatialMaterial" id=1]
+flags_world_triplanar = true
+albedo_texture = ExtResource( 2 )
+uv1_scale = Vector3( 0.25, 0.25, 0.25 )
+uv1_offset = Vector3( 0.25, 0, 0 )
+
+[sub_resource type="PlaneMesh" id=2]
+material = SubResource( 1 )
+size = Vector2( 1, 1 )
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_texture = ExtResource( 2 )
+uv1_scale = Vector3( 0.25, 0.25, 0.25 )
+uv1_offset = Vector3( 0.5, 0, 0 )
+
+[sub_resource type="PlaneMesh" id=4]
+material = SubResource( 3 )
+size = Vector2( 1, 1 )
+
+[sub_resource type="SpatialMaterial" id=5]
+albedo_texture = ExtResource( 2 )
+uv1_scale = Vector3( 0.25, 0.25, 0.25 )
+uv1_offset = Vector3( 0.5, 0.25, 0 )
+
+[sub_resource type="PlaneMesh" id=6]
+material = SubResource( 5 )
+size = Vector2( 1, 1 )
+
+[sub_resource type="SpatialMaterial" id=7]
+albedo_texture = ExtResource( 2 )
+uv1_scale = Vector3( 0.25, 0.25, 0.25 )
+uv1_offset = Vector3( 0.5, 0.5, 0 )
+
+[sub_resource type="PlaneMesh" id=8]
+material = SubResource( 7 )
+size = Vector2( 1, 1 )
+
+[sub_resource type="SpatialMaterial" id=9]
+albedo_texture = ExtResource( 2 )
+uv1_scale = Vector3( 0.25, 0.25, 0.25 )
+uv1_offset = Vector3( 0.25, 0.5, 0 )
+
+[sub_resource type="PlaneMesh" id=10]
+material = SubResource( 9 )
+size = Vector2( 1, 1 )
+
+[sub_resource type="SpatialMaterial" id=11]
+albedo_texture = ExtResource( 2 )
+uv1_scale = Vector3( 0.25, 0.25, 0.25 )
+uv1_offset = Vector3( 0, 0.5, 0 )
+
+[sub_resource type="PlaneMesh" id=12]
+material = SubResource( 11 )
+size = Vector2( 1, 1 )
+
+[sub_resource type="SpatialMaterial" id=13]
+albedo_texture = ExtResource( 2 )
+uv1_scale = Vector3( 0.25, 0.25, 0.25 )
+uv1_offset = Vector3( 0, 0.25, 0 )
+
+[sub_resource type="PlaneMesh" id=14]
+material = SubResource( 13 )
+size = Vector2( 1, 1 )
+
+[sub_resource type="SpatialMaterial" id=15]
+albedo_texture = ExtResource( 2 )
+uv1_scale = Vector3( 0.25, 0.25, 0.25 )
+
+[sub_resource type="PlaneMesh" id=16]
+material = SubResource( 15 )
+size = Vector2( 1, 1 )
+
+[sub_resource type="SpatialMaterial" id=17]
+albedo_texture = ExtResource( 2 )
+uv1_scale = Vector3( 0.25, 0.25, 0.25 )
+uv1_offset = Vector3( 0.25, 0.25, 0 )
+
+[sub_resource type="PlaneMesh" id=18]
+material = SubResource( 17 )
+size = Vector2( 1, 1 )
+
+[node name="GrassToDirtLibrary" type="Spatial"]
+
+[node name="ZNegSiding" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2.5 )
+mesh = SubResource( 2 )
+material/0 = null
+
+[node name="ZNegXPosCorner" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, -2.5 )
+mesh = SubResource( 4 )
+material/0 = null
+
+[node name="XPosSiding" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 0 )
+mesh = SubResource( 6 )
+material/0 = null
+
+[node name="ZPosXPosCorner" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, 0, 2.5 )
+mesh = SubResource( 8 )
+material/0 = null
+
+[node name="ZPosSiding" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 2.5 )
+mesh = SubResource( 10 )
+material/0 = null
+
+[node name="ZPosXNegCorner" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, 2.5 )
+mesh = SubResource( 12 )
+material/0 = null
+
+[node name="XNegSiding" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.50191, 0, 0 )
+mesh = SubResource( 14 )
+material/0 = null
+
+[node name="ZNegXNegCorner" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, 0, -2.5 )
+mesh = SubResource( 16 )
+material/0 = null
+
+[node name="DirtFill" type="MeshInstance" parent="."]
+mesh = SubResource( 18 )
+material/0 = null

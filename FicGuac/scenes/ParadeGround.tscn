@@ -1,21 +1,21 @@
 [gd_scene load_steps=21 format=2]
 
 [ext_resource path="res://scenes/ParadeGround.gd" type="Script" id=1]
-[ext_resource path="res://assets/terrain/mat_terrain_grass_textured.tres" type="Material" id=2]
-[ext_resource path="res://assets/terrain/mat_terrain_water_grid.tres" type="Material" id=3]
+[ext_resource path="res://terrain/mat_terrain_grass_textured.tres" type="Material" id=2]
+[ext_resource path="res://terrain/mat_terrain_water_grid.tres" type="Material" id=3]
 [ext_resource path="res://scenes/Camera.gd" type="Script" id=4]
-[ext_resource path="res://scenes/formation/Unit.tscn" type="PackedScene" id=5]
-[ext_resource path="res://assets/formation/cali_bear.obj" type="ArrayMesh" id=6]
-[ext_resource path="res://scenes/nature/PineTree.tscn" type="PackedScene" id=7]
-[ext_resource path="res://scenes/nature/Farm.tscn" type="PackedScene" id=8]
-[ext_resource path="res://scenes/formation/unit_pawn_subs/UnitPawnVomitClown.tscn" type="PackedScene" id=9]
-[ext_resource path="res://scenes/nature/Rock.tscn" type="PackedScene" id=10]
-[ext_resource path="res://scenes/nature/Woods.tscn" type="PackedScene" id=11]
-[ext_resource path="res://scenes/buildings/RothHut.tscn" type="PackedScene" id=12]
-[ext_resource path="res://scenes/buildings/RothGuardpost.tscn" type="PackedScene" id=13]
-[ext_resource path="res://scenes/buildings/RothStockpile.tscn" type="PackedScene" id=14]
-[ext_resource path="res://scenes/buildings/RothHouse.tscn" type="PackedScene" id=15]
-[ext_resource path="res://assets/formation/DefaultEnvironment.tres" type="Environment" id=16]
+[ext_resource path="res://motion_ai/pawn/formation/Unit.tscn" type="PackedScene" id=5]
+[ext_resource path="res://motion_ai/bear/cali_bear.obj" type="ArrayMesh" id=6]
+[ext_resource path="res://terrain/trees/PineTree.tscn" type="PackedScene" id=7]
+[ext_resource path="res://terrain/farm/Farm.tscn" type="PackedScene" id=8]
+[ext_resource path="res://motion_ai/pawn/UnitPawnVomitClown.tscn" type="PackedScene" id=9]
+[ext_resource path="res://terrain/Rock.tscn" type="PackedScene" id=10]
+[ext_resource path="res://terrain/trees/Woods.tscn" type="PackedScene" id=11]
+[ext_resource path="res://buildings/Hut.tscn" type="PackedScene" id=12]
+[ext_resource path="res://buildings/Guardpost.tscn" type="PackedScene" id=13]
+[ext_resource path="res://buildings/Stockpile.tscn" type="PackedScene" id=14]
+[ext_resource path="res://buildings/House.tscn" type="PackedScene" id=15]
+[ext_resource path="res://scenes/SceneDefaultEnvironment.tres" type="Environment" id=16]
 
 [sub_resource type="PlaneMesh" id=1]
 material = ExtResource( 2 )
@@ -111,7 +111,6 @@ _tree_type = 1
 
 [node name="Tree2" parent="Trees" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 40 )
-_tree_type = 0
 
 [node name="Tree3" parent="Trees" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -15 )
@@ -136,7 +135,6 @@ _crop_type = 0
 [node name="Farm3" parent="Farms" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, 0 )
 _plot_size = Vector2( 5, 20 )
-_crop_type = 4
 
 [node name="Farm4" parent="Farms" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 0 )
@@ -156,7 +154,6 @@ _rock_size = 2
 
 [node name="Rock2" parent="Rocks" instance=ExtResource( 10 )]
 transform = Transform( -0.637723, 0.348683, -0.701888, -0.0428154, 0.983842, 0.443565, 0.769075, 0.343901, -0.557317, 7.34934, 0, 26.4176 )
-_rock_size = 1
 
 [node name="Rock3" parent="Rocks" instance=ExtResource( 10 )]
 transform = Transform( -0.180885, 0.0778807, -0.980948, -0.975767, -0.151435, 0.169974, -0.123125, 1.08572, 0.0940726, 4.13381, -0.161437, 27.5393 )
