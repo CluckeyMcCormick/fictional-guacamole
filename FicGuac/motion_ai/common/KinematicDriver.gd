@@ -114,6 +114,17 @@ func _physics_process(delta):
         new_move.x = normal_dist.x * move_speed
         new_move.z = normal_dist.y * move_speed
     
+        # If we're visible, the let's update our debug arrow using the x/z angle
+        if self.visible:
+            # Set the rotation using the x and z. Invert X because it's
+            # essentially Y in this situation but is opposite in direction to
+            # how Y is normally oriented.
+            $Arrow.rotation.y = Vector2(-distance_to.x, distance_to.z).angle()
+            # The arrow is 90 degrees (PI/2) out-of-phase with where it should
+            # be (which is because the arrow doesn't start point out at 0
+            # degrees). Adjust it!
+            $Arrow.rotation.y += PI / 2
+    
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # Step 3: Do the move!
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~

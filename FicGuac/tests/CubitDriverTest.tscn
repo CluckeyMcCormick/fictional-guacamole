@@ -5,9 +5,6 @@
 [ext_resource path="res://tests/CubitDriverTest.gd" type="Script" id=3]
 [ext_resource path="res://tests/test_assets/Cubit.tscn" type="PackedScene" id=4]
 
-
-
-
 [sub_resource type="PlaneMesh" id=1]
 material = ExtResource( 1 )
 size = Vector2( 15, 15 )

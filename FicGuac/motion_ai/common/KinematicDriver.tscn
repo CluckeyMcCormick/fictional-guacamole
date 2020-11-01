@@ -1,0 +1,18 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://motion_ai/common/KinematicDriver.gd" type="Script" id=1]
+[ext_resource path="res://util/debug_arrow02.png" type="Texture" id=2]
+
+[sub_resource type="SpatialMaterial" id=1]
+flags_transparent = true
+albedo_texture = ExtResource( 2 )
+
+[sub_resource type="PlaneMesh" id=2]
+material = SubResource( 1 )
+
+[node name="KinematicDriver" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="Arrow" type="MeshInstance" parent="."]
+mesh = SubResource( 2 )
+material/0 = null

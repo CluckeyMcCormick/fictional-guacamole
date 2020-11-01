@@ -11,17 +11,31 @@ const FLOOR_DISTANCE_ADD = .001396 + 0.5
 # previous target).
 signal target_reached(cubit, position)
 
+# This is the destination, which we update when set_destination is called
 var destination setget set_destination
 
-# Function called on target_reached signal from the driver
-func _on_Driver_target_reached(position):
-    # Send the signal up the line - echo it, in other words
-    emit_signal("target_reached", self, position)
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Kinematic Driver coupling functions
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # Set the destination of this Cubit. The position must be on the floor. For most
 # purposes (like path following), this is naturally where the point will be.
 func set_destination(floor_position : Vector3):
     # Shift the floor position so it will align with this node's origin. By
     # making the specific to each sub/scene, we can ensure modularity
-    $Driver.target_position = floor_position + Vector3(0, FLOOR_DISTANCE_ADD, 0)
-    destination = $Driver.target_position
+    var adjusted_pos = floor_position + Vector3(0, FLOOR_DISTANCE_ADD, 0)
+    $KinematicDriver.target_position = adjusted_pos
+    destination = adjusted_pos
+
+# Function called on target_reached signal from the driver
+func _on_KinematicDriver_target_reached(position):
+    # Save the destination so we can emit it after destroying it
+    var sav_dest = destination
+    # We no longer have a destination!
+    destination = null
+    # Send the signal up the line - echo it, in other words. Use sav_dest
+    # because the position value we got handed is the adjusted value
+    emit_signal("target_reached", self, sav_dest)
+    

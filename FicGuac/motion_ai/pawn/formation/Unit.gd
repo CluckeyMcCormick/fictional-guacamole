@@ -6,8 +6,8 @@ extends Spatial
 
 const UNIT_INITIAL_STRENGTH = 36
 
-# Preload our selections for UnitPawns
-const UP_VOMIT_CLOWN = preload("res://motion_ai/pawn/UnitPawnVomitClown.tscn")
+# Preload our UnitPawn
+const UNIT_PAWN = preload("res://motion_ai/pawn/UnitPawn.tscn")
 
 # Should we have UnitPawns in this unit colliding with each other?
 export(bool) var intra_unit_collision = false
@@ -35,7 +35,7 @@ func _ready():
     # Round-robin UnitPawn list.
     var rr_up_list = [
         # UP_DEFAULT,
-        UP_VOMIT_CLOWN
+        UNIT_PAWN
     ]
     # Shuffle the round robin list
     rr_up_list.shuffle()
@@ -49,7 +49,7 @@ func _ready():
             # Then the round-robin UnitPawn scene list is empty. Restock it!
             rr_up_list = [
                 # UP_DEFAULT,
-                UP_VOMIT_CLOWN
+                UNIT_PAWN
             ]
             pawn = rr_up_list.pop_back()
         # Pawn should now be a packed scene - so instance that scene

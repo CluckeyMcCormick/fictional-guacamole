@@ -2,26 +2,26 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/debug_arrow.png-0e2b91cfe8d79c2c2279fd9ad7985206.stex"
+path="res://.import/debug_arrow02.png-85763b73f2db519bdb74789a5427b0a1.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://util/debug_arrow.png"
-dest_files=[ "res://.import/debug_arrow.png-0e2b91cfe8d79c2c2279fd9ad7985206.stex" ]
+source_file="res://util/debug_arrow02.png"
+dest_files=[ "res://.import/debug_arrow02.png-85763b73f2db519bdb74789a5427b0a1.stex" ]
 
 [params]
 
-compress/mode=3
+compress/mode=0
 compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
 flags/repeat=true
 flags/filter=false
-flags/mipmaps=true
+flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=1
 process/fix_alpha_border=true

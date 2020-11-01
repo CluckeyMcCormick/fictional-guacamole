@@ -176,13 +176,13 @@ func _process(delta):
     # Set the progress bar to reflect the passage of  T I M E
     $Items/TimerLabel/ProgressBar.value = $Timer.wait_time - $Timer.time_left
     # Set the target label to the target vector
-    $Items/TargetLabel/Info.text = str( $Pawn.target_position )
+    $Items/TargetLabel/Info.text = str( $Pawn.destination )
     # Set the position label to the position vector
     $Items/PositionLabel/Info.text = str( $Pawn.global_transform.origin )
     # Set the distance to the target vector
-    if $Pawn.target_position:
+    if $Pawn.destination:
         $Items/DistanceLabel/Info.text = str(
-            $Pawn.global_transform.origin.distance_to( $Pawn.target_position )
+            $Pawn.global_transform.origin.distance_to( $Pawn.destination )
         )
     else:
         $Items/DistanceLabel/Info.text = "NAN"
@@ -202,7 +202,7 @@ func _process(delta):
 # Utility function for telling the pawn to go somewhere, given a node
 func set_pawn_target(target_node : Spatial):
     var position = target_node.global_transform.origin
-    $Pawn.target_position = position
+    $Pawn.set_destination(position)
 
 # This is the real bread and butter of our tests - most of the path-following
 # happens in this particular function, which gets called in response to the Pawn
