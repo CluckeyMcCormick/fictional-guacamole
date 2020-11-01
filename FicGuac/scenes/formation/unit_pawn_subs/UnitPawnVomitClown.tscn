@@ -22,11 +22,6 @@ height = 0.896326
 
 [sub_resource type="SpriteFrames" id=3]
 animations = [ {
-"frames": [ ExtResource( 10 ), ExtResource( 7 ) ],
-"loop": true,
-"name": "debug_attack",
-"speed": 1.0
-}, {
 "frames": [ ExtResource( 9 ), ExtResource( 8 ) ],
 "loop": true,
 "name": "debug_brace",
@@ -40,6 +35,11 @@ animations = [ {
 "frames": [ ExtResource( 6 ), ExtResource( 1 ) ],
 "loop": true,
 "name": "debug_wait",
+"speed": 1.0
+}, {
+"frames": [ ExtResource( 10 ), ExtResource( 7 ) ],
+"loop": true,
+"name": "debug_attack",
 "speed": 1.0
 } ]
 
@@ -71,6 +71,7 @@ material_override = ExtResource( 3 )
 pixel_size = 0.0078
 frames = SubResource( 3 )
 animation = "debug_march"
+frame = 1
 playing = true
 
 [node name="StandRender" type="MeshInstance" parent="."]
