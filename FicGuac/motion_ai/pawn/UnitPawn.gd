@@ -19,7 +19,7 @@ enum {
 # node. However, our destinations are always on the floor. So, we need a
 # constant to calculate our distance to the floor. This value, .747353 was the
 # OBSERVED value.
-const FLOOR_DISTANCE_ADD = .747353
+const FLOOR_DISTANCE_ADD = .742972#.747353
 
 # What is this pawn's unit? Who's feeding it the orders? Who is determining
 # where it should be to be "in formation"?

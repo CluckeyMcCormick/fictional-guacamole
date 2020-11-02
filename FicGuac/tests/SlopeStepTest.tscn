@@ -152,21 +152,24 @@ size = Vector3( 5, 0.6, 2 )
 data = PoolVector3Array( -2.5, 0.3, 1, 2.5, 0.3, 1, -2.5, -0.3, 1, 2.5, 0.3, 1, 2.5, -0.3, 1, -2.5, -0.3, 1, 2.5, 0.3, -1, -2.5, 0.3, -1, 2.5, -0.3, -1, -2.5, 0.3, -1, -2.5, -0.3, -1, 2.5, -0.3, -1, 2.5, 0.3, 1, 2.5, 0.3, -1, 2.5, -0.3, 1, 2.5, 0.3, -1, 2.5, -0.3, -1, 2.5, -0.3, 1, -2.5, 0.3, -1, -2.5, 0.3, 1, -2.5, -0.3, -1, -2.5, 0.3, 1, -2.5, -0.3, 1, -2.5, -0.3, -1, 2.5, 0.3, 1, -2.5, 0.3, 1, 2.5, 0.3, -1, -2.5, 0.3, 1, -2.5, 0.3, -1, 2.5, 0.3, -1, -2.5, -0.3, 1, 2.5, -0.3, 1, -2.5, -0.3, -1, 2.5, -0.3, 1, 2.5, -0.3, -1, -2.5, -0.3, -1 )
 
 [sub_resource type="SpatialMaterial" id=43]
-albedo_color = Color( 0.917647, 0.309804, 0.211765, 1 )
+flags_transparent = true
+albedo_color = Color( 0.917647, 0.309804, 0.211765, 0.501961 )
 
 [sub_resource type="CubeMesh" id=44]
 material = SubResource( 43 )
 size = Vector3( 0.5, 0.5, 0.5 )
 
 [sub_resource type="SpatialMaterial" id=45]
-albedo_color = Color( 0.564706, 0.368627, 0.662745, 1 )
+flags_transparent = true
+albedo_color = Color( 0.564706, 0.368627, 0.662745, 0.501961 )
 
 [sub_resource type="CubeMesh" id=46]
 material = SubResource( 45 )
 size = Vector3( 0.5, 0.5, 0.5 )
 
 [sub_resource type="SpatialMaterial" id=47]
-albedo_color = Color( 0.764706, 0.141176, 0.329412, 1 )
+flags_transparent = true
+albedo_color = Color( 0.764706, 0.141176, 0.329412, 0.501961 )
 
 [sub_resource type="CubeMesh" id=48]
 material = SubResource( 47 )
@@ -174,12 +177,6 @@ size = Vector3( 0.5, 0.5, 0.5 )
 
 [node name="SlopeStepTest" type="Spatial"]
 script = ExtResource( 5 )
-
-[node name="Camera" type="Camera" parent="."]
-transform = Transform( 0.707107, -0.408244, 0.577353, 0, 0.8165, 0.577345, -0.707107, -0.408244, 0.577353, 64, 64, 64 )
-projection = 1
-size = 30.0
-far = 130.0
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 2 )
@@ -202,6 +199,12 @@ shape = SubResource( 2 )
 
 [node name="Pawn" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0 )
+
+[node name="Camera" type="Camera" parent="Pawn"]
+transform = Transform( 0.707107, -0.408244, 0.577353, 0, 0.816501, 0.577345, -0.707107, -0.408244, 0.577353, 64, 64, 64 )
+projection = 1
+size = 5.0
+far = 130.0
 
 [node name="Ramps" type="Spatial" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1 )
@@ -572,114 +575,133 @@ __meta__ = {
 }
 
 [node name="StateLabel" type="VBoxContainer" parent="Items"]
-margin_right = 164.0
+margin_right = 140.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="Items/StateLabel"]
-margin_right = 164.0
+margin_right = 140.0
 margin_bottom = 14.0
 text = "Current State:"
 align = 1
 
 [node name="Info" type="Label" parent="Items/StateLabel"]
 margin_top = 18.0
-margin_right = 164.0
+margin_right = 140.0
 margin_bottom = 32.0
 text = "+++++++++++"
 align = 1
 
 [node name="TestLabel" type="VBoxContainer" parent="Items"]
-margin_left = 168.0
-margin_right = 332.0
+margin_left = 144.0
+margin_right = 284.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="Items/TestLabel"]
-margin_right = 164.0
+margin_right = 140.0
 margin_bottom = 14.0
 text = "Test Index:"
 align = 1
 
 [node name="Info" type="Label" parent="Items/TestLabel"]
 margin_top = 18.0
-margin_right = 164.0
+margin_right = 140.0
 margin_bottom = 32.0
 text = "1"
 align = 1
 
 [node name="TargetLabel" type="VBoxContainer" parent="Items"]
-margin_left = 336.0
-margin_right = 500.0
+margin_left = 288.0
+margin_right = 428.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="Items/TargetLabel"]
-margin_right = 164.0
+margin_right = 140.0
 margin_bottom = 14.0
 text = "Target:"
 align = 1
 
 [node name="Info" type="Label" parent="Items/TargetLabel"]
 margin_top = 18.0
-margin_right = 164.0
+margin_right = 140.0
 margin_bottom = 32.0
 text = "(0, 0, 0)"
 align = 1
 
 [node name="PositionLabel" type="VBoxContainer" parent="Items"]
-margin_left = 504.0
-margin_right = 668.0
+margin_left = 432.0
+margin_right = 572.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="Items/PositionLabel"]
-margin_right = 164.0
+margin_right = 140.0
 margin_bottom = 14.0
 text = "Position:"
 align = 1
 
 [node name="Info" type="Label" parent="Items/PositionLabel"]
 margin_top = 18.0
-margin_right = 164.0
+margin_right = 140.0
 margin_bottom = 32.0
 text = "(0, 0, 0)"
 align = 1
 
+[node name="OnFloorLabel" type="VBoxContainer" parent="Items"]
+margin_left = 576.0
+margin_right = 716.0
+margin_bottom = 32.0
+size_flags_horizontal = 3
+
+[node name="Label" type="Label" parent="Items/OnFloorLabel"]
+margin_right = 140.0
+margin_bottom = 14.0
+text = "On Floor:"
+align = 1
+
+[node name="Info" type="Label" parent="Items/OnFloorLabel"]
+margin_top = 18.0
+margin_right = 140.0
+margin_bottom = 32.0
+text = "false"
+align = 1
+
 [node name="DistanceLabel" type="VBoxContainer" parent="Items"]
-margin_left = 672.0
-margin_right = 836.0
+margin_left = 720.0
+margin_right = 860.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="Items/DistanceLabel"]
-margin_right = 164.0
+margin_right = 140.0
 margin_bottom = 14.0
 text = "Distance:"
 align = 1
 
 [node name="Info" type="Label" parent="Items/DistanceLabel"]
 margin_top = 18.0
-margin_right = 164.0
+margin_right = 140.0
 margin_bottom = 32.0
 text = "1"
 align = 1
 
 [node name="TimerLabel" type="VBoxContainer" parent="Items"]
-margin_left = 840.0
+margin_left = 864.0
 margin_right = 1004.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 
 [node name="Label" type="Label" parent="Items/TimerLabel"]
-margin_right = 164.0
+margin_right = 140.0
 margin_bottom = 14.0
 text = "Time left in test:"
 align = 1
 
 [node name="ProgressBar" type="ProgressBar" parent="Items/TimerLabel"]
 margin_top = 18.0
-margin_right = 164.0
+margin_right = 140.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 size_flags_vertical = 3

@@ -179,10 +179,14 @@ func _process(delta):
     $Items/TargetLabel/Info.text = str( $Pawn.destination )
     # Set the position label to the position vector
     $Items/PositionLabel/Info.text = str( $Pawn.global_transform.origin )
+    # Set whether we're on the floor
+    $Items/OnFloorLabel/Info.text = str( $Pawn/KinematicDriver._on_floor )
     # Set the distance to the target vector
     if $Pawn.destination:
         $Items/DistanceLabel/Info.text = str(
-            $Pawn.global_transform.origin.distance_to( $Pawn.destination )
+            $Pawn.global_transform.origin.distance_to(
+                $Pawn/KinematicDriver.target_position
+            )
         )
     else:
         $Items/DistanceLabel/Info.text = "NAN"
