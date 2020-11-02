@@ -63,7 +63,6 @@ material_override = ExtResource( 3 )
 pixel_size = 0.0078
 frames = SubResource( 2 )
 animation = "debug_march"
-frame = 1
 playing = true
 
 [node name="VisualSprite" type="AnimatedSprite3D" parent="."]

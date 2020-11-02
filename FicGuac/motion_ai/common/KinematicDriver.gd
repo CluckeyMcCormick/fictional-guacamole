@@ -13,6 +13,11 @@ export(float) var fall_speed = 9.8
 export(float) var goal_toreance = 0.1
 # How much do we float by?
 export(float) var float_height = 0
+# Sometimes, we'll encounter a slope. There has to be a demarcating line where a
+# slope acts more like a wall than a true slope, so that whatever we're driving
+# doesn't climb a stairway to heaven. What's the maximum angle for a slope we
+# can climb, measured in degrees?
+export(float) var max_slope_degrees = 45
 
 # If we're not using a raycast to determine if we're on the ground, then we'll
 # test by simulating a downward move. Everytime we do that, we'll usually get a
@@ -48,8 +53,10 @@ func _physics_process(delta):
     # What's the vector for our new movement? Each value is a measure in
     # units/sec
     var new_move = Vector3.ZERO
+    # At several points, we construct
+    var normal_angle = 0
     # Did we get a collision result from our most recent move attempt?
-    var collision = null 
+    var collision = null
     # What's the position of our drive node? We'll store this separate for ease
     # of use.
     var drive_pos = drive_body_node.global_transform.origin
@@ -81,13 +88,22 @@ func _physics_process(delta):
     else:
         # Okay, so we're definitely on what we would consider the floor now.
         _on_floor = true
-        # But what if we're lower than the height we're supposed to be floating
-        # at?
-        if collision.travel.length() < float_height:
+        # Calculate our normal angle - effectively, what's the angle of the
+        # slope we just collided with? Credit to Jeremy Bullock for this monster
+        normal_angle = rad2deg(acos(collision.normal.dot(Vector3(0,1,0))))
+        # If the normal angle is GREATER than the max possible slope that we can
+        # climb, then we're on slippery slope and should be sliding down!
+        if normal_angle > max_slope_degrees:
+            # Ergo, we ain't on the floor at all!
+            _on_floor = false
+        # Otherwise, we're on stable grounf. So, what if we're lower than the
+        # height we're supposed to be floating at?
+        elif collision.travel.length() < float_height:
             # In that case, move up by however much we're down by
             drive_body_node.move_and_collide(
                 Vector3(0, float_height - collision.travel.length(), 0)
             )
+        
     # If we're NOT on the floor, then we need to move downward!
     if not self._on_floor:
         new_move.y = -fall_speed
@@ -144,18 +160,6 @@ func _physics_process(delta):
         if collision and collision.remainder.length() != 0:
             # Get the remaining movement
             var next_movement = collision.remainder
-
-            # To determine what type of surface this is, we need to calculate
-            # the angle from the origin - this is the best tool we have for
-            # determining what kind of slope we have
-            var normal_at_level = Vector3.ZERO
-            # Setting up this vector's X and Z values to align with the normal's
-            # means we can get a one-dimensional appraisal of the angle
-            normal_at_level.x = collision.normal.x
-            normal_at_level.z = collision.normal.z
-
-            # Calculate the angle
-            var normal_angle = normal_at_level.angle_to(collision.normal)
 
             # Slide along the normal
             next_movement = next_movement.slide( collision.normal )
