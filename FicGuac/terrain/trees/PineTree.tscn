@@ -1,11 +1,7 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=4 format=2]
 
-[ext_resource path="res://util/SpriteShadowMaterial.tres" type="Material" id=2]
 [ext_resource path="res://terrain/trees/tree_frames.tres" type="SpriteFrames" id=3]
 [ext_resource path="res://terrain/trees/PineTree.gd" type="Script" id=4]
-
-
-
 
 [sub_resource type="CylinderShape" id=1]
 radius = 0.838654
@@ -19,8 +15,8 @@ script = ExtResource( 4 )
 
 [node name="Sprite" type="AnimatedSprite3D" parent="."]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 2.504, 0 )
-material_override = ExtResource( 2 )
 pixel_size = 0.0313
+alpha_cut = 2
 frames = ExtResource( 3 )
 animation = "pine_fc_a"
 playing = true

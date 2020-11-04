@@ -135,6 +135,7 @@ _crop_type = 0
 [node name="Farm3" parent="Farms" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 30, 0, 0 )
 _plot_size = Vector2( 5, 20 )
+_crop_type = 4
 
 [node name="Farm4" parent="Farms" instance=ExtResource( 8 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 35, 0, 0 )
@@ -154,6 +155,7 @@ _rock_size = 2
 
 [node name="Rock2" parent="Rocks" instance=ExtResource( 10 )]
 transform = Transform( -0.637723, 0.348683, -0.701888, -0.0428154, 0.983842, 0.443565, 0.769075, 0.343901, -0.557317, 7.34934, 0, 26.4176 )
+_rock_size = 1
 
 [node name="Rock3" parent="Rocks" instance=ExtResource( 10 )]
 transform = Transform( -0.180885, 0.0778807, -0.980948, -0.975767, -0.151435, 0.169974, -0.123125, 1.08572, 0.0940726, 4.13381, -0.161437, 27.5393 )

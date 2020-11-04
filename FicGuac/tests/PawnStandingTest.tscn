@@ -1,11 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=8 format=2]
 
 [ext_resource path="res://terrain/mat_terrain_grass_grid.tres" type="Material" id=1]
 [ext_resource path="res://scenes/SceneDefaultEnvironment.tres" type="Environment" id=2]
 [ext_resource path="res://motion_ai/pawn/UnitPawn.tscn" type="PackedScene" id=3]
 [ext_resource path="res://tests/PawnStandingTest.gd" type="Script" id=4]
 [ext_resource path="res://motion_ai/pawn/pawn_revision01_normal_c01.tres" type="SpriteFrames" id=5]
-[ext_resource path="res://util/SpriteShadowMaterial.tres" type="Material" id=6]
 
 [sub_resource type="PlaneMesh" id=1]
 material = ExtResource( 1 )
@@ -77,8 +76,7 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0 )
 
 [node name="AnimatedSprite3D" type="AnimatedSprite3D" parent="UnitPawn"]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.0700001, 0 )
-material_override = ExtResource( 6 )
 pixel_size = 0.014
 frames = ExtResource( 5 )
-animation = "southwest_idle"
+frame = 20
 playing = true
