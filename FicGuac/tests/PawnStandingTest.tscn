@@ -78,5 +78,5 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0 )
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.0700001, 0 )
 pixel_size = 0.014
 frames = ExtResource( 5 )
-frame = 20
+frame = 5
 playing = true

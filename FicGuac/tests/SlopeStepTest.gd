@@ -27,6 +27,9 @@ var test_index = 0
 # as a stack
 var current_test_path = null
 
+# We, by default, use the default camera
+var default_camera = true
+
 # This function builds out the paths, more or less by hand. I don't recommend
 # looking at it, it's awful.
 func build_out_tests():
@@ -172,36 +175,36 @@ func _ready():
 # Update the GUI so we know what's up
 func _process(delta):
     # Set the test text
-    $Items/TestLabel/Info.text = str(test_index)
+    $Items/Labels/TestLabel/Info.text = str(test_index)
     # Set the progress bar to reflect the passage of  T I M E
-    $Items/TimerLabel/ProgressBar.value = $Timer.wait_time - $Timer.time_left
+    $Items/Labels/TimerLabel/ProgressBar.value = $Timer.wait_time - $Timer.time_left
     # Set the target label to the target vector
-    $Items/TargetLabel/Info.text = str( $Pawn.destination )
+    $Items/Labels/TargetLabel/Info.text = str( $Pawn.destination )
     # Set the position label to the position vector
-    $Items/PositionLabel/Info.text = str( $Pawn.global_transform.origin )
+    $Items/Labels/PositionLabel/Info.text = str( $Pawn.global_transform.origin )
     # Set whether we're on the floor
-    $Items/OnFloorLabel/Info.text = str( $Pawn/KinematicDriver._on_floor )
+    $Items/Labels/OnFloorLabel/Info.text = str( $Pawn/KinematicDriver._on_floor )
     # Set the distance to the target vector
     if $Pawn.destination:
-        $Items/DistanceLabel/Info.text = str(
+        $Items/Labels/DistanceLabel/Info.text = str(
             $Pawn.global_transform.origin.distance_to(
                 $Pawn/KinematicDriver.target_position
             )
         )
     else:
-        $Items/DistanceLabel/Info.text = "NAN"
+        $Items/Labels/DistanceLabel/Info.text = "NAN"
         
     # Set the State bar to the current state
     if test_state == TO_START:
-        $Items/StateLabel/Info.text = "TO START!"
+        $Items/Labels/StateLabel/Info.text = "TO START!"
     elif test_state == IN_PROGRESS:
-        $Items/StateLabel/Info.text = "IN PROGRESS!"
+        $Items/Labels/StateLabel/Info.text = "IN PROGRESS!"
     elif test_state == SUCCESS_RETURN:
-        $Items/StateLabel/Info.text = "SUCCESSFUL, RETURNING!"
+        $Items/Labels/StateLabel/Info.text = "SUCCESSFUL, RETURNING!"
     elif test_state == FAIL_RETURN:
-        $Items/StateLabel/Info.text = "FAILURE, RETURNING!"
+        $Items/Labels/StateLabel/Info.text = "FAILURE, RETURNING!"
     else:
-        $Items/StateLabel/Info.text = "INVALID STATE!"
+        $Items/Labels/StateLabel/Info.text = "INVALID STATE!"
 
 # Utility function for telling the pawn to go somewhere, given a node
 func set_pawn_target(target_node : Spatial):
@@ -268,3 +271,14 @@ func _on_Timer_timeout():
     test_state = FAIL_RETURN
     # Also, just in case, make sure we stop the timer
     $Timer.stop()
+
+
+func _on_Button_pressed():
+    if default_camera:
+        $WorldCamera.current = false
+        $Pawn/PawnCamera.current = true
+        default_camera = false
+    else:
+        $WorldCamera.current = true
+        $Pawn/PawnCamera.current = false
+        default_camera = true

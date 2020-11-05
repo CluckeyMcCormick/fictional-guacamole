@@ -111,6 +111,7 @@ _tree_type = 1
 
 [node name="Tree2" parent="Trees" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 10, 0, 40 )
+_tree_type = 0
 
 [node name="Tree3" parent="Trees" instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10, 0, -15 )
