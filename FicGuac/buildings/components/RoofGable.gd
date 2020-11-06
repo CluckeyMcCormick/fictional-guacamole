@@ -24,6 +24,13 @@ export(float) var overhang_z = .5 setget set_overhang_z
 # Should we update the polygons anytime something is updated?
 export(bool) var update_on_value_change = true
 
+# Are we in shadow only mode?
+export(bool) var shadow_only_mode = false setget set_shadow_only_mode
+# The values affected by shadow only mode require some constants with really
+# long names - we're just gonna capture and hold those values.
+const shade_only = GeometryInstance.SHADOW_CASTING_SETTING_SHADOWS_ONLY
+const shade_default = GeometryInstance.SHADOW_CASTING_SETTING_ON
+
 # Load the PolyGen script
 const PolyGen = preload("res://util/scripts/PolyGen.gd")
 
@@ -68,12 +75,12 @@ func set_longboard_mat(new_mat):
 func set_sideboard_mat(new_mat):
     sideboard_mat = new_mat
     if Engine.editor_hint and update_on_value_change:
-        build_all()      
+        build_all()
 
 func set_underboard_mat(new_mat):
     underboard_mat = new_mat
     if Engine.editor_hint and update_on_value_change:
-        build_all()      
+        build_all()
 
 func set_x_length(new_length):
     # Length MUST at LEAST be MIN_LEN
@@ -107,6 +114,25 @@ func set_overhang_z(new_len):
     overhang_z = max(new_len, MIN_FASCIA_OVERHANG)
     if Engine.editor_hint and update_on_value_change:
         build_all()
+
+func set_shadow_only_mode(new_shadow_mode):
+    # Accept the value
+    shadow_only_mode = new_shadow_mode
+    
+    # ASSERT!
+    if shadow_only_mode:
+        $Sheeting.cast_shadow = shade_only
+        $FasciaSideboard.cast_shadow = shade_only
+        $FasciaLongboard.cast_shadow = shade_only
+        $FasciaUnderboard.cast_shadow = shade_only
+        $Gables.cast_shadow = shade_only
+    else:
+        $Sheeting.cast_shadow = shade_default
+        $FasciaSideboard.cast_shadow = shade_default
+        $FasciaLongboard.cast_shadow = shade_default
+        $FasciaUnderboard.cast_shadow = shade_default
+        $Gables.cast_shadow = shade_default
+    
 
 # --------------------------------------------------------
 #
@@ -165,7 +191,7 @@ func build_all():
     # We're all done with the fascia faces - clear em out!
     _fascia_faces_pool = null
 
-func build_gables():    
+func build_gables():
     var new_mesh = Mesh.new()
     var verts = PoolVector3Array()
     var UVs = PoolVector2Array()
@@ -267,7 +293,7 @@ func build_sheeting():
     
     # Create our points - In 3D!
     var v3_A = Vector3( x_edge, sheet_base, z_edge)
-    var v3_D = Vector3(-x_edge, sheet_base, z_edge)    
+    var v3_D = Vector3(-x_edge, sheet_base, z_edge)
     
     var v3_B = Vector3( x_edge, sheet_peak, 0)
     var v3_C = Vector3(-x_edge, sheet_peak, 0)

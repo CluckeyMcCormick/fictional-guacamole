@@ -2,12 +2,6 @@
 
 [ext_resource path="res://buildings/components/Foundation.gd" type="Script" id=1]
 
-
-
-
-
-
-
 [sub_resource type="ArrayMesh" id=1]
 surfaces/0 = {
 "aabb": AABB( -4.5, 0.5, -2, 9.00001, 1.00136e-05, 4.00001 ),
@@ -50,7 +44,7 @@ surfaces/0 = {
 [sub_resource type="BoxShape" id=4]
 extents = Vector3( 5, 0.25, 2.5 )
 
-[node name="RothFoundation" type="StaticBody"]
+[node name="Foundation" type="StaticBody"]
 script = ExtResource( 1 )
 
 [node name="FoundationFloor" type="MeshInstance" parent="."]

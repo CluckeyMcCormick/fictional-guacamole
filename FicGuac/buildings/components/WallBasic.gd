@@ -19,6 +19,13 @@ export(float) var height = 2 setget set_height
 # Should we update the polygons anytime something is updated?
 export(bool) var update_on_value_change = true
 
+# Are we in shadow only mode?
+export(bool) var shadow_only_mode = false setget set_shadow_only_mode
+# The values affected by shadow only mode require some constants with really
+# long names - we're just gonna capture and hold those values.
+const shade_only = GeometryInstance.SHADOW_CASTING_SETTING_SHADOWS_ONLY
+const shade_default = GeometryInstance.SHADOW_CASTING_SETTING_ON
+
 # Load the PolyGen script
 const PolyGen = preload("res://util/scripts/PolyGen.gd")
 
@@ -81,6 +88,22 @@ func set_height(new_height):
     height = max(new_height, MIN_HEIGHT)
     if Engine.editor_hint and update_on_value_change:
         build_all()
+
+func set_shadow_only_mode(new_shadow_mode):
+    # Accept the value
+    shadow_only_mode = new_shadow_mode
+    
+    # ASSERT!
+    if shadow_only_mode:
+        $Exterior.cast_shadow = shade_only
+        $Interior.cast_shadow = shade_only
+        $CutawaySides.cast_shadow = shade_only
+        $CutawayTop.cast_shadow = shade_only
+    else:
+        $Exterior.cast_shadow = shade_default
+        $Interior.cast_shadow = shade_default
+        $CutawaySides.cast_shadow = shade_default
+        $CutawayTop.cast_shadow = shade_default
 
 # --------------------------------------------------------
 #

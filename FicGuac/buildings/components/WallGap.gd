@@ -25,6 +25,9 @@ export(float) var gap_height = 1 setget set_gap_height
 # Should we update the polygons anytime something is updated?
 export(bool) var update_on_value_change = true
 
+# Are we in shadow only mode?
+export(bool) var shadow_only_mode = false setget set_shadow_only_mode
+
 # What's the minimum length for the wall?
 const MIN_LEN = .04
 # At a minimum, how thick must the wall be?
@@ -122,6 +125,22 @@ func set_gap_height(new_height):
     gap_height = clamp(new_height, MIN_GAP_HEIGHT, max_gap_height)
     if Engine.editor_hint and update_on_value_change:
         build_all()
+
+func set_shadow_only_mode(new_shadow_mode):
+    # Accept the value
+    shadow_only_mode = new_shadow_mode
+    
+    # ASSERT!
+    if shadow_only_mode:
+        $WallA.shadow_only_mode = true
+        $WallB.shadow_only_mode = true
+        if cap_wall_node:
+            cap_wall_node.shadow_only_mode = true
+    else:
+        $WallA.shadow_only_mode = false
+        $WallB.shadow_only_mode = false
+        if cap_wall_node:
+            cap_wall_node.shadow_only_mode = false
     
 # --------------------------------------------------------
 #
