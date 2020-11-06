@@ -178,7 +178,6 @@ size = Vector3( 0.5, 0.5, 0.5 )
 
 [node name="SlopeStepTest" type="Spatial"]
 script = ExtResource( 5 )
-do_step_test = false
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 2 )

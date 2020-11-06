@@ -16,15 +16,10 @@
 extents = Vector3( 0.26, 0.805, 0.26 )
 
 [sub_resource type="BoxShape" id=2]
-extents = Vector3( 0.26, 0.66, 0.26 )
+extents = Vector3( 0.26, 0.555, 0.26 )
 
 [sub_resource type="SpriteFrames" id=3]
 animations = [ {
-"frames": [ ExtResource( 5 ), ExtResource( 11 ) ],
-"loop": true,
-"name": "debug_march",
-"speed": 5.0
-}, {
 "frames": [ ExtResource( 6 ), ExtResource( 1 ) ],
 "loop": true,
 "name": "debug_wait",
@@ -39,6 +34,11 @@ animations = [ {
 "loop": true,
 "name": "debug_brace",
 "speed": 1.0
+}, {
+"frames": [ ExtResource( 5 ), ExtResource( 11 ) ],
+"loop": true,
+"name": "debug_march",
+"speed": 5.0
 } ]
 
 [node name="UnitPawn" type="KinematicBody"]
@@ -47,12 +47,11 @@ collision_mask = 13
 script = ExtResource( 4 )
 
 [node name="IdealCollisionBox" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.063, 0 )
 shape = SubResource( 1 )
 disabled = true
 
 [node name="ActualCollisionBox" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.208, 0 )
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0 )
 shape = SubResource( 2 )
 
 [node name="StateSprite" type="AnimatedSprite3D" parent="."]
@@ -61,21 +60,19 @@ visible = false
 pixel_size = 0.0078
 frames = SubResource( 3 )
 animation = "debug_march"
-frame = 1
 playing = true
 
 [node name="VisualSprite" type="AnimatedSprite3D" parent="."]
-transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.11, 0 )
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.049, 0 )
 pixel_size = 0.014
 alpha_cut = 2
 frames = ExtResource( 2 )
 animation = "debug_lowest"
-frame = 1
 playing = true
 
 [node name="KinematicDriver" parent="." instance=ExtResource( 12 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.74593, 0 )
 visible = false
 drive_body = NodePath("..")
-float_height = 0.29
+float_height = 0.5
 [connection signal="target_reached" from="KinematicDriver" to="." method="_on_KinematicDriver_target_reached"]
