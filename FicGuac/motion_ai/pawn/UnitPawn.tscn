@@ -25,6 +25,11 @@ animations = [ {
 "name": "debug_wait",
 "speed": 1.0
 }, {
+"frames": [ ExtResource( 5 ), ExtResource( 11 ) ],
+"loop": true,
+"name": "debug_march",
+"speed": 5.0
+}, {
 "frames": [ ExtResource( 10 ), ExtResource( 7 ) ],
 "loop": true,
 "name": "debug_attack",
@@ -34,11 +39,6 @@ animations = [ {
 "loop": true,
 "name": "debug_brace",
 "speed": 1.0
-}, {
-"frames": [ ExtResource( 5 ), ExtResource( 11 ) ],
-"loop": true,
-"name": "debug_march",
-"speed": 5.0
 } ]
 
 [node name="UnitPawn" type="KinematicBody"]
@@ -65,6 +65,7 @@ playing = true
 [node name="VisualSprite" type="AnimatedSprite3D" parent="."]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.049, 0 )
 pixel_size = 0.014
+shaded = true
 alpha_cut = 2
 frames = ExtResource( 2 )
 animation = "debug_lowest"

@@ -14,10 +14,6 @@ export(bool) var update_on_value_change = true
 
 # Are we in shadow only mode?
 export(bool) var shadow_only_mode = false setget set_shadow_only_mode
-# The values affected by shadow only mode require some constants with really
-# long names - we're just gonna capture and hold those values.
-const shade_only = GeometryInstance.SHADOW_CASTING_SETTING_SHADOWS_ONLY
-const shade_default = GeometryInstance.SHADOW_CASTING_SETTING_ON
 
 # Load the PolyGen script
 const PolyGen = preload("res://util/scripts/PolyGen.gd")
@@ -63,6 +59,11 @@ func set_height(new_height):
 func set_shadow_only_mode(new_shadow_mode):
     # Accept the value
     shadow_only_mode = new_shadow_mode
+    
+    # The values affected by shadow only mode require some constants with really
+    # long names - we're just gonna capture and hold those values.
+    var shade_only = GeometryInstance.SHADOW_CASTING_SETTING_SHADOWS_ONLY
+    var shade_default = GeometryInstance.SHADOW_CASTING_SETTING_ON
     
     # ASSERT!
     if shadow_only_mode:

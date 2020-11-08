@@ -36,7 +36,15 @@ export(float) var gap_height = 1 setget set_gap_height
 export(bool) var update_on_value_change = true
 
 # Are we in shadow only mode?
-export(bool) var shadow_only_mode = false setget set_shadow_only_mode
+enum ShadowModes {
+    FULL_VIS, # Every single mesh is visible. Yipee!
+    # Sometimes we only want specific walls to disappear. Each one of these
+    # disappears two walls and a column.
+    SHADOW_NE, SHADOW_NW, SHADOW_SW, SHADOW_SE,
+    # Every wall disappears. Neat!
+    SHADOW_ONLY
+}
+export(ShadowModes) var shadow_only_mode = ShadowModes.FULL_VIS setget set_shadow_only_mode
 
 # What's the minimum length for the wall?
 const MIN_SIZE = 1
@@ -141,27 +149,69 @@ func set_shadow_only_mode(new_shadow_mode):
     # Accept the value
     shadow_only_mode = new_shadow_mode
     
-    # ASSERT!
-    if shadow_only_mode:
-        $FirstWall.shadow_only_mode = true
-        $SecondWall.shadow_only_mode = true
-        $ThirdWall.shadow_only_mode = true
-        $FirstColumn.shadow_only_mode = true
-        $SecondColumn.shadow_only_mode = true
-        $ThirdColumn.shadow_only_mode = true
-        $FourthColumn.shadow_only_mode = true
-        if fourth_wall_node:
-            fourth_wall_node.shadow_only_mode = true
-    else:
-        $FirstWall.shadow_only_mode = false
-        $SecondWall.shadow_only_mode = false
-        $ThirdWall.shadow_only_mode = false
-        $FirstColumn.shadow_only_mode = false
-        $SecondColumn.shadow_only_mode = false
-        $ThirdColumn.shadow_only_mode = false
-        $FourthColumn.shadow_only_mode = false
-        if fourth_wall_node:
-            fourth_wall_node.shadow_only_mode = false
+    # Update as appropriate
+    match shadow_only_mode:
+        ShadowModes.FULL_VIS:
+            $FirstWall.shadow_only_mode = false
+            $FirstColumn.shadow_only_mode = false
+            $SecondWall.shadow_only_mode = false
+            $SecondColumn.shadow_only_mode = false
+            $ThirdWall.shadow_only_mode = false
+            $ThirdColumn.shadow_only_mode = false
+            if fourth_wall_node:
+                fourth_wall_node.shadow_only_mode = false
+            $FourthColumn.shadow_only_mode = false
+        ShadowModes.SHADOW_NE:
+            $FirstWall.shadow_only_mode = true
+            $FirstColumn.shadow_only_mode = true
+            $SecondWall.shadow_only_mode = true
+            $SecondColumn.shadow_only_mode = false
+            $ThirdWall.shadow_only_mode = false
+            $ThirdColumn.shadow_only_mode = false
+            if fourth_wall_node:
+                fourth_wall_node.shadow_only_mode = false
+            $FourthColumn.shadow_only_mode = false
+        ShadowModes.SHADOW_NW:
+            $FirstWall.shadow_only_mode = false
+            $FirstColumn.shadow_only_mode = false
+            $SecondWall.shadow_only_mode = true
+            $SecondColumn.shadow_only_mode = true
+            $ThirdWall.shadow_only_mode = true
+            $ThirdColumn.shadow_only_mode = false
+            if fourth_wall_node:
+                fourth_wall_node.shadow_only_mode = false
+            $FourthColumn.shadow_only_mode = false
+        ShadowModes.SHADOW_SW:
+            $FirstWall.shadow_only_mode = false
+            $FirstColumn.shadow_only_mode = false
+            $SecondWall.shadow_only_mode = false
+            $SecondColumn.shadow_only_mode = false
+            $ThirdWall.shadow_only_mode = true
+            $ThirdColumn.shadow_only_mode = true
+            if fourth_wall_node:
+                fourth_wall_node.shadow_only_mode = true
+            $FourthColumn.shadow_only_mode = false
+        ShadowModes.SHADOW_SE:
+            $FirstWall.shadow_only_mode = true
+            $FirstColumn.shadow_only_mode = false
+            $SecondWall.shadow_only_mode = false
+            $SecondColumn.shadow_only_mode = false
+            $ThirdWall.shadow_only_mode = false
+            $ThirdColumn.shadow_only_mode = false
+            if fourth_wall_node:
+                fourth_wall_node.shadow_only_mode = true
+            $FourthColumn.shadow_only_mode = true
+        ShadowModes.SHADOW_ONLY:
+            $FirstWall.shadow_only_mode = true
+            $FirstColumn.shadow_only_mode = true
+            $SecondWall.shadow_only_mode = true
+            $SecondColumn.shadow_only_mode = true
+            $ThirdWall.shadow_only_mode = true
+            $ThirdColumn.shadow_only_mode = true
+            if fourth_wall_node:
+                fourth_wall_node.shadow_only_mode = true
+            $FourthColumn.shadow_only_mode = true
+    # Aaaand we're done!
 
 # --------------------------------------------------------
 #

@@ -187,6 +187,8 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 25.0261, 0, 35.031 )
 
 [node name="RothHouse" parent="Houses" instance=ExtResource( 15 )]
 transform = Transform( -1.62921e-07, 0, 1, 0, 1, 0, -1, 0, -1.62921e-07, -21.0927, 0, 46.2439 )
+hiding_corner = 0
 
 [node name="RothHut" parent="Houses" instance=ExtResource( 12 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4, 0, -6 )
+hiding_corner = 1
