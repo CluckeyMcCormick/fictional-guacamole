@@ -2,9 +2,10 @@
 
 [ext_resource path="res://terrain/mat_terrain_grass_grid.tres" type="Material" id=1]
 [ext_resource path="res://scenes/SceneDefaultEnvironment.tres" type="Environment" id=2]
-[ext_resource path="res://motion_ai/pawn/UnitPawn.tscn" type="PackedScene" id=3]
+[ext_resource path="res://motion_ai/pawn/Pawn.tscn" type="PackedScene" id=3]
 [ext_resource path="res://tests/PawnStandingTest.gd" type="Script" id=4]
 [ext_resource path="res://motion_ai/pawn/pawn_revision01_normal_c01.tres" type="SpriteFrames" id=5]
+
 
 [sub_resource type="PlaneMesh" id=1]
 material = ExtResource( 1 )

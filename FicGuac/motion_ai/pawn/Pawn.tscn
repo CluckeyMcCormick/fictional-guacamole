@@ -2,7 +2,7 @@
 
 [ext_resource path="res://motion_ai/pawn/mob_state/sprite_states_wait02.png" type="Texture" id=1]
 [ext_resource path="res://motion_ai/pawn/pawn_revision01_normal_c01.tres" type="SpriteFrames" id=2]
-[ext_resource path="res://motion_ai/pawn/UnitPawn.gd" type="Script" id=4]
+[ext_resource path="res://motion_ai/pawn/Pawn.gd" type="Script" id=4]
 [ext_resource path="res://motion_ai/pawn/mob_state/sprite_states_march01.png" type="Texture" id=5]
 [ext_resource path="res://motion_ai/pawn/mob_state/sprite_states_wait01.png" type="Texture" id=6]
 [ext_resource path="res://motion_ai/pawn/mob_state/sprite_states_attack02.png" type="Texture" id=7]
@@ -20,11 +20,6 @@ extents = Vector3( 0.26, 0.555, 0.26 )
 
 [sub_resource type="SpriteFrames" id=3]
 animations = [ {
-"frames": [ ExtResource( 6 ), ExtResource( 1 ) ],
-"loop": true,
-"name": "debug_wait",
-"speed": 1.0
-}, {
 "frames": [ ExtResource( 5 ), ExtResource( 11 ) ],
 "loop": true,
 "name": "debug_march",
@@ -39,11 +34,16 @@ animations = [ {
 "loop": true,
 "name": "debug_brace",
 "speed": 1.0
+}, {
+"frames": [ ExtResource( 6 ), ExtResource( 1 ) ],
+"loop": true,
+"name": "debug_wait",
+"speed": 1.0
 } ]
 
 [node name="UnitPawn" type="KinematicBody"]
-collision_layer = 8
-collision_mask = 13
+collision_layer = 16
+collision_mask = 7
 script = ExtResource( 4 )
 
 [node name="IdealCollisionBox" type="CollisionShape" parent="."]
@@ -60,6 +60,7 @@ visible = false
 pixel_size = 0.0078
 frames = SubResource( 3 )
 animation = "debug_march"
+frame = 1
 playing = true
 
 [node name="VisualSprite" type="AnimatedSprite3D" parent="."]
@@ -75,5 +76,7 @@ playing = true
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.74593, 0 )
 visible = false
 drive_body = NodePath("..")
+goal_toreance = 0.2
 float_height = 0.5
+[connection signal="request_position" from="KinematicDriver" to="." method="_on_KinematicDriver_request_position"]
 [connection signal="target_reached" from="KinematicDriver" to="." method="_on_KinematicDriver_target_reached"]

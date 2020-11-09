@@ -2,7 +2,7 @@
 
 [ext_resource path="res://terrain/mat_terrain_grass_grid.tres" type="Material" id=1]
 [ext_resource path="res://scenes/SceneDefaultEnvironment.tres" type="Environment" id=2]
-[ext_resource path="res://motion_ai/pawn/UnitPawn.tscn" type="PackedScene" id=3]
+[ext_resource path="res://motion_ai/pawn/Pawn.tscn" type="PackedScene" id=3]
 [ext_resource path="res://util/CheckerboardTriplane.tres" type="Material" id=4]
 [ext_resource path="res://tests/SlopeStepTest.gd" type="Script" id=5]
 [ext_resource path="res://util/gui_3d/QuadLabel.tscn" type="PackedScene" id=6]
@@ -864,6 +864,6 @@ size_flags_vertical = 3
 max_value = 5.0
 value = 2.5
 percent_visible = false
-[connection signal="target_reached" from="Pawn" to="." method="_on_Pawn_target_reached"]
+[connection signal="path_complete" from="Pawn" to="." method="_on_Pawn_path_complete"]
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="pressed" from="Items/Button" to="." method="_on_Button_pressed"]

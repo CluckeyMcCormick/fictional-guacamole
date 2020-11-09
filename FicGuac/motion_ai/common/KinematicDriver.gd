@@ -30,6 +30,13 @@ const MINIMUM_FALL_HEIGHT = .002
 # position value that was just reached.
 signal target_reached(position)
 
+# Signal issued when this driver requires a position update. Determining our
+# current position is the responsibility of whatever node we are driving - there
+# are just too many possible variations of how we would want to determine our
+# "current" point. Using a signal to request a status update isn't exactly
+# kosher but I just don't see a better way.
+signal request_position(kinematic_driver, old_position)
+
 # The current movement vector. This is set during movement (see
 # _physics_process). It is purely for reading the current movement status (since
 # kinematic bodies don't really report this.) Really meant only for reading,
@@ -37,12 +44,21 @@ signal target_reached(position)
 var _combined_velocity = Vector3.ZERO
 
 # What is our target position - where are we trying to go?
-var target_position = Vector3.ZERO
+var target_position = null
+
+# What is the current position of our drive target, adjuted to align with our
+# target position? This is the value that should set when the request_position
+# signal is sent out.
+var adj_position = Vector3.ZERO setget set_adj_position
 
 # Are we currently moving?
 var _is_moving = false
 # Are we currently on the floor?
 var _on_floor = true
+
+func set_adj_position(new_position):
+    adj_position = new_position
+    assert(adj_position != null)
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
@@ -57,9 +73,6 @@ func _physics_process(delta):
     var normal_angle = 0
     # Did we get a collision result from our most recent move attempt?
     var collision = null
-    # What's the position of our drive node? We'll store this separate for ease
-    # of use.
-    var drive_pos = drive_body_node.global_transform.origin
     
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # Step 1: Check if we're on the ground / if we need to fall
@@ -113,8 +126,11 @@ func _physics_process(delta):
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # If we have a target, we need to move towards the target.
     if self.target_position:
+        # We need our adj_position value updated.
+        emit_signal("request_position", self, adj_position)
+        
         # How far are we from our target position?
-        var distance_to = target_position - drive_pos
+        var distance_to = target_position - adj_position
         # We really only care about the X and Z, so we're gonna re-package them
         # into a Vector2. Normalizing reduces the Vector such that we can easily
         # scale it - it's basically just the direction now.
@@ -183,12 +199,12 @@ func _physics_process(delta):
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # Step 4: Reset target position if necessary
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    # Update the floor position
-    drive_pos = drive_body_node.global_transform.origin
     # If we have a target position...
     if target_position:
+        # Update the adjusted position
+        emit_signal("request_position", self, adj_position)
         # ...AND we're close enough to that target position...
-        if (target_position - drive_pos).length() <= goal_toreance:
+        if (target_position - adj_position).length() <= goal_toreance:
             # ...then we're done here! Save the target position
             var pos_save = target_position
             # Clear the target

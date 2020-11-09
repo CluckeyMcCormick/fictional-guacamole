@@ -16,10 +16,15 @@ enum {
 }
 
 # We can only really measure the position of the UnitPawn from the center of the
-# node. However, our destinations are always on the floor. So, we need a
-# constant to calculate our distance to the floor. This value, .747353 was the
-# OBSERVED value.
-const FLOOR_DISTANCE_ADD = .742972#.747353
+# node. However, sometimes our destinations are always on the floor. So, we need
+# a constant to calculate our distance to the floor. This value, .742972, was
+# the OBSERVED value.
+const FLOOR_DISTANCE = .742972#.747353
+
+# Each driver needs a node to move around - what node will this drive move?
+export(NodePath) var navigation
+# We resolve the node path into this variable.
+var navigation_node
 
 # What is this pawn's unit? Who's feeding it the orders? Who is determining
 # where it should be to be "in formation"?
@@ -41,10 +46,10 @@ signal pawn_died(pawn, unit, unit_index)
 # Signal issued when this pawn reaches it's target. Includes the specific Pawn
 # and the pawn's current position (which will be effectively the same as the
 # previous target).
-signal target_reached(pawn, position)
+signal path_complete(pawn, position)
 
-# This is the destination, which we update when set_destination is called
-var destination setget set_destination
+# This is the pawn's current path
+var current_path setget set_path
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -54,7 +59,8 @@ var destination setget set_destination
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    pass
+    # Get the drive target node
+    navigation_node = get_node(navigation)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -67,23 +73,40 @@ func _process(delta):
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-# Set the destination position for this UnitPawn, then pass that value down to
-# the KinematicDrive
-func set_destination(position):
-    # Shift the floor position so it will align with this node's origin. By
-    # making the specific to each sub/scene, we can ensure modularity
-    var adjusted_pos = position + Vector3(0, FLOOR_DISTANCE_ADD, 0)
-    $KinematicDriver.target_position = adjusted_pos
-    destination = adjusted_pos
+# Set the new path for the unit pawn
+func set_path(new_path):
+    # Set the path
+    current_path = new_path
+    # The first position in the path is now our target position.
+    $KinematicDriver.target_position = current_path.pop_front()
+
+func _on_KinematicDriver_request_position(kine_driver, old_position):
+    # Get our current position
+    var curr_pos = self.global_transform.origin
+    # What's our adjusted vector (tracked for ease of printing/debug)
+    var adjusted = Vector3.ZERO
+    
+    # If we don't have a navigation node...
+    if not navigation_node:
+        # Then the adjusted position is at our feet
+        adjusted = curr_pos - Vector3(0, FLOOR_DISTANCE, 0)
+    else:
+        # Otherwise, the adjusted position is our current position filtered
+        # through the navigation node.
+        adjusted = navigation_node.get_closest_point(curr_pos)
+    
+    # Set the adjusted position
+    kine_driver.adj_position = adjusted
 
 func _on_KinematicDriver_target_reached(position):
-    # Save the destination so we can emit it after destroying it
-    var sav_dest = destination
-    # We no longer have a destination!
-    destination = null
-    # Send the signal up the line - echo it, in other words. Use sav_dest
-    # because the position value we got handed is the adjusted value
-    emit_signal("target_reached", self, sav_dest)
+    # If we still have a path...
+    if not current_path.empty():
+        # The first/next position in the path is now our target position.
+        $KinematicDriver.target_position = current_path.pop_front()
+    else:
+        # We're done following the path! Tell anyone who's listening
+        emit_signal("path_complete", self, self.global_transform.origin)
+    
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -108,8 +131,9 @@ func set_sprite_from_vector():
     # If we are moving...
     if $KinematicDriver._is_moving:
         # Move the X and Z fields into a Vector2 so we can easily calculate the
-        # sprite's current angular direction. Note that the Z is actually inverted;
-        # This makes our angles operate on a CCW turn (like a unit circle)
+        # sprite's current angular direction. Note that the Z is actually
+        # inverted; This makes our angles operate on a CCW turn (like a unit
+        # circle)
         var move_angle = Vector2(move_vector.x, -move_vector.z).angle()
         # Angles are, by default, in radian form. Good for computers, bad for
         # humans. Since we're just going to check values, and not do any
@@ -187,36 +211,3 @@ func _update_sprite_from_direction_state():
         else:
             anim_string += "_idle"
         $VisualSprite.animation = anim_string
-
-# Registers this UnitPawn to a Unit node. Assigns the provided index to this
-# UnitPawn
-func register_to_unit(unit_node, unit_index):
-    # Assign the controlling unit
-    control_unit = unit_node
-    # Assign the unit index
-    pawn_index = unit_index
-    # Register the move_order_callback with our current object (so we can get
-    # move orders hand delivered)
-    control_unit.connect("move_ordered", self, "_on_Unit_move_ordered")
-    # Register the pawn_died signal with our current object (so we can get
-    # move orders hand delivered)
-    self.connect("pawn_died", unit_node, "_on_UnitPawn_pawn_died")
-
-# Sets this UnitPawn to not collide with all of the nodes in the provided list.
-# Intended for making sure a UnitPawn doesn't collide with the other UnitPawns
-# in it's fellow unit.
-func no_collide_with_list(node_list):
-    # For each node in the provided node list...
-    for node in node_list:
-        # If the current node in our list is NOT this UnitPawn...
-        if node != self:
-            # Then don't collide this UnitPawn with this other node
-            self.add_collision_exception_with( node )
-
-func _on_Unit_move_ordered(unit_target):
-    # Calculate the individual position based on the unit_position, and set the
-    # target position using that calculated value
-    var new_target = self.control_unit.get_pawn_index_pos(self.pawn_index)
-    new_target.x += unit_target.x
-    new_target.z += unit_target.z
-    set_destination(new_target)

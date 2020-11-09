@@ -96,31 +96,31 @@ albedo_texture = ExtResource( 11 )
 uv1_scale = Vector3( 0.5, 0.5, 0.5 )
 uv1_offset = Vector3( 0.375, 0, 0 )
 
+[sub_resource type="BoxShape" id=21]
+extents = Vector3( 1.5, 1.5, 3 )
+
 [sub_resource type="BoxShape" id=22]
+extents = Vector3( 1.5, 1.5, 1.5 )
+
+[sub_resource type="BoxShape" id=23]
+extents = Vector3( 3, 1.5, 1.5 )
+
+[sub_resource type="BoxShape" id=24]
+extents = Vector3( 1.5, 1.5, 1.5 )
+
+[sub_resource type="BoxShape" id=25]
 extents = Vector3( 1.5, 1.5, 3 )
 
 [sub_resource type="BoxShape" id=26]
 extents = Vector3( 1.5, 1.5, 1.5 )
 
-[sub_resource type="BoxShape" id=24]
-extents = Vector3( 3, 1.5, 1.5 )
-
 [sub_resource type="BoxShape" id=27]
-extents = Vector3( 1.5, 1.5, 1.5 )
-
-[sub_resource type="BoxShape" id=23]
-extents = Vector3( 1.5, 1.5, 3 )
+extents = Vector3( 3, 1.5, 1.5 )
 
 [sub_resource type="BoxShape" id=28]
 extents = Vector3( 1.5, 1.5, 1.5 )
 
-[sub_resource type="BoxShape" id=25]
-extents = Vector3( 3, 1.5, 1.5 )
-
 [sub_resource type="BoxShape" id=29]
-extents = Vector3( 1.5, 1.5, 1.5 )
-
-[sub_resource type="BoxShape" id=21]
 extents = Vector3( 2.5, 1.25, 2.5 )
 
 [node name="Hut" type="Spatial"]
@@ -141,12 +141,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4 )
 forwards_mat = SubResource( 4 )
 sides_mat = SubResource( 5 )
 tops_mat = SubResource( 6 )
-full_top_step = true
-x_length = 2.0
-z_length = 2.0
-steps = 4
-target_height = 0.5
-update_on_value_change = true
 
 [node name="Roof" parent="." instance=ExtResource( 9 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 3, 0 )
@@ -193,55 +187,55 @@ gap_height = 1.25
 
 [node name="Exterior" type="Area" parent="PawnDetectors"]
 collision_layer = 0
-collision_mask = 8
+collision_mask = 16
 
 [node name="EastShape" type="CollisionShape" parent="PawnDetectors/Exterior"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 1.5, 0 )
-shape = SubResource( 22 )
+shape = SubResource( 21 )
 disabled = true
 
 [node name="NortheastShape" type="CollisionShape" parent="PawnDetectors/Exterior"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 1.5, -4.5 )
-shape = SubResource( 26 )
+shape = SubResource( 22 )
 disabled = true
 
 [node name="NorthShape" type="CollisionShape" parent="PawnDetectors/Exterior"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, -4.5 )
-shape = SubResource( 24 )
+shape = SubResource( 23 )
 disabled = true
 
 [node name="NorthwestShape" type="CollisionShape" parent="PawnDetectors/Exterior"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 1.5, -4.5 )
-shape = SubResource( 27 )
+shape = SubResource( 24 )
 disabled = true
 
 [node name="WestShape" type="CollisionShape" parent="PawnDetectors/Exterior"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 1.5, 0 )
-shape = SubResource( 23 )
+shape = SubResource( 25 )
 disabled = true
 
 [node name="SouthwestShape" type="CollisionShape" parent="PawnDetectors/Exterior"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 1.5, 4.5 )
-shape = SubResource( 28 )
+shape = SubResource( 26 )
 disabled = true
 
 [node name="SouthShape" type="CollisionShape" parent="PawnDetectors/Exterior"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.5, 4.5 )
-shape = SubResource( 25 )
+shape = SubResource( 27 )
 disabled = true
 
 [node name="SoutheastShape" type="CollisionShape" parent="PawnDetectors/Exterior"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 1.5, 4.5 )
-shape = SubResource( 29 )
+shape = SubResource( 28 )
 disabled = true
 
 [node name="Interior" type="Area" parent="PawnDetectors"]
 collision_layer = 0
-collision_mask = 8
+collision_mask = 16
 
 [node name="Shape" type="CollisionShape" parent="PawnDetectors/Interior"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0 )
-shape = SubResource( 21 )
+shape = SubResource( 29 )
 [connection signal="body_entered" from="PawnDetectors/Exterior" to="." method="_on_Exterior_body_entered"]
 [connection signal="body_exited" from="PawnDetectors/Exterior" to="." method="_on_Exterior_body_exited"]
 [connection signal="body_entered" from="PawnDetectors/Interior" to="." method="_on_Interior_body_entered"]

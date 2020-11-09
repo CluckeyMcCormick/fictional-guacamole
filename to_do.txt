@@ -1,25 +1,6 @@
 To Do:
 ------
-1. Fix UnitPawn movement
-
-    I fixed the janky movement, but now the UnitPawns need to be able to move up
-    sloped surfaces and stair-like steps. Once they can do that, I can say
-    they're movement is ready for pathing.
-
-2. Start using NavigationMesh
-
-    Now that the UnitPawns can move correctly, and we have some terrain sorted
-    out for them to deal with, we need to switch to using a NavigationMesh. I
-    was weighing up what my options were for pathing, but the solution I've been
-    given seems like the best way to go. It was, after all, given to us.
-
-    As part of putting in the NavigationMesh, I suggest removing the whole
-    'Unit' concept. No more ordering around a group of UnitPawns. Instead, we'll
-    have one UnitPawn that repeatedly paths between designated points in the
-    world - just as a test. The UnitPawn, upon arriving at a location, will
-    randomly be assigned a new location to go to from a pool of options.
-
-3. Build and Change a NavigationMesh on the fly
+1. Build and Change a NavigationMesh on the fly
 
     This is the big one - a problem with Godot that I've seen at least one blog
     post complaining about is that there is no immediate and obvious way to
@@ -34,7 +15,7 @@ To Do:
     addon by Miloš Lukić. Looking at it, it has pretty much everything we need,
     we just need to play with it a little bit more.
 
-    To stress test our little wandering UnitPawn, we should also add the ability
-    to place down things like rocks, trees, or houses. And maybe, with a little
+    To stress test our little wandering Pawn, we should also add the ability to
+    place down things like rocks, trees, or houses. And maybe, with a little
     bit of fiddling, we can get multiple meshes that recognize danger and the
     like...

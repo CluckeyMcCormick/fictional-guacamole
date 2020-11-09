@@ -25,4 +25,5 @@ material/0 = SubResource( 3 )
 [node name="KinematicDriver" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.5, 0 )
 drive_body = NodePath("..")
+[connection signal="request_position" from="KinematicDriver" to="." method="_on_KinematicDriver_request_position"]
 [connection signal="target_reached" from="KinematicDriver" to="." method="_on_KinematicDriver_target_reached"]

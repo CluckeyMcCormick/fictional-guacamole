@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="FicGuac"
-run/main_scene="res://scenes/ParadeGround.tscn"
+run/main_scene="res://tests/PawnPathingTest.tscn"
 config/icon="res://icon.png"
 
 [autoload]
@@ -104,10 +104,24 @@ formation_animation_increment={
 
 [layer_names]
 
-3d_physics/layer_1="Floor/Terrain"
-3d_physics/layer_2="Scenery (Non-Blocking)"
-3d_physics/layer_3="Scenery (Blocking)"
-3d_physics/layer_4="Unit Pawn"
+3d_physics/layer_1="Terrain/Struct, Pathable"
+3d_physics/layer_2="Terrain/Struct, Nonpathable"
+3d_physics/layer_3="Terrain/Struct, Path Ignored"
+3d_physics/layer_5="Pawn (?)"
+3d_physics/layer_6="Vehicle(?)"
+3d_physics/layer_7="Vermin (?)"
+3d_physics/layer_8="Small Creature (?)"
+3d_physics/layer_9="Medium Creature (?)"
+3d_physics/layer_10="Large Creature (?)"
+3d_physics/layer_11="Bear (?)"
+3d_physics/layer_12="Item (?)"
+3d_physics/layer_13="Projectile (?)"
+3d_physics/layer_14="Unit Pickable (?)"
+3d_physics/layer_15="Building Pickable(?)"
+3d_physics/layer_17="Team 1"
+3d_physics/layer_18="Team 2"
+3d_physics/layer_19="Team 3"
+3d_physics/layer_20="Team 4"
 
 [rendering]
 

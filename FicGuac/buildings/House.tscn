@@ -140,12 +140,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 3.5 )
 forwards_mat = SubResource( 4 )
 sides_mat = SubResource( 5 )
 tops_mat = SubResource( 6 )
-full_top_step = true
-x_length = 2.0
-z_length = 2.0
-steps = 4
-target_height = 0.5
-update_on_value_change = true
 
 [node name="Roof" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3, 0 )
@@ -188,7 +182,7 @@ gap_height = 1.25
 
 [node name="Exterior" type="Area" parent="PawnDetectors"]
 collision_layer = 0
-collision_mask = 8
+collision_mask = 16
 
 [node name="EastShape" type="CollisionShape" parent="PawnDetectors/Exterior"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 1.5, 0 )
@@ -232,7 +226,7 @@ disabled = true
 
 [node name="Interior" type="Area" parent="PawnDetectors"]
 collision_layer = 0
-collision_mask = 8
+collision_mask = 16
 
 [node name="Shape" type="CollisionShape" parent="PawnDetectors/Interior"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.75, 0 )

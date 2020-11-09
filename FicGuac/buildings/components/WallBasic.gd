@@ -22,6 +22,15 @@ export(bool) var update_on_value_change = true
 # Are we in shadow only mode?
 export(bool) var shadow_only_mode = false setget set_shadow_only_mode
 
+# We always want the wall to collide with stuff, but how exactly we want it to
+# collide may change. The (Terrain, Nonpathable) layer was meant/designed for
+# walls and unpassable obstacles. However, sometimes the wall is used similar to
+# a roof or an overhang. This was the purpose of the (Terrain, Path Ignored)
+# collision layer. So, we need option to quickly and easily switch between the
+# two - ergo, this enum and configurable.
+enum CollisionMode {NONPATHABLE, PATH_IGNORED}
+export(CollisionMode) var collide_mode = CollisionMode.NONPATHABLE setget set_collide_mode
+
 # Load the PolyGen script
 const PolyGen = preload("res://util/scripts/PolyGen.gd")
 
@@ -105,6 +114,24 @@ func set_shadow_only_mode(new_shadow_mode):
         $Interior.cast_shadow = shade_default
         $CutawaySides.cast_shadow = shade_default
         $CutawayTop.cast_shadow = shade_default
+
+func set_collide_mode(new_mode):
+     # Accept the value
+    collide_mode = new_mode
+    
+    # Assert neutral status
+    self.set_collision_layer_bit(1, false)
+    self.set_collision_layer_bit(2, false)
+    self.set_collision_mask_bit(1, false)
+    self.set_collision_mask_bit(2, false)
+    
+    match collide_mode:
+        CollisionMode.NONPATHABLE:
+            self.set_collision_layer_bit(1, true)
+            self.set_collision_mask_bit(1, true)
+        CollisionMode.PATH_IGNORED:
+            self.set_collision_layer_bit(2, true)
+            self.set_collision_mask_bit(2, true)
 
 # --------------------------------------------------------
 #
