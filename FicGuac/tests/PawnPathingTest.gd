@@ -32,8 +32,9 @@ func process_mouse_click():
     # Yield until we can query. Make note that we are waiting on a click
     click_waiting = true
     yield()
-    # 
-    var dest_closest = $Navigation.get_closest_point_to_segment(mouse_from, mouse_to)
+    
+    # Get our detour mesh
+    var detour_mesh = $DetourNavigation/DetourNavigationMesh
     
     # We're back! We should now be in the _physics_process, so we can query the
     # world using raycasts. First, let's get the space state.
@@ -47,13 +48,10 @@ func process_mouse_click():
     
     # If our query actually got something...
     if result:
-        var start = $Navigation.get_closest_point($Pawn.get_translation())
-        var end = $Navigation.get_closest_point(result.position)
-        var path = $Navigation.get_simple_path(start, end)
-        path = Array(path)
-        
+        # Get the path
+        var path = detour_mesh.find_path($Pawn.get_translation(), result.position)
         # Set the path!
-        $Pawn.current_path = path
+        $Pawn.current_path = Array(path["points"])
         
     # Either way, we're no longer waiting on a click
     click_waiting = false

@@ -21,6 +21,18 @@ enum {
 # the OBSERVED value.
 const FLOOR_DISTANCE = .742972#.747353
 
+# Pos[ition] Algo[rithm]. In order to path, the Pawn needs to know where it is.
+# There are different ways to calculate that. It's always centered, but the Z
+# value (height) changes.
+enum PosAlgo {
+    FLOOR, # Z is at feet, the floor, whatever you want to call it
+    NAVIGATION, # Pos is given by Navigation's get_closest_point function
+    DETOUR_MESH # Pos is given via some trickery with DetourNavigation
+}
+# Which of the above position algorithms will we use? Note that Navigation and
+# Detour will be broken unless the appropriate navigation node is provided.
+export(PosAlgo) var position_algorithm = PosAlgo.FLOOR
+
 # Each driver needs a node to move around - what node will this drive move?
 export(NodePath) var navigation
 # We resolve the node path into this variable.
@@ -81,22 +93,9 @@ func set_path(new_path):
     $KinematicDriver.target_position = current_path.pop_front()
 
 func _on_KinematicDriver_request_position(kine_driver, old_position):
-    # Get our current position
-    var curr_pos = self.global_transform.origin
-    # What's our adjusted vector (tracked for ease of printing/debug)
-    var adjusted = Vector3.ZERO
-    
-    # If we don't have a navigation node...
-    if not navigation_node:
-        # Then the adjusted position is at our feet
-        adjusted = curr_pos - Vector3(0, FLOOR_DISTANCE, 0)
-    else:
-        # Otherwise, the adjusted position is our current position filtered
-        # through the navigation node.
-        adjusted = navigation_node.get_closest_point(curr_pos)
-    
     # Set the adjusted position
-    kine_driver.adj_position = adjusted
+    kine_driver.adj_position = self.get_adjusted_position()
+    print("\t", kine_driver.adj_position)
 
 func _on_KinematicDriver_target_reached(position):
     # If we still have a path...
@@ -113,6 +112,35 @@ func _on_KinematicDriver_target_reached(position):
 # Pawn specific functions
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# Get the "algorithmic" position. This is most often used for goal checking -
+# i.e. seeing where we are from a world-mesh perspective
+func get_adjusted_position():
+    # Get our current position
+    var curr_pos = self.global_transform.origin
+    # What's our adjusted vector?
+    var adjusted = Vector3.ZERO
+    
+    # How we calculate the "current position" is a configurable, so switch!
+    match position_algorithm:
+        PosAlgo.FLOOR:
+            # Floor - just our current position, down to the feet. Neat!
+            adjusted = curr_pos - Vector3(0, FLOOR_DISTANCE, 0)
+        PosAlgo.NAVIGATION:
+            # Navigation Mesh - we can just use get_closest_point. Easy!
+            adjusted = navigation_node.get_closest_point(curr_pos)
+        PosAlgo.DETOUR_MESH:
+            # DetourNavigationMesh. This mesh doesn't actually give us a method
+            # to easily access where we are on the mesh. So, we'll cheat. We'll
+            # just path FROM our current position TO our current position. I
+            # don't know the performance ramifications of this, but HOPEFULLY
+            # its small. Or some update saves us from this madness...
+            adjusted = navigation_node.find_path(curr_pos, curr_pos)
+            # Unpack what we got back, since we want the first value of a
+            # PoolVector3 array stored in a dict.
+            adjusted = Array(adjusted["points"])[0]
+    
+    return adjusted
 
 # Sets the UnitPawn's VisualSprite, given a movement vector. We treat the vector
 # like a projection from the origin - in that form it gives us a direction (and

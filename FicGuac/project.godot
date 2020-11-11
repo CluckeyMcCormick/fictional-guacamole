@@ -23,6 +23,10 @@ config/icon="res://icon.png"
 
 PolyGen="*res://util/scripts/PolyGen.gd"
 
+[editor_plugins]
+
+enabled=PoolStringArray( "godot-navigation-lite" )
+
 [input]
 
 scroll_left={
