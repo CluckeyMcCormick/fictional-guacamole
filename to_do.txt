@@ -1,21 +1,8 @@
 To Do:
 ------
-1. Build and Change a NavigationMesh on the fly
+1. Upgrade to Godot 4.0 (whenever that happens)
 
-    This is the big one - a problem with Godot that I've seen at least one blog
-    post complaining about is that there is no immediate and obvious way to
-    create NavigationMeshes on the fly.
-
-    However, since I want my prototype to have a dynamic world where trees
-    fall over and block paths, or the player can put down more structures, or
-    UnitPawns slow down when moving through certain areas. It is imperative,
-    then, that I be able to edit and create a NavigationMesh at will.
-
-    The answer is actually avaiable right now - the "Godot Navigation Lite"
-    addon by Miloš Lukić. Looking at it, it has pretty much everything we need,
-    we just need to play with it a little bit more.
-
-    To stress test our little wandering Pawn, we should also add the ability to
-    place down things like rocks, trees, or houses. And maybe, with a little
-    bit of fiddling, we can get multiple meshes that recognize danger and the
-    like...
+    We're currently using some features supplied via addon (i.e. Miloš Lukić's 
+    Godot Navigation Lite) that are supported in the base version of Godot 4.0.
+    We should upgrade to 4.0 as soon as possible. It's just a question of
+    whenever that comes out...
