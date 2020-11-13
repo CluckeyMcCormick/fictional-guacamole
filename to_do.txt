@@ -7,16 +7,7 @@ To Do:
     We should upgrade to 4.0 as soon as possible. It's just a question of
     whenever that comes out...
 
-2. Revise our existing structures
-    
-    We currently have two variants on a basic house - the House, and the Hut. We
-    should really only have one. In addition, I want to change some of the
-    textures around, SPECIFICALLY so that the Sims-style wall cutaways look
-    better. I left those untextured out of laziness. Also, we should add an
-    option to generate a bottom mesh on the wall - this will prevent light from
-    shining inappropriately
-
-3. Add a testing root menu
+2. Add a testing root menu
 
     We very frequently swap out our "active" test depending on what we're
     testing. Rather than constantly updating what our "current" test is through
@@ -26,6 +17,41 @@ To Do:
     
     This will be a good test for us - loading scenes, doing menus, pausing the
     game. Maybe doing a loading screen of some sort...
+
+3. Devise a way to see things through walls
+
+    The obvious weakness of doing a 3D game with a trick/forced isometric
+    perspective is that stuff can go behind walls or trees or bushes - in other
+    words, place where we can't see them.
+    
+    I'm still playing around with the prototype's genre in my head (it's really
+    more of a personal tech demo right now). Regardless of genre or gametype, we
+    are going to need a way to see characters or entities through walls. To a
+    certain degree, this was the purpose behind the Sims-style cutaway walls.
+    
+    That works REALLY well for when a character is in a house. However, when the
+    character is camped in the "hiding corner" we just cutaway everything and it
+    looks... bad. Plus, the code to control the hiding corner has to be redone
+    for EVERY SINGLE building type, and we haven't even messed with trees yet.
+    There has to be a more general solution.
+    
+    There are two options really, and I want to implement both. The first is
+    frequently referred to as "masking" - it's like in Katamari Damacy, how
+    there's always a circle of visibility around you character (apparently
+    Divinity 2 uses a similar system). This solution would likely involve a
+    second camera, a viewport, using the "Visual Layers" to control what the
+    second camera can and can't see, and then using what's called a
+    "Screen-reading shader". Don't know HOW to use that but it's been supported
+    since Godot 3.0 so good enough for me!
+    
+    The second option would be either a color-fill (like in the pipe sections of
+    Super Mario Sunshine) or an silhouette outline (like in Left 4 Dead). I
+    think some RTS games do this. The idea is that we can always see a
+    color-filled silhouette of the character, even if they're behind walls.
+    
+    Having two tiers of solution here will give us a pallette of options going
+    forward and will give me a chance to learn Godot's shaders (which I haven't
+    messed with AT ALL).
 
 4. Create weapon models
 

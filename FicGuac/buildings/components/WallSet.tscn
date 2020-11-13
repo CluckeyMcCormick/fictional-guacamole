@@ -14,12 +14,9 @@ update_on_value_change = false
 
 [node name="FirstColumn" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, -2 )
-top_mat = null
-sides_mat = null
-side_length = 1.0
-height = 2.0
+z_positive_type = 1
+x_negative_type = 1
 update_on_value_change = false
-shadow_only_mode = false
 
 [node name="SecondWall" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2 )
@@ -28,12 +25,9 @@ update_on_value_change = false
 
 [node name="SecondColumn" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, -2 )
-top_mat = null
-sides_mat = null
-side_length = 1.0
-height = 2.0
+z_positive_type = 1
+x_positive_type = 1
 update_on_value_change = false
-shadow_only_mode = false
 
 [node name="ThirdWall" parent="." instance=ExtResource( 3 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -4.5, 0, 0 )
@@ -42,18 +36,10 @@ update_on_value_change = false
 
 [node name="ThirdColumn" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, 2 )
-top_mat = null
-sides_mat = null
-side_length = 1.0
-height = 2.0
+z_negative_type = 1
 update_on_value_change = false
-shadow_only_mode = false
 
 [node name="FourthColumn" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, 2 )
-top_mat = null
-sides_mat = null
-side_length = 1.0
-height = 2.0
+z_negative_type = 1
 update_on_value_change = false
-shadow_only_mode = false

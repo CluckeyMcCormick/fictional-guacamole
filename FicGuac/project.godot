@@ -16,7 +16,7 @@ _global_script_class_icons={
 [application]
 
 config/name="FicGuac"
-run/main_scene="res://tests/PawnPathingTest.tscn"
+run/main_scene="res://tests/DynamicNavMeshTest.tscn"
 config/icon="res://icon.png"
 
 [autoload]

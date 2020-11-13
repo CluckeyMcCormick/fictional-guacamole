@@ -121,10 +121,11 @@ func _on_WestButton_toggled(button_pressed):
     $DetourNavigation/DetourNavigationMesh.bake_navmesh()
 
 func _on_SouthButton_toggled(button_pressed):
+    print("pressed!")
     # If we just turned the button on...
     if button_pressed:
         south_hut = HUT_SCENE.instance()
-        south_hut.transform = east_transform
+        south_hut.transform = south_transform
         south_hut.hiding_corner = south_hut.Corners.FRONT_RIGHT
         $DetourNavigation.add_child(south_hut)
         south_hut.set_owner($DetourNavigation)

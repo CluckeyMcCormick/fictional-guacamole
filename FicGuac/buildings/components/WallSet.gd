@@ -2,13 +2,15 @@ tool
 extends Spatial
 
 # Wall Materials
-export(Material) var wall_cutaway_sides_mat setget set_cutaway_sides
-export(Material) var wall_cutaway_caps_mat setget set_cutaway_caps
-export(Material) var wall_interior_mat setget set_interior
-export(Material) var wall_exterior_mat setget set_exterior
+export(Material) var wall_cutaway_sides_mat setget set_cutaway_wall_sides
+export(Material) var wall_cutaway_caps_mat setget set_cutaway_wall_caps
+export(Material) var wall_interior_mat setget set_wall_interior
+export(Material) var wall_exterior_mat setget set_wall_exterior
 # Column Materials
-export(Material) var col_top_mat setget set_top
-export(Material) var col_sides_mat setget set_sides
+export(Material) var col_top_mat setget set_col_top
+export(Material) var col_exterior_sides_mat setget set_col_exterior_sides
+export(Material) var col_cutaway_sides_mat setget set_col_cutaway_sides
+
 
 # The wall set has four walls - our "Fourth" wall is the Z positive one. We
 # could have no wall there, an open gap wall, or a closed gap wall - it's all up
@@ -69,36 +71,41 @@ func _ready():
 # Material Setters
 #
 # --------------------------------------------------------
-func set_cutaway_sides(new_mat):
+func set_cutaway_wall_sides(new_mat):
     wall_cutaway_sides_mat = new_mat
     if Engine.editor_hint and update_on_value_change:
         build_all()
 
-func set_cutaway_caps(new_mat):
+func set_cutaway_wall_caps(new_mat):
     wall_cutaway_caps_mat = new_mat
     if Engine.editor_hint and update_on_value_change:
         build_all()
 
-func set_interior(new_mat):
+func set_wall_interior(new_mat):
     wall_interior_mat = new_mat
     if Engine.editor_hint and update_on_value_change:
         build_all()
 
-func set_exterior(new_mat):
+func set_wall_exterior(new_mat):
     wall_exterior_mat = new_mat
     if Engine.editor_hint and update_on_value_change:
         build_all()
         
-func set_top(new_mat):
+func set_col_top(new_mat):
     col_top_mat = new_mat
     if Engine.editor_hint and update_on_value_change:
         build_all()
 
-func set_sides(new_mat):
-    col_sides_mat = new_mat
+func set_col_exterior_sides(new_mat):
+    col_exterior_sides_mat = new_mat
     if Engine.editor_hint and update_on_value_change:
         build_all()
-
+        
+func set_col_cutaway_sides(new_mat):
+    col_cutaway_sides_mat = new_mat
+    if Engine.editor_hint and update_on_value_change:
+        build_all()
+        
 # --------------------------------------------------------
 #
 # Constraint Setters
@@ -236,6 +243,10 @@ func build_all():
         # If there's not supposed to be a wall, just skip it
         WallStyles.NO_WALL:
             fourth_wall_node = null
+            # The column sides that would've bordered this wall should use our
+            # primary (exterior) material
+            $ThirdColumn.x_positive_type = $ThirdColumn.MATERIAL_TYPE.PRIMARY_MATERIAL
+            $FourthColumn.x_negative_type = $FourthColumn.MATERIAL_TYPE.PRIMARY_MATERIAL
         # If there's supposed to be an open wall, create the node and then set
         # the length of the gap
         WallStyles.OPEN_GAP:
@@ -245,6 +256,10 @@ func build_all():
             self.add_child(fourth_wall_node)
             fourth_wall_node.set_owner(self)
             fourth_wall_node.gap_length = self.gap_length
+            # The columns bordering this now need the alternate (cutaway)
+            # material
+            $ThirdColumn.x_positive_type = $ThirdColumn.MATERIAL_TYPE.ALTERNATE_MATERIAL
+            $FourthColumn.x_negative_type = $FourthColumn.MATERIAL_TYPE.ALTERNATE_MATERIAL
         # If there's supposed to be an open wall, create the node and then set
         # the length of the gap AND the height of the gap
         WallStyles.CLOSED_GAP:
@@ -255,6 +270,8 @@ func build_all():
             fourth_wall_node.set_owner(self)
             fourth_wall_node.gap_length = self.gap_length
             fourth_wall_node.gap_height = self.gap_height
+            $ThirdColumn.x_positive_type = $ThirdColumn.MATERIAL_TYPE.ALTERNATE_MATERIAL
+            $FourthColumn.x_negative_type = $FourthColumn.MATERIAL_TYPE.ALTERNATE_MATERIAL
     
     # Step 2: Calculate where the items need to go and how big they need to be.
     # Since the wall set is symmetrical, the means the values are either -x, x,
@@ -318,10 +335,15 @@ func build_all():
         fourth_wall_node.cutaway_sides_mat = self.wall_cutaway_sides_mat
         fourth_wall_node.cutaway_caps_mat = self.wall_cutaway_caps_mat
         
-    $FirstColumn.sides_mat = self.col_sides_mat
-    $SecondColumn.sides_mat = self.col_sides_mat
-    $ThirdColumn.sides_mat = self.col_sides_mat
-    $FourthColumn.sides_mat = self.col_sides_mat
+    $FirstColumn.primary_mat = self.col_exterior_sides_mat
+    $SecondColumn.primary_mat = self.col_exterior_sides_mat
+    $ThirdColumn.primary_mat = self.col_exterior_sides_mat
+    $FourthColumn.primary_mat = self.col_exterior_sides_mat
+    
+    $FirstColumn.alternate_mat = self.col_cutaway_sides_mat
+    $SecondColumn.alternate_mat = self.col_cutaway_sides_mat
+    $ThirdColumn.alternate_mat = self.col_cutaway_sides_mat
+    $FourthColumn.alternate_mat = self.col_cutaway_sides_mat
     
     $FirstColumn.top_mat = self.col_top_mat
     $SecondColumn.top_mat = self.col_top_mat
