@@ -2,7 +2,7 @@ tool
 extends StaticBody
 
 export(Material) var cutaway_sides_mat setget set_cutaway_sides
-export(Material) var cutaway_top_mat setget set_cutaway_top
+export(Material) var cutaway_caps_mat setget set_cutaway_caps
 export(Material) var interior_mat setget set_interior
 export(Material) var exterior_mat setget set_exterior
 
@@ -31,6 +31,13 @@ export(bool) var shadow_only_mode = false setget set_shadow_only_mode
 enum CollisionMode {NONPATHABLE, PATH_IGNORED}
 export(CollisionMode) var collide_mode = CollisionMode.NONPATHABLE setget set_collide_mode
 
+# The wall has two "caps" - one on the top and one on the bottom. Normally, we
+# don't bother rendering the bottom because the angle of the camera means it
+# won't ever be seen. However, sometimes the wall is used for overhangs - in
+# that case, we need to render the bottom so it can effectively block light (as
+# we would expect something to).
+export(bool) var render_bottom_cap = false setget set_render_bottom_cap
+
 # Load the PolyGen script
 const PolyGen = preload("res://util/scripts/PolyGen.gd")
 
@@ -56,8 +63,8 @@ func set_cutaway_sides(new_mat):
     if Engine.editor_hint and update_on_value_change:
         build_all()
 
-func set_cutaway_top(new_mat):
-    cutaway_top_mat = new_mat
+func set_cutaway_caps(new_mat):
+    cutaway_caps_mat = new_mat
     if Engine.editor_hint and update_on_value_change:
         build_all()
 
@@ -108,12 +115,12 @@ func set_shadow_only_mode(new_shadow_mode):
         $Exterior.cast_shadow = shade_only
         $Interior.cast_shadow = shade_only
         $CutawaySides.cast_shadow = shade_only
-        $CutawayTop.cast_shadow = shade_only
+        $CutawayCaps.cast_shadow = shade_only
     else:
         $Exterior.cast_shadow = shade_default
         $Interior.cast_shadow = shade_default
         $CutawaySides.cast_shadow = shade_default
-        $CutawayTop.cast_shadow = shade_default
+        $CutawayCaps.cast_shadow = shade_default
 
 func set_collide_mode(new_mode):
      # Accept the value
@@ -133,6 +140,11 @@ func set_collide_mode(new_mode):
             self.set_collision_layer_bit(2, true)
             self.set_collision_mask_bit(2, true)
 
+func set_render_bottom_cap(new_bool):
+    render_bottom_cap = new_bool
+    if Engine.editor_hint and update_on_value_change:
+        build_all()
+
 # --------------------------------------------------------
 #
 # Build Functions
@@ -142,7 +154,7 @@ func build_all():
     build_interior()
     build_exterior()
     build_cutaway_sides()
-    build_cutaway_top()
+    build_cutaway_caps()
     adjust_base_collision()
 
 func build_interior():    
@@ -246,7 +258,7 @@ func build_cutaway_sides():
     st.commit(new_mesh)
     $CutawaySides.mesh = new_mesh
 
-func build_cutaway_top():
+func build_cutaway_caps():
     var new_mesh = Mesh.new()
     var verts = PoolVector3Array()
     var UVs = PoolVector2Array()
@@ -258,14 +270,23 @@ func build_cutaway_top():
     var pointA = Vector2(-length / 2.0, -thickness / 2.0)
     var pointB = Vector2(length / 2.0, thickness / 2.0)
     
-    # Make the positive X-face
+    # Make the positive Y-face
     var pd = PolyGen.create_ylock_face_shifted(pointA, pointB, height, uv_shift)
     verts.append_array( pd[PolyGen.VECTOR3_KEY] )
     UVs.append_array( pd[PolyGen.VECTOR2_KEY] )
     
+    # If we need to make a bottom face...
+    if render_bottom_cap:
+        pointA = Vector2(-length / 2.0, thickness / 2.0)
+        pointB = Vector2( length / 2.0, -thickness / 2.0)
+        # Then make the negative Y-face
+        pd = PolyGen.create_ylock_face_shifted(pointA, pointB, 0, uv_shift)
+        verts.append_array( pd[PolyGen.VECTOR3_KEY] )
+        UVs.append_array( pd[PolyGen.VECTOR2_KEY] )
+    
     var st = SurfaceTool.new()
     st.begin(Mesh.PRIMITIVE_TRIANGLES)
-    st.set_material(cutaway_top_mat)
+    st.set_material(cutaway_caps_mat)
 
     for v in verts.size():
         st.add_uv(UVs[v])
@@ -275,7 +296,7 @@ func build_cutaway_top():
     st.generate_tangents()
 
     st.commit(new_mesh)
-    $CutawayTop.mesh = new_mesh
+    $CutawayCaps.mesh = new_mesh
 
 func adjust_base_collision():
     # Calculate the new size for the collision box

@@ -2,7 +2,7 @@ tool
 extends Spatial
 
 export(Material) var cutaway_sides_mat setget set_cutaway_sides
-export(Material) var cutaway_top_mat setget set_cutaway_top
+export(Material) var cutaway_caps_mat setget set_cutaway_caps
 export(Material) var interior_mat setget set_interior
 export(Material) var exterior_mat setget set_exterior
 
@@ -61,8 +61,8 @@ func set_cutaway_sides(new_mat):
     if Engine.editor_hint and update_on_value_change:
         build_all()
 
-func set_cutaway_top(new_mat):
-    cutaway_top_mat = new_mat
+func set_cutaway_caps(new_mat):
+    cutaway_caps_mat = new_mat
     if Engine.editor_hint and update_on_value_change:
         build_all()
 
@@ -141,7 +141,7 @@ func set_shadow_only_mode(new_shadow_mode):
         $WallB.shadow_only_mode = false
         if cap_wall_node:
             cap_wall_node.shadow_only_mode = false
-    
+  
 # --------------------------------------------------------
 #
 # Build Functions
@@ -160,6 +160,7 @@ func build_all():
         cap_wall_node = WALL_SCENE.instance()
         cap_wall_node.update_on_value_change = false
         cap_wall_node.collide_mode = cap_wall_node.CollisionMode.PATH_IGNORED
+        cap_wall_node.render_bottom_cap = true
         self.add_child(cap_wall_node)
         cap_wall_node.set_owner(self)
 
@@ -206,15 +207,15 @@ func build_all():
     # Step 7: Ensure the materials are correct
     $WallA.cutaway_sides_mat = self.cutaway_sides_mat
     $WallB.cutaway_sides_mat = self.cutaway_sides_mat
-    $WallA.cutaway_top_mat = self.cutaway_top_mat
-    $WallB.cutaway_top_mat = self.cutaway_top_mat
+    $WallA.cutaway_caps_mat = self.cutaway_caps_mat
+    $WallB.cutaway_caps_mat = self.cutaway_caps_mat
     $WallA.interior_mat = self.interior_mat
     $WallB.interior_mat = self.interior_mat
     $WallA.exterior_mat = self.exterior_mat
     $WallB.exterior_mat = self.exterior_mat
     if cap_wall_node:
         cap_wall_node.cutaway_sides_mat = self.cutaway_sides_mat
-        cap_wall_node.cutaway_top_mat = self.cutaway_top_mat
+        cap_wall_node.cutaway_caps_mat = self.cutaway_caps_mat
         cap_wall_node.interior_mat = self.interior_mat
         cap_wall_node.exterior_mat = self.exterior_mat
     

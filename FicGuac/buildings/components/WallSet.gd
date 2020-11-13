@@ -3,7 +3,7 @@ extends Spatial
 
 # Wall Materials
 export(Material) var wall_cutaway_sides_mat setget set_cutaway_sides
-export(Material) var wall_cutaway_top_mat setget set_cutaway_top
+export(Material) var wall_cutaway_caps_mat setget set_cutaway_caps
 export(Material) var wall_interior_mat setget set_interior
 export(Material) var wall_exterior_mat setget set_exterior
 # Column Materials
@@ -74,8 +74,8 @@ func set_cutaway_sides(new_mat):
     if Engine.editor_hint and update_on_value_change:
         build_all()
 
-func set_cutaway_top(new_mat):
-    wall_cutaway_top_mat = new_mat
+func set_cutaway_caps(new_mat):
+    wall_cutaway_caps_mat = new_mat
     if Engine.editor_hint and update_on_value_change:
         build_all()
 
@@ -308,15 +308,15 @@ func build_all():
     $SecondWall.cutaway_sides_mat = self.wall_cutaway_sides_mat
     $ThirdWall.cutaway_sides_mat = self.wall_cutaway_sides_mat
     
-    $FirstWall.cutaway_top_mat = self.wall_cutaway_top_mat
-    $SecondWall.cutaway_top_mat = self.wall_cutaway_top_mat
-    $ThirdWall.cutaway_top_mat = self.wall_cutaway_top_mat
+    $FirstWall.cutaway_caps_mat = self.wall_cutaway_caps_mat
+    $SecondWall.cutaway_caps_mat = self.wall_cutaway_caps_mat
+    $ThirdWall.cutaway_caps_mat = self.wall_cutaway_caps_mat
     
     if fourth_wall_node:
         fourth_wall_node.interior_mat = self.wall_interior_mat
         fourth_wall_node.exterior_mat = self.wall_exterior_mat
         fourth_wall_node.cutaway_sides_mat = self.wall_cutaway_sides_mat
-        fourth_wall_node.cutaway_top_mat = self.wall_cutaway_top_mat
+        fourth_wall_node.cutaway_caps_mat = self.wall_cutaway_caps_mat
         
     $FirstColumn.sides_mat = self.col_sides_mat
     $SecondColumn.sides_mat = self.col_sides_mat
@@ -347,7 +347,7 @@ func build_all():
     $ThirdColumn.transform.origin = Vector3(-x_point, 0, z_point)
     $FourthColumn.transform.origin = Vector3(x_point, 0, z_point)
     
-    # Step 9: Rebuild those items!
+    # Step 10: Rebuild those items!
     $FirstColumn.build_all()
     $SecondColumn.build_all()
     $ThirdColumn.build_all()

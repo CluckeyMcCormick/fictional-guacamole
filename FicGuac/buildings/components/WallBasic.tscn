@@ -74,7 +74,7 @@ material/0 = null
 mesh = SubResource( 3 )
 material/0 = null
 
-[node name="CutawayTop" type="MeshInstance" parent="."]
+[node name="CutawayCaps" type="MeshInstance" parent="."]
 mesh = SubResource( 4 )
 material/0 = null
 
