@@ -40,18 +40,20 @@ func _ready():
 
 # Process input.
 func _input(event):
-    # If the user presses the pause button, and our scene is running...
-    if event.is_action_pressed("game_core_pause") and current_state == GameState.SCENE_RUNNING:
-        # Show the menu
-        $PauseMenu.visible = true
-        # Enable the menu
-        $PauseMenu.disabled = false
-        # Update the state
-        current_state = GameState.SCENE_PAUSED
-        # Inform the user
-        print("Game Paused!")
-        # Pause the scene...
-        get_tree().paused = true
+    # If the user presses the pause button...
+    if event.is_action_pressed("game_core_pause"):
+        # ...and our scene is running...
+        if current_state == GameState.SCENE_RUNNING:
+            # Show the menu
+            $PauseMenu.visible = true
+            # Enable the menu
+            $PauseMenu.disabled = false
+            # Update the state
+            current_state = GameState.SCENE_PAUSED
+            # Inform the user
+            print("Game Paused!")
+            # Pause the scene...
+            get_tree().paused = true
 
 func _on_LoadingScreen_loading_complete(scene_resource, path):
     # Tell user
@@ -103,7 +105,7 @@ func _on_PauseMenu_resume_game():
     # Hide the menu
     $PauseMenu.visible = false
     # Disable the menu
-    $PauseMenu.disabled = false
+    $PauseMenu.disabled = true
     # Update the state
     current_state = GameState.SCENE_RUNNING
     # Inform the user
@@ -115,7 +117,7 @@ func _on_PauseMenu_main_menu():
     # Hide the menu
     $PauseMenu.visible = false
     # Disable the menu
-    $PauseMenu.disabled = false
+    $PauseMenu.disabled = true
     # Update the state
     current_state = GameState.AT_MENU
     # Inform the user

@@ -15,12 +15,6 @@ signal loading_complete(resource, path)
 signal loading_failed(path)
 
 func _ready():
-    # Set-up our tween to spin the circle. We ain't tweening yet, but we'll be
-    # ready whenever we do
-    $Tween.interpolate_property($VBoxContainer/Circle, "rect_rotation",
-        0, 360, 1,
-        Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
-    )
     # We currently don't have a _bg_loader. Set it to null so our processing
     # doesn't go awry.
     _bg_loader = null
@@ -78,6 +72,11 @@ func initiate_scene_load(scene_path_load):
     # This new path is now our current load path!
     _current_load_path = scene_path_load
     
+    # Set-up our tween to spin the circle.
+    $Tween.interpolate_property($VBoxContainer/Circle, "rect_rotation",
+        0, 360, 1,
+        Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
+    )
     # Start the tween!
     $Tween.start()
 

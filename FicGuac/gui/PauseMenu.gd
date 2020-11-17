@@ -8,6 +8,14 @@ signal exit_game()
 # accidentally take the user back to the menu or something.
 var disabled = true setget set_disabled
 
+# Process input.
+func _input(event):
+    # If the pause menu is enabled/active and the user canceled...
+    if not disabled and event.is_action_pressed("ui_cancel"):
+        emit_signal("resume_game")
+        # Handle this event so that it doesn't repeat
+        get_tree().set_input_as_handled()
+
 # If the player pressed the "resume" button...
 func _on_ResumeButton_pressed():
     # Tell the world!
