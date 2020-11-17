@@ -12,6 +12,7 @@ font_data = ExtResource( 1 )
 font_data = ExtResource( 1 )
 
 [node name="LoadingScreen" type="Control"]
+pause_mode = 2
 anchor_right = 1.0
 anchor_bottom = 1.0
 rect_min_size = Vector2( 1024, 600 )
@@ -40,7 +41,7 @@ anchor_bottom = 0.5
 margin_left = -130.5
 margin_top = -175.0
 margin_right = 130.5
-margin_bottom = 175.0
+margin_bottom = 194.0
 __meta__ = {
 "_edit_use_anchors_": false
 }

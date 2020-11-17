@@ -80,3 +80,13 @@ func initiate_scene_load(scene_path_load):
     
     # Start the tween!
     $Tween.start()
+
+# Resets the loading screen so it can be reused (if we want to).
+func reset():
+    # Reset the progress bar
+    $VBoxContainer/ProgressBar.value = 0
+    # Reset the ball
+    $VBoxContainer/Circle.rect_rotation = 0
+    # Reset our load values
+    _bg_loader = null
+    _current_load_path = null
