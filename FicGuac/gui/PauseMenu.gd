@@ -1,5 +1,7 @@
 extends Control
 
+# We have three options in the pause menu - resume the game, return to main
+# menu, and exit the game. These signals correspond to each.
 signal resume_game()
 signal main_menu()
 signal exit_game()

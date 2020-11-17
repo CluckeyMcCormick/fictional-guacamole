@@ -17,18 +17,20 @@ margin_top = 0.0
 margin_right = 1024.0
 margin_bottom = 600.0
 
-[node name="PauseMenu" parent="." instance=ExtResource( 1 )]
-visible = false
-margin_right = 1024.0
-margin_bottom = 600.0
+[node name="PauseLayer" type="CanvasLayer" parent="."]
+layer = 2
 
-[node name="LoadingScreen" parent="." instance=ExtResource( 2 )]
+[node name="PauseMenu" parent="PauseLayer" instance=ExtResource( 1 )]
 visible = false
-margin_right = 1024.0
-margin_bottom = 600.0
+
+[node name="LoadingLayer" type="CanvasLayer" parent="."]
+layer = 3
+
+[node name="LoadingScreen" parent="LoadingLayer" instance=ExtResource( 2 )]
+visible = false
 [connection signal="scene_chosen" from="TestMenu" to="." method="_on_TestMenu_scene_chosen"]
-[connection signal="exit_game" from="PauseMenu" to="." method="_on_PauseMenu_exit_game"]
-[connection signal="main_menu" from="PauseMenu" to="." method="_on_PauseMenu_main_menu"]
-[connection signal="resume_game" from="PauseMenu" to="." method="_on_PauseMenu_resume_game"]
-[connection signal="loading_complete" from="LoadingScreen" to="." method="_on_LoadingScreen_loading_complete"]
-[connection signal="loading_failed" from="LoadingScreen" to="." method="_on_LoadingScreen_loading_failed"]
+[connection signal="exit_game" from="PauseLayer/PauseMenu" to="." method="_on_PauseMenu_exit_game"]
+[connection signal="main_menu" from="PauseLayer/PauseMenu" to="." method="_on_PauseMenu_main_menu"]
+[connection signal="resume_game" from="PauseLayer/PauseMenu" to="." method="_on_PauseMenu_resume_game"]
+[connection signal="loading_complete" from="LoadingLayer/LoadingScreen" to="." method="_on_LoadingScreen_loading_complete"]
+[connection signal="loading_failed" from="LoadingLayer/LoadingScreen" to="." method="_on_LoadingScreen_loading_failed"]

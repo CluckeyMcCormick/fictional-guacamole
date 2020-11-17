@@ -7,7 +7,7 @@
 size = 50
 font_data = ExtResource( 1 )
 
-[sub_resource type="DynamicFont" id=5]
+[sub_resource type="DynamicFont" id=2]
 font_data = ExtResource( 1 )
 
 [sub_resource type="DynamicFont" id=3]
@@ -58,7 +58,7 @@ align = 1
 margin_top = 69.0
 margin_right = 261.0
 margin_bottom = 96.0
-custom_fonts/font = SubResource( 5 )
+custom_fonts/font = SubResource( 2 )
 text = "Resume"
 flat = true
 __meta__ = {

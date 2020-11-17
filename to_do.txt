@@ -7,18 +7,7 @@ To Do:
     We should upgrade to 4.0 as soon as possible. It's just a question of
     whenever that comes out...
 
-2. Add a testing root menu
-
-    We very frequently swap out our "active" test depending on what we're
-    testing. Rather than constantly updating what our "current" test is through
-    the project settings, we should have a scene that's just a menu. Each option
-    on the menu is a different test. You should be able to pick any test scene
-    and load it, then exit in real time.
-    
-    This will be a good test for us - loading scenes, doing menus, pausing the
-    game. Maybe doing a loading screen of some sort...
-
-3. Devise a way to see things through walls
+2. Devise a way to see things through walls
 
     The obvious weakness of doing a 3D game with a trick/forced isometric
     perspective is that stuff can go behind walls or trees or bushes - in other
@@ -45,15 +34,15 @@ To Do:
     since Godot 3.0 so good enough for me!
     
     The second option would be either a color-fill (like in the pipe sections of
-    Super Mario Sunshine) or an silhouette outline (like in Left 4 Dead). I
-    think some RTS games do this. The idea is that we can always see a
-    color-filled silhouette of the character, even if they're behind walls.
+    Super Mario Sunshine) or a silhouette outline (like in Left 4 Dead). I think
+    some RTS games do this. The idea is that we can always see a color-filled
+    silhouette of the character, even if they're behind walls.
     
     Having two tiers of solution here will give us a pallette of options going
     forward and will give me a chance to learn Godot's shaders (which I haven't
     messed with AT ALL).
 
-4. Create weapon models
+3. Create weapon models
 
     We need to create weapons for our pawns to equip! We'll use OpenSCAD to
     design the models. Technically, since we use sprites in-game, we could just
@@ -72,7 +61,7 @@ To Do:
     
     And maybe a jezzail - a long rifle of some sort?
 
-5. Integrate the weapon models and the Pawn sprites
+4. Integrate the weapon models and the Pawn sprites
 
     Okay, so we have to integrate our weapon models and our Pawn sprites.
     Conventional wisdom says that we should just have different spritesheets for
@@ -81,7 +70,7 @@ To Do:
     the weapon and could somehow be layered over the Pawn Sprite? That would
     save us on Sprites.
 
-6. ATTACKS!
+5. ATTACKS!
     
     Finally, get our pawns to attack with their weapons. For now, we'll use some
     really basic target. The AI knowing how, and when, to attack will be the

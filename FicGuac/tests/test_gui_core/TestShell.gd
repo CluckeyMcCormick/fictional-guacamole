@@ -36,7 +36,7 @@ var scene_running = null
 
 func _ready():
     # The Pause menu is disabled
-    $PauseMenu.disabled = true
+    $PauseLayer/PauseMenu.disabled = true
 
 # Process input.
 func _input(event):
@@ -45,9 +45,9 @@ func _input(event):
         # ...and our scene is running...
         if current_state == GameState.SCENE_RUNNING:
             # Show the menu
-            $PauseMenu.visible = true
+            $PauseLayer/PauseMenu.visible = true
             # Enable the menu
-            $PauseMenu.disabled = false
+            $PauseLayer/PauseMenu.disabled = false
             # Update the state
             current_state = GameState.SCENE_PAUSED
             # Inform the user
@@ -66,8 +66,8 @@ func _on_LoadingScreen_loading_complete(scene_resource, path):
     self.add_child(scene_running)
     
     # Hide the LoadingScreen, reset
-    $LoadingScreen.reset()
-    $LoadingScreen.visible = false
+    $LoadingLayer/LoadingScreen.reset()
+    $LoadingLayer/LoadingScreen.visible = false
     
     # Hide, the TestMenu
     $TestMenu.visible = false
@@ -77,7 +77,7 @@ func _on_LoadingScreen_loading_complete(scene_resource, path):
 
 func _on_LoadingScreen_loading_failed(path):
     # Turn off our loading screen
-    $LoadingScreen.visible = false
+    $LoadingLayer/LoadingScreen.visible = false
     # Re-enable the menu scene
     $TestMenu.disabled = false
     # Tell user
@@ -93,19 +93,19 @@ func _on_TestMenu_scene_chosen(resource_path, scene_name):
     $TestMenu.disabled = true
     
     # Show the load screen
-    $LoadingScreen.visible = true
+    $LoadingLayer/LoadingScreen.visible = true
     
     # Start the load
-    $LoadingScreen.initiate_scene_load(resource_path)
+    $LoadingLayer/LoadingScreen.initiate_scene_load(resource_path)
 
     # We're loading!
     current_state = GameState.LOADING
 
 func _on_PauseMenu_resume_game():
     # Hide the menu
-    $PauseMenu.visible = false
+    $PauseLayer/PauseMenu.visible = false
     # Disable the menu
-    $PauseMenu.disabled = true
+    $PauseLayer/PauseMenu.disabled = true
     # Update the state
     current_state = GameState.SCENE_RUNNING
     # Inform the user
@@ -115,9 +115,9 @@ func _on_PauseMenu_resume_game():
 
 func _on_PauseMenu_main_menu():
     # Hide the menu
-    $PauseMenu.visible = false
+    $PauseLayer/PauseMenu.visible = false
     # Disable the menu
-    $PauseMenu.disabled = true
+    $PauseLayer/PauseMenu.disabled = true
     # Update the state
     current_state = GameState.AT_MENU
     # Inform the user

@@ -19,7 +19,7 @@ func _ready():
     # doesn't go awry.
     _bg_loader = null
     _current_load_path = null
-
+    
 func _process(delta):
     # If we don't have a background loader, back out!
     if _bg_loader == null:
@@ -73,8 +73,8 @@ func initiate_scene_load(scene_path_load):
     _current_load_path = scene_path_load
     
     # Set-up our tween to spin the circle.
-    $Tween.interpolate_property($VBoxContainer/Circle, "rect_rotation",
-        0, 360, 1,
+    $Tween.interpolate_property($VBoxContainer/Circle,
+        "rect_rotation", 0, 360, 1,
         Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
     )
     # Start the tween!
