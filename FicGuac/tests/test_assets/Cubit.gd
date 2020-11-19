@@ -26,12 +26,12 @@ func set_destination(floor_position : Vector3):
     $KinematicDriver.target_position = floor_position
     destination = floor_position
 
-func _on_KinematicDriver_request_position(kine_driver, old_position):
+func get_floor_adjusted_position():
     # Get our current position
     var curr_pos = self.global_transform.origin
     
     # The adjusted position is at the base of the cube
-    kine_driver.adj_position = curr_pos - Vector3(0, FLOOR_DISTANCE, 0)
+    return curr_pos - Vector3(0, FLOOR_DISTANCE, 0)
 
 # Function called on target_reached signal from the driver
 func _on_KinematicDriver_target_reached(position):

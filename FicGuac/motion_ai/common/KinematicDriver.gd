@@ -5,6 +5,14 @@ export(NodePath) var drive_body
 # We resolve the node path into this variable.
 var drive_body_node
 
+# Whenever we need to get the drive body's position, we'll call this function
+# from on the drive_body. We will do so using a FuncRef. If the function is
+# invalid/doesn't exist, we'll default to just using the Drive Body's global
+# origin.
+export(String) var position_function_name
+# The actual FuncRef object/value associated with the above.
+var posfunc_ref
+
 # How fast does our drive node move, horizontally? Units/second
 export(float) var move_speed = 10
 # How fast does the drive node fall, when it does fall?
@@ -30,13 +38,6 @@ const MINIMUM_FALL_HEIGHT = .002
 # position value that was just reached.
 signal target_reached(position)
 
-# Signal issued when this driver requires a position update. Determining our
-# current position is the responsibility of whatever node we are driving - there
-# are just too many possible variations of how we would want to determine our
-# "current" point. Using a signal to request a status update isn't exactly
-# kosher but I just don't see a better way.
-signal request_position(kinematic_driver, old_position)
-
 # The current movement vector. This is set during movement (see
 # _physics_process). It is purely for reading the current movement status (since
 # kinematic bodies don't really report this.) Really meant only for reading,
@@ -46,24 +47,27 @@ var _combined_velocity = Vector3.ZERO
 # What is our target position - where are we trying to go?
 var target_position = null
 
-# What is the current position of our drive target, adjuted to align with our
-# target position? This is the value that should set when the request_position
-# signal is sent out.
-var adj_position = Vector3.ZERO setget set_adj_position
-
 # Are we currently moving?
 var _is_moving = false
 # Are we currently on the floor?
 var _on_floor = true
 
-func set_adj_position(new_position):
-    adj_position = new_position
-    assert(adj_position != null)
-
+# Gets the path-adjusted position - because sometimes, the origin doesn't match
+# up with what our position on the path TECHNICALLY is. Has it's own function
+# because we need to use different methods depending on whether
+# position_function_name is currently correctly configured.
+func get_adj_position():
+    if posfunc_ref.is_valid():
+        return posfunc_ref.call_func()
+    else:
+        return drive_body_node
+        
 # Called when the node enters the scene tree for the first time.
 func _ready():
     # Get the drive target node
     drive_body_node = get_node(drive_body)
+    # Create a funcref for our position function
+    posfunc_ref = funcref(drive_body_node, position_function_name)
 
 func _physics_process(delta):
     # What's the vector for our new movement? Each value is a measure in
@@ -73,6 +77,9 @@ func _physics_process(delta):
     var normal_angle = 0
     # Did we get a collision result from our most recent move attempt?
     var collision = null
+    # What is our current position, adjusted so that we can actually reach our
+    # target position?
+    var adj_position
     
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # Step 1: Check if we're on the ground / if we need to fall
@@ -127,7 +134,7 @@ func _physics_process(delta):
     # If we have a target, we need to move towards the target.
     if self.target_position:
         # We need our adj_position value updated.
-        emit_signal("request_position", self, adj_position)
+        adj_position = posfunc_ref.call_func()
         
         # How far are we from our target position?
         var distance_to = target_position - adj_position
@@ -202,7 +209,7 @@ func _physics_process(delta):
     # If we have a target position...
     if target_position:
         # Update the adjusted position
-        emit_signal("request_position", self, adj_position)
+        adj_position = posfunc_ref.call_func()
         # ...AND we're close enough to that target position...
         if (target_position - adj_position).length() <= goal_toreance:
             # ...then we're done here! Save the target position

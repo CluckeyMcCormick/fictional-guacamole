@@ -92,10 +92,6 @@ func set_path(new_path):
     # The first position in the path is now our target position.
     $KinematicDriver.target_position = current_path.pop_front()
 
-func _on_KinematicDriver_request_position(kine_driver, old_position):
-    # Set the adjusted position
-    kine_driver.adj_position = self.get_adjusted_position()
-
 func _on_KinematicDriver_target_reached(position):
     # If we still have a path...
     if not current_path.empty():
