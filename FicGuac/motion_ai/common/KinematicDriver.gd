@@ -1,7 +1,14 @@
+tool
 extends Spatial
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Variable Declarations
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 # Each driver needs a node to move around - what node will this drive move?
-export(NodePath) var drive_body
+export(NodePath) var drive_body setget set_drive_body
 # We resolve the node path into this variable.
 var drive_body_node
 
@@ -9,7 +16,7 @@ var drive_body_node
 # from on the drive_body. We will do so using a FuncRef. If the function is
 # invalid/doesn't exist, we'll default to just using the Drive Body's global
 # origin.
-export(String) var position_function_name
+export(String) var position_function setget set_position_function
 # The actual FuncRef object/value associated with the above.
 var posfunc_ref
 
@@ -52,6 +59,58 @@ var _is_moving = false
 # Are we currently on the floor?
 var _on_floor = true
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Setters and Getters
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# Set the drive body. Mostly here so we can validate the configuration in the
+# editor
+func set_drive_body(new_drive_body):
+    drive_body = new_drive_body
+    if Engine.editor_hint:
+        update_configuration_warning()
+        
+# Set the position function. Mostly here so we can validate the configuration in
+# the editor
+func set_position_function(new_position_function):
+    position_function = new_position_function
+    if Engine.editor_hint:
+        update_configuration_warning()
+
+# This function is very ugly, but it serves a very specific purpose: it allows
+# us to generate warnings in the editor in case the KinematicDriver is
+# misconfigured.
+func _get_configuration_warning():
+    # (W)a(RN)ing (STR)ing
+    var wrnstr= ""
+    
+    var body = get_node(drive_body)
+    
+    # Test 1: Check if we have a node
+    if body == null:
+        wrnstr += "No drive body specified, or path is invalid!\n"       
+    
+    # Test 2: Check if we have a
+    if not body is KinematicBody:
+        wrnstr += "Drive body must be a KinematicBody!\n"
+    
+    # Test 3: Check if we have a position function
+    if position_function == "":
+        wrnstr += "A Position Function is not required, but recommended for correct pathing!\n"
+        
+    # Test 4: Ensure the position function exists
+    elif body != null:
+        if not funcref(body, position_function).is_valid():
+            wrnstr += "The function\"" + position_function + "\" appears invalid."
+        
+    # Catch if we don't have a body
+    else:
+        wrnstr += "Unable to appraise Position Function!"
+    
+    return wrnstr
+
 # Gets the path-adjusted position - because sometimes, the origin doesn't match
 # up with what our position on the path TECHNICALLY is. Has it's own function
 # because we need to use different methods depending on whether
@@ -60,16 +119,29 @@ func get_adj_position():
     if posfunc_ref.is_valid():
         return posfunc_ref.call_func()
     else:
-        return drive_body_node
-        
+        return drive_body_node.global_transform.origin
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Godot Processing - _ready, _process, etc.
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
     # Get the drive target node
     drive_body_node = get_node(drive_body)
     # Create a funcref for our position function
-    posfunc_ref = funcref(drive_body_node, position_function_name)
+    posfunc_ref = funcref(drive_body_node, position_function)
+    # If we're in the editor, disable the physics process. We ain't intersted in
+    # doing any processing!
+    if Engine.editor_hint:
+        self.set_physics_process(false)
 
 func _physics_process(delta):
+    # We shouldn't be here if we're in the editor, so back out!
+    if Engine.editor_hint:
+        return
     # What's the vector for our new movement? Each value is a measure in
     # units/sec
     var new_move = Vector3.ZERO
@@ -134,7 +206,7 @@ func _physics_process(delta):
     # If we have a target, we need to move towards the target.
     if self.target_position:
         # We need our adj_position value updated.
-        adj_position = posfunc_ref.call_func()
+        adj_position = get_adj_position()
         
         # How far are we from our target position?
         var distance_to = target_position - adj_position
@@ -209,7 +281,7 @@ func _physics_process(delta):
     # If we have a target position...
     if target_position:
         # Update the adjusted position
-        adj_position = posfunc_ref.call_func()
+        adj_position = get_adj_position()
         # ...AND we're close enough to that target position...
         if (target_position - adj_position).length() <= goal_toreance:
             # ...then we're done here! Save the target position
