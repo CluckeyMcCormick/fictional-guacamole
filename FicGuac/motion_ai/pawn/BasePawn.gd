@@ -38,14 +38,6 @@ export(NodePath) var navigation
 # We resolve the node path into this variable.
 var navigation_node
 
-# What is this pawn's unit? Who's feeding it the orders? Who is determining
-# where it should be to be "in formation"?
-var control_unit = null
-
-# What is this pawn's index in it's unit? The index is used to calculate where
-# the pawn should come to rest relative to the Unit's "center".
-var pawn_index = -1
-
 # Likewise, we may need a quick way to refer our current movement direction
 # (horizontally, at least) without having to derive from the _current_velocity.
 # We'll store that value here. 

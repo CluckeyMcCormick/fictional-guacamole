@@ -2,10 +2,11 @@
 
 [ext_resource path="res://terrain/mat_terrain_grass_grid.tres" type="Material" id=1]
 [ext_resource path="res://scenes/SceneDefaultEnvironment.tres" type="Environment" id=2]
-[ext_resource path="res://motion_ai/pawn/Pawn.tscn" type="PackedScene" id=3]
+[ext_resource path="res://motion_ai/pawn/BasePawn.tscn" type="PackedScene" id=3]
 [ext_resource path="res://util/CheckerboardTriplane.tres" type="Material" id=4]
 [ext_resource path="res://tests/SlopeStepTest.gd" type="Script" id=5]
 [ext_resource path="res://util/gui_3d/QuadLabel.tscn" type="PackedScene" id=6]
+
 
 [sub_resource type="PlaneMesh" id=1]
 material = ExtResource( 1 )
