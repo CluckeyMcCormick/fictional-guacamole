@@ -86,7 +86,10 @@ func _get_configuration_warning():
     # (W)a(RN)ing (STR)ing
     var wrnstr= ""
     
-    var body = get_node(drive_body)
+    # Get the body - but only if we have a body to get!
+    var body : Node = null
+    if drive_body != "":
+        body = get_node(drive_body)
     
     # Test 1: Check if we have a node
     if body == null:
@@ -103,7 +106,9 @@ func _get_configuration_warning():
     # Test 4: Ensure the position function exists
     elif body != null:
         if not funcref(body, position_function).is_valid():
-            wrnstr += "The function\"" + position_function + "\" appears invalid."
+            wrnstr += "The function\"" + position_function + "\" appears invalid.\n"
+            wrnstr += "A Vector3-returning function/method for \""
+            wrnstr += body.name + "\" must be provided!\n"
         
     # Catch if we don't have a body
     else:
