@@ -13,6 +13,9 @@ func _physics_process(delta):
     if click_waiting:
         yielded_click.resume()
 
+func _process(delta):
+    $XrayWorld.update_worlds()
+
 # Process an input event. Intended for single-press input events (i.e. a button
 # push/click).
 func _input(event):
@@ -24,9 +27,9 @@ func process_mouse_click():
     var mouse_pos = get_viewport().get_mouse_position()
     # Calculate the "from" vector (more of a point, really - the point our
     # raycast will project FROM)
-    var mouse_from = $LightWorldCamera.project_ray_origin( mouse_pos )
+    var mouse_from = $CoreCamera.project_ray_origin( mouse_pos )
     # Calculate a point to raycast "to" by adding elongated normal
-    var mouse_to = $LightWorldCamera.project_ray_normal( mouse_pos ) * MOUSE_RAY_LENGTH
+    var mouse_to = $CoreCamera.project_ray_normal( mouse_pos ) * MOUSE_RAY_LENGTH
     mouse_to += mouse_from
     
     # Yield until we can query. Make note that we are waiting on a click

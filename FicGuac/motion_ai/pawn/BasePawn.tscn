@@ -25,7 +25,7 @@ shape = SubResource( 2 )
 
 [node name="VisualSprite" type="AnimatedSprite3D" parent="."]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.049, 0 )
-layers = 2
+layers = 9
 pixel_size = 0.014
 shaded = true
 alpha_cut = 2
@@ -38,6 +38,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.74593, 0 )
 visible = false
 drive_body = NodePath("..")
 position_function = "get_adjusted_position"
+move_speed = 10.0
+fall_speed = 9.8
 goal_toreance = 0.23
 float_height = 0.5
+max_slope_degrees = 45.0
 [connection signal="target_reached" from="KinematicDriver" to="." method="_on_KinematicDriver_target_reached"]

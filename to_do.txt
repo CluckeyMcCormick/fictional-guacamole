@@ -1,13 +1,22 @@
 To Do:
 ------
-1. Upgrade to Godot 4.0 (whenever that happens)
+1. Upgrade to Godot 4.0 (whenever that happens): GDScript
+
+    There's a lot of features in Godot 4.0, including several updates to
+    GDScript. I don't think I need any of those particular new GDScript
+    features, but it introduces several drastic incompatabilities with our
+    existing code - especially around setters and getters. We need several of
+    Godot 4.0's other features; but before we get to those, we'll have to solve
+    any outstanding GDScript issues.
+    
+2. Upgrade to Godot 4.0 (whenever that happens): Navigation
 
     We're currently using some features supplied via addon (i.e. Miloš Lukić's 
     Godot Navigation Lite) that are supported in the base version of Godot 4.0.
     We should upgrade to 4.0 as soon as possible. It's just a question of
     whenever that comes out...
 
-2. Devise a way to see things through walls
+3. Devise a way to see things through walls
 
     The obvious weakness of doing a 3D game with a trick/forced isometric
     perspective is that stuff can go behind walls or trees or bushes - in other
@@ -42,7 +51,25 @@ To Do:
     forward and will give me a chance to learn Godot's shaders (which I haven't
     messed with AT ALL).
 
-3. Create weapon models
+4. Upgrade to Godot 4.0 (whenever that happens): X-Ray Shaders & Depth
+
+    We use a combination of cameras, viewports, shaders, and what I'm 90% sure
+    is a glitch to render sprites behind walls whenever they go behind walls. On
+    one hand, we have the "Xray Bubble" technique which is meant to be used
+    sparingly for important elements, and the "Silhouette Crystal" meant to be
+    used for everything else.
+    
+    The Xray Bubble currently needs to be turned on/off by hand. The Silhouette
+    Crystal works automatically but only barely and honestly I'm pretty sure
+    it's only working because of a glitch.
+    
+    If we had access to the depth buffer of our viewports, we could use the data
+    there-in to truly judge whether the elements we're attempting to render were
+    behind walls or not. Then we wouldn't have to bother with all of this.
+    Unfortunately, accessing the depth buffer of viewports has been postponed...
+    to Godot 4.0 (grinds teeth).
+
+5. Create weapon models
 
     We need to create weapons for our pawns to equip! We'll use OpenSCAD to
     design the models. Technically, since we use sprites in-game, we could just
@@ -61,7 +88,7 @@ To Do:
     
     And maybe a jezzail - a long rifle of some sort?
 
-4. Integrate the weapon models and the Pawn sprites
+6. Integrate the weapon models and the Pawn sprites
 
     Okay, so we have to integrate our weapon models and our Pawn sprites.
     Conventional wisdom says that we should just have different spritesheets for
@@ -70,7 +97,7 @@ To Do:
     the weapon and could somehow be layered over the Pawn Sprite? That would
     save us on Sprites.
 
-5. ATTACKS!
+7. ATTACKS!
     
     Finally, get our pawns to attack with their weapons. For now, we'll use some
     really basic target. The AI knowing how, and when, to attack will be the

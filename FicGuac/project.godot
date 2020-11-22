@@ -23,6 +23,10 @@ config/icon="res://icon.png"
 
 PolyGen="*res://util/scripts/PolyGen.gd"
 
+[debug]
+
+settings/stdout/print_fps=true
+
 [editor_plugins]
 
 enabled=PoolStringArray( "godot-navigation-lite" )
@@ -113,10 +117,16 @@ game_core_pause={
 
 [layer_names]
 
+3d_render/layer_1="Always Render"
 3d_physics/layer_1="Terrain/Struct, Pathable"
+3d_render/layer_2="Obstacle Actual"
 3d_physics/layer_2="Terrain/Struct, Nonpathable"
+3d_render/layer_3="Obstacle Alternate"
 3d_physics/layer_3="Terrain/Struct, Path Ignored"
+3d_render/layer_4="Silhouettable"
+3d_render/layer_5="Special Effects (Rerender)"
 3d_physics/layer_5="Pawn (?)"
+3d_render/layer_6="Special Effects (No rerender)"
 3d_physics/layer_6="Vehicle(?)"
 3d_physics/layer_7="Vermin (?)"
 3d_physics/layer_8="Small Creature (?)"
