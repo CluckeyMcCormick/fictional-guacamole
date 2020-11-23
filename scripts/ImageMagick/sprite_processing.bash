@@ -3,9 +3,15 @@
 # Step 0: Script Setup
 # ~~~~~~~~~~~~~~~~~~~~
 
+# Bash-specific script check - does the first argument exist?
+if [ -z "$1" ]; then
+    echo Directory not provided! Please provide a directory to process.
+    exit
+fi
+
 # Bash-specific script check - is the first argument we got passed a directory?
 if [ -d $1 ]; then
-    echo "Valid directory identified!"
+    echo Valid directory identified!
 else
     exit
 fi
@@ -71,7 +77,7 @@ for ((i=0; i<img_count; i=i+2)); do
     # File output count is i / 2
     l=$((i/2))
     # Pre-format the output file name (so we don't have to later)
-    out_file=`printf "output%04d_.png" ${l}`
+    out_file=`printf "output_%04d.png" ${l}`
     # This command places the first file on top of the second file - in this
     # case, that means placing the edge-only image on top of the
     # anti-transperancy sprite. This gives us a new sprite with more clear
