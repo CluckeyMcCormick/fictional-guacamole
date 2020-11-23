@@ -82,8 +82,10 @@ the keyframes necessary for that animations at all 8 angles.
 
 That's right - this script even handles keyframing the multiple angles you'll
 need! Once you export the animation as a series of images, you just have to
-pack it all into a spritesheet. I used
-[Simplepacker by Maciej Lechowski](https://github.com/lchsk/simplepacker).
+pack it all into a spritesheet. I used a combination of
+[Simplepacker by Maciej Lechowski](https://github.com/lchsk/simplepacker) and
+my own personal ImageMagick script, `sprite_sheetmaker.bash` (see the
+appropriate directory).
 
 ## Execution Order
 In case you couldn't tell from our description of each script, they are meant

@@ -44,6 +44,9 @@ else
     exit
 fi
 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Step 1: Do the Thing (yes it's that easy)
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Composite together all of the images the user gave us into a singular
 # spritesheet. Neat!
 magick montage $1/$2 -tile $3 -geometry +0+0 -background none $1/spritesheet.png

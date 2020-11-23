@@ -58,9 +58,9 @@ magick convert $2 -channel a -threshold 0 +channel $prf%04d_a.png
 # purely black. Output is just the edge pixels from the Stage A images.
 magick convert $prf*_a.png -edge 1 -channel RGB -threshold 100% $prf%04d_b.png
 
-# ~~~~~~~~~~~~~~~~~
-# Step 3: "Stage C"
-# ~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~
+# Step 3: Output
+# ~~~~~~~~~~~~~~
 # Now we have some simplified sprites and some sprite outlines, we need to
 # overlay those outlines on top of the sprites.
 # Get a list of all the files we made. Since they were organized in a very
@@ -77,7 +77,7 @@ for ((i=0; i<img_count; i=i+2)); do
     # File output count is i / 2
     l=$((i/2))
     # Pre-format the output file name (so we don't have to later)
-    out_file=`printf "output_%04d.png" ${l}`
+    out_file=`printf "edge_add_%04d.png" ${l}`
     # This command places the first file on top of the second file - in this
     # case, that means placing the edge-only image on top of the
     # anti-transperancy sprite. This gives us a new sprite with more clear
@@ -85,9 +85,9 @@ for ((i=0; i<img_count; i=i+2)); do
     magick composite -gravity center ${arr[$k]} ${arr[$j]} $out_file
 done
 
-# ~~~~~~~~~~~~~~~~~
-# Step 4: "Stage C"
-# ~~~~~~~~~~~~~~~~~
+# ~~~~~~~~~~~~~~~~
+# Step 4: Clean-up
+# ~~~~~~~~~~~~~~~~
 # Remove our WIP images
 rm $prf*_a.png
 rm $prf*_b.png
