@@ -1,4 +1,4 @@
-[gd_scene load_steps=60 format=2]
+[gd_scene load_steps=61 format=2]
 
 [ext_resource path="res://motion_ai/pawn/BasePawn.tscn" type="PackedScene" id=1]
 [ext_resource path="res://tests/test_assets/XrayBubble.tscn" type="PackedScene" id=2]
@@ -89,21 +89,23 @@ function = 13
 [sub_resource type="VisualShaderNodeVectorFunc" id=10]
 function = 13
 
-[sub_resource type="VisualShaderNodeColorUniform" id=11]
-output_port_for_preview = 0
+[sub_resource type="VisualShaderNodeSwitch" id=52]
+
+[sub_resource type="VisualShaderNodeColorUniform" id=12]
+output_port_for_preview = 1
 uniform_name = "ColorUniform"
 
-[sub_resource type="VisualShaderNodeInput" id=12]
+[sub_resource type="VisualShaderNodeInput" id=13]
 input_name = "screen_uv"
 
-[sub_resource type="VisualShaderNodeTexture" id=13]
+[sub_resource type="VisualShaderNodeTexture" id=14]
 
-[sub_resource type="VisualShaderNodeColorFunc" id=14]
+[sub_resource type="VisualShaderNodeColorFunc" id=15]
 
-[sub_resource type="VisualShaderNodeVectorOp" id=15]
+[sub_resource type="VisualShaderNodeVectorOp" id=16]
 operator = 2
 
-[sub_resource type="VisualShader" id=16]
+[sub_resource type="VisualShader" id=17]
 code = "shader_type spatial;
 render_mode specular_schlick_ggx, depth_test_disable, unshaded, shadows_disabled, ambient_light_disabled;
 
@@ -157,9 +159,20 @@ void fragment() {
 		n_out10p0 = all(_bv);
 	}
 
+// VectorSwitch:15
+	vec3 n_out15p0;
+	if(n_out10p0)
+	{
+		n_out15p0 = vec3(n_out3p1);
+	}
+	else
+	{
+		n_out15p0 = vec3(n_out10p0 ? 1.0 : 0.0);
+	}
+
 // Output:0
 	ALBEDO = n_out9p0;
-	ALPHA = n_out10p0 ? 1.0 : 0.0;
+	ALPHA = dot(n_out15p0, vec3(0.333333, 0.333333, 0.333333));
 
 }
 
@@ -168,40 +181,42 @@ void light() {
 
 }
 "
-graph_offset = Vector2( 0, 225 )
+graph_offset = Vector2( -74.5952, -69.0074 )
 flags/ambient_light_disabled = true
 flags/depth_test_disable = true
 flags/shadows_disabled = true
 flags/unshaded = true
 nodes/fragment/0/position = Vector2( 860, 140 )
-nodes/fragment/3/node = SubResource( 11 )
+nodes/fragment/3/node = SubResource( 12 )
 nodes/fragment/3/position = Vector2( 180, 0 )
-nodes/fragment/4/node = SubResource( 12 )
+nodes/fragment/4/node = SubResource( 13 )
 nodes/fragment/4/position = Vector2( -480, 180 )
-nodes/fragment/5/node = SubResource( 13 )
+nodes/fragment/5/node = SubResource( 14 )
 nodes/fragment/5/position = Vector2( -260, 220 )
-nodes/fragment/6/node = SubResource( 14 )
+nodes/fragment/6/node = SubResource( 15 )
 nodes/fragment/6/position = Vector2( -60, 320 )
-nodes/fragment/9/node = SubResource( 15 )
+nodes/fragment/9/node = SubResource( 16 )
 nodes/fragment/9/position = Vector2( 440, 20 )
 nodes/fragment/10/node = SubResource( 7 )
-nodes/fragment/10/position = Vector2( 420, 280 )
+nodes/fragment/10/position = Vector2( 400, 280 )
 nodes/fragment/11/node = SubResource( 8 )
 nodes/fragment/11/position = Vector2( 220, 400 )
 nodes/fragment/12/node = SubResource( 9 )
 nodes/fragment/12/position = Vector2( 200, 300 )
 nodes/fragment/13/node = SubResource( 10 )
 nodes/fragment/13/position = Vector2( 180, 220 )
-nodes/fragment/connections = PoolIntArray( 4, 0, 5, 0, 5, 0, 6, 0, 3, 0, 9, 0, 9, 0, 0, 0, 11, 0, 10, 1, 6, 0, 12, 0, 6, 0, 13, 0, 13, 0, 9, 1, 6, 0, 10, 0, 10, 0, 0, 1 )
+nodes/fragment/15/node = SubResource( 52 )
+nodes/fragment/15/position = Vector2( 620, 260 )
+nodes/fragment/connections = PoolIntArray( 4, 0, 5, 0, 5, 0, 6, 0, 3, 0, 9, 0, 11, 0, 10, 1, 6, 0, 12, 0, 6, 0, 13, 0, 13, 0, 9, 1, 6, 0, 10, 0, 9, 0, 0, 0, 3, 1, 15, 1, 10, 0, 15, 0, 10, 0, 15, 2, 15, 0, 0, 1 )
 
-[sub_resource type="ViewportTexture" id=17]
+[sub_resource type="ViewportTexture" id=51]
 viewport_path = NodePath("SilhouetteWorld")
 
 [sub_resource type="ShaderMaterial" id=18]
 resource_local_to_scene = true
-shader = SubResource( 16 )
-shader_param/ColorUniform = Color( 0.0117647, 0.992157, 0.992157, 0.717647 )
-shader_param/tex_frg_5 = SubResource( 17 )
+shader = SubResource( 17 )
+shader_param/ColorUniform = Color( 0, 0.215686, 0.388235, 0.501961 )
+shader_param/tex_frg_5 = SubResource( 51 )
 
 [sub_resource type="NativeScript" id=19]
 class_name = "DetourNavigationMesh"
