@@ -14,23 +14,7 @@ enum Corners {BACK_RIGHT, BACK_LEFT, FRONT_LEFT, FRONT_RIGHT}
 export(Corners) var hiding_corner = Corners.FRONT_LEFT
 
 func _ready():
-    match hiding_corner:
-        Corners.BACK_RIGHT:
-            $PawnDetectors/Exterior/EastShape.disabled = false
-            $PawnDetectors/Exterior/NortheastShape.disabled = false
-            $PawnDetectors/Exterior/NorthShape.disabled = false
-        Corners.BACK_LEFT:
-            $PawnDetectors/Exterior/NorthShape.disabled = false
-            $PawnDetectors/Exterior/NorthwestShape.disabled = false
-            $PawnDetectors/Exterior/WestShape.disabled = false
-        Corners.FRONT_LEFT:
-            $PawnDetectors/Exterior/WestShape.disabled = false
-            $PawnDetectors/Exterior/SouthwestShape.disabled = false
-            $PawnDetectors/Exterior/SouthShape.disabled = false
-        Corners.FRONT_RIGHT:
-            $PawnDetectors/Exterior/SouthShape.disabled = false
-            $PawnDetectors/Exterior/SoutheastShape.disabled = false
-            $PawnDetectors/Exterior/EastShape.disabled = false
+    pass
 
 func assert_shadow_status():
     var shadow_modes = $UpperWallSet.ShadowModes

@@ -11,6 +11,11 @@ export(int) var z_size = 5 setget set_z_size
 export(float) var frame_thickness = .5 setget set_frame_thickness
 export(float) var foundation_height = .5 setget set_foundation_height
 
+# We may want this construct to appear on a different layer for whatever reason
+# (most likely for some shader nonsense). Since that is normally set at the mesh
+# level, we'll provide this convenience variable.
+export(int, LAYERS_3D_RENDER) var render_layers_3D setget set_render_layers
+
 # Should we update the polygons anytime something is updated?
 export(bool) var update_on_value_change = true
 
@@ -31,6 +36,9 @@ func _ready():
     # When we enter the scene for the first time, we have to build out the
     # foundation
     self.build_all()
+    # Asset our render layers - since we already do this in the setter method,
+    # let's just pass the current value into the setter
+    set_render_layers(self.render_layers_3D)
 
 # --------------------------------------------------------
 #
@@ -100,6 +108,17 @@ func set_foundation_height(new_height):
     if Engine.editor_hint and update_on_value_change:
         build_all()
 
+func set_render_layers(new_layers):
+    render_layers_3D = new_layers
+    # Because this a tool script, and Godot is a bit wacky about exactly how 
+    # things load in, we'll check each node before setting the layers.
+    if has_node("Floor"):
+        $Floor.layers = render_layers_3D
+    if has_node("Frame"):
+        $Frame.layers = render_layers_3D
+    if has_node("Wall"):
+        $Wall.layers = render_layers_3D
+
 # --------------------------------------------------------
 #
 # Build Functions
@@ -144,7 +163,7 @@ func build_floor():
 
     # Commit our mesh - we're done here!
     st.commit(new_mesh)
-    $FoundationFloor.mesh = new_mesh
+    $Floor.mesh = new_mesh
 
 func build_frame():
     var new_mesh = Mesh.new()
@@ -234,7 +253,7 @@ func build_frame():
     st.generate_tangents()
 
     st.commit(new_mesh)
-    $FoundationFrame.mesh = new_mesh
+    $Frame.mesh = new_mesh
 
 func build_wall():
     var new_mesh = Mesh.new()
@@ -309,7 +328,7 @@ func build_wall():
     st.generate_tangents()
 
     st.commit(new_mesh)
-    $FoundationWall.mesh = new_mesh
+    $Wall.mesh = new_mesh
 
 func adjust_base_collision():
     var dheight = self.foundation_height
@@ -319,7 +338,7 @@ func adjust_base_collision():
     var new_size = Vector3(dx_size / 2.0, dheight / 2.0, dz_size / 2.0)
     
     # Reset the foundation back to zero so we know what we're doing
-    $FoundationCollision.transform.origin = Vector3.ZERO
-    $FoundationCollision.shape = BoxShape.new()
-    $FoundationCollision.shape.extents = new_size
-    $FoundationCollision.translate(Vector3(0, dheight / 2.0, 0))
+    $Collision.transform.origin = Vector3.ZERO
+    $Collision.shape = BoxShape.new()
+    $Collision.shape.extents = new_size
+    $Collision.translate(Vector3(0, dheight / 2.0, 0))

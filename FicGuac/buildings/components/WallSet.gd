@@ -34,6 +34,11 @@ export(float) var gap_length = 2 setget set_gap_length
 # How tall is the gap?
 export(float) var gap_height = 1 setget set_gap_height
 
+# We may want this construct to appear on a different layer for whatever reason
+# (most likely for some shader nonsense). Since that is normally set at the mesh
+# level, we'll provide this convenience variable.
+export(int, LAYERS_3D_RENDER) var render_layers_3D setget set_render_layers
+
 # Should we update the polygons anytime something is updated?
 export(bool) var update_on_value_change = true
 
@@ -65,6 +70,9 @@ const GAP_WALL = preload("res://buildings/components/WallGap.tscn")
 # Called when the node enters the scene tree for the first time.
 func _ready():
     build_all()
+    # Assert our render layers - since we already do this in the setter method,
+    # let's just pass the current value into the setter
+    set_render_layers(self.render_layers_3D)
 
 # --------------------------------------------------------
 #
@@ -219,6 +227,27 @@ func set_shadow_only_mode(new_shadow_mode):
                 fourth_wall_node.shadow_only_mode = true
             $FourthColumn.shadow_only_mode = true
     # Aaaand we're done!
+
+func set_render_layers(new_layers):
+    render_layers_3D = new_layers
+    # Because this a tool script, and Godot is a bit wacky about exactly how 
+    # things load in, we'll check each node before setting the layers.
+    if has_node("FirstWall"):
+        $FirstWall.render_layers_3D = render_layers_3D
+    if has_node("FirstColumn"):
+        $FirstColumn.render_layers_3D = render_layers_3D
+    if has_node("SecondWall"):
+        $SecondWall.render_layers_3D = render_layers_3D
+    if has_node("SecondColumn"):
+        $SecondColumn.render_layers_3D = render_layers_3D
+    if has_node("ThirdWall"):
+        $ThirdWall.render_layers_3D = render_layers_3D
+    if has_node("ThirdColumn"):
+        $ThirdColumn.render_layers_3D = render_layers_3D
+    if fourth_wall_node:
+        fourth_wall_node.render_layers_3D = render_layers_3D
+    if has_node("FourthColumn"):
+        $FourthColumn.render_layers_3D = render_layers_3D
 
 # --------------------------------------------------------
 #

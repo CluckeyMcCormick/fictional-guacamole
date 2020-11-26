@@ -16,6 +16,11 @@ export(float) var thickness = 1 setget set_thickness
 # How high is the wall?
 export(float) var height = 2 setget set_height
 
+# We may want this construct to appear on a different layer for whatever reason
+# (most likely for some shader nonsense). Since that is normally set at the mesh
+# level, we'll provide this convenience variable.
+export(int, LAYERS_3D_RENDER) var render_layers_3D setget set_render_layers
+
 # Should we update the polygons anytime something is updated?
 export(bool) var update_on_value_change = true
 
@@ -52,6 +57,9 @@ func _ready():
     # When we enter the scene for the first time, we have to build out the
     # walls
     self.build_all()
+    # Asset our render layers - since we already do this in the setter method,
+    # let's just pass the current value into the setter
+    set_render_layers(self.render_layers_3D)
 
 # --------------------------------------------------------
 #
@@ -144,6 +152,19 @@ func set_render_bottom_cap(new_bool):
     render_bottom_cap = new_bool
     if Engine.editor_hint and update_on_value_change:
         build_all()
+
+func set_render_layers(new_layers):
+    render_layers_3D = new_layers
+    # Because this a tool script, and Godot is a bit wacky about exactly how 
+    # things load in, we'll check each node before setting the layers.
+    if has_node("Exterior"):
+        $Exterior.layers = render_layers_3D
+    if has_node("Interior"):
+        $Interior.layers = render_layers_3D
+    if has_node("CutawaySides"):
+        $CutawaySides.layers = render_layers_3D
+    if has_node("CutawayCaps"):
+        $CutawayCaps.layers = render_layers_3D
 
 # --------------------------------------------------------
 #

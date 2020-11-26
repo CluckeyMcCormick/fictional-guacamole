@@ -5,6 +5,7 @@
 
 [node name="WallCloseGap" type="Spatial"]
 script = ExtResource( 1 )
+render_layers_3D = 7
 
 [node name="WallA" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0, 0 )

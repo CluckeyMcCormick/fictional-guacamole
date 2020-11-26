@@ -46,19 +46,23 @@ extents = Vector3( 5, 0.25, 2.5 )
 
 [node name="Foundation" type="StaticBody"]
 script = ExtResource( 1 )
+render_layers_3D = 2147483655
 
-[node name="FoundationFloor" type="MeshInstance" parent="."]
+[node name="Floor" type="MeshInstance" parent="."]
+layers = 2147483655
 mesh = SubResource( 1 )
 material/0 = null
 
-[node name="FoundationFrame" type="MeshInstance" parent="."]
+[node name="Frame" type="MeshInstance" parent="."]
+layers = 2147483655
 mesh = SubResource( 2 )
 material/0 = null
 
-[node name="FoundationWall" type="MeshInstance" parent="."]
+[node name="Wall" type="MeshInstance" parent="."]
+layers = 2147483655
 mesh = SubResource( 3 )
 material/0 = null
 
-[node name="FoundationCollision" type="CollisionShape" parent="."]
+[node name="Collision" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0 )
 shape = SubResource( 4 )

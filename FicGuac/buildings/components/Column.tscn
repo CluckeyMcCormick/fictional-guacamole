@@ -74,24 +74,30 @@ extents = Vector3( 0.5, 1, 0.5 )
 collision_layer = 2
 collision_mask = 2
 script = ExtResource( 1 )
+render_layers_3D = 7
 
 [node name="Top" type="MeshInstance" parent="."]
+layers = 7
 mesh = SubResource( 1 )
 material/0 = null
 
 [node name="XPosFace" type="MeshInstance" parent="."]
+layers = 7
 mesh = SubResource( 2 )
 material/0 = null
 
 [node name="ZNegFace" type="MeshInstance" parent="."]
+layers = 7
 mesh = SubResource( 3 )
 material/0 = null
 
 [node name="XNegFace" type="MeshInstance" parent="."]
+layers = 7
 mesh = SubResource( 4 )
 material/0 = null
 
 [node name="ZPosFace" type="MeshInstance" parent="."]
+layers = 7
 mesh = SubResource( 5 )
 material/0 = null
 

@@ -21,6 +21,11 @@ export(float) var overhang_x = .5 setget set_overhang_x
 # In total, how much do the fascia overhang from the roof, on z?
 export(float) var overhang_z = .5 setget set_overhang_z
 
+# We may want this construct to appear on a different layer for whatever reason
+# (most likely for some shader nonsense). Since that is normally set at the mesh
+# level, we'll provide this convenience variable.
+export(int, LAYERS_3D_RENDER) var render_layers_3D setget set_render_layers
+
 # Should we update the polygons anytime something is updated?
 export(bool) var update_on_value_change = true
 
@@ -47,7 +52,10 @@ const MIN_FASCIA_OVERHANG = 0.01
 # Called when the node enters the scene tree for the first time.
 func _ready():
     build_all()
-
+    # Asset our render layers - since we already do this in the setter method,
+    # let's just pass the current value into the setter
+    set_render_layers(self.render_layers_3D)
+    
 # --------------------------------------------------------
 #
 # Setters and Getters
@@ -133,7 +141,21 @@ func set_shadow_only_mode(new_shadow_mode):
         $FasciaLongboard.cast_shadow = shade_default
         $FasciaUnderboard.cast_shadow = shade_default
         $Gables.cast_shadow = shade_default
-    
+
+func set_render_layers(new_layers):
+    render_layers_3D = new_layers
+    # Because this a tool script, and Godot is a bit wacky about exactly how 
+    # things load in, we'll check each node before setting the layers.
+    if has_node("Sheeting"):
+        $Sheeting.layers = render_layers_3D
+    if has_node("FasciaSideboard"):
+        $FasciaSideboard.layers = render_layers_3D
+    if has_node("FasciaLongboard"):
+        $FasciaLongboard.layers = render_layers_3D
+    if has_node("FasciaUnderboard"):
+        $FasciaUnderboard.layers = render_layers_3D
+    if has_node("Gables"):
+        $Gables.layers = render_layers_3D
 
 # --------------------------------------------------------
 #

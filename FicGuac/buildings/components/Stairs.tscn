@@ -46,16 +46,20 @@ points = PoolVector3Array( -1, 0, 1, -1, 0, -1, -1, 0.5, -1, 1, 0, 1, 1, 0, -1, 
 
 [node name="Stairs" type="StaticBody"]
 script = ExtResource( 1 )
+render_layers_3D = 7
 
 [node name="Sides" type="MeshInstance" parent="."]
+layers = 7
 mesh = SubResource( 1 )
 material/0 = null
 
 [node name="Tops" type="MeshInstance" parent="."]
+layers = 7
 mesh = SubResource( 2 )
 material/0 = null
 
 [node name="Forwards" type="MeshInstance" parent="."]
+layers = 7
 mesh = SubResource( 3 )
 material/0 = null
 

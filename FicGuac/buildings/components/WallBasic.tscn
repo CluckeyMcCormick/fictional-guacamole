@@ -61,20 +61,25 @@ extents = Vector3( 1, 1, 0.5 )
 collision_layer = 2
 collision_mask = 2
 script = ExtResource( 1 )
+render_layers_3D = 7
 
 [node name="Exterior" type="MeshInstance" parent="."]
+layers = 7
 mesh = SubResource( 1 )
 material/0 = null
 
 [node name="Interior" type="MeshInstance" parent="."]
+layers = 7
 mesh = SubResource( 2 )
 material/0 = null
 
 [node name="CutawaySides" type="MeshInstance" parent="."]
+layers = 7
 mesh = SubResource( 3 )
 material/0 = null
 
 [node name="CutawayCaps" type="MeshInstance" parent="."]
+layers = 7
 mesh = SubResource( 4 )
 material/0 = null
 
