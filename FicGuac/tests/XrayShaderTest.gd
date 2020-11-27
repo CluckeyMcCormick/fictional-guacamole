@@ -13,9 +13,6 @@ func _physics_process(delta):
     if click_waiting:
         yielded_click.resume()
 
-func _process(delta):
-    $XrayWorld.update_worlds()
-
 # Process an input event. Intended for single-press input events (i.e. a button
 # push/click).
 func _input(event):

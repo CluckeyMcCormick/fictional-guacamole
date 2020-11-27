@@ -7,7 +7,8 @@ enum CROP_TYPE {
     cabbage,
     carrot,
     sunflower,
-    barley
+    barley,
+    strong_barley
 }
 
 # Export the config variables to the editor so we can set them on the fly
@@ -20,6 +21,7 @@ const PLOT_SIZE_MINIMUM = Vector2(3, 3)
 
 # Preload our selections for Crops - the (C)rop (S)cenes
 const CS_BARLEY = preload("res://terrain/farm/crops/Barley.tscn")
+const CS_STRONG_BARLEY = preload("res://terrain/farm/crops/StrongBarley.tscn")
 const CS_CORN = preload("res://terrain/farm/crops/Corn.tscn")
 const CS_CABBAGE = preload("res://terrain/farm/crops/Cabbage.tscn")
 const CS_CARROT = preload("res://terrain/farm/crops/Carrot.tscn")
@@ -116,6 +118,8 @@ func _farm_refresh():
             match _crop_type:
                 CROP_TYPE.barley:
                     tile = CS_BARLEY.instance()
+                CROP_TYPE.strong_barley:
+                    tile = CS_STRONG_BARLEY.instance()
                 CROP_TYPE.corn:
                     tile = CS_CORN.instance()
                 CROP_TYPE.cabbage:

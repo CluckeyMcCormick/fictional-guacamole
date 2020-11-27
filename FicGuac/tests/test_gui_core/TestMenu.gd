@@ -4,7 +4,7 @@ var scene_paths = {
     "Pawn Standing Test" : "res://tests/PawnStandingTest.tscn",
     "Cubit Driver Test" : "res://tests/CubitDriverTest.tscn",
     "Slope Step Test" : "res://tests/SlopeStepTest.tscn",
-    "Pawn Shader Bubble Test" : "res://tests/PawnShaderBubbleTest.tscn",
+    "X-Ray Shader Test" : "res://tests/XrayShaderTest.tscn",
     "Dynamic Navigation Mesh Test" : "res://tests/DynamicNavMeshTest.tscn",
 }
 

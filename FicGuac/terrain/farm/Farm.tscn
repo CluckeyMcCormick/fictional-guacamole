@@ -14,7 +14,7 @@ cell_center_y = false
 collision_layer = 2
 collision_mask = 2
 data = {
-"cells": PoolIntArray( 0, 0, 7, 1, 0, 0, 2, 0, 1, 0, 1, 6, 1, 1, 1610612744, 2, 1, 2, 0, 2, 5, 1, 2, 4, 2, 2, 3 )
+"cells": PoolIntArray( 0, 0, 7, 1, 0, 0, 2, 0, 1610612737, 0, 1, 6, 1, 1, 8, 2, 1, 2, 0, 2, 5, 1, 2, 4, 2, 2, 3 )
 }
 __meta__ = {
 "_editor_clip_": 0,
