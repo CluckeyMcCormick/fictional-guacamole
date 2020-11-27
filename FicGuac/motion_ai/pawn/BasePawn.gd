@@ -38,6 +38,13 @@ export(NodePath) var navigation
 # We resolve the node path into this variable.
 var navigation_node
 
+# Sometimes, we want to change the pawn's sprite on the fly, for whatever
+# reason. Since the frames are hidden inside the Pawn scene, we'll provide this
+# option to override the frames with an externally provided sprite.
+export(SpriteFrames) var override_sprite_frames setget set_sprite_frames
+# However, we'll always save the original frames in this variable.
+var _original_frames = null
+
 # Likewise, we may need a quick way to refer our current movement direction
 # (horizontally, at least) without having to derive from the _current_velocity.
 # We'll store that value here. 
@@ -65,6 +72,9 @@ var current_path setget set_path
 func _ready():
     # Get the drive target node
     navigation_node = get_node(navigation)
+    
+    # Assert override frames
+    set_sprite_frames(override_sprite_frames)
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(delta):
@@ -92,7 +102,25 @@ func _on_KinematicDriver_target_reached(position):
     else:
         # We're done following the path! Tell anyone who's listening
         emit_signal("path_complete", self, self.global_transform.origin)
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Setters
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     
+func set_sprite_frames(new_frames):
+    # Save the frames resource
+    override_sprite_frames = new_frames
+    # First, if the original frames aren't set, we need to save those.
+    if _original_frames == null:
+         _original_frames = $VisualSprite.frames
+    # If we were actually provided a sprite frames resource, set those frames!
+    if override_sprite_frames != null:
+        $VisualSprite.frames = new_frames
+    # Otherwise, set ourselves back to the original frames
+    else:
+        $VisualSprite.frames = _original_frames
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
