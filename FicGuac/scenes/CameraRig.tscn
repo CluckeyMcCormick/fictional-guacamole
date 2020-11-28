@@ -1,0 +1,58 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://scenes/CameraRig.gd" type="Script" id=1]
+
+[node name="CameraRig" type="Spatial"]
+script = ExtResource( 1 )
+
+[node name="XrayTransform" type="RemoteTransform" parent="."]
+remote_path = NodePath("../XrayWorld/Camera")
+update_rotation = false
+update_scale = false
+
+[node name="SilhouetteTransform" type="RemoteTransform" parent="."]
+remote_path = NodePath("../SilhouetteWorld/Camera")
+update_rotation = false
+update_scale = false
+
+[node name="CoreCamera" type="Camera" parent="."]
+transform = Transform( 0.707107, -0.408244, 0.577353, 0, 0.816501, 0.577344, -0.707107, -0.408244, 0.577353, 0, 0, 0 )
+cull_mask = 59
+projection = 1
+current = true
+size = 150.0
+far = 400.0
+
+[node name="XrayWorld" type="Viewport" parent="."]
+size = Vector2( 1024, 600 )
+handle_input_locally = false
+keep_3d_linear = true
+render_target_update_mode = 3
+gui_disable_input = true
+shadow_atlas_size = 4096
+shadow_atlas_quad_0 = 1
+
+[node name="Camera" type="Camera" parent="XrayWorld"]
+transform = Transform( 0.707107, -0.408244, 0.577353, 0, 0.816501, 0.577344, -0.707107, -0.408244, 0.577353, 0, 0, 0 )
+cull_mask = 29
+projection = 1
+current = true
+size = 150.0
+far = 400.0
+
+[node name="SilhouetteWorld" type="Viewport" parent="."]
+size = Vector2( 1024, 600 )
+handle_input_locally = false
+keep_3d_linear = true
+render_target_update_mode = 3
+gui_disable_input = true
+shadow_atlas_size = 4096
+shadow_atlas_quad_0 = 1
+
+[node name="Camera" type="Camera" parent="SilhouetteWorld"]
+transform = Transform( 0.707107, -0.408244, 0.577353, 0, 0.816501, 0.577344, -0.707107, -0.408244, 0.577353, 0, 0, 0 )
+cull_mask = 8
+projection = 1
+current = true
+size = 150.0
+far = 400.0
