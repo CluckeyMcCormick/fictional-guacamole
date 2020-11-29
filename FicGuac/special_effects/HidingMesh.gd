@@ -4,7 +4,7 @@ extends MeshInstance
 # visible - this configurable allows us to invert this behavior if need be. 
 export(bool) var show_on_hidden = true
 # Is this mesh currently hidden from the camera?
-var camera_hidden
+var _cam_hide
 
 # In order to check whether the hiding mesh is visible, we need to do constant
 # raycasts to a camera node. If we hit something, it's not visible. If we don't,
@@ -19,6 +19,9 @@ var target_camera_node
 export(int, LAYERS_3D_PHYSICS) var occlusion_layers
 
 export(float) var animation_length = -1
+
+enum { SHRINKING, GROWING, HIDDEN, SHOWING}
+var _hide_state = SHOWING
 
 func _ready():
     # Resolve the target camera path
@@ -44,20 +47,24 @@ func _physics_process(delta):
     
     # Evaluate: did we get a result back? If we did, then the camera is hidden.
     # We'll stick the evaluation in our camera_hidden variable.
-    camera_hidden = not result.empty()
+    _cam_hide = not result.empty()
     
     # If we have to show ourselves...
-    if (show_on_hidden and camera_hidden) or (not show_on_hidden and not camera_hidden):
-        # Then start our grow animation (or not, w/e, the function will handle
-        # it)
-        start_grow_animation()
+    if (show_on_hidden and _cam_hide) or (not show_on_hidden and not _cam_hide):
+        # And we aren't already grown or growing...
+        if _hide_state == SHRINKING or _hide_state == HIDDEN:
+            # Then show the mesh. Or grow the mesh. One of the two, this
+            # function will handle it.
+            _start_showing_process()
     # Otherwise, we need to hide ourselves...
     else:
-        # Then start our shrink animation (or not, w/e, the function will handle
-        # it)
-        start_shrink_animation()
+        # BUT, we should only hide ourselves if we're already showing.
+        if _hide_state == GROWING or _hide_state == SHOWING:
+            # Then hide the mesh. Or shrink the mesh. One of the two, this
+            # function will handle it.
+            _start_hiding_process()
 
-func start_grow_animation():
+func _start_showing_process():
     # Need to make sure we're visible.
     self.visible = true
     
@@ -65,10 +72,17 @@ func start_grow_animation():
     if animation_length <= 0:
         # Assert scale (just in case)
         self.scale = Vector3(1, 1, 1)
+        # Current state is now showing
+        _hide_state = SHOWING
         # and back out
         return
     
-    # Otherwise, we're definitely going to animate. Stop any tweens in progress.
+    # Otherwise, we're definitely going to animate. The state is now GROWING
+    _hide_state = GROWING
+    
+    #print("GROWING!")
+    
+    # Stop any tweens in progress.
     $Tween.stop_all()
     
     # Set the tween up to grow the mesh
@@ -84,16 +98,23 @@ func start_grow_animation():
     # Start that tween!
     $Tween.start()
 
-func start_shrink_animation():
+func _start_hiding_process():
     
     # If we don't have an animation length...
     if animation_length <= 0:
         # Just hide the thing then, I guess.
         self.visible = false
+        # Current state is now hidden
+        _hide_state = HIDDEN
         # Back out.
         return
         
-    # Otherwise, we're definitely going to animate. Stop any tweens in progress.
+    # Otherwise, we're definitely going to animate. The state is now SHRINKING
+    _hide_state = SHRINKING
+    
+    #print("SHRINKING!")
+    
+    # Stop any tweens in progress.
     $Tween.stop_all()
     
     # Set the tween up to shrink the mesh
@@ -103,7 +124,21 @@ func start_shrink_animation():
         Tween.TRANS_LINEAR, Tween.EASE_IN_OUT
     )
     
+    # START THE SHRINK!
     $Tween.start()
+
+func _on_Tween_tween_completed(object, key):
+    # If we were growing, we're now showing
+    if _hide_state == GROWING:
+        _hide_state = SHOWING
+        #print("Grown!")
+    
+    # If we were shrinking, we're now hidden
+    elif _hide_state == SHRINKING:
+        _hide_state = HIDDEN
+        #print("Shrank!")
+        # Hide the mesh, to save processing
+        self.visible = false
 
 # This function is very ugly, but it serves a very specific purpose: it allows
 # us to generate warnings in the editor in case the HidingMesh is misconfigured.

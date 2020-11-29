@@ -1,4 +1,4 @@
-[gd_scene load_steps=75 format=2]
+[gd_scene load_steps=76 format=2]
 
 [ext_resource path="res://motion_ai/pawn/BasePawn.tscn" type="PackedScene" id=1]
 [ext_resource path="res://terrain/farm/Farm.tscn" type="PackedScene" id=2]
@@ -20,8 +20,9 @@
 [ext_resource path="res://gui/TiaoLetter.ttf" type="DynamicFontData" id=18]
 [ext_resource path="res://scenes/CameraRig.tscn" type="PackedScene" id=19]
 [ext_resource path="res://special_effects/HidingMesh.tscn" type="PackedScene" id=20]
+[ext_resource path="res://terrain/trees/PineTree.tscn" type="PackedScene" id=21]
 
-[sub_resource type="SphereMesh" id=55]
+[sub_resource type="SphereMesh" id=1]
 radius = 2.0
 height = 4.0
 
@@ -656,9 +657,9 @@ navigation = NodePath("../../XrayShaderTest/DetourNavigation/DetourNavigationMes
 
 [node name="HidingMesh" parent="BubblePawn" instance=ExtResource( 20 )]
 layers = 32
-mesh = SubResource( 55 )
+mesh = SubResource( 1 )
 material/0 = ExtResource( 10 )
-target_camera = NodePath("../../CameraRig")
+target_camera = NodePath("../../CameraRig/CoreCamera")
 animation_length = 0.1
 
 [node name="MultiplyPawnA" parent="." instance=ExtResource( 1 )]
@@ -742,6 +743,8 @@ _crop_type = 5
 [node name="Woods" parent="DetourNavigation" instance=ExtResource( 13 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0, 2 )
 _woods_size = Vector2( 8, 8 )
+
+[node name="PineTreeSimple" parent="DetourNavigation" instance=ExtResource( 21 )]
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 4 )
