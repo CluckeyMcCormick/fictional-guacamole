@@ -40,9 +40,9 @@ func process_mouse_click():
     var mouse_pos = get_viewport().get_mouse_position()
     # Calculate the "from" vector (more of a point, really - the point our
     # raycast will project FROM)
-    var mouse_from = $Camera.project_ray_origin( mouse_pos )
+    var mouse_from = $CameraRig/CoreCamera.project_ray_origin( mouse_pos )
     # Calculate a point to raycast "to" by adding elongated normal
-    var mouse_to = $Camera.project_ray_normal( mouse_pos ) * MOUSE_RAY_LENGTH
+    var mouse_to = $CameraRig/CoreCamera.project_ray_normal( mouse_pos ) * MOUSE_RAY_LENGTH
     mouse_to += mouse_from
     
     # Yield until we can query. Make note that we are waiting on a click

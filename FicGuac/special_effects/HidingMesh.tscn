@@ -3,9 +3,9 @@
 [ext_resource path="res://special_effects/HidingMesh.gd" type="Script" id=1]
 
 [sub_resource type="CubeMesh" id=1]
-size = Vector3( 0.52, 1.61, 0.52 )
 
 [node name="HidingMesh" type="MeshInstance"]
+layers = 63
 mesh = SubResource( 1 )
 material/0 = null
 script = ExtResource( 1 )
