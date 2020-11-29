@@ -124,11 +124,19 @@ func set_shadow_only_mode(new_shadow_mode):
         $Interior.cast_shadow = shade_only
         $CutawaySides.cast_shadow = shade_only
         $CutawayCaps.cast_shadow = shade_only
+        # If set to shade only mode, then we're no longer blocking visibility.
+        # Turn off the "Camera Obstruction" collision layer.
+        self.set_collision_layer_bit(3, false)
+        self.set_collision_mask_bit(3, false)
     else:
         $Exterior.cast_shadow = shade_default
         $Interior.cast_shadow = shade_default
         $CutawaySides.cast_shadow = shade_default
         $CutawayCaps.cast_shadow = shade_default
+        # If set to shade only mode is off, then we're blocking visibility.
+        # Turn on the "Camera Obstruction" collision layer.
+        self.set_collision_layer_bit(3, true)
+        self.set_collision_mask_bit(3, true)
 
 func set_collide_mode(new_mode):
      # Accept the value

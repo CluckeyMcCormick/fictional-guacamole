@@ -71,7 +71,7 @@ surfaces/0 = {
 extents = Vector3( 0.5, 1, 0.5 )
 
 [node name="Column" type="StaticBody"]
-collision_layer = 2
+collision_layer = 10
 collision_mask = 2
 script = ExtResource( 1 )
 render_layers_3D = 7

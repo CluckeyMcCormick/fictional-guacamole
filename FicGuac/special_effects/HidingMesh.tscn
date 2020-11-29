@@ -1,0 +1,15 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://special_effects/HidingMesh.gd" type="Script" id=1]
+
+[sub_resource type="CubeMesh" id=1]
+size = Vector3( 0.52, 1.61, 0.52 )
+
+[node name="HidingMesh" type="MeshInstance"]
+mesh = SubResource( 1 )
+material/0 = null
+script = ExtResource( 1 )
+occlusion_layers = 8
+
+[node name="Tween" type="Tween" parent="."]
+[connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]

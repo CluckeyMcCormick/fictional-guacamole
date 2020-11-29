@@ -112,12 +112,21 @@ func set_shadow_only_mode(new_shadow_mode):
         $XNegFace.cast_shadow = shade_only
         $ZPosFace.cast_shadow = shade_only
         $ZNegFace.cast_shadow = shade_only
+        # If set to shade only mode, then we're no longer blocking visibility.
+        # Turn off the "Camera Obstruction" collision layer.
+        self.set_collision_layer_bit(3, false)
+        self.set_collision_mask_bit(3, false)
     else:
         $Top.cast_shadow = shade_default
         $XPosFace.cast_shadow = shade_default
         $XNegFace.cast_shadow = shade_default
         $ZPosFace.cast_shadow = shade_default
         $ZNegFace.cast_shadow = shade_default
+        # If set to shade only mode is off, then we're blocking visibility.
+        # Turn on the "Camera Obstruction" collision layer.
+        self.set_collision_layer_bit(3, true)
+        self.set_collision_mask_bit(3, true)
+        
 
 func set_render_layers(new_layers):
     render_layers_3D = new_layers
