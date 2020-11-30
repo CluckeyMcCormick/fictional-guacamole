@@ -14,18 +14,38 @@ export(NodePath) var target_camera
 # We resolve the node path into this variable.
 var target_camera_node
 
+# We generally cast from our node's global position to our given target. But
+# sometimes our mesh isn't explicitly aligned with what we need to test. For
+# that reason, this configurable can be given a separate node to cast FROM.
+export(NodePath) var test_source
+# We resolve the node path into this variable.
+var test_source_node
+
 # As explained above, we need to use a physics raycast to determine visibility.
 # What layers does that raycast collide with?
 export(int, LAYERS_3D_PHYSICS) var occlusion_layers
 
+# Rather than simply showing-and-hiding the mesh, we could grow and shrink the
+# mesh using a nice little animation. How long should that animation be, in
+# seconds? If this value is less than 0, the animation is disabled.
 export(float) var animation_length = -1
 
+# What state is the hiding mesh in? These enum constants will handle those
+# values.
 enum { SHRINKING, GROWING, HIDDEN, SHOWING}
+# Variable for tracking the above states.
 var _hide_state = SHOWING
 
 func _ready():
     # Resolve the target camera path
     target_camera_node = get_node(target_camera)
+    # Resolve the test source path
+    test_source_node = get_node(test_source)
+    
+    # If we don't have a test source node, then we'll just use ourself
+    if test_source_node == null:
+        test_source_node = self
+    
     # By default, set the HidingMesh to visible. This will help load the frame
     # dips up front.
     self.visible = true
@@ -39,7 +59,7 @@ func _physics_process(delta):
     var space_state = get_world().direct_space_state
     # Now, cast from this mesh to that camera
     var result = space_state.intersect_ray(
-        self.global_transform.origin, # Ray origin
+        test_source_node.global_transform.origin, # Ray origin
         target_camera_node.global_transform.origin, # Ray destination
         [], # Node exclusion list; we exlude nothing!
         occlusion_layers # Collision MASK - what to collide with
@@ -80,8 +100,6 @@ func _start_showing_process():
     # Otherwise, we're definitely going to animate. The state is now GROWING
     _hide_state = GROWING
     
-    #print("GROWING!")
-    
     # Stop any tweens in progress.
     $Tween.stop_all()
     
@@ -111,8 +129,6 @@ func _start_hiding_process():
         
     # Otherwise, we're definitely going to animate. The state is now SHRINKING
     _hide_state = SHRINKING
-    
-    #print("SHRINKING!")
     
     # Stop any tweens in progress.
     $Tween.stop_all()

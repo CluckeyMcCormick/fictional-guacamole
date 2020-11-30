@@ -9,7 +9,7 @@ export(Vector2) var _woods_size = Vector2(3, 3) setget set_woods_size
 const WOODS_SIZE_MINIMUM = Vector2(3, 3)
 
 # Preload our selections for the Trees - the (T)ree (S)cenes
-const TS_PINE = preload("res://terrain/trees/PineTreeSimple.tscn") 
+const TS_PINE = preload("res://terrain/trees/PineTree.tscn") 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():

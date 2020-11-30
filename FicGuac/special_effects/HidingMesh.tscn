@@ -5,7 +5,8 @@
 [sub_resource type="CubeMesh" id=1]
 
 [node name="HidingMesh" type="MeshInstance"]
-layers = 63
+layers = 32
+cast_shadow = 0
 mesh = SubResource( 1 )
 material/0 = null
 script = ExtResource( 1 )

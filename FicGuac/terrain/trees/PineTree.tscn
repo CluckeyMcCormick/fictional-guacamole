@@ -16,7 +16,7 @@ script = ExtResource( 4 )
 [node name="Sprite" type="AnimatedSprite3D" parent="."]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 2.504, 0 )
 visible = false
-layers = 16
+layers = 2
 pixel_size = 0.0313
 alpha_cut = 2
 frames = ExtResource( 3 )

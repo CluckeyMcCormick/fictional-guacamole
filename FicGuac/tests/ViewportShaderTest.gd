@@ -5,11 +5,11 @@ var pawn_waiting_list = []
 func _ready():
     # To start the ball rolling, we need to assign starting targets to any and
     # all pawns in the scene.
-    pawn_waiting_list.append($BubblePawn)
-    pawn_waiting_list.append($MultiplyPawnA)
-    pawn_waiting_list.append($MultiplyPawnB)
-    pawn_waiting_list.append($FillPawnA)
-    pawn_waiting_list.append($FillPawnB)
+    pawn_waiting_list.append($XrayPawnAlpha)
+    pawn_waiting_list.append($XrayPawnDefault)
+    pawn_waiting_list.append($XrayPawnNoDepth)
+    pawn_waiting_list.append($MultiplyPawn)
+    pawn_waiting_list.append($FillPawn)
 
 # Special clean up function - we have to reset the time scale when we exit.
 func _exit_tree():
