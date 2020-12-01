@@ -16,58 +16,35 @@ To Do:
     We should upgrade to 4.0 as soon as possible. It's just a question of
     whenever that comes out...
 
-3. Devise a way to see things through walls
+3. Document ImageMagick scripts and OpenSCAD scripts
+    
+    I've gotten a bit lazy with the documentation. Neither the ImageMagick nor
+    the OpenSCAD scripts have any documentation. I've been increasing my usage
+    of the ImageMagick scripts, and I'm about to do a whole update just based 
+    around the OpenSCAD scripts. I should really get around to this.
+    
+    In trying to keep with the more beginner-friendly aspect of this project
+    (that I've been kind of ignoring), these documents should explain the nature
+    of the scripts and their target environments.
 
-    The obvious weakness of doing a 3D game with a trick/forced isometric
-    perspective is that stuff can go behind walls or trees or bushes - in other
-    words, place where we can't see them.
-    
-    I'm still playing around with the prototype's genre in my head (it's really
-    more of a personal tech demo right now). Regardless of genre or gametype, we
-    are going to need a way to see characters or entities through walls. To a
-    certain degree, this was the purpose behind the Sims-style cutaway walls.
-    
-    That works REALLY well for when a character is in a house. However, when the
-    character is camped in the "hiding corner" we just cutaway everything and it
-    looks... bad. Plus, the code to control the hiding corner has to be redone
-    for EVERY SINGLE building type, and we haven't even messed with trees yet.
-    There has to be a more general solution.
-    
-    There are two options really, and I want to implement both. The first is
-    frequently referred to as "masking" - it's like in Katamari Damacy, how
-    there's always a circle of visibility around you character (apparently
-    Divinity 2 uses a similar system). This solution would likely involve a
-    second camera, a viewport, using the "Visual Layers" to control what the
-    second camera can and can't see, and then using what's called a
-    "Screen-reading shader". Don't know HOW to use that but it's been supported
-    since Godot 3.0 so good enough for me!
-    
-    The second option would be either a color-fill (like in the pipe sections of
-    Super Mario Sunshine) or a silhouette outline (like in Left 4 Dead). I think
-    some RTS games do this. The idea is that we can always see a color-filled
-    silhouette of the character, even if they're behind walls.
-    
-    Having two tiers of solution here will give us a pallette of options going
-    forward and will give me a chance to learn Godot's shaders (which I haven't
-    messed with AT ALL).
-
-4. Upgrade to Godot 4.0 (whenever that happens): X-Ray Shaders & Depth
-
-    We use a combination of cameras, viewports, shaders, and what I'm 90% sure
-    is a glitch to render sprites behind walls whenever they go behind walls. On
-    one hand, we have the "Xray Bubble" technique which is meant to be used
-    sparingly for important elements, and the "Silhouette Crystal" meant to be
-    used for everything else.
-    
-    The Xray Bubble currently needs to be turned on/off by hand. The Silhouette
-    Crystal works automatically but only barely and honestly I'm pretty sure
-    it's only working because of a glitch.
-    
-    If we had access to the depth buffer of our viewports, we could use the data
-    there-in to truly judge whether the elements we're attempting to render were
-    behind walls or not. Then we wouldn't have to bother with all of this.
-    Unfortunately, accessing the depth buffer of viewports has been postponed...
-    to Godot 4.0 (grinds teeth).
+4. Devise some kind of documentation for the actual Godot component of the
+   project
+   
+   Not everybody who comes across the project is going to be able to pull it
+   apart like a watchmaker - even with the complete Git history. We should, for
+   the sake of those people (and ourselves!) documents some of the oddities and
+   quirks of this project.
+   
+   What immediately leaps to mind is the recently expanded special effects 
+   directory, as well as the KinematicDriver, and the building components. The
+   procedural terrain elements (the woods and the farm) are also good
+   candidates.
+   
+   But there's also things like the individual physics and visual layers - we
+   need to capture the ethos behind such decisions. I guess I could track down
+   the relevant commits but that doesn't seem like it would work well for 
+   something that isn't code. it's better to have solid documentation. To be
+   honest, I keep forgetting myself...
 
 5. Create weapon models
 

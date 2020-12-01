@@ -21,6 +21,9 @@ func _ready():
 func _tree_refresh():
     var sprite_string = ""
     
+    if not has_node("ActualSprite") or not has_node("AltSprite"):
+        return
+    
     # Set the collision status and get
     match _tree_type:
         TREE_TYPE.pine_a:
@@ -30,15 +33,17 @@ func _tree_refresh():
         TREE_TYPE.pine_c:
             sprite_string = "pine_fc_c"
             
-    $Sprite.animation = sprite_string
+    $ActualSprite.animation = sprite_string
+    $AltSprite.animation = sprite_string + "_fade"
 
 func set_tree_type(new_tree_type):
     _tree_type = new_tree_type
     _tree_refresh()
 
-
 func _on_VisibilityNotifier_screen_entered():
-    $Sprite.visible = true
+    $ActualSprite.visible = true
+    $AltSprite.visible = true
 
 func _on_VisibilityNotifier_screen_exited():
-    $Sprite.visible = false
+    $ActualSprite.visible = false
+    $AltSprite.visible = false
