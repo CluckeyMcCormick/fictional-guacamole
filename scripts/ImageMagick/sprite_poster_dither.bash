@@ -178,11 +178,9 @@ for ((i=0; i<img_count; i=i+2)); do
     l=$((i/2))
     # Pre-format the output file name (so we don't have to later)
     out_file=`printf "postdith_%04d.png" ${l}`
-    # This command places the first file on top of the second file - in this
-    # case, that means placing the edge-only image on top of the
-    # anti-transperancy sprite. This gives us a new sprite with more clear
-    # edges.
-    # magick composite -gravity center ${arr[$k]} ${arr[$j]} $out_file
+    # This command modifies this first image file by using the second image file
+    # as an alpha mask. In this case, that means our dithered image is modified
+    # by the alpha mask we extracted earlier. 
     magick convert ${arr[$k]} ${arr[$j]} -alpha Off -compose CopyOpacity \
         -composite $1/$out_file
 done
