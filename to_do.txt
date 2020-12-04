@@ -16,18 +16,7 @@ To Do:
     We should upgrade to 4.0 as soon as possible. It's just a question of
     whenever that comes out...
 
-3. Document ImageMagick scripts and OpenSCAD scripts
-    
-    I've gotten a bit lazy with the documentation. Neither the ImageMagick nor
-    the OpenSCAD scripts have any documentation. I've been increasing my usage
-    of the ImageMagick scripts, and I'm about to do a whole update just based 
-    around the OpenSCAD scripts. I should really get around to this.
-    
-    In trying to keep with the more beginner-friendly aspect of this project
-    (that I've been kind of ignoring), these documents should explain the nature
-    of the scripts and their target environments.
-
-4. Devise some kind of documentation for the actual Godot component of the
+3. Devise some kind of documentation for the actual Godot component of the
    project
    
    Not everybody who comes across the project is going to be able to pull it
@@ -46,7 +35,7 @@ To Do:
    something that isn't code. it's better to have solid documentation. To be
    honest, I keep forgetting myself...
 
-5. Create weapon models
+4. Create weapon models
 
     We need to create weapons for our pawns to equip! We'll use OpenSCAD to
     design the models. Technically, since we use sprites in-game, we could just
@@ -65,7 +54,7 @@ To Do:
     
     And maybe a jezzail - a long rifle of some sort?
 
-6. Integrate the weapon models and the Pawn sprites
+5. Integrate the weapon models and the Pawn sprites
 
     Okay, so we have to integrate our weapon models and our Pawn sprites.
     Conventional wisdom says that we should just have different spritesheets for
@@ -74,7 +63,7 @@ To Do:
     the weapon and could somehow be layered over the Pawn Sprite? That would
     save us on Sprites.
 
-7. ATTACKS!
+6. ATTACKS!
     
     Finally, get our pawns to attack with their weapons. For now, we'll use some
     really basic target. The AI knowing how, and when, to attack will be the
