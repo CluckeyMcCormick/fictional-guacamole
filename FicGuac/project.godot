@@ -54,11 +54,6 @@ debug_print={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":80,"unicode":0,"echo":false,"script":null)
  ]
 }
-toggle_vector_guide={
-"deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":75,"unicode":0,"echo":false,"script":null)
- ]
-}
 camera_move_forward={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":87,"unicode":0,"echo":false,"script":null)
@@ -100,11 +95,6 @@ camera_zoom_out={
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":69,"unicode":0,"echo":false,"script":null)
  ]
 }
-formation_animation_increment={
-"deadzone": 0.5,
-"events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":72,"unicode":0,"echo":false,"script":null)
- ]
-}
 game_core_pause={
 "deadzone": 0.5,
 "events": [ Object(InputEventKey,"resource_local_to_scene":false,"resource_name":"","device":0,"alt":false,"shift":false,"control":false,"meta":false,"command":false,"pressed":false,"scancode":16777217,"unicode":0,"echo":false,"script":null)
@@ -114,9 +104,9 @@ game_core_pause={
 [layer_names]
 
 3d_render/layer_1="Default Render"
-3d_physics/layer_1="Terrain, Screen Raycast Blocking"
+3d_physics/layer_1="Terrain, User Screen Blocking"
 3d_render/layer_2="Obstacle Actual"
-3d_physics/layer_2="Terrain, Screen Raycast Pass-through"
+3d_physics/layer_2="Terrain, User Screen Pass-through"
 3d_render/layer_3="Obstacle Alternate"
 3d_render/layer_4="Silhouettable"
 3d_render/layer_5="Special Effects (Rerender)"
