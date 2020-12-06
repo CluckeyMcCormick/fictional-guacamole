@@ -5,11 +5,21 @@ export(Material) var top_mat setget set_top
 export(Material) var primary_mat setget set_primary
 export(Material) var alternate_mat setget set_alternate
 
-enum MATERIAL_TYPE {PRIMARY_MATERIAL, ALTERNATE_MATERIAL}
-export(MATERIAL_TYPE) var z_positive_type setget set_z_positive_type
-export(MATERIAL_TYPE) var z_negative_type setget set_z_negative_type
-export(MATERIAL_TYPE) var x_positive_type setget set_x_positive_type
-export(MATERIAL_TYPE) var x_negative_type setget set_x_negative_type
+# Flags for setting whether a particular face uses the primary or alternate
+# material - see below for more.
+const PRI_MAT_MASK_Z_POS = 1
+const PRI_MAT_MASK_Z_NEG = 2
+const PRI_MAT_MASK_X_POS = 4
+const PRI_MAT_MASK_X_NEG = 8
+const PRI_MAT_MASK_ALL = 15
+
+# Each face of the column can use one of two materials - the primary, or the
+# alternate. This can be used for a variety of effects, but the driving use case
+# was so that we could "shadow" columns that faced into walls appropriately.
+export( int, FLAGS,
+    "Z Positive", "Z Negative",
+    "X Positive", "X Negative"
+) var use_primary_material = PRI_MAT_MASK_ALL setget set_use_primary_material
 
 # How long are the sides of the column?
 export(float) var side_length = 1 setget set_length
@@ -76,25 +86,38 @@ func set_height(new_height):
     if Engine.editor_hint and update_on_value_change:
         build_all()
         
-func set_z_positive_type(new_type):
-    z_positive_type = new_type
+func set_use_primary_material(new_flags):
+    use_primary_material = new_flags
     if Engine.editor_hint and update_on_value_change:
         build_all()
-        
-func set_z_negative_type(new_type):
-    z_negative_type = new_type
-    if Engine.editor_hint and update_on_value_change:
-        build_all()
-        
-func set_x_positive_type(new_type):
-    x_positive_type = new_type
-    if Engine.editor_hint and update_on_value_change:
-        build_all()
-        
-func set_x_negative_type(new_type):
-    x_negative_type = new_type
-    if Engine.editor_hint and update_on_value_change:
-        build_all()
+
+# Utility function for controlling the Z Positive primary material bit
+func set_primary_mat_z_positive(bool_val):
+    if bool_val:
+        self.use_primary_material |= PRI_MAT_MASK_Z_POS
+    else:
+        self.use_primary_material &= (PRI_MAT_MASK_ALL ^ PRI_MAT_MASK_Z_POS)
+
+# Utility function for controlling the Z Negative primary material bit
+func set_primary_mat_z_negative(bool_val):
+    if bool_val:
+        self.use_primary_material |= PRI_MAT_MASK_Z_NEG
+    else:
+        self.use_primary_material &= (PRI_MAT_MASK_ALL ^ PRI_MAT_MASK_Z_NEG)
+
+# Utility function for controlling the X Positive primary material bit
+func set_primary_mat_x_positive(bool_val):
+    if bool_val:
+        self.use_primary_material |= PRI_MAT_MASK_X_POS
+    else:
+        self.use_primary_material &= (PRI_MAT_MASK_ALL ^ PRI_MAT_MASK_X_POS)
+
+# Utility function for controlling the X Negative primary material bit
+func set_primary_mat_x_negative(bool_val):
+    if bool_val:
+        self.use_primary_material |= PRI_MAT_MASK_X_NEG
+    else:
+        self.use_primary_material &= (PRI_MAT_MASK_ALL ^ PRI_MAT_MASK_X_NEG)
         
 func set_shadow_only_mode(new_shadow_mode):
     # Accept the value
@@ -153,7 +176,7 @@ func build_all():
     build_sides()
     adjust_base_collision()
 
-func ready_mesh(pointA, pointB, axis_point, is_x, mat_type):    
+func ready_mesh(pointA, pointB, axis_point, is_x, use_primary):    
     var new_mesh = Mesh.new()
     var verts = PoolVector3Array()
     var UVs = PoolVector2Array()
@@ -176,12 +199,12 @@ func ready_mesh(pointA, pointB, axis_point, is_x, mat_type):
     var st = SurfaceTool.new()
     st.begin(Mesh.PRIMITIVE_TRIANGLES)
     
-    # Set the material depending on the given material type
-    match mat_type:
-        MATERIAL_TYPE.PRIMARY_MATERIAL:
-            st.set_material(primary_mat)
-        MATERIAL_TYPE.ALTERNATE_MATERIAL:
-            st.set_material(alternate_mat)
+    # Set the material depending on whether this face is configured to use the
+    # primary or alternate material
+    if use_primary:
+        st.set_material(primary_mat)
+    else:
+        st.set_material(alternate_mat)
 
     for v in verts.size():
         st.add_uv(UVs[v])
@@ -200,27 +223,34 @@ func build_sides():
     
     # Points!
     var pointA
-    var pointB 
+    var pointB
+    # Do we use the primary material? This info is bitpacked so we need to pull
+    # it out.
+    var use_primary
     
     # Face 1: X-Positive
     pointA = Vector2(-abs_point, 0)
     pointB = Vector2( abs_point, height)
-    $XPosFace.mesh = ready_mesh(pointA, pointB, abs_point, true, x_positive_type)
+    use_primary = (self.use_primary_material & self.PRI_MAT_MASK_X_POS) != 0
+    $XPosFace.mesh = ready_mesh(pointA, pointB, abs_point, true, use_primary)
 
     # Face 2: Z-Negative
     pointA = Vector2(-abs_point, 0)
     pointB = Vector2( abs_point, height)
-    $ZNegFace.mesh = ready_mesh(pointA, pointB, -abs_point, false, z_negative_type)
+    use_primary = (self.use_primary_material & self.PRI_MAT_MASK_Z_NEG) != 0
+    $ZNegFace.mesh = ready_mesh(pointA, pointB, -abs_point, false, use_primary)
 
     # Face 3: X-Negative
     pointA = Vector2( abs_point, 0)
     pointB = Vector2(-abs_point,  height)
-    $XNegFace.mesh = ready_mesh(pointA, pointB, -abs_point, true, x_negative_type)
+    use_primary = (self.use_primary_material & self.PRI_MAT_MASK_X_NEG) != 0
+    $XNegFace.mesh = ready_mesh(pointA, pointB, -abs_point, true, use_primary)
     
     # Face 4: Z-Positive
     pointA = Vector2( abs_point, 0)
     pointB = Vector2(-abs_point, height)
-    $ZPosFace.mesh = ready_mesh(pointA, pointB, abs_point, false, z_positive_type)
+    use_primary = (self.use_primary_material & self.PRI_MAT_MASK_Z_POS) != 0
+    $ZPosFace.mesh = ready_mesh(pointA, pointB, abs_point, false, use_primary)
 
 func build_top():
     var new_mesh = Mesh.new()

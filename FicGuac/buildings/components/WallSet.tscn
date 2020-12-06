@@ -10,44 +10,69 @@ render_layers_3D = 2147483655
 
 [node name="FirstWall" parent="." instance=ExtResource( 3 )]
 transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, 4.5, 0, 0 )
+cutaway_sides_mat = null
+cutaway_caps_mat = null
+interior_mat = null
+exterior_mat = null
+uv_shift = Vector3( 0, 0, 0 )
 length = 3.0
+thickness = 1.0
+height = 2.0
 render_layers_3D = 2147483655
 update_on_value_change = false
+shadow_only_mode = false
+render_bottom_cap = false
 
 [node name="FirstColumn" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, -2 )
-z_positive_type = 1
-x_negative_type = 1
+use_primary_material = 6
 render_layers_3D = 2147483655
 update_on_value_change = false
 
 [node name="SecondWall" parent="." instance=ExtResource( 3 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -2 )
+cutaway_sides_mat = null
+cutaway_caps_mat = null
+interior_mat = null
+exterior_mat = null
+uv_shift = Vector3( 0, 0, 0 )
 length = 8.0
+thickness = 1.0
+height = 2.0
 render_layers_3D = 2147483655
 update_on_value_change = false
+shadow_only_mode = false
+render_bottom_cap = false
 
 [node name="SecondColumn" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, -2 )
-z_positive_type = 1
-x_positive_type = 1
+use_primary_material = 10
 render_layers_3D = 2147483655
 update_on_value_change = false
 
 [node name="ThirdWall" parent="." instance=ExtResource( 3 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -4.5, 0, 0 )
+cutaway_sides_mat = null
+cutaway_caps_mat = null
+interior_mat = null
+exterior_mat = null
+uv_shift = Vector3( 0, 0, 0 )
 length = 3.0
+thickness = 1.0
+height = 2.0
 render_layers_3D = 2147483655
 update_on_value_change = false
+shadow_only_mode = false
+render_bottom_cap = false
 
 [node name="ThirdColumn" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -4.5, 0, 2 )
-z_negative_type = 1
+use_primary_material = 13
 render_layers_3D = 2147483655
 update_on_value_change = false
 
 [node name="FourthColumn" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4.5, 0, 2 )
-z_negative_type = 1
+use_primary_material = 13
 render_layers_3D = 2147483655
 update_on_value_change = false

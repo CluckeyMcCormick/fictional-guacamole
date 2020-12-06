@@ -274,8 +274,8 @@ func build_all():
             fourth_wall_node = null
             # The column sides that would've bordered this wall should use our
             # primary (exterior) material
-            $ThirdColumn.x_positive_type = $ThirdColumn.MATERIAL_TYPE.PRIMARY_MATERIAL
-            $FourthColumn.x_negative_type = $FourthColumn.MATERIAL_TYPE.PRIMARY_MATERIAL
+            $ThirdColumn.set_primary_mat_x_positive(true)
+            $FourthColumn.set_primary_mat_x_negative(true)
         # If there's supposed to be an open wall, create the node and then set
         # the length of the gap
         WallStyles.OPEN_GAP:
@@ -287,8 +287,8 @@ func build_all():
             fourth_wall_node.gap_length = self.gap_length
             # The columns bordering this now need the alternate (cutaway)
             # material
-            $ThirdColumn.x_positive_type = $ThirdColumn.MATERIAL_TYPE.ALTERNATE_MATERIAL
-            $FourthColumn.x_negative_type = $FourthColumn.MATERIAL_TYPE.ALTERNATE_MATERIAL
+            $ThirdColumn.set_primary_mat_x_positive(false)
+            $FourthColumn.set_primary_mat_x_negative(false)
         # If there's supposed to be an open wall, create the node and then set
         # the length of the gap AND the height of the gap
         WallStyles.CLOSED_GAP:
@@ -299,8 +299,8 @@ func build_all():
             fourth_wall_node.set_owner(self)
             fourth_wall_node.gap_length = self.gap_length
             fourth_wall_node.gap_height = self.gap_height
-            $ThirdColumn.x_positive_type = $ThirdColumn.MATERIAL_TYPE.ALTERNATE_MATERIAL
-            $FourthColumn.x_negative_type = $FourthColumn.MATERIAL_TYPE.ALTERNATE_MATERIAL
+            $ThirdColumn.set_primary_mat_x_positive(false)
+            $FourthColumn.set_primary_mat_x_negative(false)
     
     # Step 2: Calculate where the items need to go and how big they need to be.
     # Since the wall set is symmetrical, the means the values are either -x, x,

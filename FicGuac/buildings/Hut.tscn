@@ -101,14 +101,22 @@ floor_mat = SubResource( 3 )
 x_size = 6
 z_size = 6
 frame_thickness = 0.45
+foundation_height = 0.5
 render_layers_3D = 2147483654
+update_on_value_change = true
 
 [node name="Stairs" parent="." instance=ExtResource( 2 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, 4 )
 forwards_mat = SubResource( 4 )
 sides_mat = SubResource( 5 )
 tops_mat = SubResource( 6 )
+full_top_step = true
+x_length = 2.0
+z_length = 2.0
+steps = 4
+target_height = 0.5
 render_layers_3D = 6
+update_on_value_change = true
 
 [node name="Roof" parent="." instance=ExtResource( 9 )]
 transform = Transform( -4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 0, 3, 0 )
@@ -119,7 +127,13 @@ longboard_mat = SubResource( 10 )
 underboard_mat = SubResource( 11 )
 x_length = 6.0
 z_length = 6.0
+gable_height = 1.0
+fascia_height = 0.25
+overhang_x = 0.5
+overhang_z = 0.5
 render_layers_3D = 2
+update_on_value_change = true
+shadow_only_mode = false
 
 [node name="LowerWallSet" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 0 )
