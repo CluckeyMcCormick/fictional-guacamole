@@ -19,10 +19,6 @@ config/name="FicGuac"
 run/main_scene="res://tests/test_gui_core/TestShell.tscn"
 config/icon="res://icon.png"
 
-[autoload]
-
-PolyGen="*res://util/scripts/PolyGen.gd"
-
 [debug]
 
 settings/stdout/print_fps=true
@@ -117,31 +113,16 @@ game_core_pause={
 
 [layer_names]
 
-3d_render/layer_1="Always Render"
-3d_physics/layer_1="Terrain/Struct, Pathable"
+3d_render/layer_1="Default Render"
+3d_physics/layer_1="Terrain, Screen Raycast Blocking"
 3d_render/layer_2="Obstacle Actual"
-3d_physics/layer_2="Terrain/Struct, Nonpathable"
+3d_physics/layer_2="Terrain, Screen Raycast Pass-through"
 3d_render/layer_3="Obstacle Alternate"
-3d_physics/layer_3="Terrain/Struct, Path Ignored"
 3d_render/layer_4="Silhouettable"
-3d_physics/layer_4="Camera Obstrucution"
 3d_render/layer_5="Special Effects (Rerender)"
+3d_physics/layer_5="Pawn"
 3d_render/layer_6="Special Effects (No rerender)"
-3d_physics/layer_6="Pawn (?)"
-3d_physics/layer_7="Vehicle(?)"
-3d_physics/layer_8="Vermin (?)"
-3d_physics/layer_9="Small Creature (?)"
-3d_physics/layer_10="Medium Creature (?)"
-3d_physics/layer_11="Large Creature (?)"
-3d_physics/layer_12="Bear (?)"
-3d_physics/layer_13="Item (?)"
-3d_physics/layer_14="Projectile (?)"
-3d_physics/layer_15="Unit Pickable (?)"
-3d_physics/layer_16="Building Pickable(?)"
-3d_physics/layer_17="Team 1"
-3d_physics/layer_18="Team 2"
-3d_physics/layer_19="Team 3"
-3d_physics/layer_20="Team 4"
+3d_physics/layer_20="Camera Obstrucution"
 
 [rendering]
 

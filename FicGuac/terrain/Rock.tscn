@@ -15,8 +15,6 @@ data = PoolVector3Array( 0.8281, -0.6216, -0.4448, -0.3728, -0.6922, -0.4631, 0.
 
 [node name="Rock" type="StaticBody"]
 input_ray_pickable = false
-collision_layer = 4
-collision_mask = 13
 script = ExtResource( 2 )
 
 [node name="CollisionSmall" type="CollisionShape" parent="."]

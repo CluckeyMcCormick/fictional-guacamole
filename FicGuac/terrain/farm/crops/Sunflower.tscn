@@ -3,17 +3,17 @@
 [ext_resource path="res://terrain/farm/crops/Sunflower.gd" type="Script" id=2]
 [ext_resource path="res://terrain/farm/crops/textures/sprite_sunflower.png" type="Texture" id=3]
 
-[sub_resource type="BoxShape" id=2]
+[sub_resource type="BoxShape" id=1]
 extents = Vector3( 0.289, 0.91, 0.135 )
 
-[sub_resource type="SpatialMaterial" id=3]
+[sub_resource type="SpatialMaterial" id=2]
 params_depth_draw_mode = 3
 params_use_alpha_scissor = true
 params_alpha_scissor_threshold = 0.98
 albedo_texture = ExtResource( 3 )
 
-[sub_resource type="QuadMesh" id=4]
-material = SubResource( 3 )
+[sub_resource type="QuadMesh" id=3]
+material = SubResource( 2 )
 size = Vector2( 1, 2 )
 
 [node name="Sunflower" type="Spatial"]
@@ -21,14 +21,15 @@ script = ExtResource( 2 )
 
 [node name="SunflowerArea" type="Area" parent="."]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.91, 0 )
-collision_layer = 2
-collision_mask = 14
+monitorable = false
+collision_layer = 0
+collision_mask = 16
 
 [node name="SunflowerShape" type="CollisionShape" parent="SunflowerArea"]
-shape = SubResource( 2 )
+shape = SubResource( 1 )
 
 [node name="SunflowerQuad" type="MeshInstance" parent="."]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 1, 0 )
-mesh = SubResource( 4 )
+mesh = SubResource( 3 )
 material/0 = null
 [connection signal="body_entered" from="SunflowerArea" to="." method="_on_SunflowerArea_body_entered"]

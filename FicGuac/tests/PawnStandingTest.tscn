@@ -6,8 +6,6 @@
 [ext_resource path="res://tests/PawnStandingTest.gd" type="Script" id=4]
 [ext_resource path="res://motion_ai/pawn/pawn_revision01_normal_c01.tres" type="SpriteFrames" id=5]
 
-
-
 [sub_resource type="PlaneMesh" id=1]
 material = ExtResource( 1 )
 size = Vector2( 15, 15 )
@@ -80,5 +78,5 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.4, 0 )
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.0700001, 0 )
 pixel_size = 0.014
 frames = ExtResource( 5 )
-frame = 5
+frame = 22
 playing = true

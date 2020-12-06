@@ -178,7 +178,6 @@ func build_all():
     if generate_cap_wall:
         cap_wall_node = WALL_SCENE.instance()
         cap_wall_node.update_on_value_change = false
-        cap_wall_node.collide_mode = cap_wall_node.CollisionMode.PATH_IGNORED
         cap_wall_node.render_bottom_cap = true
         self.add_child(cap_wall_node)
         cap_wall_node.set_owner(self)

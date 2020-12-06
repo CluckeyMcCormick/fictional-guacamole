@@ -7,7 +7,6 @@
 [ext_resource path="res://tests/SlopeStepTest.gd" type="Script" id=5]
 [ext_resource path="res://util/gui_3d/QuadLabel.tscn" type="PackedScene" id=6]
 
-
 [sub_resource type="PlaneMesh" id=1]
 material = ExtResource( 1 )
 size = Vector2( 35, 35 )

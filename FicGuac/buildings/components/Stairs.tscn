@@ -45,8 +45,8 @@ surfaces/0 = {
 points = PoolVector3Array( -1, 0, 1, -1, 0, -1, -1, 0.5, -1, 1, 0, 1, 1, 0, -1, 1, 0.5, -1 )
 
 [node name="Stairs" type="StaticBody"]
-collision_layer = 9
-collision_mask = 9
+collision_layer = 524289
+collision_mask = 524289
 script = ExtResource( 1 )
 render_layers_3D = 7
 

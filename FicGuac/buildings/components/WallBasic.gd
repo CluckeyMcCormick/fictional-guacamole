@@ -27,15 +27,6 @@ export(bool) var update_on_value_change = true
 # Are we in shadow only mode?
 export(bool) var shadow_only_mode = false setget set_shadow_only_mode
 
-# We always want the wall to collide with stuff, but how exactly we want it to
-# collide may change. The (Terrain, Nonpathable) layer was meant/designed for
-# walls and unpassable obstacles. However, sometimes the wall is used similar to
-# a roof or an overhang. This was the purpose of the (Terrain, Path Ignored)
-# collision layer. So, we need option to quickly and easily switch between the
-# two - ergo, this enum and configurable.
-enum CollisionMode {NONPATHABLE, PATH_IGNORED}
-export(CollisionMode) var collide_mode = CollisionMode.NONPATHABLE setget set_collide_mode
-
 # The wall has two "caps" - one on the top and one on the bottom. Normally, we
 # don't bother rendering the bottom because the angle of the camera means it
 # won't ever be seen. However, sometimes the wall is used for overhangs - in
@@ -126,8 +117,8 @@ func set_shadow_only_mode(new_shadow_mode):
         $CutawayCaps.cast_shadow = shade_only
         # If set to shade only mode, then we're no longer blocking visibility.
         # Turn off the "Camera Obstruction" collision layer.
-        self.set_collision_layer_bit(3, false)
-        self.set_collision_mask_bit(3, false)
+        self.set_collision_layer_bit(19, false)
+        self.set_collision_mask_bit(19, false)
     else:
         $Exterior.cast_shadow = shade_default
         $Interior.cast_shadow = shade_default
@@ -135,26 +126,8 @@ func set_shadow_only_mode(new_shadow_mode):
         $CutawayCaps.cast_shadow = shade_default
         # If set to shade only mode is off, then we're blocking visibility.
         # Turn on the "Camera Obstruction" collision layer.
-        self.set_collision_layer_bit(3, true)
-        self.set_collision_mask_bit(3, true)
-
-func set_collide_mode(new_mode):
-     # Accept the value
-    collide_mode = new_mode
-    
-    # Assert neutral status
-    self.set_collision_layer_bit(1, false)
-    self.set_collision_layer_bit(2, false)
-    self.set_collision_mask_bit(1, false)
-    self.set_collision_mask_bit(2, false)
-    
-    match collide_mode:
-        CollisionMode.NONPATHABLE:
-            self.set_collision_layer_bit(1, true)
-            self.set_collision_mask_bit(1, true)
-        CollisionMode.PATH_IGNORED:
-            self.set_collision_layer_bit(2, true)
-            self.set_collision_mask_bit(2, true)
+        self.set_collision_layer_bit(19, true)
+        self.set_collision_mask_bit(19, true)
 
 func set_render_bottom_cap(new_bool):
     render_bottom_cap = new_bool

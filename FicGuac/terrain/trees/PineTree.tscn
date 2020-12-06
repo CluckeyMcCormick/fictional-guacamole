@@ -8,8 +8,8 @@ extents = Vector3( 1, 2.38, 0.149 )
 
 [node name="PineTree" type="StaticBody"]
 input_ray_pickable = false
-collision_layer = 8
-collision_mask = 8
+collision_layer = 524288
+collision_mask = 524288
 script = ExtResource( 4 )
 _tree_type = 1
 
