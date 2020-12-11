@@ -46,12 +46,12 @@ func _physics_process(delta):
             
         # Telepointer is now at a valid location. Nice! Get a path from the
         # current pawn to wherever we're colliding
-        var path = $DetourNavigation/DetourNavigationMesh.find_path(
+        var path = $Navigation.get_simple_path(
             pawn.get_translation(),
             $Telepointer/FloorCast.get_collision_point()
         )
         # Set the path!
-        pawn.current_path = Array(path["points"])
+        pawn.current_path = Array(path)
 
 func _on_AnyPawn_path_complete(pawn, position):
     # Stick this pawn on the stack
