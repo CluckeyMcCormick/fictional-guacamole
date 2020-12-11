@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/pawn_revision01_normal_c04.png-c9434be94cc4db6f6ba72dfa8b03a1b7.stex"
+path="res://.import/pawn_revision01_c01_normal.png-6fe2a849fbd7dca99f4faae121ecca44.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://motion_ai/pawn/pawn_revision01_normal_c04.png"
-dest_files=[ "res://.import/pawn_revision01_normal_c04.png-c9434be94cc4db6f6ba72dfa8b03a1b7.stex" ]
+source_file="res://motion_ai/pawn/pawn_revision01_c01_normal.png"
+dest_files=[ "res://.import/pawn_revision01_c01_normal.png-6fe2a849fbd7dca99f4faae121ecca44.stex" ]
 
 [params]
 

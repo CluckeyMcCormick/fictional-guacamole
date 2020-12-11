@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/pawn_revision01_normal_c01.png-824c823afab7e9d4d895f9ab9f7666b8.stex"
+path="res://.import/pr01_floyd_steinberg.png-9d705013e338f5b643fe245adceaf1a2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://motion_ai/pawn/pawn_revision01_normal_c01.png"
-dest_files=[ "res://.import/pawn_revision01_normal_c01.png-824c823afab7e9d4d895f9ab9f7666b8.stex" ]
+source_file="res://tests/test_assets/pr01_floyd_steinberg.png"
+dest_files=[ "res://.import/pr01_floyd_steinberg.png-9d705013e338f5b643fe245adceaf1a2.stex" ]
 
 [params]
 

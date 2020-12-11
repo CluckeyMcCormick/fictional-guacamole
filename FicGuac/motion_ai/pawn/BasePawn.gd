@@ -50,10 +50,6 @@ var _original_frames = null
 # We'll store that value here. 
 var _current_horiz_direction = SOUTH
 
-# Signal issued when this pawn dies. Arguments passed include the specific Pawn,
-# the assigned Unit, and the Unit Index.
-signal pawn_died(pawn, unit, unit_index)
-
 # Signal issued when this pawn reaches it's target. Includes the specific Pawn
 # and the pawn's current position (which will be effectively the same as the
 # previous target).
@@ -87,13 +83,6 @@ func _process(delta):
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-# Set the new path for the unit pawn
-func set_path(new_path):
-    # Set the path
-    current_path = new_path
-    # The first position in the path is now our target position.
-    $KinematicDriver.target_position = current_path.pop_front()
-
 func _on_KinematicDriver_target_reached(position):
     # If we still have a path...
     if not current_path.empty():
@@ -101,32 +90,7 @@ func _on_KinematicDriver_target_reached(position):
         $KinematicDriver.target_position = current_path.pop_front()
     else:
         # We're done following the path! Tell anyone who's listening
-        emit_signal("path_complete", self, self.global_transform.origin)
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#
-# Setters
-#
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    
-func set_sprite_frames(new_frames):
-    # Save the frames resource
-    override_sprite_frames = new_frames
-    # First, if the original frames aren't set, we need to save those.
-    if _original_frames == null:
-         _original_frames = $VisualSprite.frames
-    # If we were actually provided a sprite frames resource, set those frames!
-    if override_sprite_frames != null:
-        $VisualSprite.frames = new_frames
-    # Otherwise, set ourselves back to the original frames
-    else:
-        $VisualSprite.frames = _original_frames
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#
-# Pawn specific functions
-#
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        emit_signal("path_complete", self, self.get_adjusted_position())
 
 # Get the "algorithmic" position. This is most often used for goal checking -
 # i.e. seeing where we are from a world-mesh perspective
@@ -156,6 +120,38 @@ func get_adjusted_position():
             adjusted = Array(adjusted["points"])[0]
     
     return adjusted
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Setters
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+func set_sprite_frames(new_frames):
+    # Save the frames resource
+    override_sprite_frames = new_frames
+    # First, if the original frames aren't set, we need to save those.
+    if _original_frames == null:
+         _original_frames = $VisualSprite.frames
+    # If we were actually provided a sprite frames resource, set those frames!
+    if override_sprite_frames != null:
+        $VisualSprite.frames = new_frames
+    # Otherwise, set ourselves back to the original frames
+    else:
+        $VisualSprite.frames = _original_frames
+
+# Set the new path for the unit pawn
+func set_path(new_path):
+    # Set the path
+    current_path = new_path
+    # The first position in the path is now our target position.
+    $KinematicDriver.target_position = current_path.pop_front()
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Pawn specific functions
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # Sets the UnitPawn's VisualSprite, given a movement vector. We treat the vector
 # like a projection from the origin - in that form it gives us a direction (and

@@ -11,15 +11,22 @@
 [ext_resource path="res://buildings/Hut.tscn" type="PackedScene" id=9]
 [ext_resource path="res://special_effects/mask64_dither2x2.png" type="Texture" id=10]
 [ext_resource path="res://special_effects/viewport_shader_templates/SilhouetteFillShader.material" type="Material" id=11]
-[ext_resource path="res://motion_ai/pawn/pawn_revision01_normal_c05.tres" type="SpriteFrames" id=12]
+[ext_resource path="res://tests/test_assets/pr01_floyd_steinberg.tres" type="SpriteFrames" id=12]
 [ext_resource path="res://terrain/trees/Woods.tscn" type="PackedScene" id=13]
 [ext_resource path="res://util/CollisionRenderMaterial.tres" type="Material" id=14]
-[ext_resource path="res://motion_ai/pawn/pawn_revision01_normal_c04.tres" type="SpriteFrames" id=15]
-[ext_resource path="res://motion_ai/pawn/pawn_revision01_normal_c03.tres" type="SpriteFrames" id=16]
-[ext_resource path="res://motion_ai/pawn/pawn_revision01_normal_c02.tres" type="SpriteFrames" id=17]
+[ext_resource path="res://tests/test_assets/pr01_riemersma.tres" type="SpriteFrames" id=15]
+[ext_resource path="res://tests/test_assets/pr01_posterize.tres" type="SpriteFrames" id=16]
+[ext_resource path="res://tests/test_assets/pr01_order_dither.tres" type="SpriteFrames" id=17]
 [ext_resource path="res://gui/TiaoLetter.ttf" type="DynamicFontData" id=18]
 [ext_resource path="res://scenes/CameraRig.tscn" type="PackedScene" id=19]
 [ext_resource path="res://special_effects/HidingMesh.tscn" type="PackedScene" id=20]
+
+
+
+
+
+
+
 
 [sub_resource type="QuadMesh" id=1]
 size = Vector2( 3.5, 3.5 )

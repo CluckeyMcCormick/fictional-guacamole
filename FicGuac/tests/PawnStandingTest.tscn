@@ -4,7 +4,8 @@
 [ext_resource path="res://scenes/SceneDefaultEnvironment.tres" type="Environment" id=2]
 [ext_resource path="res://motion_ai/pawn/BasePawn.tscn" type="PackedScene" id=3]
 [ext_resource path="res://tests/PawnStandingTest.gd" type="Script" id=4]
-[ext_resource path="res://motion_ai/pawn/pawn_revision01_normal_c01.tres" type="SpriteFrames" id=5]
+[ext_resource path="res://motion_ai/pawn/pawn_revision01_c01_normal.tres" type="SpriteFrames" id=5]
+
 
 [sub_resource type="PlaneMesh" id=1]
 material = ExtResource( 1 )

@@ -11,6 +11,8 @@ Besides being my personal time-and-energy sink, this project has a broader goal:
 
 That's why I am building the project open-source and GitHub. I'm trying to make the commits as informative as possible so that the changes in each commit are clear, as well as (more importantly) the reasoning behind those decisions. I hope that this pseudo-development journal serves SOMEBODY (it's already helped me keep track of what I'm doing). 
 
+## Documentation
+
 Rather than using wiki-style documentation, I'm going to document the game using a series of `README` files that are placed in the relevant directories. These scripts will serve to document the expected function and reasoning behind the current directory and it's files. This *documentation-in-place* strategy might be unorthodox but it will enhance this project's utility as a learning project. It naturally lines up better with how people will experience the repo - by clicking through the various folders to see what-is-what. I haven't ever seen a project do this, which leads me to conclude it's actually a *terrible* idea with some sort of invisible pitfall that will destroy me. :smiley:
 
 Most of this documentation is written with the expectation that it will be viewed both by someone trying to understand the project and by the merely curious - so the level of detail in the documents may vary.

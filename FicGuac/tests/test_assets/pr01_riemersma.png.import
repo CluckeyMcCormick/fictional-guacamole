@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/pawn_revision01_normal_c03.png-4d4c71aacc341158dfcb5ac7bc8276dc.stex"
+path="res://.import/pr01_riemersma.png-8ee93cecc5554618a424b4021e2bbc1b.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://motion_ai/pawn/pawn_revision01_normal_c03.png"
-dest_files=[ "res://.import/pawn_revision01_normal_c03.png-4d4c71aacc341158dfcb5ac7bc8276dc.stex" ]
+source_file="res://tests/test_assets/pr01_riemersma.png"
+dest_files=[ "res://.import/pr01_riemersma.png-8ee93cecc5554618a424b4021e2bbc1b.stex" ]
 
 [params]
 
@@ -24,7 +24,7 @@ flags/filter=false
 flags/mipmaps=false
 flags/anisotropic=false
 flags/srgb=1
-process/fix_alpha_border=true
+process/fix_alpha_border=false
 process/premult_alpha=false
 process/HDR_as_SRGB=false
 process/invert_color=false

@@ -2,8 +2,8 @@
 
 importer="texture"
 type="StreamTexture"
-path.s3tc="res://.import/pawn_revision01_dead_c01.png-b00281920c60a460c27be0541daae426.s3tc.stex"
-path.etc2="res://.import/pawn_revision01_dead_c01.png-b00281920c60a460c27be0541daae426.etc2.stex"
+path.s3tc="res://.import/pawn_revision01_c00_dead.png-52e6948609c82be2adbba4013154f044.s3tc.stex"
+path.etc2="res://.import/pawn_revision01_c00_dead.png-52e6948609c82be2adbba4013154f044.etc2.stex"
 metadata={
 "imported_formats": [ "s3tc", "etc2" ],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://motion_ai/pawn/pawn_revision01_dead_c01.png"
-dest_files=[ "res://.import/pawn_revision01_dead_c01.png-b00281920c60a460c27be0541daae426.s3tc.stex", "res://.import/pawn_revision01_dead_c01.png-b00281920c60a460c27be0541daae426.etc2.stex" ]
+source_file="res://motion_ai/pawn/pawn_revision01_c00_dead.png"
+dest_files=[ "res://.import/pawn_revision01_c00_dead.png-52e6948609c82be2adbba4013154f044.s3tc.stex", "res://.import/pawn_revision01_c00_dead.png-52e6948609c82be2adbba4013154f044.etc2.stex" ]
 
 [params]
 
