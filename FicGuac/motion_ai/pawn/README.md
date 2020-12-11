@@ -38,9 +38,6 @@ In order to move the Pawn appropriately, the `KinematicDriver` needs to know whe
 ##### Navigation
 Two of our *Position Algorithm*s, *Navigation* and *Detour Mesh*, require nodes in order to work. This configurable allows the user to provide the appropriate node.
 
-##### Override Sprite Frames
-If you wish, you can provide a new set of `SpriteFrames` to use instead of the default frames. This is currently used for testing purposes, but I'm starting to wonder if there's a better way of doing things...
-
 ### (Public) Variables
 ##### `current_path`
 The current path the Pawn is following. Should be an array of `Vector3` points. Points are followed front-to-back. Path is considered complete once the array is empty.
