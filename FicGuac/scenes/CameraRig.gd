@@ -17,9 +17,9 @@ export(int, 5, 2000, 5) var basic_move_rate = 100 setget set_move_rate
 # lot to controlling the camera - we don't want to go in too close, nor too far.
 # We also want to start at a fixed size that is consistent for all of our
 # cameras, and step in-and-out at a consistent rate. These all cover that.
+export(int) var camera_size = 150 setget set_camera_size
 export(int) var max_camera_size = 150 setget set_max_camera_size
 export(int) var min_camera_size = 15 setget set_min_camera_size
-export(int) var camera_size = 150 setget set_camera_size
 export(int) var zoom_step = 15
 
 # Sometimes, we might want the camera to just sit there - no zooming in or out,
@@ -28,6 +28,10 @@ export(int) var zoom_step = 15
 export(bool) var move_enabled = true
 export(bool) var zoom_enabled = true
 
+# We may also wish to restrict how much the camera can move on a given axis. If
+# a given axis value is > 0, The camera will be clamped to the starting position
+# on that axis, plus-or-minus the corresponding axis value. In this instance,
+# the 2D y is actually 3D z; the camera doesn't move on 3D y.
 export(Vector2) var move_clamping_extents = Vector2(-1, -1)
 
 # To move forward, backward, left and right, we need to translate the camera -
