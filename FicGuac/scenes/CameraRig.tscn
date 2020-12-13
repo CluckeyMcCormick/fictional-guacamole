@@ -1,6 +1,7 @@
-[gd_scene load_steps=2 format=2]
+[gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://scenes/CameraRig.gd" type="Script" id=1]
+[ext_resource path="res://scenes/SilhouetteWorldEnvironment.tres" type="Environment" id=2]
 
 [node name="CameraRig" type="Spatial"]
 script = ExtResource( 1 )
@@ -52,6 +53,7 @@ shadow_atlas_quad_0 = 1
 [node name="Camera" type="Camera" parent="SilhouetteWorld"]
 transform = Transform( 0.707107, -0.408244, 0.577353, 0, 0.816501, 0.577344, -0.707107, -0.408244, 0.577353, 0, 0, 0 )
 cull_mask = 8
+environment = ExtResource( 2 )
 projection = 1
 current = true
 size = 150.0

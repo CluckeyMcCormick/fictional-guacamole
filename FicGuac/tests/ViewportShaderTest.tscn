@@ -5,9 +5,9 @@
 [ext_resource path="res://tests/ViewportShaderTest.gd" type="Script" id=3]
 [ext_resource path="res://scenes/SceneDefaultEnvironment.tres" type="Environment" id=4]
 [ext_resource path="res://terrain/mat_terrain_grass_textured.tres" type="Material" id=5]
+[ext_resource path="res://special_effects/viewport_shader_templates/SilhouetteFillShader.material" type="Material" id=6]
 [ext_resource path="res://buildings/Hut.tscn" type="PackedScene" id=9]
 [ext_resource path="res://special_effects/mask64_dither2x2.png" type="Texture" id=10]
-[ext_resource path="res://special_effects/viewport_shader_templates/SilhouetteFillShader.material" type="Material" id=11]
 [ext_resource path="res://tests/test_assets/pr01_floyd_steinberg.tres" type="SpriteFrames" id=12]
 [ext_resource path="res://terrain/trees/Woods.tscn" type="PackedScene" id=13]
 [ext_resource path="res://util/CollisionRenderMaterial.tres" type="Material" id=14]
@@ -246,23 +246,24 @@ rings = 1
 [sub_resource type="VisualShaderNodeCompare" id=21]
 default_input_values = [ 0, Vector3( 0, 0, 0 ), 1, Vector3( 0, 0, 0 ), 2, 1e-05 ]
 type = 1
-function = 2
+function = 1
 
-[sub_resource type="VisualShaderNodeColorConstant" id=22]
-constant = Color( 0, 0, 0, 1 )
+[sub_resource type="VisualShaderNodeSwitch" id=22]
 
-[sub_resource type="VisualShaderNodeSwitch" id=23]
+[sub_resource type="VisualShaderNodeTextureUniform" id=23]
+uniform_name = "ViewportTexture"
 
 [sub_resource type="VisualShaderNodeColorUniform" id=24]
+uniform_name = "AlphaColor"
+
+[sub_resource type="VisualShaderNodeColorFunc" id=25]
+
+[sub_resource type="VisualShaderNodeColorUniform" id=26]
 output_port_for_preview = 1
-uniform_name = "ColorUniform"
+uniform_name = "MultiplyColor"
 
-[sub_resource type="VisualShaderNodeInput" id=25]
+[sub_resource type="VisualShaderNodeInput" id=27]
 input_name = "screen_uv"
-
-[sub_resource type="VisualShaderNodeTexture" id=26]
-
-[sub_resource type="VisualShaderNodeColorFunc" id=27]
 
 [sub_resource type="VisualShaderNodeVectorOp" id=28]
 operator = 2
@@ -271,8 +272,9 @@ operator = 2
 code = "shader_type spatial;
 render_mode specular_schlick_ggx, depth_test_disable, unshaded, shadows_disabled, ambient_light_disabled;
 
-uniform vec4 ColorUniform : hint_color;
-uniform sampler2D tex_frg_5;
+uniform vec4 MultiplyColor : hint_color;
+uniform sampler2D ViewportTexture;
+uniform vec4 AlphaColor : hint_color;
 
 
 
@@ -283,42 +285,47 @@ void vertex() {
 
 void fragment() {
 // ColorUniform:3
-	vec3 n_out3p0 = ColorUniform.rgb;
-	float n_out3p1 = ColorUniform.a;
+	vec3 n_out3p0 = MultiplyColor.rgb;
+	float n_out3p1 = MultiplyColor.a;
 
 // Input:4
 	vec3 n_out4p0 = vec3(SCREEN_UV, 0.0);
 
-// Texture:5
-	vec4 tex_frg_5_read = texture(tex_frg_5, n_out4p0.xy);
-	vec3 n_out5p0 = tex_frg_5_read.rgb;
-	float n_out5p1 = tex_frg_5_read.a;
-
-// VectorOp:9
-	vec3 n_out9p0 = n_out3p0 * n_out5p0;
-
-// ColorFunc:6
-	vec3 n_out6p0;
+// TextureUniform:16
+	vec3 n_out16p0;
+	float n_out16p1;
 	{
-		vec3 c = n_out5p0;
+		vec4 n_tex_read = texture(ViewportTexture, n_out4p0.xy);
+		n_out16p0 = n_tex_read.rgb;
+		n_out16p1 = n_tex_read.a;
+	}
+
+// ColorFunc:18
+	vec3 n_out18p0;
+	{
+		vec3 c = n_out16p0;
 		float max1 = max(c.r, c.g);
 		float max2 = max(max1, c.b);
 		float max3 = max(max1, max2);
-		n_out6p0 = vec3(max3, max3, max3);
+		n_out18p0 = vec3(max3, max3, max3);
 	}
 
-// Color:11
-	vec3 n_out11p0 = vec3(0.000000, 0.000000, 0.000000);
-	float n_out11p1 = 1.000000;
+// VectorOp:9
+	vec3 n_out9p0 = n_out3p0 * n_out18p0;
+
+// ColorUniform:17
+	vec3 n_out17p0 = AlphaColor.rgb;
+	float n_out17p1 = AlphaColor.a;
 
 // Compare:10
 	bool n_out10p0;
 	{
-		bvec3 _bv = greaterThan(n_out6p0, n_out11p0);
+		bvec3 _bv = notEqual(n_out16p0, n_out17p0);
 		n_out10p0 = all(_bv);
 	}
 
 // VectorSwitch:15
+	vec3 n_in15p2 = vec3(0.00000, 0.00000, 0.00000);
 	vec3 n_out15p0;
 	if(n_out10p0)
 	{
@@ -326,7 +333,7 @@ void fragment() {
 	}
 	else
 	{
-		n_out15p0 = vec3(n_out10p0 ? 1.0 : 0.0);
+		n_out15p0 = n_in15p2;
 	}
 
 // Output:0
@@ -340,38 +347,40 @@ void light() {
 
 }
 "
-graph_offset = Vector2( 152.906, 89.9006 )
+graph_offset = Vector2( -334.187, -108.75 )
 flags/ambient_light_disabled = true
 flags/depth_test_disable = true
 flags/shadows_disabled = true
 flags/unshaded = true
-nodes/fragment/0/position = Vector2( 860, 140 )
-nodes/fragment/3/node = SubResource( 24 )
-nodes/fragment/3/position = Vector2( -260, 0 )
-nodes/fragment/4/node = SubResource( 25 )
+nodes/fragment/0/position = Vector2( 480, 20 )
+nodes/fragment/3/node = SubResource( 26 )
+nodes/fragment/3/position = Vector2( -240, 0 )
+nodes/fragment/4/node = SubResource( 27 )
 nodes/fragment/4/position = Vector2( -480, 180 )
-nodes/fragment/5/node = SubResource( 26 )
-nodes/fragment/5/position = Vector2( -260, 220 )
-nodes/fragment/6/node = SubResource( 27 )
-nodes/fragment/6/position = Vector2( 60, 220 )
 nodes/fragment/9/node = SubResource( 28 )
-nodes/fragment/9/position = Vector2( 60, 0 )
+nodes/fragment/9/position = Vector2( 260, 0 )
 nodes/fragment/10/node = SubResource( 21 )
-nodes/fragment/10/position = Vector2( 260, 240 )
-nodes/fragment/11/node = SubResource( 22 )
-nodes/fragment/11/position = Vector2( 80, 300 )
-nodes/fragment/15/node = SubResource( 23 )
-nodes/fragment/15/position = Vector2( 500, 180 )
-nodes/fragment/connections = PoolIntArray( 4, 0, 5, 0, 5, 0, 6, 0, 3, 0, 9, 0, 11, 0, 10, 1, 6, 0, 10, 0, 9, 0, 0, 0, 3, 1, 15, 1, 10, 0, 15, 0, 10, 0, 15, 2, 15, 0, 0, 1, 5, 0, 9, 1 )
+nodes/fragment/10/position = Vector2( 20, 340 )
+nodes/fragment/15/node = SubResource( 22 )
+nodes/fragment/15/position = Vector2( 240, 160 )
+nodes/fragment/16/node = SubResource( 23 )
+nodes/fragment/16/position = Vector2( -240, 220 )
+nodes/fragment/17/node = SubResource( 24 )
+nodes/fragment/17/position = Vector2( -240, 420 )
+nodes/fragment/18/node = SubResource( 25 )
+nodes/fragment/18/position = Vector2( 0, 220 )
+nodes/fragment/connections = PoolIntArray( 3, 0, 9, 0, 9, 0, 0, 0, 3, 1, 15, 1, 15, 0, 0, 1, 4, 0, 16, 0, 16, 0, 10, 0, 17, 0, 10, 1, 10, 0, 15, 0, 16, 0, 18, 0, 18, 0, 9, 1 )
 
 [sub_resource type="ViewportTexture" id=30]
 viewport_path = NodePath("CameraRig/SilhouetteWorld")
 
 [sub_resource type="ShaderMaterial" id=31]
 resource_local_to_scene = true
+render_priority = 1
 shader = SubResource( 29 )
-shader_param/ColorUniform = Color( 0.00784314, 0.996078, 0.92549, 1 )
-shader_param/tex_frg_5 = SubResource( 30 )
+shader_param/MultiplyColor = Color( 1, 0, 0, 1 )
+shader_param/AlphaColor = Color( 1, 0, 1, 1 )
+shader_param/ViewportTexture = SubResource( 30 )
 
 [sub_resource type="NavigationMesh" id=32]
 vertices = PoolVector3Array( 1.8, 0.5, -7.3, 2.3, 0.5, -7.7, 2.3, 0.5, -9.5, -9.5, 0.5, -9.5, -9.5, 0.5, -1.5, 1.8, 0.5, -1.6, 1.8, 0.5, -7.3, -9.5, 0.5, -9.5, 8.9, 0.5, -7.3, 8.9, 0.5, -1.8, 9.5, 0.5, -1.8, 9.5, 0.5, -9.5, 8.7, 0.5, -7.6, 9.5, 0.5, -9.5, 2.3, 0.5, -9.5, 2.3, 0.5, -7.7, 8.7, 0.5, -7.6, 8.9, 0.5, -7.3, 9.5, 0.5, -9.5, 2.5, 3.75, -7, 2.5, 3.75, -1.4, 8.1, 3.75, -1.4, 8.1, 3.75, -7, 5.3, 4.75, -7, 5.3, 4.75, -1.4, 4.9, 1, -1.4, 5.8, 1, -1.4, 6, 1, -2.1, 4.7, 1, -2.1, 3.4, 1, -2.2, 4.7, 1, -2.1, 6, 1, -2.1, 7.3, 1, -2.2, 7.3, 1, -6.1, 3.4, 1, -6.1, 5.8, 0.75, -1, 5.8, 1, -1.4, 4.9, 1, -1.4, 4.8, 0.75, -0.8, 9.5, 0.5, -1.8, 8.9, 0.5, -1.8, 8.9, 0.5, -1, 9.5, 0.5, 9.5, 9.5, 0.5, 9.5, 8.9, 0.5, -1, 8.5, 0.5, -0.599999, 5.8, 0.75, -1, 4.8, 0.75, -0.8, 4.5, 0.75, -0.599999, 2.7, 0.5, 9.5, 9.5, 0.5, 9.5, 6.2, 0.75, -0.599999, 9.5, 0.5, 9.5, 8.5, 0.5, -0.599999, 6.2, 0.75, -0.599999, 4.5, 0.75, -0.599999, 2.8, 0.5, -0.599999, 2.7, 0.5, 9.5, 2.7, 0.5, 9.5, 2.8, 0.5, -0.599999, 2.2, 0.5, -0.599999, 2.7, 0.5, 9.5, 2.2, 0.5, -0.599999, 1.9, 0.5, -0.8, 2.7, 0.5, 9.5, 1.9, 0.5, -0.8, 1.8, 0.5, -1.6, -3.4, 0.5, 9.5, -9.5, 0.5, -1.5, -9.5, 0.5, 9.5, -3.4, 0.5, 9.5, 1.8, 0.5, -1.6 )
@@ -488,7 +497,7 @@ frames = ExtResource( 12 )
 [node name="FillCrystal" type="MeshInstance" parent="FillPawn"]
 layers = 32
 mesh = SubResource( 20 )
-material/0 = ExtResource( 11 )
+material/0 = ExtResource( 6 )
 
 [node name="Navigation" type="Navigation" parent="."]
 
