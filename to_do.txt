@@ -16,32 +16,13 @@ To Do:
     We should upgrade to 4.0 as soon as possible. It's just a question of
     whenever that comes out...
 
-3. Devise some kind of documentation for the actual Godot component of the
-   project
-   
-   Not everybody who comes across the project is going to be able to pull it
-   apart like a watchmaker - even with the complete Git history. We should, for
-   the sake of those people (and ourselves!) documents some of the oddities and
-   quirks of this project.
-   
-   What immediately leaps to mind is the recently expanded special effects 
-   directory, as well as the KinematicDriver, and the building components. The
-   procedural terrain elements (the woods and the farm) are also good
-   candidates.
-   
-   But there's also things like the individual physics and visual layers - we
-   need to capture the ethos behind such decisions. I guess I could track down
-   the relevant commits but that doesn't seem like it would work well for 
-   something that isn't code. it's better to have solid documentation. To be
-   honest, I keep forgetting myself...
-
-4. Update the Dynamic Navigation Test
+3. Update the Dynamic Navigation Test
 
    The Dynamic Navigation Test should have some controls to explain the basics
    of what's happening in the test. I don't want to track controls in external
    documentation, so the scene will need some sort of notice.
 
-5. Update the Shader Test
+4. Update the Shader Test
 
    The shader test right now is... kind of bad. I'm literally just throwing the
    pawns at random locations in a bid to see how they interact with each other
@@ -57,7 +38,7 @@ To Do:
    - Passing in front of and behind each other - both with full visibility and
      an obscuring obstacle
 
-6. Track down and fix the stair-corner glitch
+5. Track down and fix the stair-corner glitch
 
     There's been a pretty persistent glitch - if you order a pawn to navigate to
     a corner where the top of the stairs meets the wall of a Hut, the pawn
@@ -71,7 +52,7 @@ To Do:
     If my assumption is correct, then we'll need to add a "Vertical Tolerance"
     to the KinematicDriver.
 
-7. Create weapon models
+6. Create weapon models
 
     We need to create weapons for our pawns to equip! We'll use OpenSCAD to
     design the models. Technically, since we use sprites in-game, we could just
@@ -90,7 +71,7 @@ To Do:
     
     And maybe a jezzail - a long rifle of some sort?
 
-8. Integrate the weapon models and the Pawn sprites
+7. Integrate the weapon models and the Pawn sprites
 
     Okay, so we have to integrate our weapon models and our Pawn sprites.
     Conventional wisdom says that we should just have different spritesheets for
@@ -99,7 +80,7 @@ To Do:
     the weapon and could somehow be layered over the Pawn Sprite? That would
     save us on Sprites.
 
-9. ATTACKS!
+8. ATTACKS!
     
     Finally, get our pawns to attack with their weapons. For now, we'll use some
     really basic target. The AI knowing how, and when, to attack will be the

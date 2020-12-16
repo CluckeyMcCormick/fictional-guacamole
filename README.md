@@ -9,13 +9,39 @@ However, all iterations of this game have a common core of features:
 
 Besides being my personal time-and-energy sink, this project has a broader goal: it's my hope that this project can serve as a learning tool, or the framework from which someone else can build their own project.
 
-That's why I am building the project open-source and GitHub. I'm trying to make the commits as informative as possible so that the changes in each commit are clear, as well as (more importantly) the reasoning behind those decisions. I hope that this pseudo-development journal serves SOMEBODY (it's already helped me keep track of what I'm doing). 
+That's why I am building the project open-source and on GitHub. I'm trying to make the commits as informative as possible so that the changes in each commit are clear, as well as (more importantly) the reasoning behind those decisions. I hope that this pseudo-development journal serves SOMEBODY (it's already helped me keep track of what I'm doing). 
 
 ## Documentation
 
-Rather than using wiki-style documentation, I'm going to document the game using a series of `README` files that are placed in the relevant directories. These scripts will serve to document the expected function and reasoning behind the current directory and it's files. This *documentation-in-place* strategy might be unorthodox but it will enhance this project's utility as a learning project. It naturally lines up better with how people will experience the repo - by clicking through the various folders to see what-is-what. I haven't ever seen a project do this, which leads me to conclude it's actually a *terrible* idea with some sort of invisible pitfall that will destroy me. :smiley:
+Rather than using wiki-style documentation, I'm going to document the game using a series of `README` files that are placed in the relevant directories. These scripts will serve to document the expected function and reasoning behind the current directory and it's files. This *documentation-in-place* strategy might be unorthodox but it will enhance this project's utility as a learning tool. It naturally lines up better with how people will experience the repo - by clicking through the various folders to see what-is-what. I haven't ever seen a project do this, which leads me to conclude it's actually a *terrible* idea with some sort of invisible pitfall that will destroy me. :smiley:
 
-Most of this documentation is written with the expectation that it will be viewed both by someone trying to understand the project and by the merely curious - so the level of detail in the documents may vary.
+Most of this documentation is written with the expectation that it will be viewed both by someone trying to understand the project and by the merely curious. Because textures can be readily observed, they are generally unexplained. Most of the documentation concerns *scenes* and intricacies with the game logic.
+
+ The level of detail in the documents may vary - I take full responsibility and simultaneously refuse to apologize. I am lazy, and I did take shortcuts in some places. Sometimes I didn't have anything particularly unique to say about a directory and I didn't want to repeat myself. Othertimes, scenes were so similar to each other that I grouped their documentation together. In some instances, I also just avoided documentation by pointing out the best way to see how something worked was to play with it.
+
+## Art Style
+I'm not much of an artist, so this game hasn't got much of an art style. However, I have developed a set of rules that should make the game somewhat passable.
+
+#### Colors
+The game uses a *limited palette*. This really does a lot of the heavy lifting in terms of giving the game a consistent aesthetic. Currently, we use a modified version of *Resurrect64* by [Kerrie Lake](https://kerrielakeportfolio.wordpress.com/) (see the *Colors* directory). The palette has plenty of colors and I like it a lot, so a palette switch is unlikely.
+
+#### Hierarchy of Reality
+There's a concept that I'm calling *hierarchy of reality*. The idea is that, to represent something's solidity, power, or stability - it very *realness* - we use sprites or fully realized 3D models. The idea is that the less significant something is, and thus the less its hold on reality, the more flat it becomes. The ultimate end goal is to have the player, either as a single flat entity or commanding a bunch of flat entities, take on and defeat increasingly powerful monsters realized as 3D models. Sort of a David-and-Goliath thing. There are currently 3 (planned) levels:
+
+1. *Flat (Physics) Sprite*: The entity is presented as a flat sprite in game. There is no attempt to hide the fact that this is literally just a flat sprite. There will probably be physics on these items so that they immediately fall over, revealing that it is the pixel equivalent of a cardboard cutout.
+1. *Faux-3D Sprite*: The entity is still represented in game as a sprite, but is now rigidly locked to always face the camera. The sprites are actually 3D models, baked into isometric images (and then processed a little bit). 
+1. *3D Model*: The entity is represented as a 3D model.
+
+The current issue is that this rule is subordinate to both what looks good and what I'm actually capable of doing.
+
+For example, trees are generally renown for their sturdiness. Following the hierarchy's logic, they should probably be 3D models. However, we're currently using camera-locked 2D sprites, which sort of straddles level 1 and level 2. That's because those tree sprites look pretty and good and I **DEEPLY** doubt my ability to make a good looking 3D model.
+
+Another problem - furniture! I see furniture as kind of ephemeral - by its nature, less sturdy and more temporary than trees. However, because this is something our faux-3D sprites will interact with, we need a way to layer those sprites appropriately. That would mean baking new sprites for every type of sprite interacting with each piece of furniture. And we don't need that. And then, if we want to add physics to the furniture to add to scenes of devastation? In this instance it makes more practical sense for the furniture to be a 3D model.
+
+#### Pixel Ratios
+For texturing blocks and other items in the world, it was important that I maintain a consistent pixel count so everything appears to have the right level of detail. The current rule of thumb is *32 pixels per world-unit*. So, a 1x1 quad should be given a 32x32 texture.
+
+There are exceptions to this, especially where higher fidelity is required. For example, the *Pawn* sprites totally flaunt this recommendation.
 
 ## Why Godot?
 There's a lot of choices for game engines, but I ultimately used Godot. Originally I was messing around with Python, using various libraries to get the results I wanted. I was hoping to stay in Python for easy modding, but Python simply did NOT have the speed for what I needed to do. 
