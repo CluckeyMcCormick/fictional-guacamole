@@ -16,13 +16,7 @@ To Do:
     We should upgrade to 4.0 as soon as possible. It's just a question of
     whenever that comes out...
 
-3. Update the Dynamic Navigation Test
-
-   The Dynamic Navigation Test should have some controls to explain the basics
-   of what's happening in the test. I don't want to track controls in external
-   documentation, so the scene will need some sort of notice.
-
-4. Update the Shader Test
+3. Update the Shader Test
 
    The shader test right now is... kind of bad. I'm literally just throwing the
    pawns at random locations in a bid to see how they interact with each other
@@ -38,7 +32,7 @@ To Do:
    - Passing in front of and behind each other - both with full visibility and
      an obscuring obstacle
 
-5. Track down and fix the stair-corner glitch
+4. Track down and fix the stair-corner glitch
 
     There's been a pretty persistent glitch - if you order a pawn to navigate to
     a corner where the top of the stairs meets the wall of a Hut, the pawn
@@ -52,7 +46,7 @@ To Do:
     If my assumption is correct, then we'll need to add a "Vertical Tolerance"
     to the KinematicDriver.
 
-6. Create weapon models
+5. Create weapon models
 
     We need to create weapons for our pawns to equip! We'll use OpenSCAD to
     design the models. Technically, since we use sprites in-game, we could just
@@ -71,7 +65,7 @@ To Do:
     
     And maybe a jezzail - a long rifle of some sort?
 
-7. Integrate the weapon models and the Pawn sprites
+6. Integrate the weapon models and the Pawn sprites
 
     Okay, so we have to integrate our weapon models and our Pawn sprites.
     Conventional wisdom says that we should just have different spritesheets for
@@ -80,7 +74,7 @@ To Do:
     the weapon and could somehow be layered over the Pawn Sprite? That would
     save us on Sprites.
 
-8. ATTACKS!
+7. ATTACKS!
     
     Finally, get our pawns to attack with their weapons. For now, we'll use some
     really basic target. The AI knowing how, and when, to attack will be the

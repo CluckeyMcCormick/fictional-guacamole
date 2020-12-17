@@ -1329,10 +1329,10 @@ script = ExtResource( 3 )
 
 [node name="CameraRig" parent="." instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 64, 64 )
-basic_move_rate = 100
+basic_move_rate = 100.0
+camera_size = 20
 max_camera_size = 150
 min_camera_size = 15
-camera_size = 20
 zoom_step = 15
 move_enabled = false
 zoom_enabled = false
@@ -1401,17 +1401,19 @@ hiding_corner = 3
 anchor_top = 1.0
 anchor_right = 1.0
 anchor_bottom = 1.0
+margin_left = 10.0
 margin_top = -40.0
+margin_right = -10.0
 size_flags_horizontal = 4
 size_flags_vertical = 4
-columns = 4
+columns = 5
 __meta__ = {
 "_edit_use_anchors_": false
 }
 
 [node name="EastButton" type="CheckButton" parent="GridContainer"]
-margin_left = 37.0
-margin_right = 215.0
+margin_left = 16.0
+margin_right = 194.0
 margin_bottom = 40.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
@@ -1419,8 +1421,8 @@ pressed = true
 text = "Toggle East Hut"
 
 [node name="NorthButton" type="CheckButton" parent="GridContainer"]
-margin_left = 289.0
-margin_right = 477.0
+margin_left = 225.0
+margin_right = 413.0
 margin_bottom = 40.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
@@ -1428,8 +1430,8 @@ pressed = true
 text = "Toggle North Hut"
 
 [node name="WestButton" type="CheckButton" parent="GridContainer"]
-margin_left = 548.0
-margin_right = 733.0
+margin_left = 440.0
+margin_right = 625.0
 margin_bottom = 40.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
@@ -1437,13 +1439,21 @@ pressed = true
 text = "Toggle West Hut"
 
 [node name="SouthButton" type="CheckButton" parent="GridContainer"]
-margin_left = 803.0
-margin_right = 991.0
+margin_left = 653.0
+margin_right = 841.0
 margin_bottom = 40.0
 size_flags_horizontal = 6
 size_flags_vertical = 6
 pressed = true
 text = "Toggle South Hut"
+
+[node name="Label" type="Label" parent="GridContainer"]
+margin_left = 856.0
+margin_top = 4.0
+margin_right = 1003.0
+margin_bottom = 35.0
+text = "Use Left Mouse Button
+to direct the pawn!"
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 4 )
