@@ -7,13 +7,13 @@
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 0.26, 0.805, 0.26 )
 
-[sub_resource type="CapsuleShape" id=3]
-radius = 0.260039
-height = 0.589957
-
-[sub_resource type="CylinderShape" id=4]
+[sub_resource type="CylinderShape" id=3]
 radius = 0.26
-height = 1.11
+height = 1.21
+
+[sub_resource type="CapsuleShape" id=2]
+radius = 0.260039
+height = 0.69
 
 [node name="BasePawn" type="KinematicBody"]
 collision_layer = 16
@@ -24,13 +24,14 @@ script = ExtResource( 4 )
 shape = SubResource( 1 )
 disabled = true
 
-[node name="ActualCollision" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.25, 0 )
+[node name="MeasuredCollision" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0 )
 shape = SubResource( 3 )
+disabled = true
 
-[node name="ActualCollision2" type="CollisionShape" parent="."]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.25, 0 )
-shape = SubResource( 4 )
+[node name="ActualCollision" type="CollisionShape" parent="."]
+transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.2, 0 )
+shape = SubResource( 2 )
 
 [node name="VisualSprite" type="AnimatedSprite3D" parent="."]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.049, 0 )
@@ -47,6 +48,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.74593, 0 )
 visible = false
 drive_body = NodePath("..")
 position_function = "get_adjusted_position"
-float_height = 0.5
+float_height = 0.41
 [connection signal="error_microposition_loop" from="KinematicDriver" to="." method="_on_KinematicDriver_error_microposition_loop"]
 [connection signal="target_reached" from="KinematicDriver" to="." method="_on_KinematicDriver_target_reached"]

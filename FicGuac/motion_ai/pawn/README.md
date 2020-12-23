@@ -23,9 +23,9 @@ So there would be several animations under *normal*, several under *wounded*, an
 ## Base Pawn
 The basic pawn - the star of the show, if you will. We repeatedly refer to it as basic, base, or basal because we're considering having different scenes inherit from this one.
 
-If you look at the scene, you'll notice that the `KinematicDriver` (see the `motion_ai/common` directory) is already integrated with the Pawn. Note that there's two collision shapes - an effective collision shape and an actual collision shape. The actual collision shape is used in conjunction with the `KinematicDriver`'s *Float Height* configurable to allow the Pawn to step up ledges. The effective collision shape is more there for demonstration and guidance.
+If you look at the scene, you'll notice that the `KinematicDriver` (see the `motion_ai/common` directory) is already integrated with the Pawn. Note that there's three collision shapes. The "actual" collision shape is used in conjunction with the `KinematicDriver`'s *Float Height* configurable to allow the Pawn to step up ledges. The other two are guide shapes; we mostly use them to help measure the Pawn's ideal and effective sizes.
 
-Currently, the pawn's actual collision shape is a cylinder. This was done so that the Pawn could easily move over and around objects without getting hooked on things (a common problem for boxier shapes).
+Currently, the pawn's actual collision shape is a capsule. This was done so that the Pawn could easily move over and around objects without getting hooked on things (a common problem for boxier shapes). The Pawn's effective step-up height is ~0.5 units - exactness is difficult because of interplay between the *Float Height* and the capsule's rounded bottom.
 
 Currently, the only real functionality of the Pawn is pathing: give the Pawn a path, and it will follow that path.
 

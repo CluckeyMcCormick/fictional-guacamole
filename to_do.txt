@@ -50,3 +50,23 @@ To Do:
     really basic target. The AI knowing how, and when, to attack will be the
     next big step for the project.
 
+6. Improve the Slope-Step Test
+
+    The Slope-Step Test needs some improvement. Right now, we need to wait for
+    every single test to fire. Like, we just wait. We've already done something
+    better with the Viewport Shader Test - we should migrate the test structure
+    (especially the skip test button) from that scene.
+    
+7. Come up with a way to bake the procedural building components (?)
+
+    I'm worried about the impact of the procedural building components on the
+    game's performance. Once they're generated there's no issue but it's the
+    start-up and load time that I'm worried about.
+
+    It's possible for us to save the array meshes once they've been generated.
+    I think we can create a plugin that will allow us to bake the components
+    on-demand. We'll probably need to create a separate set of "baked" scenes.
+
+    I'm still unsure about whether this is something even worth doing or not.
+    I'll mull it over...
+
