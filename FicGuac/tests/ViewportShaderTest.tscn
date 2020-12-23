@@ -241,7 +241,7 @@ shader_param/Viewport_Texture = SubResource( 18 )
 [sub_resource type="QuadMesh" id=20]
 size = Vector2( 1.25, 1.9 )
 
-[sub_resource type="NavigationMesh" id=22]
+[sub_resource type="NavigationMesh" id=21]
 vertices = PoolVector3Array( -3.1, 0.5, -13.5, -2.3, 0.5, -13.5, -2.3, 0.5, -14.5, -3.5, 0.5, -13.1, -3.1, 0.5, -13.5, -2.3, 0.5, -14.5, -8.4, 0.5, -14.5, -3.5, 0.5, -7.6, -3.5, 0.5, -13.1, -8.4, 0.5, -14.5, -14.5, 0.5, -14.5, -14.5, 0.5, -7.6, -2.3, 0.5, -13.5, 2.4, 0.5, -13.5, 2.4, 0.5, -14.5, -2.3, 0.5, -14.5, 2.4, 0.5, -14.5, 2.4, 0.5, -13.5, 3.2, 0.5, -13.5, 2.4, 0.5, -14.5, 3.2, 0.5, -13.5, 3.6, 0.5, -13.1, 8.4, 0.5, -14.5, 8.4, 0.5, -14.5, 3.6, 0.5, -13.1, 3.6, 0.5, -7.4, 14.5, 0.5, -7.3, 14.5, 0.5, -14.5, -2.8, 3.75, -12.8, -2.8, 3.75, -7.2, 2.8, 3.75, -7.2, 2.8, 3.75, -12.8, -9.53674e-07, 4.75, -12.8, -9.53674e-07, 4.75, -7.2, -0.400001, 1, -7.2, 0.499999, 1, -7.2, 0.699999, 1, -7.9, -0.6, 1, -7.9, -1.9, 1, -8, -0.6, 1, -7.9, 0.699999, 1, -7.9, 2, 1, -8, 2, 1, -11.9, -1.9, 1, -11.9, -3.4, 0.5, -6.6, -3.5, 0.5, -7.6, -14.5, 0.5, -7.6, -3.1, 0.5, -6.4, -3.4, 0.5, -6.6, -14.5, 0.5, -7.6, -14.5, 0.5, 3.4, -2.5, 0.5, -6.4, -3.1, 0.5, -6.4, -14.5, 0.5, 3.4, -14.5, 0.5, 14.5, -2.6, 0.5, 14.5, 14.5, 0.5, -7.3, 3.6, 0.5, -7.4, 3.6, 0.5, -6.8, 14.5, 0.5, -7.3, 3.6, 0.5, -6.8, 3.4, 0.5, -6.5, 14.5, 0.5, -7.3, 3.4, 0.5, -6.5, 2.6, 0.5, -6.4, 14.5, 0.5, 3.6, 2.7, 0.5, 14.5, 14.5, 0.5, 14.5, 14.5, 0.5, 3.6, 2.6, 0.5, -6.4, 0.699999, 0.75, -6.5, 0.499999, 1, -7.2, -0.400001, 1, -7.2, -0.6, 0.75, -6.5, 1.5, 0.5, -6.4, 0.699999, 0.75, -6.5, -0.6, 0.75, -6.5, -1.4, 0.5, -6.4, -1.3, 0.5, 14.5, 1.4, 0.5, 14.5, -2.6, 0.5, 14.5, -1.3, 0.5, 14.5, -1.4, 0.5, -6.4, -2.5, 0.5, -6.4, 1.4, 0.5, 14.5, 2.7, 0.5, 14.5, 2.6, 0.5, -6.4, 1.5, 0.5, -6.4 )
 polygons = [ PoolIntArray( 2, 1, 0 ), PoolIntArray( 4, 3, 5 ), PoolIntArray( 5, 3, 6 ), PoolIntArray( 8, 7, 9 ), PoolIntArray( 9, 7, 10 ), PoolIntArray( 10, 7, 11 ), PoolIntArray( 15, 14, 12 ), PoolIntArray( 12, 14, 13 ), PoolIntArray( 18, 17, 16 ), PoolIntArray( 20, 19, 21 ), PoolIntArray( 21, 19, 22 ), PoolIntArray( 24, 23, 25 ), PoolIntArray( 25, 23, 27 ), PoolIntArray( 25, 27, 26 ), PoolIntArray( 28, 32, 29 ), PoolIntArray( 29, 32, 33 ), PoolIntArray( 33, 32, 31 ), PoolIntArray( 33, 31, 30 ), PoolIntArray( 34, 37, 35 ), PoolIntArray( 35, 37, 36 ), PoolIntArray( 39, 38, 40 ), PoolIntArray( 40, 38, 41 ), PoolIntArray( 41, 38, 43 ), PoolIntArray( 41, 43, 42 ), PoolIntArray( 46, 45, 44 ), PoolIntArray( 48, 47, 49 ), PoolIntArray( 49, 47, 50 ), PoolIntArray( 52, 51, 53 ), PoolIntArray( 53, 51, 54 ), PoolIntArray( 54, 51, 55 ), PoolIntArray( 58, 57, 56 ), PoolIntArray( 59, 61, 60 ), PoolIntArray( 63, 62, 64 ), PoolIntArray( 64, 62, 65 ), PoolIntArray( 67, 66, 68 ), PoolIntArray( 68, 66, 69 ), PoolIntArray( 71, 70, 72 ), PoolIntArray( 72, 70, 73 ), PoolIntArray( 75, 74, 76 ), PoolIntArray( 76, 74, 77 ), PoolIntArray( 77, 74, 79 ), PoolIntArray( 77, 79, 78 ), PoolIntArray( 83, 82, 80 ), PoolIntArray( 80, 82, 81 ), PoolIntArray( 87, 86, 84 ), PoolIntArray( 84, 86, 85 ) ]
 geometry/parsed_geometry_type = 1
@@ -253,60 +253,60 @@ agent/radius = 0.5
 agent/max_climb = 0.5
 region/min_size = 0.0
 
-[sub_resource type="PlaneMesh" id=23]
+[sub_resource type="PlaneMesh" id=22]
 size = Vector2( 30, 30 )
 
-[sub_resource type="BoxShape" id=24]
+[sub_resource type="BoxShape" id=23]
 extents = Vector3( 15, 1, 15 )
 
-[sub_resource type="CubeMesh" id=25]
+[sub_resource type="CubeMesh" id=24]
 size = Vector3( 1, 0.5, 1 )
 
-[sub_resource type="CubeMesh" id=26]
+[sub_resource type="CubeMesh" id=25]
 size = Vector3( 6, 0.1, 6 )
 
-[sub_resource type="ConcavePolygonShape" id=27]
+[sub_resource type="ConcavePolygonShape" id=26]
 data = PoolVector3Array( -3, 0.05, 3, 3, 0.05, 3, -3, -0.05, 3, 3, 0.05, 3, 3, -0.05, 3, -3, -0.05, 3, 3, 0.05, -3, -3, 0.05, -3, 3, -0.05, -3, -3, 0.05, -3, -3, -0.05, -3, 3, -0.05, -3, 3, 0.05, 3, 3, 0.05, -3, 3, -0.05, 3, 3, 0.05, -3, 3, -0.05, -3, 3, -0.05, 3, -3, 0.05, -3, -3, 0.05, 3, -3, -0.05, -3, -3, 0.05, 3, -3, -0.05, 3, -3, -0.05, -3, 3, 0.05, 3, -3, 0.05, 3, 3, 0.05, -3, -3, 0.05, 3, -3, 0.05, -3, 3, 0.05, -3, -3, -0.05, 3, 3, -0.05, 3, -3, -0.05, -3, 3, -0.05, 3, 3, -0.05, -3, -3, -0.05, -3 )
 
-[sub_resource type="CubeMesh" id=28]
+[sub_resource type="CubeMesh" id=27]
 size = Vector3( 4, 3, 4 )
 
-[sub_resource type="SpatialMaterial" id=29]
+[sub_resource type="SpatialMaterial" id=28]
 albedo_color = Color( 0.529412, 0.0588235, 0.623529, 1 )
 
-[sub_resource type="ConcavePolygonShape" id=30]
+[sub_resource type="ConcavePolygonShape" id=29]
 data = PoolVector3Array( -2, 1.5, 2, 2, 1.5, 2, -2, -1.5, 2, 2, 1.5, 2, 2, -1.5, 2, -2, -1.5, 2, 2, 1.5, -2, -2, 1.5, -2, 2, -1.5, -2, -2, 1.5, -2, -2, -1.5, -2, 2, -1.5, -2, 2, 1.5, 2, 2, 1.5, -2, 2, -1.5, 2, 2, 1.5, -2, 2, -1.5, -2, 2, -1.5, 2, -2, 1.5, -2, -2, 1.5, 2, -2, -1.5, -2, -2, 1.5, 2, -2, -1.5, 2, -2, -1.5, -2, 2, 1.5, 2, -2, 1.5, 2, 2, 1.5, -2, -2, 1.5, 2, -2, 1.5, -2, 2, 1.5, -2, -2, -1.5, 2, 2, -1.5, 2, -2, -1.5, -2, 2, -1.5, 2, 2, -1.5, -2, -2, -1.5, -2 )
 
-[sub_resource type="CubeMesh" id=31]
+[sub_resource type="CubeMesh" id=30]
 size = Vector3( 6, 0.1, 6 )
 
-[sub_resource type="ConcavePolygonShape" id=32]
+[sub_resource type="ConcavePolygonShape" id=31]
 data = PoolVector3Array( -3, 0.05, 3, 3, 0.05, 3, -3, -0.05, 3, 3, 0.05, 3, 3, -0.05, 3, -3, -0.05, 3, 3, 0.05, -3, -3, 0.05, -3, 3, -0.05, -3, -3, 0.05, -3, -3, -0.05, -3, 3, -0.05, -3, 3, 0.05, 3, 3, 0.05, -3, 3, -0.05, 3, 3, 0.05, -3, 3, -0.05, -3, 3, -0.05, 3, -3, 0.05, -3, -3, 0.05, 3, -3, -0.05, -3, -3, 0.05, 3, -3, -0.05, 3, -3, -0.05, -3, 3, 0.05, 3, -3, 0.05, 3, 3, 0.05, -3, -3, 0.05, 3, -3, 0.05, -3, 3, 0.05, -3, -3, -0.05, 3, 3, -0.05, 3, -3, -0.05, -3, 3, -0.05, 3, 3, -0.05, -3, -3, -0.05, -3 )
 
-[sub_resource type="CubeMesh" id=33]
+[sub_resource type="CubeMesh" id=32]
 size = Vector3( 4, 3, 4 )
 
-[sub_resource type="SpatialMaterial" id=34]
+[sub_resource type="SpatialMaterial" id=33]
 flags_transparent = true
 params_depth_draw_mode = 1
 albedo_color = Color( 0.235294, 0.94902, 0.262745, 0.501961 )
 
-[sub_resource type="ConcavePolygonShape" id=35]
+[sub_resource type="ConcavePolygonShape" id=34]
 data = PoolVector3Array( -2, 1.5, 2, 2, 1.5, 2, -2, -1.5, 2, 2, 1.5, 2, 2, -1.5, 2, -2, -1.5, 2, 2, 1.5, -2, -2, 1.5, -2, 2, -1.5, -2, -2, 1.5, -2, -2, -1.5, -2, 2, -1.5, -2, 2, 1.5, 2, 2, 1.5, -2, 2, -1.5, 2, 2, 1.5, -2, 2, -1.5, -2, 2, -1.5, 2, -2, 1.5, -2, -2, 1.5, 2, -2, -1.5, -2, -2, 1.5, 2, -2, -1.5, 2, -2, -1.5, -2, 2, 1.5, 2, -2, 1.5, 2, 2, 1.5, -2, -2, 1.5, 2, -2, 1.5, -2, 2, 1.5, -2, -2, -1.5, 2, 2, -1.5, 2, -2, -1.5, -2, 2, -1.5, 2, 2, -1.5, -2, -2, -1.5, -2 )
 
-[sub_resource type="CubeMesh" id=36]
+[sub_resource type="CubeMesh" id=35]
 size = Vector3( 4, 3, 1 )
 
-[sub_resource type="ConcavePolygonShape" id=37]
+[sub_resource type="ConcavePolygonShape" id=36]
 data = PoolVector3Array( -2, 1.5, 0.5, 2, 1.5, 0.5, -2, -1.5, 0.5, 2, 1.5, 0.5, 2, -1.5, 0.5, -2, -1.5, 0.5, 2, 1.5, -0.5, -2, 1.5, -0.5, 2, -1.5, -0.5, -2, 1.5, -0.5, -2, -1.5, -0.5, 2, -1.5, -0.5, 2, 1.5, 0.5, 2, 1.5, -0.5, 2, -1.5, 0.5, 2, 1.5, -0.5, 2, -1.5, -0.5, 2, -1.5, 0.5, -2, 1.5, -0.5, -2, 1.5, 0.5, -2, -1.5, -0.5, -2, 1.5, 0.5, -2, -1.5, 0.5, -2, -1.5, -0.5, 2, 1.5, 0.5, -2, 1.5, 0.5, 2, 1.5, -0.5, -2, 1.5, 0.5, -2, 1.5, -0.5, 2, 1.5, -0.5, -2, -1.5, 0.5, 2, -1.5, 0.5, -2, -1.5, -0.5, 2, -1.5, 0.5, 2, -1.5, -0.5, -2, -1.5, -0.5 )
 
-[sub_resource type="CubeMesh" id=38]
+[sub_resource type="CubeMesh" id=37]
 size = Vector3( 1, 3, 4 )
 
-[sub_resource type="ConcavePolygonShape" id=39]
+[sub_resource type="ConcavePolygonShape" id=38]
 data = PoolVector3Array( -0.5, 1.5, 2, 0.5, 1.5, 2, -0.5, -1.5, 2, 0.5, 1.5, 2, 0.5, -1.5, 2, -0.5, -1.5, 2, 0.5, 1.5, -2, -0.5, 1.5, -2, 0.5, -1.5, -2, -0.5, 1.5, -2, -0.5, -1.5, -2, 0.5, -1.5, -2, 0.5, 1.5, 2, 0.5, 1.5, -2, 0.5, -1.5, 2, 0.5, 1.5, -2, 0.5, -1.5, -2, 0.5, -1.5, 2, -0.5, 1.5, -2, -0.5, 1.5, 2, -0.5, -1.5, -2, -0.5, 1.5, 2, -0.5, -1.5, 2, -0.5, -1.5, -2, 0.5, 1.5, 2, -0.5, 1.5, 2, 0.5, 1.5, -2, -0.5, 1.5, 2, -0.5, 1.5, -2, 0.5, 1.5, -2, -0.5, -1.5, 2, 0.5, -1.5, 2, -0.5, -1.5, -2, 0.5, -1.5, 2, 0.5, -1.5, -2, -0.5, -1.5, -2 )
 
-[sub_resource type="DynamicFont" id=40]
+[sub_resource type="DynamicFont" id=39]
 outline_size = 1
 outline_color = Color( 0, 0, 0, 1 )
 font_data = ExtResource( 18 )
@@ -341,11 +341,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 2, 7 )
 position_algorithm = 1
 navigation = NodePath("../Navigation")
 
-[node name="KinematicDriver" parent="XrayPawnAlpha" index="3"]
-move_speed = 10.0
-fall_speed = 9.8
-max_slope_degrees = 45.0
-
 [node name="HidingMesh" parent="XrayPawnAlpha" instance=ExtResource( 20 )]
 transform = Transform( 0.707107, -0.408244, 0.577353, 0, 0.8165, 0.577345, -0.707107, -0.408244, 0.577353, 10, 10, 10 )
 mesh = SubResource( 1 )
@@ -361,11 +356,6 @@ navigation = NodePath("../Navigation")
 
 [node name="VisualSprite" parent="XrayPawnDefault" index="2"]
 frames = ExtResource( 16 )
-
-[node name="KinematicDriver" parent="XrayPawnDefault" index="3"]
-move_speed = 10.0
-fall_speed = 9.8
-max_slope_degrees = 45.0
 
 [node name="HidingMesh" parent="XrayPawnDefault" instance=ExtResource( 20 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 5, 5 )
@@ -383,11 +373,6 @@ navigation = NodePath("../Navigation")
 [node name="VisualSprite" parent="XrayPawnNoDepth" index="2"]
 frames = ExtResource( 15 )
 
-[node name="KinematicDriver" parent="XrayPawnNoDepth" index="3"]
-move_speed = 10.0
-fall_speed = 9.8
-max_slope_degrees = 45.0
-
 [node name="HidingMesh" parent="XrayPawnNoDepth" instance=ExtResource( 20 )]
 material/0 = SubResource( 19 )
 target_camera = NodePath("../../CameraRig/CoreCamera")
@@ -400,11 +385,6 @@ navigation = NodePath("../Navigation")
 
 [node name="VisualSprite" parent="MultiplyPawn" index="2"]
 frames = ExtResource( 17 )
-
-[node name="KinematicDriver" parent="MultiplyPawn" index="3"]
-move_speed = 10.0
-fall_speed = 9.8
-max_slope_degrees = 45.0
 
 [node name="HidingMesh" parent="MultiplyPawn" instance=ExtResource( 20 )]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.05, 0, 0.05 )
@@ -420,11 +400,6 @@ navigation = NodePath("../Navigation")
 
 [node name="VisualSprite" parent="FillPawn" index="2"]
 frames = ExtResource( 12 )
-
-[node name="KinematicDriver" parent="FillPawn" index="3"]
-move_speed = 10.0
-fall_speed = 9.8
-max_slope_degrees = 45.0
 
 [node name="HidingMesh" parent="FillPawn" instance=ExtResource( 20 )]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.05, 0, 0.05 )
@@ -443,25 +418,22 @@ modulate = Color( 0.976471, 0.760784, 0.168627, 1 )
 
 [node name="KinematicDriver" parent="NormalPawn" index="3"]
 drive_body = NodePath("../../NormalPawn")
-move_speed = 10.0
-fall_speed = 9.8
-max_slope_degrees = 45.0
 
 [node name="Navigation" type="Navigation" parent="."]
 
 [node name="NavigationMeshInstance" type="NavigationMeshInstance" parent="Navigation"]
-navmesh = SubResource( 22 )
+navmesh = SubResource( 21 )
 
 [node name="Floor" type="StaticBody" parent="Navigation/NavigationMeshInstance"]
 
 [node name="Mesh" type="MeshInstance" parent="Navigation/NavigationMeshInstance/Floor"]
 layers = 2147483649
-mesh = SubResource( 23 )
+mesh = SubResource( 22 )
 material/0 = ExtResource( 5 )
 
 [node name="Shape" type="CollisionShape" parent="Navigation/NavigationMeshInstance/Floor"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
-shape = SubResource( 24 )
+shape = SubResource( 23 )
 
 [node name="Hut" parent="Navigation/NavigationMeshInstance" instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -10 )
@@ -469,27 +441,27 @@ hiding_corner = 1
 
 [node name="Back" type="MeshInstance" parent="Navigation/NavigationMeshInstance/Hut"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, -3.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Left" type="MeshInstance" parent="Navigation/NavigationMeshInstance/Hut"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.5, 0, 3.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Right" type="MeshInstance" parent="Navigation/NavigationMeshInstance/Hut"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, -3.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Front" type="MeshInstance" parent="Navigation/NavigationMeshInstance/Hut"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.5, 0, 3.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Center" type="MeshInstance" parent="Navigation/NavigationMeshInstance/Hut"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -9.53674e-07 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Farm" parent="Navigation/NavigationMeshInstance" instance=ExtResource( 2 )]
@@ -499,27 +471,27 @@ _crop_type = 5
 
 [node name="Back" type="MeshInstance" parent="Navigation/NavigationMeshInstance/Farm"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.500001, 0, 0.499999 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Left" type="MeshInstance" parent="Navigation/NavigationMeshInstance/Farm"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.500001, 0, 7.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Right" type="MeshInstance" parent="Navigation/NavigationMeshInstance/Farm"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 0.499999 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Front" type="MeshInstance" parent="Navigation/NavigationMeshInstance/Farm"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 7.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Center" type="MeshInstance" parent="Navigation/NavigationMeshInstance/Farm"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Woods" parent="Navigation/NavigationMeshInstance" instance=ExtResource( 13 )]
@@ -528,204 +500,204 @@ _woods_size = Vector2( 8, 8 )
 
 [node name="Back" type="MeshInstance" parent="Navigation/NavigationMeshInstance/Woods"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 0.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Left" type="MeshInstance" parent="Navigation/NavigationMeshInstance/Woods"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.5, 0, 7.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Right" type="MeshInstance" parent="Navigation/NavigationMeshInstance/Woods"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 0.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Front" type="MeshInstance" parent="Navigation/NavigationMeshInstance/Woods"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7.5, 0, 7.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Center" type="MeshInstance" parent="Navigation/NavigationMeshInstance/Woods"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 4, 0, 4 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="OpaquePlinth" type="MeshInstance" parent="Navigation/NavigationMeshInstance"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.00607812, 8 )
-mesh = SubResource( 26 )
+mesh = SubResource( 25 )
 material/0 = ExtResource( 7 )
 
 [node name="StaticBody" type="StaticBody" parent="Navigation/NavigationMeshInstance/OpaquePlinth"]
 
 [node name="CollisionShape" type="CollisionShape" parent="Navigation/NavigationMeshInstance/OpaquePlinth/StaticBody"]
-shape = SubResource( 27 )
+shape = SubResource( 26 )
 
 [node name="OpaqueBox" type="MeshInstance" parent="Navigation/NavigationMeshInstance/OpaquePlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0 )
 layers = 2
-mesh = SubResource( 28 )
-material/0 = SubResource( 29 )
+mesh = SubResource( 27 )
+material/0 = SubResource( 28 )
 
 [node name="StaticBody" type="StaticBody" parent="Navigation/NavigationMeshInstance/OpaquePlinth/OpaqueBox"]
 collision_layer = 524288
 collision_mask = 2147483648
 
 [node name="CollisionShape" type="CollisionShape" parent="Navigation/NavigationMeshInstance/OpaquePlinth/OpaqueBox/StaticBody"]
-shape = SubResource( 30 )
+shape = SubResource( 29 )
 
 [node name="Back" type="MeshInstance" parent="Navigation/NavigationMeshInstance/OpaquePlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, -0.00607812, -2.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Left" type="MeshInstance" parent="Navigation/NavigationMeshInstance/OpaquePlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, -0.00607812, 2.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Right" type="MeshInstance" parent="Navigation/NavigationMeshInstance/OpaquePlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, -0.00607812, -2.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Front" type="MeshInstance" parent="Navigation/NavigationMeshInstance/OpaquePlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, -0.00607812, 2.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Center" type="MeshInstance" parent="Navigation/NavigationMeshInstance/OpaquePlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00607812, -9.53674e-07 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="HomePlinth" type="MeshInstance" parent="Navigation/NavigationMeshInstance"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -9, 0.00607812, 8 )
-mesh = SubResource( 26 )
+mesh = SubResource( 25 )
 material/0 = ExtResource( 7 )
 
 [node name="StaticBody" type="StaticBody" parent="Navigation/NavigationMeshInstance/HomePlinth"]
 
 [node name="CollisionShape" type="CollisionShape" parent="Navigation/NavigationMeshInstance/HomePlinth/StaticBody"]
-shape = SubResource( 27 )
+shape = SubResource( 26 )
 
 [node name="A" type="MeshInstance" parent="Navigation/NavigationMeshInstance/HomePlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, -0.00607812, -2.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="B" type="MeshInstance" parent="Navigation/NavigationMeshInstance/HomePlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, -0.00607812, 2.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="C" type="MeshInstance" parent="Navigation/NavigationMeshInstance/HomePlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, -0.00607812, -2.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="D" type="MeshInstance" parent="Navigation/NavigationMeshInstance/HomePlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, -0.00607812, 2.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="E" type="MeshInstance" parent="Navigation/NavigationMeshInstance/HomePlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00607812, -2.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="F" type="MeshInstance" parent="Navigation/NavigationMeshInstance/HomePlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00607812, 2.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="TransparentPlinth" type="MeshInstance" parent="Navigation/NavigationMeshInstance"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0.00607812, 0 )
-mesh = SubResource( 31 )
+mesh = SubResource( 30 )
 material/0 = ExtResource( 7 )
 
 [node name="StaticBody" type="StaticBody" parent="Navigation/NavigationMeshInstance/TransparentPlinth"]
 
 [node name="CollisionShape" type="CollisionShape" parent="Navigation/NavigationMeshInstance/TransparentPlinth/StaticBody"]
-shape = SubResource( 32 )
+shape = SubResource( 31 )
 
 [node name="TransparentBox" type="MeshInstance" parent="Navigation/NavigationMeshInstance/TransparentPlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, 0 )
 layers = 2
-mesh = SubResource( 33 )
-material/0 = SubResource( 34 )
+mesh = SubResource( 32 )
+material/0 = SubResource( 33 )
 
 [node name="StaticBody" type="StaticBody" parent="Navigation/NavigationMeshInstance/TransparentPlinth/TransparentBox"]
 collision_layer = 524288
 collision_mask = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="Navigation/NavigationMeshInstance/TransparentPlinth/TransparentBox/StaticBody"]
-shape = SubResource( 35 )
+shape = SubResource( 34 )
 
 [node name="Back" type="MeshInstance" parent="Navigation/NavigationMeshInstance/TransparentPlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, -0.00607812, -2.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Left" type="MeshInstance" parent="Navigation/NavigationMeshInstance/TransparentPlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, -0.00607812, 2.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Right" type="MeshInstance" parent="Navigation/NavigationMeshInstance/TransparentPlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, -0.00607812, -2.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Front" type="MeshInstance" parent="Navigation/NavigationMeshInstance/TransparentPlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, -0.00607812, 2.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Center" type="MeshInstance" parent="Navigation/NavigationMeshInstance/TransparentPlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00607812, -9.53674e-07 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="PartialPlinth" type="MeshInstance" parent="Navigation/NavigationMeshInstance"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 0.00607812, -10 )
-mesh = SubResource( 31 )
+mesh = SubResource( 30 )
 material/0 = ExtResource( 7 )
 
 [node name="StaticBody" type="StaticBody" parent="Navigation/NavigationMeshInstance/PartialPlinth"]
 
 [node name="CollisionShape" type="CollisionShape" parent="Navigation/NavigationMeshInstance/PartialPlinth/StaticBody"]
-shape = SubResource( 32 )
+shape = SubResource( 31 )
 
 [node name="Back" type="MeshInstance" parent="Navigation/NavigationMeshInstance/PartialPlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, -0.00607812, -2.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Left" type="MeshInstance" parent="Navigation/NavigationMeshInstance/PartialPlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.5, -0.00607812, 2.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Right" type="MeshInstance" parent="Navigation/NavigationMeshInstance/PartialPlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, -0.00607812, -2.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Front" type="MeshInstance" parent="Navigation/NavigationMeshInstance/PartialPlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.5, -0.00607812, 2.5 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="Center" type="MeshInstance" parent="Navigation/NavigationMeshInstance/PartialPlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.00607812, -9.53674e-07 )
-mesh = SubResource( 25 )
+mesh = SubResource( 24 )
 material/0 = ExtResource( 7 )
 
 [node name="PartialA" type="MeshInstance" parent="Navigation/NavigationMeshInstance/PartialPlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.55, -1.5 )
 layers = 2
-mesh = SubResource( 36 )
+mesh = SubResource( 35 )
 material/0 = ExtResource( 7 )
 
 [node name="StaticBody" type="StaticBody" parent="Navigation/NavigationMeshInstance/PartialPlinth/PartialA"]
@@ -733,12 +705,12 @@ collision_layer = 524288
 collision_mask = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="Navigation/NavigationMeshInstance/PartialPlinth/PartialA/StaticBody"]
-shape = SubResource( 37 )
+shape = SubResource( 36 )
 
 [node name="PartialB" type="MeshInstance" parent="Navigation/NavigationMeshInstance/PartialPlinth"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 1.55, 0 )
 layers = 2
-mesh = SubResource( 38 )
+mesh = SubResource( 37 )
 material/0 = ExtResource( 7 )
 
 [node name="StaticBody" type="StaticBody" parent="Navigation/NavigationMeshInstance/PartialPlinth/PartialB"]
@@ -746,7 +718,7 @@ collision_layer = 524288
 collision_mask = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="Navigation/NavigationMeshInstance/PartialPlinth/PartialB/StaticBody"]
-shape = SubResource( 39 )
+shape = SubResource( 38 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 4 )
@@ -778,7 +750,7 @@ margin_bottom = 46.0
 [node name="Label" type="Label" parent="TestGUI/CurrentPawn"]
 margin_right = 209.0
 margin_bottom = 21.0
-custom_fonts/font = SubResource( 40 )
+custom_fonts/font = SubResource( 39 )
 text = "Current Pawn"
 align = 1
 
@@ -786,7 +758,7 @@ align = 1
 margin_top = 25.0
 margin_right = 209.0
 margin_bottom = 46.0
-custom_fonts/font = SubResource( 40 )
+custom_fonts/font = SubResource( 39 )
 text = "Normal (With Modulate)"
 align = 1
 
@@ -798,7 +770,7 @@ margin_bottom = 46.0
 [node name="Label" type="Label" parent="TestGUI/CurrentTest"]
 margin_right = 108.0
 margin_bottom = 21.0
-custom_fonts/font = SubResource( 40 )
+custom_fonts/font = SubResource( 39 )
 text = "Current Test"
 align = 1
 
@@ -806,7 +778,7 @@ align = 1
 margin_top = 25.0
 margin_right = 108.0
 margin_bottom = 46.0
-custom_fonts/font = SubResource( 40 )
+custom_fonts/font = SubResource( 39 )
 text = "1.0"
 align = 1
 
@@ -834,7 +806,7 @@ margin_bottom = 46.0
 [node name="Label" type="Label" parent="TimeGUI/TimeScale"]
 margin_right = 1004.0
 margin_bottom = 21.0
-custom_fonts/font = SubResource( 40 )
+custom_fonts/font = SubResource( 39 )
 text = "Time Scale"
 align = 1
 
@@ -842,7 +814,7 @@ align = 1
 margin_top = 25.0
 margin_right = 1004.0
 margin_bottom = 46.0
-custom_fonts/font = SubResource( 40 )
+custom_fonts/font = SubResource( 39 )
 text = "1.0"
 align = 1
 

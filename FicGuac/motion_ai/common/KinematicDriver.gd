@@ -25,7 +25,7 @@ export(float) var move_speed = 10
 # How fast does the drive node fall, when it does fall?
 export(float) var fall_speed = 9.8
 # What's our tolerance for meeting our goal?
-export(float) var goal_toreance = 0.1
+export(float) var goal_tolerance = 0.1
 # How much do we float by?
 export(float) var float_height = 0
 # Sometimes, we'll encounter a slope. There has to be a demarcating line where a
@@ -44,6 +44,33 @@ const MINIMUM_FALL_HEIGHT = .002
 # Signal issued when this driver reaches it's target. Sends back the Vector3
 # position value that was just reached.
 signal target_reached(position)
+
+# Every once in a while, when a KinematicDriver body attempts to approach a goal
+# point, it gets stuck. Not in a stuck-on-the-geometry kind of way, but a more
+# odd way. It's like it keeps missing it's goal by mere millimeters,
+# constantly overstepping. I think it's some combination of the navigation mesh
+# and the physics engine not behaving to exact specification. We call this the
+# "Microposition Loop" error. This is to differentiate it from, for example, a
+# body attempting to climb a wall (badly) or a body being pushed backwards.
+
+# To detect when that happens, we capture our distance from our target every
+# time we move. This captured value is appended to the Array. We use this to
+# ensure we're not rapidly alternating between two or three points, which is a
+# key indicator of the above issue.
+var _targ_dist_history = []
+
+# How many entries do we keep in the adjusted position history? If the size
+# exceeds this value, then the oldest entries are removed.
+const TARG_DIST_HISTORY_SIZE = 6
+
+# How many duplicate entries do we need to detect for us to send out a stuck
+# signal? Keep in mind that this is tested with the current adjuste position,
+# AFTER it is added to the array. Ergo, the check will always return at least 1,
+# and the value should be greater.
+const TARG_DIST_ERROR_THRESHOLD = 3
+
+# Signal issued when this driver is s
+signal error_microposition_loop(target_position)
 
 # The current movement vector. This is set during movement (see
 # _physics_process). It is purely for reading the current movement status (since
@@ -154,9 +181,6 @@ func _physics_process(delta):
     var normal_angle = 0
     # Did we get a collision result from our most recent move attempt?
     var collision = null
-    # What is our current position, adjusted so that we can actually reach our
-    # target position?
-    var adj_position
     
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # Step 1: Check if we're on the ground / if we need to fall
@@ -170,7 +194,7 @@ func _physics_process(delta):
         true, # Infinite intertia
         true, # Exclude Raycast Shapes
         true # Test Only - just report IF a collisions happens, don't
-                # actually move at all!
+             # actually move at all!
     )
     
     # Now that we've queried the world, we have several possibilities we need
@@ -210,15 +234,17 @@ func _physics_process(delta):
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # If we have a target, we need to move towards the target.
     if self.target_position:
-        # We need our adj_position value updated.
-        adj_position = get_adj_position()
-        
+
         # How far are we from our target position?
-        var distance_to = target_position - adj_position
-        # We really only care about the X and Z, so we're gonna re-package them
-        # into a Vector2. Normalizing reduces the Vector such that we can easily
-        # scale it - it's basically just the direction now.
-        var normal_dist = Vector2(distance_to.x, distance_to.z).normalized()
+        var distance_to = target_position - get_adj_position()
+        # We really only care about the X and Z, so we're gonna zero out the y
+        # distance left - since the KinematicDriver can't purposefully or 
+        # explicitly move up or down. KinematicDriver bodies can't jump!
+        distance_to.y = 0
+        
+        # Normalizing reduces the Vector such that we can easily scale it - it's
+        # basically just the direction now.
+        var normal_dist = distance_to.normalized()
         
         # Now for something a bit more wacky - we don't want to overshoot our
         # target, so we'll fine-tune our values.
@@ -232,11 +258,11 @@ func _physics_process(delta):
             # calculate the exact values we'll need for normal_dist by dividing
             # out that factor from the remaining distance.
             normal_dist.x = distance_to.x / (move_speed * delta)
-            normal_dist.y = distance_to.z / (move_speed * delta)
+            normal_dist.z = distance_to.z / (move_speed * delta)
             
         # Finally, set our final x & z values
         new_move.x = normal_dist.x * move_speed
-        new_move.z = normal_dist.y * move_speed
+        new_move.z = normal_dist.z * move_speed
     
         # If we're visible, the let's update our debug arrow using the x/z angle
         if self.visible:
@@ -245,7 +271,7 @@ func _physics_process(delta):
             # how Y is normally oriented.
             $Arrow.rotation.y = Vector2(-distance_to.x, distance_to.z).angle()
             # The arrow is 90 degrees (PI/2) out-of-phase with where it should
-            # be (which is because the arrow doesn't start point out at 0
+            # be (which is because the arrow doesn't start out pointing at 0
             # degrees). Adjust it!
             $Arrow.rotation.y += PI / 2
     
@@ -254,8 +280,9 @@ func _physics_process(delta):
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     if new_move != Vector3.ZERO:
         
+        # Do the move!
         collision = drive_body_node.move_and_collide(new_move * delta)
-
+        
         # If we collided with something, and we still have a ways to go...
         if collision and collision.remainder.length() != 0:
             # Get the remaining movement
@@ -269,15 +296,34 @@ func _physics_process(delta):
             next_movement = next_movement * collision.remainder.length()
             # Now move and colide along that scaled angle
             drive_body_node.move_and_collide(next_movement)
-            # Finally, the next movement is technically our "new move"
+            # Finally, the next movement is technically our \"new move\"
             new_move = next_movement
-
+        
+        if self.target_position:
+            # Append the distance-to-target to our target distance history array
+            var new_dist = target_position - get_adj_position()
+            _targ_dist_history.append(new_dist)
+            
+            # If we've exceeded the size of the target distance history list,
+            # then shave one off the front.
+            if _targ_dist_history.size() > TARG_DIST_HISTORY_SIZE:
+                _targ_dist_history.pop_front()
+            
+            # If our current distance is in the history too many times, then
+            # we've encountered a repeat distance error. Send out a signal.
+            if _targ_dist_history.count(new_dist) >= TARG_DIST_ERROR_THRESHOLD:
+                print("MICROPOSITION ERROR DETECTED!")
+                # Empty out the target distance history
+                _targ_dist_history.clear()
+                # Emit the signal! Sound the horn! Make the call!
+                emit_signal("error_microposition_loop", target_position)
+        
         # Update our "watch" stats
         _is_moving = true
         _combined_velocity = new_move
     else:
         # Update our "watch" stats
-        _is_moving= false
+        _is_moving = false
         _combined_velocity = new_move
         
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -285,14 +331,15 @@ func _physics_process(delta):
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     # If we have a target position...
     if target_position:
-        # Update the adjusted position
-        adj_position = get_adj_position()
         # ...AND we're close enough to that target position...
-        if (target_position - adj_position).length() <= goal_toreance:
+        if ( target_position - get_adj_position() ).length() <= goal_tolerance:
             # ...then we're done here! Save the target position
             var pos_save = target_position
             # Clear the target
             target_position = null
+            # Empty out the target distance history (since we reached our
+            # target)
+            _targ_dist_history.clear()
             # Now emit the "target reached" signal using the position we saved.
             # It's important we do it this way, since anything receiving the
             # signal could change the variable out from under us.

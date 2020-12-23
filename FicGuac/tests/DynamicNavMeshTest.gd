@@ -28,6 +28,19 @@ onready var south_transform = $DetourNavigation/SouthHut.global_transform
 func _physics_process(delta):
     if click_waiting:
         yielded_click.resume()
+    
+    return
+    
+    # If the pawn has a path, we have some stuff to print...
+    if $Pawn/KinematicDriver._is_moving:
+        var targ = $Pawn/KinematicDriver.target_position
+        var curr_pos = $Pawn/KinematicDriver.get_adj_position()
+        var remaining
+        
+        if targ == null:
+            print("Headless move!")
+        else:
+            print(targ - curr_pos, " ", (targ - curr_pos).length())
 
 # Process an input event. Intended for single-press input events (i.e. a button
 # push/click).

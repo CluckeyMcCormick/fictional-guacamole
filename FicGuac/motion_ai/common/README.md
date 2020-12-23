@@ -53,7 +53,7 @@ The current target position. When set to `null`, the driver will not move the bo
 A `Vector3`, where each axis is the current velocity on that axis. Updated every time `_physics_process` is called. Setting this value most likely does nothing, but it could mess with other functions that rely on this value so it is NOT recommended.
 
 ##### `_is_moving`
-A `bool` - tracks whether we are moving or not. Effectively means one x, y, or z in `_combined_velocity` does not equal zero. Updated every time `_physics_process` is called. 
+A `bool` - tracks whether we are moving or not. Effectively means x, y, or z in `_combined_velocity` does not equal zero. Updated every time `_physics_process` is called. 
 
 ##### `_on_floor`
 A `bool` - tracks whether we are on the floor or not. Updated every time `_physics_process` is called. 
@@ -61,3 +61,8 @@ A `bool` - tracks whether we are on the floor or not. Updated every time `_physi
 ### Signals
 ##### `target_reached`
 Indicates that we reached our target position. The `target_position` variable is cleared before the signal is emitted. The previous target position is given as a signal argument, just in case it is needed.
+
+##### `error_microposition_loop`
+There is an observed issue with the *KinematicDriver*, where it will consistently undershoot and overshoot it's target position. This results in an infinite loop of the driver's body rapidly vibrating back and forth in microscopic steps. When we detect this occurrence, the `error_microposition_loop` signal is fired along with the current target position. This gives us an opportunity to handle the problem when it occurs.
+
+Exactly why and where this happens is harder to pin down. I've noticed that it tends to happen at the intersection of edges - the edge of a navigation mesh that lies along a y-height difference-edge. I suspect it's got something to do with the interaction between the driver body's collision model, the *KinematicDriver*'s floating stuff, and where the navigation mesh seems to think we are. It doesn't seem to happen as often with drive bodies that have smooth collision models (i.e. NOT SQUARES) so I recommend using something like a capsule or cylinder.

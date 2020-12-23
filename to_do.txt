@@ -16,21 +16,7 @@ To Do:
     We should upgrade to 4.0 as soon as possible. It's just a question of
     whenever that comes out...
 
-3. Track down and fix the stair-corner glitch
-
-    There's been a pretty persistent glitch - if you order a pawn to navigate to
-    a corner where the top of the stairs meets the wall of a Hut, the pawn
-    freaks out and rapidly oscillates up-and-down. In the past we've fixed it by
-    increasing the goal tolerance.
-    
-    I think this is coming about because the pawn is tyring to reach a point on
-    a vertical that it can very nearly reach, but not actually reach. We'll have
-    to crack it open and see.
-    
-    If my assumption is correct, then we'll need to add a "Vertical Tolerance"
-    to the KinematicDriver.
-
-4. Create weapon models
+3. Create weapon models
 
     We need to create weapons for our pawns to equip! We'll use OpenSCAD to
     design the models. Technically, since we use sprites in-game, we could just
@@ -49,7 +35,7 @@ To Do:
     
     And maybe a jezzail - a long rifle of some sort?
 
-5. Integrate the weapon models and the Pawn sprites
+4. Integrate the weapon models and the Pawn sprites
 
     Okay, so we have to integrate our weapon models and our Pawn sprites.
     Conventional wisdom says that we should just have different spritesheets for
@@ -58,7 +44,7 @@ To Do:
     the weapon and could somehow be layered over the Pawn Sprite? That would
     save us on Sprites.
 
-6. ATTACKS!
+5. ATTACKS!
     
     Finally, get our pawns to attack with their weapons. For now, we'll use some
     really basic target. The AI knowing how, and when, to attack will be the

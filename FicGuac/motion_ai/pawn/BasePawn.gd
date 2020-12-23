@@ -82,6 +82,14 @@ func _on_KinematicDriver_target_reached(position):
         # We're done following the path! Tell anyone who's listening
         emit_signal("path_complete", self, self.get_adjusted_position())
 
+func _on_KinematicDriver_error_microposition_loop(target_position):
+    # The KinematicDriver is trapped in a loop. Let's just fake a "target
+    # reached" call and hope that fixes it, eh?
+    # First, null out the target position
+    $KinematicDriver.target_position = null
+    # Now, emit the signal
+    $KinematicDriver.emit_signal("target_reached")
+
 # Get the "algorithmic" position. This is most often used for goal checking -
 # i.e. seeing where we are from a world-mesh perspective
 func get_adjusted_position():
