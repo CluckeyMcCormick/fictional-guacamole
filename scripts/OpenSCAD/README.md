@@ -51,3 +51,15 @@ You can see how `translate` is now the first command, even though it's the last 
 > If you think of the entire command as a sentence, then `color()` is an "adjective" that describes the "object" of the sentence (which is a "noun"). In this case, the object is the `cube()` to be created. The adjective is placed before the noun in the sentence, like so: `color() cube();`. In the same way, `translate()` can be thought of as a "verb" that acts upon the object...
 
 I hope that gives someone some level of understanding, however minor. If you're having a hard time understanding the nonsense (understandable), try messing around with the OpenSCAD scripts to see what shapes you can get. Start by modifying constants and then see if you can move on to applying different functions.
+
+## Included Scripts
+
+### `weapon_short_sword.scad`
+This script generates our standard short (i.e. one handed) sword model. The constant-parameters in this script allow us to control:
+
+- The Pommel
+- The Grip
+- The Guard
+- The Blade (including the Edge, the Tip, and the Fuller)
+
+There's been a great amount of work done towards describing how swords looked at particular times, and how the forms evolved between the different periods of time. I have largely ignored this for my own ease.
