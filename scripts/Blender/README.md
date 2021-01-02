@@ -5,7 +5,7 @@ serves a particular purpose.
 
 ## Included Scripts
 
-### pawn_constants.py
+### `pawn_constants.py`
 The pawn_constants.py script doesn't actually do anything - rather, it provides
 constants the are required for the other scripts to run. This mostly takes the
 form of measurements for the pawn's different components: feet width, head
@@ -23,7 +23,7 @@ scaling ratio, specifying how many millimeters correspond to a world unit.
 This file also has the string names for many components, to ensure consistency
 across scripts. 
 
-### generate_pawn.py
+### `pawn_generate.py`
 This script populates the current scene/collection with custom-generated pawn
 components. This is the only way to populate the scene with pawn components - so
 if you changed something in pawn_constants.py, you will need to run this script
@@ -48,7 +48,7 @@ Blender. I've used it in Godot, and I noticed that the faces are all wrong.
 It's like you can see right through it! Ergo, I'd recommend either redoing this
 script or just not using the model. 
 
-### prepare_pawn.py
+### `pawn_prepare.py`
 This script serves as an intermediate step - it takes the components in the
 scene and parents them as appropriate. The feet are attached to the legs, the
 hands attached to the body, etc.
@@ -56,7 +56,16 @@ hands attached to the body, etc.
 Outside of setting up the pawn for animation, this script serves little
 purpose.
 
-### scene_configuration.py
+### `pawn_prepare_accessories.py`
+Sometimes the pawn has additional items that need to be "prepared" - moved into
+place. These items are generally something loaded into the scene by hand. Custom
+assets like hats, armor, jewelry, weapons, etc.
+
+This file has functions for preparing (positioning) different accessories, which
+will change depending on what accessories have currently been loaded in. Because
+of that, this is one of the few scripts with decent error handling.
+
+### `pawn_scene_configuration.py`
 The previous scripts all related to the pawn; this script sets up our camera,
 lighting, and export settings. This helps ensure consistency with existing
 sprites - this will make it easier to create new sprites on the fly.
@@ -65,7 +74,10 @@ The lights and cameras are added under an "empty" object, which acts as the rig
 for moving the lights and the cameras. It is centered on the middle point of
 the pawn's body by default.
 
-### pose_pawn.py
+Running this script again will remove & replace the camera rig and update the
+export settings.
+
+### `pawn_pose_core.py`
 This script has various functions for putting each component of the pawn in a
 variety of positions. Each function governs one component - a left arm, a right
 leg, the head, or the left foot.
@@ -74,29 +86,41 @@ The intention is that you mix-and-match function calls to create your ideal
 pose, and then register that pose as a keyframe. You can then change the
 function calls to create a new pose, and so on and so on.
 
-### animate_pawn.py
-This script is a natural extension of `pose_pawn.py` - where that script has
+This was originally intended to have ALL of the pose functions, but I realized
+that most specific poses are best kept with their associated animations. Now
+this just serves as a library for some common pose functions, like default
+position functions.
+
+### `pawn_animate.py`
+This script is a natural extension of `pawn_pose_core.py` - where that script has
 controls for setting the position of the pawn's components, this script offers
 utilities for bundling those pose functions together, and then creating all of
 the keyframes necessary for that animations at all 8 angles.
 
-That's right - this script even handles keyframing the multiple angles you'll
-need! Once you export the animation as a series of images, you just have to
+That's right - the utilities in this script even handle keyframing the multiple
+angles you'll need!
+
+Once you export the animation as a series of images, you just have to
 pack it all into a spritesheet. I used a combination of
 [Simplepacker by Maciej Lechowski](https://github.com/lchsk/simplepacker) and
 my own personal ImageMagick script, `sprite_sheetmaker.bash` (see the
 appropriate directory).
+
+### Animations
+The animation directory contains our individual animations - one script, one
+animation. Running one of these scripts will create all the required keyframes
+(and probably a lot more than that too).
 
 ## Execution Order
 In case you couldn't tell from our description of each script, they are meant
 to be run in a particular order, like so:
 
 1. Edit `pawn_constants.py` (if you want to)
-1. Run `generate_pawn.py`
-1. Run `prepare_pawn.py`
-1. Run `scene_configuration.py`
-1. Edit `pose_pawn.py` for posing as desired
-1. Edit and run `animate.py`
+1. Run `pawn_generate.py`
+1. Run `pawn_prepare.py`
+1. Edit and run `pawn_prepare_accessories.py` as necessary
+1. Run `pawn_scene_configuration.py`
+1. Run a script in the `animations` directory (or add a new one)
 
 ## Running the scripts
 These scripts were meant to be loaded into Blender's text file window, and
@@ -126,6 +150,7 @@ version of `pawn_constants.py` is in that directory. So, if you load
 actual file in the actual directory, the changes will not propagate! That's why
 it's recommended you edit that file first before running the other scripts.
 
-Note that `animate_pawn.py` relies on `pose_pawn.py` in the same way.
+Note that `animate_pawn.py` relies on `pose_pawn.py` in the same way, as do many
+of the `animation` scripts.
 
 

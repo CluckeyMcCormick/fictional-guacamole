@@ -26,13 +26,10 @@ if not SCRIPTS_PATH in sys.path:
 
 # Now that we've added our path to the Python-path, we can import our constants.
 import pawn_constants as PC
-# We're also going to import our posing script
-import pose_pawn as pose_lib
 
 # Just in case it changed (Blender scripting doesn't re-import, or uses some
 # sort of caching, I guess), we'll do a real quick reload of both.
 imp.reload(PC)
-imp.reload(pose_lib)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -75,6 +72,9 @@ camera_rig = bpy.data.objects[PC.EMPTY_RIG_STR]
 # Classes
 #
 # ~~~~~~~~~~~~~~~~~~
+
+# A class to represent a pose. Calls a list of functions, which allows us to
+# spread out the functions that pose the body.
 class Pose:
     def __init__(self, function_list):
         # Save that list of functions as a pose function list
@@ -85,6 +85,17 @@ class Pose:
         for p in self.pf_list:
             p()
 
+# Sometimes, we don't want to manually pose every frame - we just want to add
+# blank frames and have Blender interpolate between them. This class enables
+# that.
+class InterpolatePose:
+    def __init__(self, frame_count):
+        self.frame_count = frame_count
+        if self.frame_count < 1:
+            self.frame_count
+
+# The Animation class allows us to chain poses together and manages them (and
+# allows for keyframing)
 class Animation:
     def __init__(self, pose_list):
         # Save the pose objects we've been given 
@@ -97,7 +108,19 @@ class Animation:
         self.end_reached = False
         
     def __len__(self):
-        return len(self.pose_list)
+        frame_length = 0
+    
+        for pose in self.pose_list:
+            # It's technically bad form to do type checking like this in Python;
+            # it'd be much more Pythonic to implement a common function on the
+            # two classes that mirrors this functionality. However, I don't
+            # care.
+            if isinstance(pose, InterpolatePose):
+                frame_length += pose.frame_count
+            else:
+                frame_length += 1
+        
+        return frame_length
         
     def next_pose(self):
         # Increment our current pose counter (cap it at the length of the pose
@@ -108,17 +131,18 @@ class Animation:
         if self.curr_pose >= len(self.pose_list):
             self.curr_pose = len(self.pose_list) - 1
             self.end_reached = True
-        
-        # Set the pawn to the next position
-        self.pose_list[self.curr_pose].pose()
     
+    def get_current_pose(self):
+        return self.pose_list[self.curr_pose]
+
+    def assert_pose(self):
+        if isinstance(self.pose_list[self.curr_pose], Pose):
+            self.pose_list[self.curr_pose].pose()
+   
     def reset(self):
         self.curr_pose = 0
         self.pose_list[self.curr_pose].pose()
         self.end_reached = False
-        
-    def assert_pose(self):
-        self.pose_list[self.curr_pose].pose()
     
     def set_keyframe(self, frame_number):
         # Now we don't really have any way of knowing what body component
@@ -203,49 +227,38 @@ def animation_to_keyframes(anim):
         camera_rig.rotation_euler = (0, 0, curr_ang)
         
         while(not anim.end_reached):
-            # We need to keyframe the camera so Blender doesn't try to
-            # interpolate it.
-            camera_rig.keyframe_insert(
-                data_path="rotation_euler", 
-                frame=curr_frame
-            )
-            # Pose!
-            anim.assert_pose()
-            # Keyframe!
-            anim.set_keyframe(curr_frame)
-            # Next!
-            anim.next_pose()
-            # Frame goes up by 1!
-            curr_frame += 1
-        
+    	    # It's technically bad form to do type checking like this in Python;
+    	    # it'd be much more Pythonic to implement a common function on the
+    	    # two classes that mirrors this functionality. However, I don't
+    	    # care.
+    	    # If we're on an interpolation pose...
+            if isinstance(anim.get_current_pose(), InterpolatePose):
+                # We don't have anything we need to keyframe, we just need to
+                # move up the current frame.
+                curr_frame += anim.get_current_pose().frame_count
+                # Next!
+                anim.next_pose()
+
+            # Otherwise, this must be a regular pose!
+            else:
+                # We need to keyframe the camera so Blender doesn't try to
+                # interpolate it.
+                camera_rig.keyframe_insert(
+                    data_path="rotation_euler", 
+                    frame=curr_frame
+                )
+                # Pose!
+                anim.assert_pose()
+                # Keyframe!
+                anim.set_keyframe(curr_frame)
+                # Next!
+                anim.next_pose()
+                # Frame goes up by 1!
+                curr_frame += 1
+            
         # Okay, that part of the animation has played out. Now reset it, and
         # then the camera will rotate at the top of the for loop.
         anim.reset()
-        
-    # And all of our keyframes should be set. Yipee!
     
-# ~~~~~~~~~~~~~~~~~~
-#
-# Sample Code - Walk Cycle
-#
-# ~~~~~~~~~~~~~~~~~~
-
-"""
-Right Leg Swing
-"""
-walk_frame01 = Pose([pose_lib.left_leg_pos2, pose_lib.right_leg_pos4])
-walk_frame02 = Pose([pose_lib.left_leg_pos3, pose_lib.right_leg_pos3])
-walk_frame03 = Pose([pose_lib.left_leg_pos4, pose_lib.right_leg_pos2])
-walk_frame04 = Pose([pose_lib.left_leg_pos3, pose_lib.right_leg_pos3])
-
-"""
-Put together into an animation
-"""
-animo = Animation([walk_frame01, walk_frame02, walk_frame03, walk_frame04])
-
-# A N I M A T E
-animation_to_keyframes(animo)
-
-
-
+    # And all of our keyframes should be set. Yipee!
 

@@ -45,7 +45,7 @@
 */
 // How long is the grip? Since this is a short sword, it should match the
 // hand height/width of the intended user.
-GRIP_HEIGHT = 0.1;
+GRIP_LENGTH = 0.2;
 // The grip is a cylinder. What's the radius of that cylinder?
 GRIP_RADIUS = 0.025;
 // We need to specify how many faces the grip has. How many faces does it
@@ -115,13 +115,13 @@ FULLER_FACES = 4;
 // The GRIP
 module grip(){
     rotate([90, 0, 0])
-    cylinder(h=GRIP_HEIGHT, r=GRIP_RADIUS, center=true, $fn=GRIP_FACES);
+    cylinder(h=GRIP_LENGTH, r=GRIP_RADIUS, center=true, $fn=GRIP_FACES);
 }
 //
 
 // The POMMEL
 module pommel(){
-    translate([0, (-GRIP_HEIGHT / 2) - POMMEL_RADIUS + POMMEL_Y_SHIFT, 0])
+    translate([0, (-GRIP_LENGTH / 2) - POMMEL_RADIUS + POMMEL_Y_SHIFT, 0])
     rotate([0, 90, 0])
     cylinder(h=POMMEL_THICKNESS, r=POMMEL_RADIUS, center=true, $fn=POMMEL_FACES);
 }
@@ -129,7 +129,7 @@ module pommel(){
 
 // The GUARD
 module guard(){
-    translate([0, (GRIP_HEIGHT / 2) + (GUARD_LENGTH / 2), 0])
+    translate([0, (GRIP_LENGTH / 2) + (GUARD_LENGTH / 2), 0])
     cube(size=[GUARD_THICKNESS, GUARD_LENGTH, GUARD_WIDTH], center=true);
 }
 //
@@ -140,7 +140,7 @@ module edge_shape(){
     X_OUTER_POINT = BLADE_WIDTH / 2;
     X_INNER_POINT = (BLADE_WIDTH / 2) - EDGE_WIDTH;
     
-    translate([0, GRIP_HEIGHT / 2 + GUARD_LENGTH, 0])
+    translate([0, GRIP_LENGTH / 2 + GUARD_LENGTH, 0])
     rotate([0, 90, 90])
     union(){
         // Left (-X) side
@@ -169,7 +169,7 @@ module edge_shape(){
 }
 module core_blade(){
     union(){//
-        translate([0, (GRIP_HEIGHT / 2) + GUARD_LENGTH + (BLADE_LENGTH / 2), 0])
+        translate([0, (GRIP_LENGTH / 2) + GUARD_LENGTH + (BLADE_LENGTH / 2), 0])
         cube(
             size=[BLADE_THICKNESS, BLADE_LENGTH, BLADE_WIDTH - (EDGE_WIDTH * 2)],
             center=true
@@ -183,7 +183,7 @@ module tip_carver(){
     X_INNER_POINT = (BLADE_WIDTH / 2) - EDGE_WIDTH;
     
     translate([0, TIP_INSET, 0])
-    translate([0, (GRIP_HEIGHT / 2) + GUARD_LENGTH + BLADE_LENGTH, 0])
+    translate([0, (GRIP_LENGTH / 2) + GUARD_LENGTH + BLADE_LENGTH, 0])
     rotate([0, 90, 0])
     rotate_extrude(angle = 180, $fn=TIP_CARVER_FACES)
     polygon(
@@ -206,7 +206,7 @@ module tip_carver(){
     );
 }
 module fuller_carver(){
-    translate([0, (GRIP_HEIGHT / 2) + GUARD_LENGTH, 0])
+    translate([0, (GRIP_LENGTH / 2) + GUARD_LENGTH, 0])
     rotate([-90, 90, 0])
     union(){
         translate([0, BLADE_THICKNESS / 2, 0])

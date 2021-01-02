@@ -121,6 +121,9 @@ HAND_R_STR = "handRight"
 BODY_STR = "body"
 HEAD_STR = "head"
 
+# These are the names for our weapons.
+SHORT_SWORD_STR = "shortSword"
+
 # These are the names for our supporting items - the lights, cameras, empty
 # parents, etc.
 EMPTY_RIG_STR = "Empty Camera-Light Rig"

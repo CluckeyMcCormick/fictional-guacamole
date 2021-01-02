@@ -33,8 +33,8 @@ imp.reload(PC)
 # Get the stuff
 #
 # ~~~~~~~~~~~~~~~~~~
-# Now then, we're gonna arrange each component so that everything is where it's
-# supposed to be. First, let's just get  E V E R Y T H I N G.
+# Now then, we're gonna create position functions for all the body parts - so
+# let's grab E V E R Y T H I N G.
 foot_l = bpy.data.objects[PC.FOOT_L_STR]
 foot_r= bpy.data.objects[PC.FOOT_R_STR]
 
@@ -62,10 +62,22 @@ LEFT_ARM_DEFAULT_LOC = mathutils.Vector((
     (PC.ARM_SHIFT_Z + PC.ARM_HEIGHT) / float(PC.MM_PER_WORLD_UNIT)
 ))
 
+LEFT_HAND_DEFAULT_LOC = mathutils.Vector((
+    0.0, 
+    PC.HAND_SHIFT_Y / float(PC.MM_PER_WORLD_UNIT),
+    PC.HAND_SHIFT_Z / float(PC.MM_PER_WORLD_UNIT)
+))
+
 RIGHT_ARM_DEFAULT_LOC = mathutils.Vector((
     0.0, 
     -PC.ARM_SHIFT_Y / float(PC.MM_PER_WORLD_UNIT),
     (PC.ARM_SHIFT_Z + PC.ARM_HEIGHT) / float(PC.MM_PER_WORLD_UNIT)
+))
+
+RIGHT_HAND_DEFAULT_LOC = mathutils.Vector((
+    0.0, 
+    -PC.HAND_SHIFT_Y / float(PC.MM_PER_WORLD_UNIT),
+    PC.HAND_SHIFT_Z / float(PC.MM_PER_WORLD_UNIT)
 ))
 
 LEFT_LEG_DEFAULT_LOC = mathutils.Vector((
@@ -74,16 +86,34 @@ LEFT_LEG_DEFAULT_LOC = mathutils.Vector((
     (PC.LEG_SHIFT_Z + PC.LEG_HEIGHT) / float(PC.MM_PER_WORLD_UNIT)
 ))
 
+LEFT_FOOT_DEFAULT_LOC = mathutils.Vector((
+    PC.FEET_X_SHIFT / float(PC.MM_PER_WORLD_UNIT),
+    PC.FOOT_SHIFT_Y / float(PC.MM_PER_WORLD_UNIT),
+    0.0
+))
+
 RIGHT_LEG_DEFAULT_LOC = mathutils.Vector((
     0.0, 
     -PC.LEG_SHIFT_Y / float(PC.MM_PER_WORLD_UNIT),
     (PC.LEG_SHIFT_Z + PC.LEG_HEIGHT) / float(PC.MM_PER_WORLD_UNIT)
 ))
 
+RIGHT_FOOT_DEFAULT_LOC = mathutils.Vector((
+    PC.FEET_X_SHIFT / float(PC.MM_PER_WORLD_UNIT),
+    -PC.FOOT_SHIFT_Y / float(PC.MM_PER_WORLD_UNIT),
+    0.0
+))
+
 BODY_DEFAULT_LOC = mathutils.Vector((
     0.0, 
     0.0,
     PC.BODY_SHIFT_Z / float(PC.MM_PER_WORLD_UNIT)
+))
+
+HEAD_DEFAULT_LOC = mathutils.Vector((
+    0.0, 
+    0.0,
+    PC.HEAD_SHIFT_Z / float(PC.MM_PER_WORLD_UNIT)
 ))
 
 # Default rotation. Pretty uncontroversial.
@@ -113,6 +143,30 @@ def right_leg_default():
 def body_default():
     body.location = BODY_DEFAULT_LOC
     body.rotation_euler = DEFAULT_ROT
+
+def head_default():
+    head.location = HEAD_DEFAULT_LOC
+    head.rotation_euler = DEFAULT_ROT
+    
+#
+# Extremity Defaults - not generally recommended for usage, since it's generally
+# better to move the parent component (i.e. move legs and not feet)
+#
+def left_hand_default():
+    hand_l.location = LEFT_HAND_DEFAULT_LOC
+    hand_l.rotation_euler = DEFAULT_ROT
+
+def right_hand_default():
+    hand_r.location = RIGHT_HAND_DEFAULT_LOC
+    hand_r.rotation_euler = DEFAULT_ROT
+
+def left_foot_default():
+    foot_l.location = LEFT_FOOT_DEFAULT_LOC
+    foot_l.rotation_euler = DEFAULT_ROT
+
+def right_foot_default():
+    foot_r.location = RIGHT_FOOT_DEFAULT_LOC
+    foot_r.rotation_euler = DEFAULT_ROT
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -266,15 +320,4 @@ def body_on_floor():
         (PC.BODY_DEPTH / 2) / float(PC.MM_PER_WORLD_UNIT)
     ))
     body.rotation_euler = (0, math.radians(-90), 0)
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#
-# Code Go Here - Sample Provided
-#
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#left_arm_outstretched()
-#right_arm_outstretched()
-#left_leg_pos1()
-#right_leg_pos1()
-#body_on_floor()
 

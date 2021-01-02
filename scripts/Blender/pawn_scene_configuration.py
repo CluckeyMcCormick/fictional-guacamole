@@ -36,9 +36,17 @@ imp.reload(PC)
 # Constants
 #
 # ~~~~~~~~~~~~~~~~~~
+
+# The size of the sprites is currently somewhat variable - since some weapons
+# are bigger/longer than others, we need to step up the size of the sprites
+# every time a weapon goes out of frame. We can keep the sprites the same size
+# while giving them more room by increasing the resolution and camera scale
+# proportionally - this factor acts as that proportional scale.
+SPRITE_SCALING_FACTOR = 1.5
+
 # What's the resolution of our output image
-RESOLUTION_X = 128
-RESOLUTION_Y = 128
+RESOLUTION_X = 128 * SPRITE_SCALING_FACTOR
+RESOLUTION_Y = 128 * SPRITE_SCALING_FACTOR
 
 # We use 'Freestyle' to add lines to our finished render, giving the Pawns a
 # more finished look
@@ -46,7 +54,7 @@ FREESTYLE_LINE_THICKNESS = .25
 
 # We use orthographic cameras. With orthographic cameras, the scope of what we
 # can see is determined by the "scale" of the camera.
-CAMERA_SCALE = 1.8
+CAMERA_SCALE = 1.8 * SPRITE_SCALING_FACTOR
 
 # To help us control our lighting and rig/other nonsense, we create an empty
 # cube centered on the pawn's body. How big is that cube?
@@ -142,11 +150,48 @@ def prep_camera_object(camera_name, object_name):
     # Return the object
     return obj
 
+# Credit to Noam Peled on Stack exchange for coming up with this delete
+# hierarchy function (I think zeffii helped so props to him too)
+# https://blender.stackexchange.com/questions/44653/delete-parent-object-hierarchy-in-code/44786
+def delete_hierarchy(parent_obj_name):
+    if not parent_obj_name in bpy.data.objects:
+        return
+    # Back out if the parent object doesn't exist!
+    # Otherwise, let's get to work.
+    bpy.data.objects[parent_obj_name].animation_data_clear()
+
+    names = set()
+    # Go over all the objects in the hierarchy like @zeffi suggested:
+    def get_child_names(obj):
+        for child in obj.children:
+            names.add(child.name)
+            if child.children:
+                get_child_names(child)
+
+    get_child_names(bpy.data.objects[parent_obj_name])
+
+    print(names)
+
+    # First, remove any animation data
+    for child_name in names:
+        bpy.data.objects[child_name].animation_data_clear()
+        
+    # Next, remove all the children
+    for child_name in names:
+        bpy.data.objects.remove(bpy.data.objects[child_name])
+    
+    # Finally, destroy ourself
+    bpy.data.objects.remove(bpy.data.objects[parent_obj_name])
+
 # ~~~~~~~~~~~~~~~~~~
 #
 # Set-Up Empty
 #
 # ~~~~~~~~~~~~~~~~~~
+
+# Delete Empty
+delete_hierarchy(PC.EMPTY_RIG_STR)
+
 # Create empty
 empty_rig = prep_empty_object(PC.EMPTY_RIG_STR)
 # Set the size and the display type / value

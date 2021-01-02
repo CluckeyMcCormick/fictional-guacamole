@@ -341,6 +341,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 2, 7 )
 position_algorithm = 1
 navigation = NodePath("../Navigation")
 
+[node name="VisualSprite" parent="XrayPawnAlpha" index="3"]
+frame = 6
+
 [node name="HidingMesh" parent="XrayPawnAlpha" instance=ExtResource( 20 )]
 transform = Transform( 0.707107, -0.408244, 0.577353, 0, 0.8165, 0.577345, -0.707107, -0.408244, 0.577353, 10, 10, 10 )
 mesh = SubResource( 1 )
@@ -354,8 +357,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 2, 7 )
 position_algorithm = 1
 navigation = NodePath("../Navigation")
 
-[node name="VisualSprite" parent="XrayPawnDefault" index="2"]
+[node name="VisualSprite" parent="XrayPawnDefault" index="3"]
 frames = ExtResource( 16 )
+frame = 6
 
 [node name="HidingMesh" parent="XrayPawnDefault" instance=ExtResource( 20 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 5, 5 )
@@ -370,8 +374,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 2, 7 )
 position_algorithm = 1
 navigation = NodePath("../Navigation")
 
-[node name="VisualSprite" parent="XrayPawnNoDepth" index="2"]
+[node name="VisualSprite" parent="XrayPawnNoDepth" index="3"]
 frames = ExtResource( 15 )
+frame = 6
 
 [node name="HidingMesh" parent="XrayPawnNoDepth" instance=ExtResource( 20 )]
 material/0 = SubResource( 19 )
@@ -383,8 +388,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 2, 9 )
 position_algorithm = 1
 navigation = NodePath("../Navigation")
 
-[node name="VisualSprite" parent="MultiplyPawn" index="2"]
+[node name="VisualSprite" parent="MultiplyPawn" index="3"]
 frames = ExtResource( 17 )
+frame = 6
 
 [node name="HidingMesh" parent="MultiplyPawn" instance=ExtResource( 20 )]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.05, 0, 0.05 )
@@ -398,8 +404,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 2, 9 )
 position_algorithm = 1
 navigation = NodePath("../Navigation")
 
-[node name="VisualSprite" parent="FillPawn" index="2"]
+[node name="VisualSprite" parent="FillPawn" index="3"]
 frames = ExtResource( 12 )
+frame = 6
 
 [node name="HidingMesh" parent="FillPawn" instance=ExtResource( 20 )]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.05, 0, 0.05 )
@@ -413,10 +420,11 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 2, 9 )
 position_algorithm = 1
 navigation = NodePath("../Navigation")
 
-[node name="VisualSprite" parent="NormalPawn" index="2"]
+[node name="VisualSprite" parent="NormalPawn" index="3"]
 modulate = Color( 0.976471, 0.760784, 0.168627, 1 )
+frame = 6
 
-[node name="KinematicDriver" parent="NormalPawn" index="3"]
+[node name="KinematicDriver" parent="NormalPawn" index="4"]
 drive_body = NodePath("../../NormalPawn")
 
 [node name="Navigation" type="Navigation" parent="."]
