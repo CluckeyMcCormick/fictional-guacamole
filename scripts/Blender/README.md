@@ -1,7 +1,9 @@
 # Blender Scripts
 
 These scripts were used to create the pawn sprites for this game. Each one
-serves a particular purpose.
+serves a particular purpose. They were created and tested for Blender 2.90, but
+the API is standard to Blender 2.80 forward, so it SHOULD be compatible with
+those versions.
 
 ## Included Scripts
 
@@ -101,10 +103,30 @@ That's right - the utilities in this script even handle keyframing the multiple
 angles you'll need!
 
 Once you export the animation as a series of images, you just have to
-pack it all into a spritesheet. I used a combination of
-[Simplepacker by Maciej Lechowski](https://github.com/lchsk/simplepacker) and
-my own personal ImageMagick script, `sprite_sheetmaker.bash` (see the
-appropriate directory).
+pack it all into a spritesheet. I used a combination of my own personal
+ImageMagick script, `sprite_sheetmaker.bash` (see the appropriate directory).
+
+### `pawn_compositing_configuration.py`
+We render the Pawn sprites separate from the weapons. The pawn sprites are the
+whole sprite, while the weapon sprites have the pawn masked out. This means
+weapon sprites are essentially "subordinate" to the pawn sprites - a change in
+the Pawn model necessitates a change to the weapon sprites, but a change in the
+weapon sprites doesn't impact the Pawn sprites. 
+
+This is a bit bonkers, but it allows us to match any pawn sprite with any
+weapon, PROVIDED there is nowmorphological changes. In other words, this
+strategy works as long as there's no change in the actual shape of the models - 
+just the color of the models.
+
+This script is what enables that crazy strategy, via Blender's compositing system
+and the 'Cycles' rendering system (it only works with 'Cycles'). When ran, it
+presents the user with several options - mask out the weapon, mask out the Pawn, 
+disable node rendering, or cancel any operations. 
+
+Right now, masking out the Pawn is what we use to make weapon sprites. Pawn
+sprites are made by moving the weapon out of frame, NOT by masking out the weapon.
+Masking out the weapon is provided as more of an example, or a curiosity - it may
+be deleted in the future.
 
 ### Animations
 The animation directory contains our individual animations - one script, one
@@ -120,7 +142,18 @@ to be run in a particular order, like so:
 1. Run `pawn_prepare.py`
 1. Edit and run `pawn_prepare_accessories.py` as necessary
 1. Run `pawn_scene_configuration.py`
-1. Run a script in the `animations` directory (or add a new one)
+
+At this point, the scene should be configured appropriately. The last thing
+you'll really need to configure will be the output directory, since that has
+to be configured by hand - check the "Output" tab under the "Output Properties"
+tab (in Blender 2.9, the icon looks like a little printer)
+
+The next two steps are meant to be run repeatedly (as necessary) to generate
+the needed sprites.
+
+1. Run `pawn_compositing_configuration.py` as needed
+1. Run a script in the `animations` directory (or add a new one) as necessary
+1. Render the animation
 
 ## Running the scripts
 These scripts were meant to be loaded into Blender's text file window, and

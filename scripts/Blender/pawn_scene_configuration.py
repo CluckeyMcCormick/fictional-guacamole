@@ -300,7 +300,11 @@ temp.data.shift_y = TOP_DOWN_CAMERA_Y_SHIFT
 # Set Render Settings
 #
 # ~~~~~~~~~~~~~~~~~~~~
-# Set 'Film' to Transparent
+# Set the render engine - we need certain features that are only supported in
+# specific engines; in this case, we need CYCLES!
+current_scene.render.engine = 'CYCLES'
+
+# Set 'Film' to Transparent (i.e. transparent background / sprites)
 current_scene.render.film_transparent = True
 
 # Enable freestyle

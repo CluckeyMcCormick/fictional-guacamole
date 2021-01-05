@@ -27,7 +27,7 @@ if not SCRIPTS_PATH in sys.path:
 # Now that we've added our path to the Python-path, we can import our constants.
 import pawn_constants as PC
 # We're also going to import our posing script
-import pawn_pose as pose_lib
+import pawn_pose_core as pose_lib
 
 # Just in case it changed (Blender scripting doesn't re-import, or uses some
 # sort of caching, I guess), we'll do a real quick reload of both.

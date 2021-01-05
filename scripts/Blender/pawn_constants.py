@@ -102,6 +102,15 @@ HEAD_TRI_HEIGHT = 5
 # How tall is the rectangular component that sits atop the triangular component?
 HEAD_RECT_HEIGHT = 25
 
+# In order to avoid creating more sprites than we have to, we use a bonkers
+# sprite layering strategy - a key part of that strategy is using the "pass
+# index" of our various objects to effectively "remove" items from the final
+# sprites.
+# What's the index for every single body part on the Pawn's body?
+PAWN_PASS_INDEX = 2
+# What's the index for the weapons?
+WEAPON_PASS_INDEX = 1
+
 #~~~~~~~~~~~~~~~~~~~~~
 #
 # NAME CONSTANTS!

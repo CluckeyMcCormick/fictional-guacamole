@@ -94,6 +94,9 @@ def prepare_short_sword():
     short_sword.location = hand_r.location + SWORD_MOVE_VECTOR
     # Rotate the sword so that it faces forward.
     short_sword.rotation_euler = [0, 0, -math.radians(90)]
+    
+    # Assign the pass index so we can do the compositing nonsense
+    short_sword.pass_index  = PC.WEAPON_PASS_INDEX
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #

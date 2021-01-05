@@ -153,4 +153,24 @@ arm_r.matrix_parent_inverse = body.matrix_world.inverted()
 
 head.matrix_parent_inverse = body.matrix_world.inverted()
 
+# ~~~~~~~~~~~~~
+#
+# Pass Indicies
+#
+# ~~~~~~~~~~~~~
+
+foot_l.pass_index = PC.PAWN_PASS_INDEX
+foot_r.pass_index = PC.PAWN_PASS_INDEX
+
+leg_l.pass_index = PC.PAWN_PASS_INDEX
+leg_r.pass_index = PC.PAWN_PASS_INDEX
+
+hand_l.pass_index = PC.PAWN_PASS_INDEX
+hand_r.pass_index = PC.PAWN_PASS_INDEX
+
+arm_l.pass_index = PC.PAWN_PASS_INDEX
+arm_r.pass_index = PC.PAWN_PASS_INDEX
+
+head.pass_index = PC.PAWN_PASS_INDEX
+body.pass_index = PC.PAWN_PASS_INDEX
 
