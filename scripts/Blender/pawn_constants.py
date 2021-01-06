@@ -130,8 +130,9 @@ HAND_R_STR = "handRight"
 BODY_STR = "body"
 HEAD_STR = "head"
 
-# These are the names for our weapons.
+# These are the names for our accessories.
 SHORT_SWORD_STR = "shortSword"
+HAT_STR = "hat"
 
 # These are the names for our supporting items - the lights, cameras, empty
 # parents, etc.

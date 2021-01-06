@@ -1,5 +1,6 @@
 # Blender-specific imports
 import bpy
+import bpy_extras
 import mathutils
 
 # Import math
@@ -35,11 +36,6 @@ imp.reload(PC)
 # Utilities
 #
 # ~~~~~~~~~~~~~~~~~~
-# We're gonna arrange the weapons to be attached to the hands - so let's get the 
-# hands.
-hand_l = bpy.data.objects[PC.HAND_L_STR]
-hand_r = bpy.data.objects[PC.HAND_R_STR]
-
 # Unlike other scripts, it's not guaranteed that the "accessories" we need or
 # want is actually in the scene. So we'll need some more flexibility - this
 # function allows us to display an error message in Blender so the user knows
@@ -51,26 +47,77 @@ def show_message_box(message = "", title = "Message Box", icon = 'INFO'):
 
     bpy.context.window_manager.popup_menu(draw, title = title, icon = icon)
 
+# We need to build out an "items" tuple of the objects in the scene so we can
+# have a GUI list for the user to choose from.
+item_choices = []
+for scene_obj in bpy.data.objects.keys():
+    item_choices.append((scene_obj, scene_obj, ""))
+
+#
+class AccesoryControl(bpy.types.Operator):
+    bl_idname = "custom.accesory_control"
+    bl_label = "Specify the accessory type."
+
+    target_obj: bpy.props.EnumProperty(
+        items=item_choices,
+        name="Target Object"
+    )
+   
+    acc_type: bpy.props.EnumProperty(
+        items=(
+            # Only The Short Sword is currently supported
+            (PC.SHORT_SWORD_STR, "Short Sword", ""),
+            #(PC.HAT_STR, "Hat", ""),
+        ),
+        name="Accessory Type",
+    )
+    
+    def execute(self, context):
+        if self.acc_type == PC.SHORT_SWORD_STR:
+            prepare_short_sword(self.target_obj)
+        return {'FINISHED'}
+        
+    def invoke(self, context, event):
+        wm = context.window_manager
+        wm.invoke_props_dialog(self)
+        return {'RUNNING_MODAL'}
+        
+bpy.utils.register_class(AccesoryControl)
+
 # ~~~~~~~~~~~~~~~~~~~~
 #
 # Function definitions
 #
 # ~~~~~~~~~~~~~~~~~~~~
 
-def prepare_short_sword():
+def prepare_short_sword(object_name):
     # If we don't have a short sword, inform the user and back out
-    if PC.SHORT_SWORD_STR not in bpy.data.objects:
+    if object_name not in bpy.data.objects:
         # Format our error message
-        error_msg = "No short sword found! Please add an object called "
-        error_msg += PC.SHORT_SWORD_STR
-        error_msg += " at origin!"
+        error_msg = "Error, selected object "
+        error_msg += object_name + " couldn't be found... somehow."
         # Print!
         print(error_msg)
-        show_message_box(message=error_msg, title=PC.SHORT_SWORD_STR)
+        show_message_box(message=error_msg, title=object_name)
         return
     
-    # Get the short sword
-    short_sword = bpy.data.objects[PC.SHORT_SWORD_STR]
+    if PC.HAND_R_STR not in bpy.data.objects:
+        # Format our error message
+        error_msg = "Couldn't find Pawn body-part " + PC.HAND_R_STR + ". "
+        error_msg += "Has the Pawn been generated?"
+        # Print!
+        print(error_msg)
+        show_message_box(message=error_msg, title=PC.HAND_R_STR)
+        return
+    
+    # Get the hand
+    hand_r = bpy.data.objects[PC.HAND_R_STR]
+    
+    # Get the object, which will now referred to as the "short sword"
+    short_sword = bpy.data.objects[object_name]
+    
+    # Change the name so we have a consistent base to work with
+    short_sword.name = PC.SHORT_SWORD_STR
     
     # Now, ASSIGN THE PARENT
     short_sword.parent = hand_r
@@ -103,7 +150,6 @@ def prepare_short_sword():
 # Call the correct prepare function here
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-prepare_short_sword()
 
-
+bpy.ops.custom.accesory_control('INVOKE_DEFAULT')
 

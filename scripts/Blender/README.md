@@ -63,6 +63,11 @@ Sometimes the pawn has additional items that need to be "prepared" - moved into
 place. These items are generally something loaded into the scene by hand. Custom
 assets like hats, armor, jewelry, weapons, etc.
 
+Before running the script, have the model loaded in to the scene. The script will
+prompt you to select the correct object and accessory type. The selected object
+will be name-changed to reflect the accessory type and will probably be
+re-parented and have various other modifications enacted.
+
 This file has functions for preparing (positioning) different accessories, which
 will change depending on what accessories have currently been loaded in. Because
 of that, this is one of the few scripts with decent error handling.
@@ -140,7 +145,7 @@ to be run in a particular order, like so:
 1. Edit `pawn_constants.py` (if you want to)
 1. Run `pawn_generate.py`
 1. Run `pawn_prepare.py`
-1. Edit and run `pawn_prepare_accessories.py` as necessary
+1. Run `pawn_prepare_accessories.py` as necessary (one run for each accessory)
 1. Run `pawn_scene_configuration.py`
 
 At this point, the scene should be configured appropriately. The last thing
