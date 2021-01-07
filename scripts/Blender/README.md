@@ -94,9 +94,12 @@ pose, and then register that pose as a keyframe. You can then change the
 function calls to create a new pose, and so on and so on.
 
 This was originally intended to have ALL of the pose functions, but I realized
-that most specific poses are best kept with their associated animations. Now
-this just serves as a library for some common pose functions, like default
-position functions.
+that most specific poses are best kept with their associated animations. Now it
+serves as a library for some common pose functions, like default position
+functions.
+
+This script does feature a GUI to allow you to pose the Pawn (only default/core
+positions are available).
 
 ### `pawn_animate.py`
 This script is a natural extension of `pawn_pose_core.py` - where that script has
@@ -153,12 +156,18 @@ you'll really need to configure will be the output directory, since that has
 to be configured by hand - check the "Output" tab under the "Output Properties"
 tab (in Blender 2.9, the icon looks like a little printer)
 
-The next two steps are meant to be run repeatedly (as necessary) to generate
+The next steps are meant to be run repeatedly (as necessary) to generate
 the needed sprites.
 
-1. Run `pawn_compositing_configuration.py` as needed
 1. Run a script in the `animations` directory (or add a new one) as necessary
+1. Run `pawn_compositing_configuration.py` as needed
 1. Render the animation
+
+Two scripts serve as clean-up, and may be useful when switching between
+animations:
+
+1. Run `pawn_clear_animation.py` to clear any animation data
+1. Run `pawn_pose_core.py` to return the Pawn to default
 
 ## Running the scripts
 These scripts were meant to be loaded into Blender's text file window, and

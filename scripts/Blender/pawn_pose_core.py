@@ -321,3 +321,116 @@ def body_on_floor():
     ))
     body.rotation_euler = (0, math.radians(-90), 0)
 
+# ~~~~~~~~~~~~~~~~~~~
+#
+# Interface Utilities
+#
+# ~~~~~~~~~~~~~~~~~~~
+
+LEG_POSITION_01_STR = 'legpos01'
+LEG_POSITION_02_STR = 'legpos02'
+LEG_POSITION_03_STR = 'legpos03'
+LEG_POSITION_04_STR = 'legpos04'
+LEG_POSITION_05_STR = 'legpos05'
+LEG_OUTWARD_STR = 'leg_outward'
+
+ARM_DEFAULT_STR = 'armpos_default'
+ARM_OUTSTRETCHED_STR = 'armpos_outstretched'
+ARM_FORWARD_STR = 'armpos_forward'
+ARM_UPWARD_STR = 'armpos_upward'
+
+left_arm_function_dict = {
+    ARM_DEFAULT_STR: left_arm_default,
+    ARM_OUTSTRETCHED_STR: left_arm_outstretched,
+    ARM_FORWARD_STR: left_arm_forward,
+    ARM_UPWARD_STR: left_arm_upward
+}
+right_arm_function_dict = {
+    ARM_DEFAULT_STR: right_arm_default,
+    ARM_OUTSTRETCHED_STR: right_arm_outstretched,
+    ARM_FORWARD_STR: right_arm_forward,
+    ARM_UPWARD_STR: right_arm_upward
+}
+left_leg_function_dict = {
+    LEG_POSITION_01_STR: left_leg_pos1,
+    LEG_POSITION_02_STR: left_leg_pos2,
+    LEG_POSITION_03_STR: left_leg_pos3,
+    LEG_POSITION_04_STR: left_leg_pos4,
+    LEG_POSITION_05_STR: left_leg_pos5,
+    LEG_OUTWARD_STR: left_leg_outward
+}
+right_leg_function_dict = {
+    LEG_POSITION_01_STR: right_leg_pos1,
+    LEG_POSITION_02_STR: right_leg_pos2,
+    LEG_POSITION_03_STR: right_leg_pos3,
+    LEG_POSITION_04_STR: right_leg_pos4,
+    LEG_POSITION_05_STR: right_leg_pos5,
+    LEG_OUTWARD_STR: right_leg_outward
+}
+
+class PoseMachine(bpy.types.Operator):
+    bl_idname = "custom.pose_machine"
+    bl_label = "Specify the accessory type."
+
+    left_arm: bpy.props.EnumProperty(
+        items=(
+            (ARM_DEFAULT_STR, "Default", ""),
+            (ARM_OUTSTRETCHED_STR, "Outstretched", ""),
+            (ARM_FORWARD_STR, "Forward", ""),
+            (ARM_UPWARD_STR, "Upward", ""),
+        ),
+        name="Left Arm Position",
+    )
+    right_arm: bpy.props.EnumProperty(
+        items=(
+            (ARM_DEFAULT_STR, "Default", ""),
+            (ARM_OUTSTRETCHED_STR, "Outstretched", ""),
+            (ARM_FORWARD_STR, "Forward", ""),
+            (ARM_UPWARD_STR, "Upward", ""),
+        ),
+        name="Right Arm Position",
+    )
+    left_leg: bpy.props.EnumProperty(
+        items=(
+            (LEG_POSITION_03_STR, "Position 03 (Default)", ""),
+            (LEG_POSITION_01_STR, "Position 01 (Forward, Full)", ""),
+            (LEG_POSITION_02_STR, "Position 02 (Forward, Quarter)", ""),
+            (LEG_POSITION_04_STR, "Position 04 (Aft, Quarter)", ""),
+            (LEG_POSITION_05_STR, "Position 05 (Aft, Full)", ""),
+            (LEG_OUTWARD_STR, "Outward", ""),
+        ),
+        name="Left Leg Position",
+    )
+    right_leg: bpy.props.EnumProperty(
+        items=(
+            (LEG_POSITION_03_STR, "Position 03 (Default)", ""),
+            (LEG_POSITION_01_STR, "Position 01 (Forward, Full)", ""),
+            (LEG_POSITION_02_STR, "Position 02 (Forward, Quarter)", ""),
+            (LEG_POSITION_04_STR, "Position 04 (Aft, Quarter)", ""),
+            (LEG_POSITION_05_STR, "Position 05 (Aft, Full)", ""),
+            (LEG_OUTWARD_STR, "Outward", ""),
+        ),
+        name="Right Leg Position",
+    )
+    
+    def execute(self, context):
+        # Do all the functions the user specified
+        left_arm_function_dict[self.left_arm]()
+        right_arm_function_dict[self.right_arm]()
+        left_leg_function_dict[self.left_leg]()
+        right_leg_function_dict[self.right_leg]()
+        # All done! Back out.
+        return {'FINISHED'}
+        
+    def invoke(self, context, event):
+        wm = context.window_manager
+        wm.invoke_props_dialog(self)
+        return {'RUNNING_MODAL'}
+        
+bpy.utils.register_class(PoseMachine)
+
+if __name__ == "__main__":
+    # If we're running this as a pose library
+    bpy.ops.custom.pose_machine('INVOKE_DEFAULT')
+
+
