@@ -134,6 +134,11 @@ HEAD_STR = "head"
 SHORT_SWORD_STR = "shortSword"
 HAT_STR = "hat"
 
+# Some scripts need to address all "weapons", but that group is regularly in
+# flux. To address that issue, we group them here so that other classes can just
+# work through the contents of this list
+WEAPON_STR_LIST = [SHORT_SWORD_STR]
+
 # These are the names for our supporting items - the lights, cameras, empty
 # parents, etc.
 EMPTY_RIG_STR = "Empty Camera-Light Rig"

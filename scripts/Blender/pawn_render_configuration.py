@@ -38,7 +38,7 @@ imp.reload(PC)
 INPUT_NODE_TYPE = 'CompositorNodeRLayers'
 INPUT_NODE_POSITION = (0,0)
 INPUT_NODE_IMAGE_INDEX = 0
-INPUT_NODE_INDEXOB_INDEX = 3
+INPUT_NODE_INDEXOB_INDEX = 2
 
 ID_MASK_NODE_TYPE = 'CompositorNodeIDMask'
 ID_MASK_NODE_POSITION = (350, -100)
@@ -50,10 +50,38 @@ OUTPUT_NODE_POSITION = (600, 0)
 OUTPUT_NODE_IMAGE_INDEX = 0
 OUTPUT_NODE_ALPHA_INDEX = 1
 
-OP_DISABLE_NODES = 'DISABLE_NODES'
+OP_RENDER_ALL = 'RENDER_ALL'
 OP_ONLY_WEAPON = 'ONLY_WEAPON'
 OP_ONLY_PAWN = 'ONLY_PAWN'
-OP_CANCEL_OPERATION = 'CANCEL'
+
+# ~~~~~~~~~~~~~~~~~~
+#
+# Utilities
+#
+# ~~~~~~~~~~~~~~~~~~
+# Given the name of a root object, goes through a tree disabling the render
+# visibility of that object and it's tree. This is done on the assumption that
+# any children of a weapon were probably intended as decorations or effects on
+# the weapon.
+def modify_tree_render_visibility(root_name, disabling=True):
+    # If the root node doesn't exist, back out.
+    if not root_name in bpy.data.objects:
+        return
+    
+    # Otherwise, let's get to work.
+    bpy.data.objects[root_name].hide_render = disabling
+
+    # Go over all the objects in the hierarchy like @zeffi suggested:
+    def set_child_vis(obj):
+        for child in obj.children:
+            # Hide/show this node (depending)
+            child.hide_render = disabling
+            # If we have children, then go deeper!
+            if child.children:
+                set_child_vis(child)
+
+    # Now that we defined that function, let's call it!
+    set_child_vis( bpy.data.objects[root_name] )
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -61,14 +89,26 @@ OP_CANCEL_OPERATION = 'CANCEL'
 #
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-def disable_nodes():
+def render_all():
+    # Disable the nodes, which disables the weapon mask
     bpy.context.scene.use_nodes = False
-    return "Node Rendering disabled!"
+    
+    # Enable rendering on all weapons in the scene
+    for weapon_str in PC.WEAPON_STR_LIST:
+        if weapon_str in bpy.data.objects:
+            modify_tree_render_visibility(weapon_str, disabling=False)
+    
+    return "Rendering everything!"
     
 def only_weapons():
     # switch on nodes and get reference
     bpy.context.scene.use_nodes = True
     tree = bpy.context.scene.node_tree
+
+    # Ensure we're rendering all of the weapons
+    for weapon_str in PC.WEAPON_STR_LIST:
+        if weapon_str in bpy.data.objects:
+            modify_tree_render_visibility(weapon_str, disabling=False)
 
     # clear default nodes
     for node in tree.nodes:
@@ -110,51 +150,16 @@ def only_weapons():
     return "Now only rendering weapons (masked)!"
 
 def only_pawn():
-    # switch on nodes and get reference
-    bpy.context.scene.use_nodes = True
-    tree = bpy.context.scene.node_tree
-
-    # clear default nodes
-    for node in tree.nodes:
-        tree.nodes.remove(node)
-
-    # create input render layers node
-    in_node = tree.nodes.new(type=INPUT_NODE_TYPE)
-    in_node.location = INPUT_NODE_POSITION
-
-    # create ID mask node
-    mask_node = tree.nodes.new(type=ID_MASK_NODE_TYPE)
-    mask_node.location = ID_MASK_NODE_POSITION
-    # NO anti-aliasing!
-    mask_node.use_antialiasing = False
-    # We only want to get the weapons, so get the weapon mask
-    mask_node.index = PC.PAWN_PASS_INDEX
-
-    # create output node
-    out_node = tree.nodes.new(type=OUTPUT_NODE_TYPE)   
-    out_node.location = OUTPUT_NODE_POSITION
-    # Use alpha!
-    out_node.use_alpha = True
-
-    # Link the nodes
-    tree.links.new(
-        in_node.outputs[INPUT_NODE_IMAGE_INDEX], 
-        out_node.inputs[OUTPUT_NODE_IMAGE_INDEX]
-    )
-    tree.links.new(
-        in_node.outputs[INPUT_NODE_INDEXOB_INDEX], 
-        mask_node.inputs[OUTPUT_NODE_IMAGE_INDEX]
-    )
-    tree.links.new(
-        mask_node.outputs[ID_MASK_NODE_ALPHA_INDEX], 
-        out_node.inputs[OUTPUT_NODE_ALPHA_INDEX]
-    )
+    # switch off nodes
+    bpy.context.scene.use_nodes = False
+    
+    # Disable rendering on all weapons in the scene
+    for weapon_str in PC.WEAPON_STR_LIST:
+        if weapon_str in bpy.data.objects:
+            modify_tree_render_visibility(weapon_str)
     
     # We're done! Back out!
-    return "Now only rendering the pawn (masked)!"
-
-def cancel():
-    return "Action Canceled!"
+    return "Now only rendering the pawn!"
 
 #~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -173,10 +178,9 @@ class DialogOperator(bpy.types.Operator):
 
     action_enum : EnumProperty(
         items=(
-            (OP_DISABLE_NODES, "Disable Node Rendering (Renders All)", ""),
-            (OP_ONLY_WEAPON, "Force 'Only Weapon' Rendering", ""),
-            (OP_ONLY_PAWN, "Force 'Only Pawn' Rendering", ""),
-            (OP_CANCEL_OPERATION, "Cancel", "")
+            (OP_RENDER_ALL, "Render All", ""),
+            (OP_ONLY_WEAPON, "Render Weapon Only (Masked)", ""),
+            (OP_ONLY_PAWN, "Render Pawn Only", ""),
         ),
         name="Configuration Action",
         description=action_desc
@@ -188,14 +192,12 @@ class DialogOperator(bpy.types.Operator):
         func = None
         
         # Assign the function given our action!
-        if self.action_enum == OP_DISABLE_NODES:
-            func = disable_nodes
+        if self.action_enum == OP_RENDER_ALL:
+            func = render_all
         elif self.action_enum == OP_ONLY_WEAPON:
             func = only_weapons
         elif self.action_enum == OP_ONLY_PAWN:
             func = only_pawn
-        elif self.action_enum == OP_CANCEL_OPERATION:
-            func = cancel
         
         # If we have a function - call it!
         if not func is None:

@@ -114,7 +114,7 @@ Once you export the animation as a series of images, you just have to
 pack it all into a spritesheet. I used a combination of my own personal
 ImageMagick script, `sprite_sheetmaker.bash` (see the appropriate directory).
 
-### `pawn_compositing_configuration.py`
+### `pawn_rendering_configuration.py`
 We render the Pawn sprites separate from the weapons. The pawn sprites are the
 whole sprite, while the weapon sprites have the pawn masked out. This means
 weapon sprites are essentially "subordinate" to the pawn sprites - a change in
@@ -122,19 +122,24 @@ the Pawn model necessitates a change to the weapon sprites, but a change in the
 weapon sprites doesn't impact the Pawn sprites. 
 
 This is a bit bonkers, but it allows us to match any pawn sprite with any
-weapon, PROVIDED there is nowmorphological changes. In other words, this
+weapon, PROVIDED there is no morphological changes. In other words, this
 strategy works as long as there's no change in the actual shape of the models - 
 just the color of the models.
 
 This script is what enables that crazy strategy, via Blender's compositing system
 and the 'Cycles' rendering system (it only works with 'Cycles'). When ran, it
-presents the user with several options - mask out the weapon, mask out the Pawn, 
-disable node rendering, or cancel any operations. 
+presents the user with several options - render the only weapon by masking it,
+render only the Pawn, or to render both the Pawn and the weapon, or cancel any
+operations. 
 
-Right now, masking out the Pawn is what we use to make weapon sprites. Pawn
-sprites are made by moving the weapon out of frame, NOT by masking out the weapon.
-Masking out the weapon is provided as more of an example, or a curiosity - it may
-be deleted in the future.
+
+**WARNING!** There is an acknowledged issue with this script that I'm not sure how to fix - to
+connect nodes in the "Compositor" screen, we need to connect the "IndexOB" output
+to the "ID Value" input. We can only do this programmatically by saving the index
+values. However, I've noticed that passes keep getting added and removed because...
+some reason. It's got to be me doing it but I'm not sure how. Anyway, this means
+the script might not correctly connect the nodes, resulting in nothing rendering at
+all. Manually connecting the "IndexOB" and "ID Value" slots will fix it.
 
 ### Animations
 The animation directory contains our individual animations - one script, one
@@ -160,7 +165,7 @@ The next steps are meant to be run repeatedly (as necessary) to generate
 the needed sprites.
 
 1. Run a script in the `animations` directory (or add a new one) as necessary
-1. Run `pawn_compositing_configuration.py` as needed
+1. Run `pawn_rendering_configuration.py` to set rendered item as needed
 1. Render the animation
 
 Two scripts serve as clean-up, and may be useful when switching between
