@@ -130,6 +130,13 @@ HAND_R_STR = "handRight"
 BODY_STR = "body"
 HEAD_STR = "head"
 
+# Some scripts need to address all "body parts", so we group them here. That
+# way, other classes/scripts can just work through the contents of this list
+BODY_PART_STR_LIST = [
+    FOOT_L_STR, FOOT_R_STR, LEG_L_STR, LEG_R_STR, ARM_L_STR, ARM_R_STR,
+    HAND_L_STR, HAND_R_STR, BODY_STR, HEAD_STR
+]
+
 # These are the names for our accessories.
 SHORT_SWORD_STR = "shortSword"
 HAT_STR = "hat"

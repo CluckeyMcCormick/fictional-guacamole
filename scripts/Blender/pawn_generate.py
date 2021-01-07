@@ -112,6 +112,40 @@ def build_rectangulon(wuX, wuY, wuZ, mesh_name, object_name, translate_up=True):
 
     return base_obj
 
+# Credit to Noam Peled on Stack exchange for coming up with this delete
+# hierarchy function (I think zeffii helped so props to him too)
+# https://blender.stackexchange.com/questions/44653/delete-parent-object-hierarchy-in-code/44786
+def delete_hierarchy(parent_obj_name):
+    if not parent_obj_name in bpy.data.objects:
+        return
+    # Back out if the parent object doesn't exist!
+    # Otherwise, let's get to work.
+    bpy.data.objects[parent_obj_name].animation_data_clear()
+
+    names = set()
+    # Go over all the objects in the hierarchy like @zeffi suggested:
+    def get_child_names(obj):
+        for child in obj.children:
+            names.add(child.name)
+            if child.children:
+                get_child_names(child)
+
+    get_child_names(bpy.data.objects[parent_obj_name])
+
+    print(names)
+
+    # First, remove any animation data
+    for child_name in names:
+        bpy.data.objects[child_name].animation_data_clear()
+        
+    # Next, remove all the children
+    for child_name in names:
+        bpy.data.objects.remove(bpy.data.objects[child_name])
+    
+    # Finally, destroy ourself
+    bpy.data.objects.remove(bpy.data.objects[parent_obj_name])
+
+
 #~~~~~~~~~~~~~~~~~~~~~
 #
 # FOOT FUNCTIONS!
@@ -447,6 +481,10 @@ def build_head():
 # ACTUAL FUNCTION CALLS!
 #
 #~~~~~~~~~~~~~~~~~~~~~~~~
+
+# Delete everything so we can generate it again
+for body_part_str in PC.BODY_PART_STR_LIST:
+	delete_hierarchy(body_part_str)
 
 # Build the whole of everything!
 build_both_feet()

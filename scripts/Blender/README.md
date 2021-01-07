@@ -50,6 +50,8 @@ Blender. I've used it in Godot, and I noticed that the faces are all wrong.
 It's like you can see right through it! Ergo, I'd recommend either redoing this
 script or just not using the model. 
 
+Running this script again will remove & replace the pawn.
+
 ### `pawn_prepare.py`
 This script serves as an intermediate step - it takes the components in the
 scene and parents them as appropriate. The feet are attached to the legs, the
@@ -132,14 +134,14 @@ presents the user with several options - render the only weapon by masking it,
 render only the Pawn, or to render both the Pawn and the weapon, or cancel any
 operations. 
 
-
-**WARNING!** There is an acknowledged issue with this script that I'm not sure how to fix - to
-connect nodes in the "Compositor" screen, we need to connect the "IndexOB" output
-to the "ID Value" input. We can only do this programmatically by saving the index
-values. However, I've noticed that passes keep getting added and removed because...
-some reason. It's got to be me doing it but I'm not sure how. Anyway, this means
-the script might not correctly connect the nodes, resulting in nothing rendering at
-all. Manually connecting the "IndexOB" and "ID Value" slots will fix it.
+**WARNING!** There is an acknowledged issue with this script that I'm not sure how
+to fix - to connect nodes in the "Compositor" screen, we need to connect the
+"IndexOB" output to the "ID Value" input. We can only do this programmatically by
+saving the index values. However, I've noticed that passes keep getting added and
+removed because... some reason. It's got to be me doing it but I'm not sure how.
+Anyway, this means the script might not correctly connect the nodes, resulting in
+nothing rendering at all. Manually connecting the "IndexOB" and "ID Value" slots
+will fix it.
 
 ### Animations
 The animation directory contains our individual animations - one script, one
