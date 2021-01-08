@@ -1,6 +1,7 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=8 format=2]
 
-[ext_resource path="res://motion_ai/pawn/pawn_revision01_c01_normal.tres" type="SpriteFrames" id=1]
+[ext_resource path="res://motion_ai/pawn/pawn_frames.tres" type="SpriteFrames" id=1]
+[ext_resource path="res://motion_ai/pawn/weapon_sprites/pawn_short_sword.tres" type="SpriteFrames" id=2]
 [ext_resource path="res://motion_ai/pawn/BasePawn.gd" type="Script" id=4]
 [ext_resource path="res://motion_ai/common/KinematicDriver.tscn" type="PackedScene" id=12]
 
@@ -40,8 +41,17 @@ pixel_size = 0.014
 shaded = true
 alpha_cut = 2
 frames = ExtResource( 1 )
-animation = "dying"
-frame = 7
+frame = 9
+playing = true
+
+[node name="WeaponSprite" type="AnimatedSprite3D" parent="."]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.001, 0.035, 0.001 )
+layers = 9
+pixel_size = 0.014
+shaded = true
+alpha_cut = 2
+frames = ExtResource( 2 )
+frame = 5
 playing = true
 
 [node name="KinematicDriver" parent="." instance=ExtResource( 12 )]

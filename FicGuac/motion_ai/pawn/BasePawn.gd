@@ -200,38 +200,30 @@ func set_sprite_from_vector():
     _update_sprite_from_direction_state()
 
 func _update_sprite_from_direction_state():
-        var anim_string
+        var animation_string
+        var direction_string
         # Then we need to set the sprite to idle; match the current direction:
         match _current_horiz_direction:
-            # Unfortunately, we don't have any "east" facing animations, so we
-            # have to just flip the west-facing ones
             SOU_EAST:
-                anim_string = "southwest"
-                $VisualSprite.flip_h = true
+                direction_string = "southeast"
             EAST:
-                anim_string = "west"
-                $VisualSprite.flip_h = true
+                direction_string = "east"
             NOR_EAST:
-                anim_string = "northwest"
-                $VisualSprite.flip_h = true
+                direction_string = "northeast"
             NORTH:
-                anim_string = "north"
-                $VisualSprite.flip_h = false
+                direction_string = "north"
             NOR_WEST:
-                anim_string = "northwest"
-                $VisualSprite.flip_h = false
+                direction_string = "northwest"
             WEST:
-                anim_string = "west"
-                $VisualSprite.flip_h = false
+                direction_string = "west"
             SOU_WEST:
-                anim_string = "southwest"
-                $VisualSprite.flip_h = false
+                direction_string = "southwest"
             SOUTH:
-                anim_string = "south"
-                $VisualSprite.flip_h = false
+                direction_string = "south"
                 
         if $KinematicDriver._is_moving:
-            anim_string += "_move"
+            animation_string = "move_"
         else:
-            anim_string += "_idle"
-        $VisualSprite.animation = anim_string
+            animation_string = "idle_"
+        $VisualSprite.animation = animation_string + direction_string
+        $WeaponSprite.animation = animation_string + direction_string
