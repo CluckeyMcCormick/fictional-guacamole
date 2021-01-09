@@ -54,55 +54,51 @@ body = bpy.data.objects[PC.BODY_STR]
 #  Pose Functions
 #
 # ~~~~~~~~~~~~~~~~~~
-def right_arm_single_preswing():
-    arm_r.location = po_lib.RIGHT_ARM_DEFAULT_LOC + mathutils.Vector((
-        (PC.BODY_DEPTH / 2.0) / float(PC.MM_PER_WORLD_UNIT), 
-        (PC.ARM_DIAMETER * 2.0) / float(PC.MM_PER_WORLD_UNIT),
-        0.0
-    ))
-    arm_r.rotation_euler = (math.radians(-90), 0, math.radians(125))
 
-def right_arm_single_midswing():
-    # Same position as "Arm Outstretched".
-    arm_r.location = po_lib.RIGHT_ARM_DEFAULT_LOC + mathutils.Vector((
-        (PC.BODY_DEPTH / 2.0) / float(PC.MM_PER_WORLD_UNIT), 
-        (PC.ARM_DIAMETER * 2.0) / float(PC.MM_PER_WORLD_UNIT),
-        0.0
-    ))
-    arm_r.rotation_euler = (math.radians(-90), 0, math.radians(90))
+def right_arm_single_prechop():
+    arm_r.rotation_euler = (0, math.radians(-180), 0)
+    po_lib.right_hand_default()
 
-def right_arm_sword_postswing():
+def right_arm_single_midchop():
     arm_r.location = po_lib.RIGHT_ARM_DEFAULT_LOC + mathutils.Vector((
         0.0, 
-        PC.ARM_DIAMETER / float(PC.MM_PER_WORLD_UNIT),
+        0.0,#PC.ARM_DIAMETER / float(PC.MM_PER_WORLD_UNIT),
         0.0
     ))
-    arm_r.rotation_euler = (math.radians(-90), 0, 0)
+    arm_r.rotation_euler = (0, math.radians(-90), 0)
+    
+    hand_r.location = po_lib.RIGHT_HAND_DEFAULT_LOC + mathutils.Vector((
+        PC.HAND_DIAMETER / float(PC.MM_PER_WORLD_UNIT), 
+        0.0,
+        -PC.HAND_DIAMETER / float(PC.MM_PER_WORLD_UNIT)
+    )) 
+    hand_r.rotation_euler = (0, math.radians(90), 0)
+
+def right_arm_single_postchop():
+    po_lib.right_arm_default()
+    po_lib.right_hand_default()
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-#  Weapon Sweep, Single Handed Weapon, Right Arm
+#  Weapon Chop, Single Handed Weapon, Right Arm
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # Default all the body parts so we know exactly what's gonna happen
 po_lib.full_default()
 
-# Preswing
-frame01 = am_lib.Pose([right_arm_single_preswing])
-# Midswing
-frame02 = am_lib.Pose([right_arm_single_midswing])
-# Postswing
-frame03 = am_lib.Pose([right_arm_sword_postswing])
+frame01 = am_lib.Pose([right_arm_single_prechop])
+frame02 = am_lib.Pose([right_arm_single_midchop])
+frame03 = am_lib.Pose([right_arm_single_postchop])
 
-# Interpolation space
-inpo_oneframe = am_lib.InterpolatePose(1)
-inpo_twoframe = am_lib.InterpolatePose(2)
+# Interpolation space - adjust integer to mess around
+inpo_a = am_lib.InterpolatePose(1)
+inpo_b = am_lib.InterpolatePose(2)
 
 """
 Put together into an animation
 """
-animo = am_lib.Animation([frame01, inpo_twoframe, frame02, inpo_twoframe, frame03])
+animo = am_lib.Animation([frame01, inpo_b, frame02, inpo_a, frame03])
 
 # A N I M A T E
 am_lib.animation_to_keyframes(animo)

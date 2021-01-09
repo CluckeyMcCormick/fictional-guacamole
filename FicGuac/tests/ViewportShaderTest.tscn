@@ -342,10 +342,10 @@ position_algorithm = 1
 navigation = NodePath("../Navigation")
 
 [node name="VisualSprite" parent="XrayPawnAlpha" index="3"]
-frame = 5
+frame = 14
 
 [node name="WeaponSprite" parent="XrayPawnAlpha" index="4"]
-frame = 2
+frame = 11
 
 [node name="HidingMesh" parent="XrayPawnAlpha" instance=ExtResource( 20 )]
 transform = Transform( 0.707107, -0.408244, 0.577353, 0, 0.8165, 0.577345, -0.707107, -0.408244, 0.577353, 10, 10, 10 )
@@ -362,10 +362,10 @@ navigation = NodePath("../Navigation")
 
 [node name="VisualSprite" parent="XrayPawnDefault" index="3"]
 frames = ExtResource( 16 )
-frame = 5
+frame = 14
 
 [node name="WeaponSprite" parent="XrayPawnDefault" index="4"]
-frame = 2
+frame = 11
 
 [node name="HidingMesh" parent="XrayPawnDefault" instance=ExtResource( 20 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 5, 5 )
@@ -382,10 +382,10 @@ navigation = NodePath("../Navigation")
 
 [node name="VisualSprite" parent="XrayPawnNoDepth" index="3"]
 frames = ExtResource( 15 )
-frame = 5
+frame = 14
 
 [node name="WeaponSprite" parent="XrayPawnNoDepth" index="4"]
-frame = 2
+frame = 11
 
 [node name="HidingMesh" parent="XrayPawnNoDepth" instance=ExtResource( 20 )]
 material/0 = SubResource( 19 )
@@ -399,10 +399,10 @@ navigation = NodePath("../Navigation")
 
 [node name="VisualSprite" parent="MultiplyPawn" index="3"]
 frames = ExtResource( 17 )
-frame = 5
+frame = 14
 
 [node name="WeaponSprite" parent="MultiplyPawn" index="4"]
-frame = 2
+frame = 11
 
 [node name="HidingMesh" parent="MultiplyPawn" instance=ExtResource( 20 )]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.05, 0, 0.05 )
@@ -418,10 +418,10 @@ navigation = NodePath("../Navigation")
 
 [node name="VisualSprite" parent="FillPawn" index="3"]
 frames = ExtResource( 12 )
-frame = 5
+frame = 14
 
 [node name="WeaponSprite" parent="FillPawn" index="4"]
-frame = 2
+frame = 11
 
 [node name="HidingMesh" parent="FillPawn" instance=ExtResource( 20 )]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.05, 0, 0.05 )
@@ -437,10 +437,10 @@ navigation = NodePath("../Navigation")
 
 [node name="VisualSprite" parent="NormalPawn" index="3"]
 modulate = Color( 0.976471, 0.760784, 0.168627, 1 )
-frame = 5
+frame = 14
 
 [node name="WeaponSprite" parent="NormalPawn" index="4"]
-frame = 2
+frame = 11
 
 [node name="KinematicDriver" parent="NormalPawn" index="5"]
 drive_body = NodePath("../../NormalPawn")

@@ -11,5 +11,7 @@ The basic walk cycle. I don't think it's very good but it's BEST quality is its 
 A left-to-right sweep of the right arm. Designed with a sword in mind; but any one handed weapon will suffice (provided it is placed appropriately in the Pawn's hand).
 
 ### `righthand_stab.py`
-A forward move of the right arm, with the hand rotating to the angle is basically constant. Designed with a sword in mind; but any (pointed) one handed weapon will suffice (provided it is placed appropriately in the Pawn's hand).
+A forward move of the right arm, with the hand rotating so the angle is basically constant. Designed with a sword in mind; but any (pointed) one handed weapon will suffice (provided it is placed appropriately in the Pawn's hand).
 
+### `righthand_chop.py`
+A top-to-bottom move of the right arm, with the hand rotating so the angle is basically constant. Designed with a sword in mind; but any one handed weapon will suffice (provided it is placed appropriately in the Pawn's hand).
