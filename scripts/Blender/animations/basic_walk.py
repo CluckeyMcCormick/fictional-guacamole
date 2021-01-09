@@ -46,11 +46,7 @@ imp.reload(am_lib)
 # ~~~~~~~~~~~~~~~~~~
 
 # Default all the body parts so we know exactly what's gonna happen
-po_lib.left_arm_default()
-po_lib.right_arm_default()
-po_lib.left_leg_default()
-po_lib.right_leg_default()
-po_lib.head_default()
+po_lib.full_default()
 
 # Left Leg Forward, Right Leg back
 walk_frame01 = am_lib.Pose([po_lib.left_leg_pos2, po_lib.right_leg_pos4])

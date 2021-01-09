@@ -65,7 +65,9 @@ LEFT_ARM_DEFAULT_LOC = mathutils.Vector((
 LEFT_HAND_DEFAULT_LOC = mathutils.Vector((
     0.0, 
     PC.HAND_SHIFT_Y / float(PC.MM_PER_WORLD_UNIT),
-    PC.HAND_SHIFT_Z / float(PC.MM_PER_WORLD_UNIT)
+    # Hand needs to be shifted up by this much since origin was moved to the
+    # edge of the hand
+    (PC.HAND_SHIFT_Z + (PC.HAND_DIAMETER * 1.5)) / float(PC.MM_PER_WORLD_UNIT)
 ))
 
 RIGHT_ARM_DEFAULT_LOC = mathutils.Vector((
@@ -77,7 +79,9 @@ RIGHT_ARM_DEFAULT_LOC = mathutils.Vector((
 RIGHT_HAND_DEFAULT_LOC = mathutils.Vector((
     0.0, 
     -PC.HAND_SHIFT_Y / float(PC.MM_PER_WORLD_UNIT),
-    PC.HAND_SHIFT_Z / float(PC.MM_PER_WORLD_UNIT)
+    # Hand needs to be shifted up by this much since origin was moved to the
+    # edge of the hand
+    (PC.HAND_SHIFT_Z + (PC.HAND_DIAMETER * 1.5)) / float(PC.MM_PER_WORLD_UNIT)
 ))
 
 LEFT_LEG_DEFAULT_LOC = mathutils.Vector((
@@ -87,9 +91,9 @@ LEFT_LEG_DEFAULT_LOC = mathutils.Vector((
 ))
 
 LEFT_FOOT_DEFAULT_LOC = mathutils.Vector((
-    PC.FEET_X_SHIFT / float(PC.MM_PER_WORLD_UNIT),
+    0.0,
     PC.FOOT_SHIFT_Y / float(PC.MM_PER_WORLD_UNIT),
-    0.0
+    PC.FEET_HEIGHT / float(PC.MM_PER_WORLD_UNIT)
 ))
 
 RIGHT_LEG_DEFAULT_LOC = mathutils.Vector((
@@ -99,15 +103,17 @@ RIGHT_LEG_DEFAULT_LOC = mathutils.Vector((
 ))
 
 RIGHT_FOOT_DEFAULT_LOC = mathutils.Vector((
-    PC.FEET_X_SHIFT / float(PC.MM_PER_WORLD_UNIT),
+    0.0,
     -PC.FOOT_SHIFT_Y / float(PC.MM_PER_WORLD_UNIT),
-    0.0
+    PC.FEET_HEIGHT / float(PC.MM_PER_WORLD_UNIT)
 ))
 
 BODY_DEFAULT_LOC = mathutils.Vector((
     0.0, 
     0.0,
-    PC.BODY_SHIFT_Z / float(PC.MM_PER_WORLD_UNIT)
+    # Since origin is in the middle of the body, need to move up by half that
+    # body height.
+    (PC.BODY_SHIFT_Z + (PC.BODY_HEIGHT / 2)) / float(PC.MM_PER_WORLD_UNIT)
 ))
 
 HEAD_DEFAULT_LOC = mathutils.Vector((
@@ -167,6 +173,19 @@ def left_foot_default():
 def right_foot_default():
     foot_r.location = RIGHT_FOOT_DEFAULT_LOC
     foot_r.rotation_euler = DEFAULT_ROT
+
+# Defaults EVERY SINGLE component
+def full_default():
+    left_arm_default()
+    right_arm_default()
+    left_leg_default()
+    right_leg_default()
+    body_default()
+    head_default()
+    left_hand_default()
+    right_hand_default()
+    left_foot_default()
+    right_foot_default()
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -327,18 +346,10 @@ def body_on_floor():
 #
 # ~~~~~~~~~~~~~~~~~~~
 
-LEG_POSITION_01_STR = 'legpos01'
-LEG_POSITION_02_STR = 'legpos02'
-LEG_POSITION_03_STR = 'legpos03'
-LEG_POSITION_04_STR = 'legpos04'
-LEG_POSITION_05_STR = 'legpos05'
-LEG_OUTWARD_STR = 'leg_outward'
-
 ARM_DEFAULT_STR = 'armpos_default'
 ARM_OUTSTRETCHED_STR = 'armpos_outstretched'
 ARM_FORWARD_STR = 'armpos_forward'
 ARM_UPWARD_STR = 'armpos_upward'
-
 left_arm_function_dict = {
     ARM_DEFAULT_STR: left_arm_default,
     ARM_OUTSTRETCHED_STR: left_arm_outstretched,
@@ -351,6 +362,13 @@ right_arm_function_dict = {
     ARM_FORWARD_STR: right_arm_forward,
     ARM_UPWARD_STR: right_arm_upward
 }
+
+LEG_POSITION_01_STR = 'legpos01'
+LEG_POSITION_02_STR = 'legpos02'
+LEG_POSITION_03_STR = 'legpos03'
+LEG_POSITION_04_STR = 'legpos04'
+LEG_POSITION_05_STR = 'legpos05'
+LEG_OUTWARD_STR = 'leg_outward'
 left_leg_function_dict = {
     LEG_POSITION_01_STR: left_leg_pos1,
     LEG_POSITION_02_STR: left_leg_pos2,
@@ -368,9 +386,43 @@ right_leg_function_dict = {
     LEG_OUTWARD_STR: right_leg_outward
 }
 
+HAND_DEFAULT_STR = 'hand_default'
+left_hand_function_dict = {
+    HAND_DEFAULT_STR: left_hand_default,
+}
+right_hand_function_dict = {
+    HAND_DEFAULT_STR: right_hand_default
+}
+
+HEAD_DEFAULT_STR = 'head_default'
+head_function_dict = {
+    HEAD_DEFAULT_STR: head_default,
+}
+
+BODY_DEFAULT_STR = 'body_default'
+BODY_FLOOR_STR = 'body_floor'
+body_function_dict = {
+    BODY_DEFAULT_STR: body_default,
+    BODY_FLOOR_STR: body_on_floor
+}
 class PoseMachine(bpy.types.Operator):
     bl_idname = "custom.pose_machine"
     bl_label = "Specify the accessory type."
+
+    body: bpy.props.EnumProperty(
+        items=(
+            (BODY_DEFAULT_STR, "Default", ""),
+            (BODY_FLOOR_STR, "On Floor", ""),
+        ),
+        name="Body",
+    )
+    
+    head: bpy.props.EnumProperty(
+        items=(
+            (HEAD_DEFAULT_STR, "Default", ""),
+        ),
+        name="Head",
+    )
 
     left_arm: bpy.props.EnumProperty(
         items=(
@@ -379,7 +431,13 @@ class PoseMachine(bpy.types.Operator):
             (ARM_FORWARD_STR, "Forward", ""),
             (ARM_UPWARD_STR, "Upward", ""),
         ),
-        name="Left Arm Position",
+        name="Left Arm",
+    )
+    left_hand: bpy.props.EnumProperty(
+        items=(
+            (HAND_DEFAULT_STR, "Default", ""),
+        ),
+        name="Left Hand",
     )
     right_arm: bpy.props.EnumProperty(
         items=(
@@ -388,7 +446,13 @@ class PoseMachine(bpy.types.Operator):
             (ARM_FORWARD_STR, "Forward", ""),
             (ARM_UPWARD_STR, "Upward", ""),
         ),
-        name="Right Arm Position",
+        name="Right Arm",
+    )
+    right_hand: bpy.props.EnumProperty(
+        items=(
+            (HAND_DEFAULT_STR, "Default", ""),
+        ),
+        name="Right Hand",
     )
     left_leg: bpy.props.EnumProperty(
         items=(
@@ -399,7 +463,7 @@ class PoseMachine(bpy.types.Operator):
             (LEG_POSITION_05_STR, "Position 05 (Aft, Full)", ""),
             (LEG_OUTWARD_STR, "Outward", ""),
         ),
-        name="Left Leg Position",
+        name="Left Leg",
     )
     right_leg: bpy.props.EnumProperty(
         items=(
@@ -410,15 +474,22 @@ class PoseMachine(bpy.types.Operator):
             (LEG_POSITION_05_STR, "Position 05 (Aft, Full)", ""),
             (LEG_OUTWARD_STR, "Outward", ""),
         ),
-        name="Right Leg Position",
+        name="Right Leg",
     )
     
     def execute(self, context):
         # Do all the functions the user specified
+        body_function_dict[self.body]()
+        head_function_dict[self.head]()
         left_arm_function_dict[self.left_arm]()
+        left_hand_function_dict[self.left_hand]()
         right_arm_function_dict[self.right_arm]()
+        right_hand_function_dict[self.right_hand]()
         left_leg_function_dict[self.left_leg]()
+        left_hand_function_dict[self.left_hand]()
         right_leg_function_dict[self.right_leg]()
+        right_hand_function_dict[self.right_hand]()
+        
         # All done! Back out.
         return {'FINISHED'}
         

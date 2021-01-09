@@ -100,8 +100,8 @@ that most specific poses are best kept with their associated animations. Now it
 serves as a library for some common pose functions, like default position
 functions.
 
-This script does feature a GUI to allow you to pose the Pawn (only default/core
-positions are available).
+This script, if run directly, does feature a GUI to allow you to pose the Pawn
+(only default/core positions are available).
 
 ### `pawn_animate.py`
 This script is a natural extension of `pawn_pose_core.py` - where that script has
@@ -148,6 +148,15 @@ The animation directory contains our individual animations - one script, one
 animation. Running one of these scripts will create all the required keyframes
 (and probably a lot more than that too).
 
+### `pawn_clear_animation.py`
+While each of the animation scripts (should) destroy all animation data on the
+Pawn pieces and replace it with new animation data, SOMETIMES you just want the
+animation data gone.
+
+This script quickly goes over all the Pawn body parts (and the camera's rig),
+deleting the animation data. Note that this will leave the Pawn in whatever pose
+the current keyframe is.
+
 ## Execution Order
 In case you couldn't tell from our description of each script, they are meant
 to be run in a particular order, like so:
@@ -161,7 +170,7 @@ to be run in a particular order, like so:
 At this point, the scene should be configured appropriately. The last thing
 you'll really need to configure will be the output directory, since that has
 to be configured by hand - check the "Output" tab under the "Output Properties"
-tab (in Blender 2.9, the icon looks like a little printer)
+tab (in Blender 2.9, the icon looks like a little printer).
 
 The next steps are meant to be run repeatedly (as necessary) to generate
 the needed sprites.

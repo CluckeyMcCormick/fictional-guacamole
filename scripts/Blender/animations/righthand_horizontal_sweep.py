@@ -86,11 +86,7 @@ def right_arm_sword_postswing():
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 # Default all the body parts so we know exactly what's gonna happen
-po_lib.left_arm_default()
-po_lib.right_arm_default()
-po_lib.left_leg_default()
-po_lib.right_leg_default()
-po_lib.head_default()
+po_lib.full_default()
 
 # Preswing
 frame01 = am_lib.Pose([right_arm_single_preswing])
