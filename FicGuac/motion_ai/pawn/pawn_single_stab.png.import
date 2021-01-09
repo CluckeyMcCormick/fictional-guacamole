@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/pawn_short_sword_sweep.png-12e57688989a22255c5e1490e4f008ad.stex"
+path="res://.import/pawn_single_stab.png-537c9397c1136e038299a6734cfe02d3.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://motion_ai/pawn/weapon_sprites/pawn_short_sword_sweep.png"
-dest_files=[ "res://.import/pawn_short_sword_sweep.png-12e57688989a22255c5e1490e4f008ad.stex" ]
+source_file="res://motion_ai/pawn/pawn_single_stab.png"
+dest_files=[ "res://.import/pawn_single_stab.png-537c9397c1136e038299a6734cfe02d3.stex" ]
 
 [params]
 
