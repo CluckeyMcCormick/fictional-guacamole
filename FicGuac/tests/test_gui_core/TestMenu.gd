@@ -6,6 +6,7 @@ var scene_paths = {
     "Slope Step Test" : "res://tests/SlopeStepTest.tscn",
     "Viewport Shader Test" : "res://tests/ViewportShaderTest.tscn",
     "Dynamic Navigation Mesh Test" : "res://tests/DynamicNavMeshTest.tscn",
+    "Weapon Attack Test" : "res://tests/WeaponAttackTest.tscn"
 }
 
 # Signal emitted whenever this menu chooses a scene. Provides the resource path

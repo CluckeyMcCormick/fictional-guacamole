@@ -38,6 +38,21 @@ export(NodePath) var navigation
 # We resolve the node path into this variable.
 var navigation_node
 
+# We'll preload all the weapon frames we need since we'll have to change them on
+# the fly.
+const short_sword_frames = preload("res://motion_ai/pawn/weapon_sprites/pawn_short_sword_frames.tres")
+
+# To allow for easy configuration of the equipped weapon, we have this enum.
+# Dropdown configuration - easy!
+enum Equipment {
+    NONE, # No Weapon
+    SHORT_SWORD, # Short Sword
+}
+
+# Which of the above position algorithms will we use? Note that Navigation and
+# Detour will be broken unless the appropriate navigation node is provided.
+export(Equipment) var equipment = Equipment.NONE setget assert_equipment
+
 # Likewise, we may need a quick way to refer our current movement direction
 # (horizontally, at least) without having to derive from the _current_velocity.
 # We'll store that value here. 
@@ -131,6 +146,23 @@ func set_path(new_path):
     current_path = new_path
     # The first position in the path is now our target position.
     $KinematicDriver.target_position = current_path.pop_front()
+
+# Set the equipment for the Pawn
+func assert_equipment(new_equip):
+    # Assign the enum
+    equipment = new_equip
+    
+    # Set the appropriate frames
+    match equipment:
+        Equipment.NONE:
+            $WeaponSprite.frames = null
+        Equipment.SHORT_SWORD:
+            $WeaponSprite.frames = short_sword_frames
+    
+    # The weapon sprite has to match the visual sprite, so let's just take the
+    # animation and the current frame.
+    $WeaponSprite.animation = $VisualSprite.animation
+    $WeaponSprite.frame = $VisualSprite.frame
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
