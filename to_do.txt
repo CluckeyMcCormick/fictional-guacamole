@@ -16,7 +16,39 @@ To Do:
     We should upgrade to 4.0 as soon as possible. It's just a question of
     whenever that comes out...
 
-3. Create weapon models
+3. Design a KinematicDriver-esque node using State Machines
+
+    We need to come up with a way to integrate attacks into some sort of
+    coherent AI. To be frank, I don't really think there's a good way to do that
+    with how we have stuff set up right now. I like the concept of the
+    KinematicDriver, but we need to rethink how we do AI.
+    
+    We should really use a state-machine like approach. I just don't think
+    there's a better way to do it - the segmenting of different functions into
+    small scripts really is the best way to do it.
+    
+    Godot provides a sample demonstration on how a state-machine can be
+    implemented. The Asset Lib also has several assets that can help us
+    implement a proper state-machine.
+    
+    To start, we should see if we can design something akin to the
+    KinematicDriver that acts using a state machine.
+    
+4. Develop sword attacks
+
+    Using knowledge gained from creating a KinematicDriver parallel, we need to
+    develop a model for attacking stuff. That includes acquiring targets, moving
+    to attacking stuff, and actually inflicting damage (including attack
+    selection) and possible cool downs.
+    
+    This AI will need to be integrated with the KinematicDriver... thing that we
+    outlined above. So, the Pawn will fall mid-attack, can be interrupted, etc.
+    
+    This doesn't need to a complete, all-consuming build of the attacks system,
+    just enough for the sword to work and for us to have an idea of what's
+    happening. What is possible, and what isn't.
+    
+5. Create weapon models
 
     We need to create weapons for our pawns to equip! We'll use OpenSCAD to
     design the models. Technically, since we use sprites in-game, we could just
@@ -27,7 +59,6 @@ To Do:
     - A crossbow
     - A bow
     - A gun (musket-eque)
-    - A sword
     - A halberd/pike
     - A shield
     - A torch
@@ -35,29 +66,21 @@ To Do:
     
     And maybe a jezzail - a long rifle of some sort?
 
-4. Integrate the weapon models and the Pawn sprites
-
-    Okay, so we have to integrate our weapon models and our Pawn sprites.
-    Conventional wisdom says that we should just have different spritesheets for
-    each weapon. While we'll PROBABLY do that, I wanted to see if we can do
-    anything extra kooky. Like, maybe we could have animation sets that are just
-    the weapon and could somehow be layered over the Pawn Sprite? That would
-    save us on Sprites.
-
-5. ATTACKS!
+6. ATTACKS!
     
-    Finally, get our pawns to attack with their weapons. For now, we'll use some
-    really basic target. The AI knowing how, and when, to attack will be the
-    next big step for the project.
+    Develop attacks for the weapons outlined above, including ranged attacks.
+    That means developing the AI to go with these attacks - positioning and
+    attacking at the correct interval. It'll be difficult, but we'll have
+    something akin to a prototype when we're done.
 
-6. Improve the Slope-Step Test
+7. Improve the Slope-Step Test
 
     The Slope-Step Test needs some improvement. Right now, we need to wait for
     every single test to fire. Like, we just wait. We've already done something
     better with the Viewport Shader Test - we should migrate the test structure
     (especially the skip test button) from that scene.
     
-7. Come up with a way to bake the procedural building components (?)
+8. Come up with a way to bake the procedural building components (?)
 
     I'm worried about the impact of the procedural building components on the
     game's performance. Once they're generated there's no issue but it's the
