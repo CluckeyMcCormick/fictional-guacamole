@@ -11,7 +11,7 @@ The original idea for my prototype was just a unit of NPCs fighting a single bea
 I did whip up a model based on the California Bear Flag. Maybe we'll use it. Maybe.
 
 ### Common
-This directory holds all the common AI scenes and assets - mostly the actual programmatic AI scenes, or the "brains".
+This directory holds all the common AI scenes and assets - mostly the configuration *Cores* and *Machines*.
 
 ### Pawn
 The Pawn is meant to be the primary NPC for our game. It's a sprite of a 3D model, the model being based on a small wooden doll/maquette. Since it's such a core part of the game, a lot of our development and experiments are focused on the Pawn.
