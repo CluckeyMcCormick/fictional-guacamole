@@ -21,7 +21,7 @@ func _on_update(delta) -> void:
     collision = target.move_and_collide(Vector3.DOWN * KC.fall_speed * delta)
     
     # We're definitely falling!
-    KC._curr_orient.y = -KC.fall_speed
+    MR._curr_orient.y = -KC.fall_speed
     
     # If we collided with something, and we still have a ways to go...
     if collision and collision.remainder.length() != 0:
@@ -37,7 +37,7 @@ func _on_update(delta) -> void:
         target.move_and_collide(rem_move)
     
     # Broadcast that we need to update the visuals of whoever is listening
-    MR.emit_signal("visual_update", "walk", KC._curr_orient)
+    MR.emit_signal("visual_update", "walk", MR._curr_orient)
 
 func _after_update(delta) -> void:
     # Get our KinematicCore

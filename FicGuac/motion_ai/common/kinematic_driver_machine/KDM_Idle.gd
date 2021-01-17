@@ -16,9 +16,9 @@ func _on_update(delta) -> void:
     var KC = MR.kinematic_core_node
 
     # If we have a target position, then switch to our "idle" mode
-    if KC.target_position:
+    if MR.target_position:
         change_state("Walk")
     
     # Otherwise, broadcast that we need to update the visuals of whoever is
     # listening
-    MR.emit_signal("visual_update", "idle", KC._curr_orient)
+    MR.emit_signal("visual_update", "idle", MR._curr_orient)

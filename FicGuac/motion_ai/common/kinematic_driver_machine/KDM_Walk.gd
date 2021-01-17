@@ -18,11 +18,11 @@ func _on_update(delta) -> void:
     var collision = null
 
     # If we don't have a target position, then switch to our "idle" mode
-    if not KC.target_position:
+    if not MR.target_position:
         change_state("Idle")
 
     # How far are we from our target position?
-    var distance_to = KC.target_position - KC.get_adj_position()
+    var distance_to = MR.target_position - KC.get_adj_position()
     # We really only care about the X and Z, so we're gonna zero out the y
     # distance left - since we currently can't purposefully or explicitly move 
     # up or down.
@@ -54,8 +54,8 @@ func _on_update(delta) -> void:
     collision = target.move_and_collide(Vector3(x, 0, z) * delta)
     
     # Update our "current orientation"
-    KC._curr_orient.x = x
-    KC._curr_orient.z = z
+    MR._curr_orient.x = x
+    MR._curr_orient.z = z
     
     # If we collided with something, and we still have a ways to go...
     if collision and collision.remainder.length() != 0:
@@ -73,21 +73,21 @@ func _on_update(delta) -> void:
     
     # Otherwise, broadcast that we need to update the visuals of whoever is
     # listening
-    MR.emit_signal("visual_update", "walk", KC._curr_orient)
+    MR.emit_signal("visual_update", "walk", MR._curr_orient)
 
 func _after_update(delta) -> void:
     # Get our KinematicCore
     var KC = MR.kinematic_core_node
 
     # Calculate the remaining distance to our objective
-    var remain_length = ( KC.target_position - KC.get_adj_position() ).length()
+    var remain_length = ( MR.target_position - KC.get_adj_position() ).length()
 
     # If we're close enough to that target position...
     if remain_length <= KC.goal_tolerance:
         # ...then we're done here! Save the target position
-        var pos_save = KC.target_position
+        var pos_save = MR.target_position
         # Clear the target
-        KC.target_position = null
+        MR.target_position = null
         # Now emit the "target reached" signal using the position we saved.
         # It's important we do it this way, since anything receiving the
         # signal could change the variable out from under us.

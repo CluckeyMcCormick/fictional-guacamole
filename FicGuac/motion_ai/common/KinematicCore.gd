@@ -49,12 +49,6 @@ const MINIMUM_FALL_HEIGHT = .002
 # error. This is to differentiate it from, for example, a body attempting to
 # climb a wall (badly) or a body being pushed backwards.
 
-# To detect when that happens, we capture our distance from our target every
-# time we move. This captured value is appended to the Array. We use this to
-# ensure we're not rapidly alternating between two or three points, which is a
-# key indicator of the above issue.
-var _targ_dist_history = []
-
 # How many entries do we keep in the adjusted position history? If the size
 # exceeds this value, then the oldest entries are removed.
 const TARG_DIST_HISTORY_SIZE = 6
@@ -64,14 +58,6 @@ const TARG_DIST_HISTORY_SIZE = 6
 # AFTER it is added to the array. Ergo, the check will always return at least 1,
 # and the value should be greater.
 const TARG_DIST_ERROR_THRESHOLD = 3
-
-# The current orientation vector. It is purely for expressing which way the pawn
-# is looking/moving. Mostly inteded to help set the appropriate animation and/or
-# visual appearance.
-var _curr_orient = Vector3.ZERO
-
-# What is our target position - where are we trying to go?
-var target_position = null
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #

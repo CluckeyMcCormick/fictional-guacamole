@@ -18,7 +18,7 @@ func _on_update(delta) -> void:
     var collision = null
     
     # Since we're currently on the ground, we're not going anywhere. Probably.
-    KC._curr_orient.y = 0
+    MR._curr_orient.y = 0
     
     # Do a fake move downward just to determine if we're on the ground.
     collision = target.move_and_collide(

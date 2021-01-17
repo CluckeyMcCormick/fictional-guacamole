@@ -8,7 +8,7 @@ The *Machines* and *Cores* are designed to be as plug-and-play as possible - for
 Where some amount of coding is required as part of the plugging, we typically refer to this action as "coupling"; functions created as part of coupling are referred to as "coupling functions". This is especially true for signals.
 
 ## KinematicCore
-The *KinematicCore* is the core *motion* component of *Motion AI*. It governs the movement characteristics of an AI, as well as tracking movement data (targets, orientation, errors, and other statuses).
+The *KinematicCore* is the core *motion* component of *Motion AI*. It governs the movement characteristics of an AI.
 
 ### Configurables
 ##### Drive Body
@@ -41,14 +41,5 @@ The value is equivalent to the maximum height it is possible for the `KinematicB
 ##### Max Slope Degrees
 The maximum slope angle of the body can climb, in degrees. 45 degrees is recommended, but you can do some crazy stuff with higher values.
 
-### (Public) Variables
-##### `target_position`
-The current target position. Whether or not this is safe to mess with will change with whatever *Machine* you are using, as each uses them in different ways.
-
-##### `_curr_orient`
-A `Vector3`, where each axis is the current (rough) heading on each axis. The number is actually equivalent to the last updated velocity on each axis - however, it should only really be used to gauge "heading" or "orientation".
-
-The values are irregularly updated in order to preserve continuity between states. This is particularly necessary for our sprites, which require an angle calculated from this `Vector3`. If this were to reset to (0, 0, 0) when not moving, the sprites would jerk into a common direction when at rest. Always.
-
 ## Kinematic Driver Machine
-The most basic machine. Just moves to a point as specified by the `target_position` in the machine's `KinematicCore` entry.
+The most basic machine. Just moves to a point and then idles.

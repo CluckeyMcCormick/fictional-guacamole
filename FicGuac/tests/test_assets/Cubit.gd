@@ -18,7 +18,7 @@ var destination setget set_destination
 # Set the destination of this Cubit. The position must be on the floor. For most
 # purposes (like path following), this is naturally where the point will be.
 func set_destination(floor_position : Vector3):
-    $KinematicCore.target_position = floor_position
+    $KinematicDriverMachine.target_position = floor_position
     destination = floor_position
 
 func get_floor_adjusted_position():

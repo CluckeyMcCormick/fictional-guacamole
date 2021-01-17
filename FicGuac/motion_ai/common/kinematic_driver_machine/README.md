@@ -12,9 +12,18 @@ As with every machine, the *FSM Owner* is required to be a `KinematicBody` node.
 ##### Kinematic Core
 We require a `KinematicCore` node to define the movement profile for this machine.
 
+### (Public) Variables
+##### `target_position`
+The current target position. Whether or not this is safe to mess with will change with whatever *Machine* you are using, as each uses them in different ways.
+
+##### `_curr_orient`
+A `Vector3`, where each axis is the current (rough) heading on each axis. The number is actually equivalent to the last updated velocity on each axis - however, it should only really be used to gauge "heading" or "orientation".
+
+The values are irregularly updated in order to preserve continuity between states. This is particularly necessary for our sprites, which require an angle calculated from this `Vector3`. If this were to reset to (0, 0, 0) when not moving, the sprites would jerk into a common direction when at rest. Always.
+
 ### Signals
 ##### `target_reached`
-Indicates that we reached our target position. The `target_position` in the `KinematicCore` variable is cleared before the signal is emitted. The previous target position is given as a signal argument, just in case it is needed.
+Indicates that we reached our target position. The `target_position` variable is cleared before the signal is emitted. The previous target position is given as a signal argument, just in case it is needed.
 
 ##### `error_microposition_loop`
 There was an observed issue with the older *KinematicDriver* node where it was consistently undershooting and overshooting it's target position. This resulted in an infinite loop of the driver's body rapidly vibrating back and forth in microscopic steps.
@@ -30,4 +39,4 @@ While the *Extended States Machine* suggests supplying a animation node, and doi
 
 There are two arguments emitted with this signal. First is the `animation_key`, which indicates the type of animation that needs to be played. It will be something like "walk", "idle", "single\_swing", "single\_stab", etc.
 
-The next argument is an orientation `Vector3`, `curr_orientation`. This indicates the heading/direction/facing of the *FSM Owner* at the time the signal is emitted. For this machine, it's a straight copy of the *KinematicCore*'s `\_curr\_orient` field.
+The next argument is an orientation `Vector3`, `curr_orientation`. This indicates the heading/direction/facing of the *FSM Owner* at the time the signal is emitted. For this machine, it's a straight copy of the `_curr_orient` field.
