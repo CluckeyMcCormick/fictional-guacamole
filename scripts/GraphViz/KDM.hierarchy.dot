@@ -1,0 +1,11 @@
+// KDM - the Kinematic Driver Machine
+// Hierarchy - Graphviz Dot
+// Directed Graph
+digraph G {
+    start [label="KDM\nRoot",shape=Mdiamond];
+    
+    start -> Falling;
+    start -> OnGround;
+    OnGround -> Walk;
+    OnGround -> Idle;
+}

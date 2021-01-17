@@ -1,7 +1,7 @@
 # Kinematic Driver Machine
 The most basic way to impress a sense of intelligence upon an artificial object is to give it movement.
 
-This is the most basic machine. It blindly moves towards a target 
+This is the most basic machine. It blindly moves towards a target.
 
 ### Configurables
 This machine features the standard configurable items for a machine `State` (see the *addons* directory for more, and the *statechart* subdirectory for EVEN MORE).
@@ -40,3 +40,29 @@ While the *Extended States Machine* suggests supplying a animation node, and doi
 There are two arguments emitted with this signal. First is the `animation_key`, which indicates the type of animation that needs to be played. It will be something like "walk", "idle", "single\_swing", "single\_stab", etc.
 
 The next argument is an orientation `Vector3`, `curr_orientation`. This indicates the heading/direction/facing of the *FSM Owner* at the time the signal is emitted. For this machine, it's a straight copy of the `_curr_orient` field.
+
+### State Composition
+Excluding the root state, there are four other states: 
+
+1. *Falling*
+1. *OnGround*
+1. *Walk*
+1. *Idle*
+
+The *OnGround* state is a super state containing the *Walk* and *Idle* states. This can be observed in the arrangement of the states in the scene:
+
+![Image](./doc_images/KDM.hierarchy.png "KDM Tree")
+
+The machine defaults to the *Idle* state. If `target_position` is not null, we will move towards it via the *Walk* state. Once we reach the target position, we will clear `target_position`, emit a `target_reached` signal. If a `target_position` is not set, we will revert to the *Idle* state.
+
+Meanwhile, the *OnGround* state is constantly probing downwards to ensure we are on the ground. If we aren't on the ground for whatever reason, the subordinate states are interrupted and we move to the *Falling* state.
+
+While in the *Falling* state, the only thing we do is fall. That's it.
+
+The `visual_update` signal is regularly emitted throughout the *Falling*, *Idle*, and *Walk* states.
+
+This whole process can be observed in this image:
+
+![Image](./doc_images/KDM.flow.png "KDM Tree")
+
+Note that the *OnGround* state contains the *Idle* and *Walk* states.
