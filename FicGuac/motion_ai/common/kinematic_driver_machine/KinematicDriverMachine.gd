@@ -1,5 +1,5 @@
 tool
-extends State
+extends StateRoot
 
 # Signal issued when a visual update is recommended. Usage varies by state - may
 # be called very frequently, or almost never. The aniamtion_key is the string

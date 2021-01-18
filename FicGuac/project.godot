@@ -12,10 +12,16 @@ _global_script_classes=[ {
 "base": "Node",
 "class": "State",
 "language": "GDScript",
-"path": "res://addons/statechart/state.gd"
+"path": "res://addons/xsm/state.gd"
+}, {
+"base": "State",
+"class": "StateRoot",
+"language": "GDScript",
+"path": "res://addons/xsm/state_root.gd"
 } ]
 _global_script_class_icons={
-"State": ""
+"State": "",
+"StateRoot": ""
 }
 
 [application]
@@ -30,7 +36,7 @@ settings/stdout/print_fps=true
 
 [editor_plugins]
 
-enabled=PoolStringArray( "godot-navigation-lite", "statechart" )
+enabled=PoolStringArray( "godot-navigation-lite", "xsm" )
 
 [input]
 

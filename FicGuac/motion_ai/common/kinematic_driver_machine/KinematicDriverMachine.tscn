@@ -8,7 +8,6 @@
 
 [node name="KinematicDriverMachine" type="Node"]
 script = ExtResource( 5 )
-active = true
 fsm_owner = null
 animation_player = null
 
@@ -19,7 +18,6 @@ animation_player = null
 
 [node name="Idle" type="Node" parent="OnGround"]
 script = ExtResource( 3 )
-is_fallback = true
 fsm_owner = null
 animation_player = null
 
