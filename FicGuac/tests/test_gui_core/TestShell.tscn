@@ -1,9 +1,14 @@
-[gd_scene load_steps=5 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://gui/PauseMenu.tscn" type="PackedScene" id=1]
 [ext_resource path="res://gui/LoadingScreen.tscn" type="PackedScene" id=2]
 [ext_resource path="res://tests/test_gui_core/TestShell.gd" type="Script" id=3]
 [ext_resource path="res://tests/test_gui_core/TestMenu.tscn" type="PackedScene" id=4]
+[ext_resource path="res://tests/test_gui_core/TSH_ShellLogic.gd" type="Script" id=5]
+[ext_resource path="res://tests/test_gui_core/TSH_ScenePaused.gd" type="Script" id=6]
+[ext_resource path="res://tests/test_gui_core/TSH_AtMenu.gd" type="Script" id=7]
+[ext_resource path="res://tests/test_gui_core/TSH_Loading.gd" type="Script" id=8]
+[ext_resource path="res://tests/test_gui_core/TSH_SceneRunning.gd" type="Script" id=9]
 
 [node name="TestShell" type="Control"]
 anchor_right = 1.0
@@ -14,6 +19,21 @@ script = ExtResource( 3 )
 __meta__ = {
 "_edit_use_anchors_": false
 }
+
+[node name="ShellLogic" type="Node" parent="."]
+script = ExtResource( 5 )
+
+[node name="AtMenu" type="Node" parent="ShellLogic"]
+script = ExtResource( 7 )
+
+[node name="Loading" type="Node" parent="ShellLogic"]
+script = ExtResource( 8 )
+
+[node name="SceneRunning" type="Node" parent="ShellLogic"]
+script = ExtResource( 9 )
+
+[node name="ScenePaused" type="Node" parent="ShellLogic"]
+script = ExtResource( 6 )
 
 [node name="TestMenu" parent="." instance=ExtResource( 4 )]
 margin_right = 1024.0
