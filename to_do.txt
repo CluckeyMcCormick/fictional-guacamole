@@ -33,8 +33,20 @@ To Do:
     
     To start, we should see if we can design something akin to the
     KinematicDriver that acts using a state machine.
+
+4. Update the TestShell and SlopeStepTest to use XSM
+
+    I'm not done implementing the KinematicDriver with XSM yet, but I'm very
+    happy with it so far. There's actually been several instances where I tried
+    to implement something revolving around states and transitioning between
+    states and... the whole affair was pretty painful.
     
-4. Develop sword attacks
+    XSM will allow us to smooth over that bumpy code with only a bit of code and
+    some new nodes. We should update two particularly painful items that were a
+    bit more painful than they should've been: the TestShell and the
+    SlopeStepTest.
+
+5. Develop sword attacks
 
     Using knowledge gained from creating a KinematicDriver parallel, we need to
     develop a model for attacking stuff. That includes acquiring targets, moving
@@ -48,7 +60,7 @@ To Do:
     just enough for the sword to work and for us to have an idea of what's
     happening. What is possible, and what isn't.
     
-5. Create weapon models
+6. Create weapon models
 
     We need to create weapons for our pawns to equip! We'll use OpenSCAD to
     design the models. Technically, since we use sprites in-game, we could just
@@ -66,21 +78,21 @@ To Do:
     
     And maybe a jezzail - a long rifle of some sort?
 
-6. ATTACKS!
+7. ATTACKS!
     
     Develop attacks for the weapons outlined above, including ranged attacks.
     That means developing the AI to go with these attacks - positioning and
     attacking at the correct interval. It'll be difficult, but we'll have
     something akin to a prototype when we're done.
 
-7. Improve the Slope-Step Test
+8. Improve the Slope-Step Test
 
     The Slope-Step Test needs some improvement. Right now, we need to wait for
     every single test to fire. Like, we just wait. We've already done something
     better with the Viewport Shader Test - we should migrate the test structure
     (especially the skip test button) from that scene.
     
-8. Come up with a way to bake the procedural building components (?)
+9. Come up with a way to bake the procedural building components (?)
 
     I'm worried about the impact of the procedural building components on the
     game's performance. Once they're generated there's no issue but it's the

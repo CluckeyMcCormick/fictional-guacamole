@@ -1,0 +1,21 @@
+// XSM Tutorial - Extended State Machine Tutorial
+// Basic Extended State Machine - Graphviz Dot
+// Directed Graph
+digraph G {
+    rankdir=LR; // Left to Right, instead of Top to Bottom
+    overlap=false; // Nodes are not allowed to overlap.
+    compound=true; // Allow edges between clusters
+
+    Start [shape=Mdiamond];
+    P_ON [label="Power On"];
+    P_OFF [label="Power Off"];
+
+    edge [label = ""];
+    Start -> P_ON;
+    
+    edge [label = "Power Lost"];
+    P_ON -> P_OFF;
+    
+    edge [label = "Power On"];
+    P_OFF -> P_ON;
+}

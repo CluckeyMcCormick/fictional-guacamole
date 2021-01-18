@@ -1,0 +1,87 @@
+// XSM Tutorial - Extended State Machine Tutorial
+// Extended State Machine, Super Region, Show Function Calls - Graphviz Dot
+// Directed Graph
+digraph G {
+    rankdir=LR;
+    overlap=false; // Nodes are not allowed to overlap.
+    compound=true; // Allow edges between clusters
+    splines = true;
+
+    // All the other nodes are records
+    node [shape=record];
+
+    Start [shape=Mdiamond];
+    End [shape=Mdiamond];
+    ROOT [label="<name> Root |<on> _on_update |<after> _after_update"];
+
+    P_ON [label="<name> Power On |<on> _on_update |<after> _after_update"];
+    P_OFF [label="<name> Power Off |<on> _on_update |<after> _after_update"];
+    
+    // The Masters can't be "record" shapes because "flat edge between adjacent 
+    // nodes one of which has a record shape - replace records with HTML-like
+    // labels"
+    M_MASTER [shape=plaintext, label=< 
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+            <TR><TD PORT="name">Machine Region</TD></TR>
+            <TR><TD PORT="on">_on_update</TD></TR>
+            <TR><TD PORT="after">_after_update</TD></TR>
+        </TABLE>>
+    ];
+    M_ON [label="<name> Machine On |<on> _on_update |<after> _after_update"];
+    M_OFF [label="<name> Machine Off |<on> _on_update |<after> _after_update"];
+    
+    // The Masters can't be "record" shapes because "flat edge between adjacent 
+    // nodes one of which has a record shape - replace records with HTML-like
+    // labels"
+    L_MASTER [shape=plaintext, label=< 
+        <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0"> 
+            <TR><TD PORT="name">Lights Region</TD></TR>
+            <TR><TD PORT="on">_on_update</TD></TR>
+            <TR><TD PORT="after">_after_update</TD></TR>
+        </TABLE>>
+    ];
+    L_ON [label="<name> Lights On |<on> _on_update |<after> _after_update"];
+    L_OFF [label="<name> Lights Off |<on> _on_update |<after> _after_update"];
+
+    // Create some invisible edges between the nodes so the positions relative
+    // to each other are maintained
+    edge [style="invisible", arrowhead="none"];
+    ROOT -> P_ON;
+    ROOT -> P_OFF;
+    P_ON -> M_MASTER;
+    P_ON -> L_MASTER;
+    L_MASTER -> L_ON;
+    L_MASTER -> L_OFF;
+    M_MASTER -> M_ON;
+    M_MASTER -> M_OFF;
+
+    // Establish the ranks
+    {rank = same; Start; End;}
+    {rank = same; P_ON; P_OFF;}
+    {rank = same; M_MASTER; L_MASTER;}
+    {rank = same; L_ON; L_OFF; M_ON; M_OFF;}
+
+    // Now, set the _on_update execution track
+    edge [style="solid", arrowhead="normal", color="#00AF54"];
+    Start-> ROOT:on;
+    ROOT:on -> P_ON:on;
+    P_ON:on -> M_MASTER:on;
+    M_MASTER:after -> L_MASTER:on;
+    M_MASTER:on -> M_ON:on;
+    L_MASTER:on -> L_ON:on;
+
+    // Finally, set the _after_update execution track
+    edge [color="#007CBE"];
+    M_ON:after -> M_MASTER:after;
+    // Note how the next three edges have annotations following the port
+    // annotation; this is to direct the edge they should emerge from/go-to. In
+    // this case, e is "east" and s is "south".
+    M_ON:on:e -> M_ON:after:e;
+    L_ON:on:e -> L_ON:after:e;
+    L_ON:after -> L_MASTER:after:s;
+    //
+    L_MASTER:after -> P_ON:after;
+    P_ON:after -> ROOT:after;
+    ROOT:after -> End;
+
+}

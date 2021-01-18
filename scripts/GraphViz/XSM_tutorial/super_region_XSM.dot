@@ -1,0 +1,65 @@
+// XSM Tutorial - Extended State Machine Tutorial
+// Basic Extended State Machine, Super & Region - Graphviz Dot
+// Directed Graph
+digraph G {
+    rankdir=LR; // Left to Right, instead of Top to Bottom
+    //nodesep=.55; // Ensure nodes are separated by at least .55... units?
+    overlap=false; // Nodes are not allowed to overlap.
+    compound=true; // Allow edges between clusters
+    
+    subgraph cluster0 {
+        // Subgraph attributes.
+        label = "Power On";
+        style="filled";
+        
+        subgraph cluster0_1 {
+            // Subgraph attributes.
+            label = "Machine Region";
+            style="filled";
+            color="white";
+            
+            // All Nodes in the Subgraph will have the following properties:
+            node [style="solid"];
+            
+            // Declare nodes (since we need to label them)
+            m_OFF [label="Machine Off"]
+            m_ON [label="Machine On"]
+            
+            edge [label = "Power Button\nPressed"];
+            m_OFF -> m_ON;
+            m_ON -> m_OFF;
+        }
+        subgraph cluster0_2 {
+            // Subgraph attributes.
+            label = "Lights Region";
+            style="filled";
+            color="white"
+            
+            // All Nodes in the Subgraph will have the following properties:
+            node [style="solid"];
+            
+            // Declare nodes (since we need to label them)
+            l_OFF [label="Lights Off"]
+            l_ON [label="Lights On"]
+            
+            edge [label = "Light Switch\nFlicked"];
+            l_OFF -> l_ON;
+            l_ON -> l_OFF;
+        }
+    }
+
+    Start [shape=Mdiamond];
+    p_OFF [label="Power Off"];
+
+    edge [label = ""];
+    Start -> m_OFF;
+    Start -> l_OFF;
+    
+    edge [label = "Power Lost", ltail = cluster0];
+    m_OFF -> p_OFF;
+    
+    // Increased the weight here to allow for more label readability.
+    edge [label = "Power On", weight=2.5];
+    p_OFF -> m_OFF;
+    p_OFF -> l_OFF;
+}

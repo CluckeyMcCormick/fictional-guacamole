@@ -1,0 +1,30 @@
+// XSM Tutorial - Extended State Machine Tutorial
+// Extended State Machine, Super Region, Active Colors - Graphviz Dot
+// Directed Graph
+digraph G {
+    overlap=false; // Nodes are not allowed to overlap.
+    compound=true; // Allow edges between clusters
+
+    Root [style="filled", color="#FFCF56"];
+
+    P_ON [label="Power On", style="filled", color="#FFCF56"];
+    P_OFF [label="Power Off"];
+    
+    M_MASTER [label="Machine Region", style="filled", color="#FFCF56"];
+    M_ON [label="Machine On", style="filled", color="#FFCF56"];
+    M_OFF [label="Machine Off"];
+    
+    L_MASTER [label="Lights Region", style="filled", color="#FFCF56"];
+    L_ON [label="Lights On", style="filled", color="#FFCF56"];
+    L_OFF [label="Lights Off"];
+
+    edge [label = ""];
+    Root -> P_ON;
+    Root -> P_OFF;
+    P_ON -> M_MASTER;
+    P_ON -> L_MASTER;
+    L_MASTER -> L_ON;
+    L_MASTER -> L_OFF;
+    M_MASTER -> M_ON;
+    M_MASTER -> M_OFF;
+}

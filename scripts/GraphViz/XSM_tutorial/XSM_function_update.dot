@@ -1,0 +1,53 @@
+// XSM Tutorial - Extended State Machine Tutorial
+// Extended State Machine, Super Region, Show Function Calls - Graphviz Dot
+// Directed Graph
+digraph G {
+    rankdir=LR;
+    overlap=false; // Nodes are not allowed to overlap.
+    compound=true; // Allow edges between clusters
+
+    // All of these nodes are records
+    node [shape=record];
+
+    Start [shape=Mdiamond];
+    End [shape=Mdiamond];
+    ROOT [label="<name> Root | <on> _on_update"];
+
+    P_ON [label="<name> Power On |<on> _on_update"];
+    P_OFF [label="<name> Power Off |<on> _on_update"];
+    
+    M_MASTER [label="<name> Machine Region |<on> _on_update"];
+    M_ON [label="<name> Machine On |<on> _on_update"];
+    M_OFF [label="<name> Machine Off |<on> _on_update"];
+    
+    L_MASTER [label="<name> Lights Region |<on> _on_update"];
+    L_ON [label="<name> Lights On |<on> _on_update"];
+    L_OFF [label="<name> Lights Off |<on> _on_update"];
+
+    // Create some invisible edges between the nodes so the positions relative
+    // to each other are maintained
+    edge [style="invisible", arrowhead="none"];
+    ROOT -> P_ON;
+    ROOT -> P_OFF;
+    P_ON -> M_MASTER;
+    P_ON -> L_MASTER;
+    L_MASTER -> L_ON;
+    L_MASTER -> L_OFF;
+    M_MASTER -> M_ON;
+    M_MASTER -> M_OFF;
+
+    // Establish the ranks
+    {rank = same; P_ON; P_OFF;}
+    {rank = same; M_MASTER; L_MASTER;}
+    {rank = same; L_ON; L_OFF; M_ON; M_OFF;}
+
+    // Now, actually set up the graph.
+    edge [style="solid", arrowhead="normal", color="#00AF54"];
+    Start-> ROOT:on;
+    ROOT:on -> P_ON:on;
+    P_ON:on -> M_MASTER:on;
+    M_MASTER:on -> M_ON:on;
+    M_ON:on -> L_MASTER:on;
+    L_MASTER:on -> L_ON:on;
+    L_ON:on -> End;
+}

@@ -19,3 +19,6 @@ These two scripts concern our most basic AI machine - the *Kinematic Driver Mach
 The *Hierarchy* script creates a graph showing the arrangement of states in the *KDM* scene. That's not too radical but it's key to understanding the next graph.
 
 That would be the graph created by the *Flow* script. This depicts how the states relate to each other and the conditions that cause movements between the states. This is something that otherwise can only be discerned via code inspection.
+
+## XSM Tutorial
+The Extended State Machine (*XSM*) concept can get pretty complicated pretty quickly, so I thought it would be prudent to generate some documentation for how they work. Of course, that required diagrams. A LOT of diagrams. Those are stored here.

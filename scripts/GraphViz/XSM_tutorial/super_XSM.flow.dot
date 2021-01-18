@@ -1,0 +1,18 @@
+// XSM Tutorial - Extended State Machine Tutorial
+// Extended State Machine, Super, Flow - Graphviz Dot
+// Directed Graph
+digraph G {
+    overlap=false; // Nodes are not allowed to overlap.
+    compound=true; // Allow edges between clusters
+
+    P_ON [label="Power On"];
+    P_OFF [label="Power Off"];
+    M_ON [label="Machine On"];
+    M_OFF [label="Machine Off"];
+
+    edge [label = ""];
+    Root -> P_ON;
+    Root -> P_OFF;
+    P_ON -> M_ON;
+    P_ON -> M_OFF;
+}
