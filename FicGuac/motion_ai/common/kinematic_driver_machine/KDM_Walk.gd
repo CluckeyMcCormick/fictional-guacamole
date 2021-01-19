@@ -11,15 +11,24 @@ onready var MR = get_node("../..")
 # Extended State Machine Functions
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+func _on_enter() -> void:
+    MR.readable_state = "Walk"
+
 func _on_update(delta) -> void:
     # Get our KinematicCore
     var KC = MR.kinematic_core_node
     # Did we get a collision result from our most recent move attempt?
     var collision = null
 
-    # If we don't have a target position, then switch to our "idle" mode
+    # If we don't have a target position...
     if not MR.target_position:
-        change_state("Idle")
+        # Then let's see get the next point path (if we have a path!)
+        if not MR.target_path.empty():
+            MR.target_position = MR.target_path.pop_front()
+        # Otherwise
+        else:
+            change_state("Idle")
+            return
 
     # How far are we from our target position?
     var distance_to = MR.target_position - KC.get_adj_position()
@@ -79,6 +88,16 @@ func _after_update(delta) -> void:
     # Get our KinematicCore
     var KC = MR.kinematic_core_node
 
+    # If we don't have a target position...
+    if not MR.target_position:
+        # Then let's see get the next point path (if we have a path!)
+        if not MR.target_path.empty():
+            MR.target_position = MR.target_path.pop_front()
+        # Otherwise
+        else:
+            change_state("Idle")
+            return
+
     # Calculate the remaining distance to our objective
     var remain_length = ( MR.target_position - KC.get_adj_position() ).length()
 
@@ -88,7 +107,13 @@ func _after_update(delta) -> void:
         var pos_save = MR.target_position
         # Clear the target
         MR.target_position = null
-        # Now emit the "target reached" signal using the position we saved.
-        # It's important we do it this way, since anything receiving the
-        # signal could change the variable out from under us.
-        MR.emit_signal("target_reached", pos_save)
+        
+        # Now that we've done that we, need to check 
+        if not MR.target_path.empty():
+            MR.target_position = MR.target_path.pop_front()
+        # Otherwise
+        else:
+            # Now emit the "path complete" signal using the position we saved.
+            # It's important we do it this way, since anything receiving the
+            # signal could change the variable out from under us.
+            MR.emit_signal("path_complete", pos_save)

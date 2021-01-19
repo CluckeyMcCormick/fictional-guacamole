@@ -18,7 +18,7 @@ func _ready():
     ]
     
     # Call our "on target reached" function. Just makes things easier.
-    _on_KinematicDriverMachine_target_reached(Vector3.ZERO)
+    _on_KinematicDriverMachine_path_complete(Vector3.ZERO)
     
 # Update the GUI so we know what's up
 func _process(delta):
@@ -38,7 +38,7 @@ func _process(delta):
 
 # Whenever the cubit reaches a position/target/destination, it emits a singal
 # that we catch with this function.
-func _on_KinematicDriverMachine_target_reached(position):
+func _on_KinematicDriverMachine_path_complete(position):
     # We reached whatever our target position was. Time to assign a new
     # position. Need to assign a position randomly - so randomly assign our node
     # index
@@ -46,4 +46,3 @@ func _on_KinematicDriverMachine_target_reached(position):
     
     # Set the destination for the Cubit
     $Cubit.destination = node_list[node_index].global_transform.origin
-

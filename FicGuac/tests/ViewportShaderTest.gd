@@ -115,32 +115,32 @@ func all_return():
     # XRAY - Alpha
     targ_pawn = $XrayPawnAlpha
     targ_node = $Navigation/NavigationMeshInstance/HomePlinth/A
-    targ_pawn.current_path = Array(make_path(targ_pawn, targ_node))
+    targ_pawn.set_target_path( Array(make_path(targ_pawn, targ_node) ))
     
     # XRAY - Default
     targ_pawn = $XrayPawnDefault
     targ_node = $Navigation/NavigationMeshInstance/HomePlinth/B
-    targ_pawn.current_path = Array(make_path(targ_pawn, targ_node))
+    targ_pawn.set_target_path( Array(make_path(targ_pawn, targ_node) ))
     
     # XRAY - No Depth
     targ_pawn = $XrayPawnNoDepth
     targ_node = $Navigation/NavigationMeshInstance/HomePlinth/C
-    targ_pawn.current_path = Array(make_path(targ_pawn, targ_node))
+    targ_pawn.set_target_path( Array(make_path(targ_pawn, targ_node) ))
 
     # Multiply
     targ_pawn = $MultiplyPawn
     targ_node = $Navigation/NavigationMeshInstance/HomePlinth/D
-    targ_pawn.current_path = Array(make_path(targ_pawn, targ_node))
+    targ_pawn.set_target_path( Array(make_path(targ_pawn, targ_node) ))
     
     # Fill
     targ_pawn = $FillPawn
     targ_node = $Navigation/NavigationMeshInstance/HomePlinth/E
-    targ_pawn.current_path = Array(make_path(targ_pawn, targ_node))
+    targ_pawn.set_target_path( Array(make_path(targ_pawn, targ_node) ))
 
     # Normal
     targ_pawn = $NormalPawn
     targ_node = $Navigation/NavigationMeshInstance/HomePlinth/F
-    targ_pawn.current_path = Array(make_path(targ_pawn, targ_node))
+    targ_pawn.set_target_path( Array(make_path(targ_pawn, targ_node) ))
 
 # Does the processing to set us onto the next test. Isolated in a function so
 # that it can be called from multiple locations.
@@ -191,8 +191,8 @@ func general_test_pattern(back, left, right, front, center):
     pth.append_array(make_path(back, right))
     pth.append_array(make_path(right, front))
     pth.append_array(make_path(front, left))
-    test_pawn.current_path = Array(pth)
-
+    test_pawn.set_target_path( Array(pth) )
+    
     # Yield for testing
     yield()
 
@@ -200,7 +200,7 @@ func general_test_pattern(back, left, right, front, center):
     pth = make_path(test_pawn, front)
     pth.append_array(make_path(front, center))
     pth.append_array(make_path(center, back))
-    test_pawn.current_path = Array(pth)
+    test_pawn.set_target_path( Array(pth) )
     
     # Yield for testing
     yield()
@@ -209,7 +209,7 @@ func general_test_pattern(back, left, right, front, center):
     pth = make_path(test_pawn, left)
     pth.append_array(make_path(left, center))
     pth.append_array(make_path(center, right))
-    test_pawn.current_path = Array(pth)
+    test_pawn.set_target_path( Array(pth) )
     
     # Yield for testing
     yield()
@@ -262,7 +262,7 @@ func multiple_pawn_test_pattern(alt_pawn):
     
     # Move the alternate pawn to the opaque object
     var pth = make_path(alt_pawn, opaque_center)
-    alt_pawn.current_path = Array(pth)
+    alt_pawn.set_target_path( Array(pth) )
     alt_pawn.connect("path_complete", self, "_on_test_pawn_path_complete")
     yield()
     alt_pawn.disconnect("path_complete", self, "_on_test_pawn_path_complete")
@@ -274,19 +274,19 @@ func multiple_pawn_test_pattern(alt_pawn):
     pth.append_array(make_path(opaque_back, opaque_right))
     pth.append_array(make_path(opaque_right, opaque_front))
     pth.append_array(make_path(opaque_front, opaque_left))
-    test_pawn.current_path = Array(pth)
+    test_pawn.set_target_path( Array(pth) )
     yield()
     # Criss-cross A
     pth = make_path(test_pawn, opaque_front)
     pth.append_array(make_path(opaque_front, opaque_center))
     pth.append_array(make_path(opaque_center, opaque_back))
-    test_pawn.current_path = Array(pth)
+    test_pawn.set_target_path( Array(pth) )
     yield()
     # Criss-cross B
     pth = make_path(test_pawn, opaque_left)
     pth.append_array(make_path(opaque_left, opaque_center))
     pth.append_array(make_path(opaque_center, opaque_right))
-    test_pawn.current_path = Array(pth)
+    test_pawn.set_target_path( Array(pth) )
     yield()
     # Connect
     test_pawn.disconnect("path_complete", self, "_on_test_pawn_path_complete")
@@ -301,7 +301,7 @@ func multiple_pawn_test_pattern(alt_pawn):
 
     # Move the alternate pawn to the transparent object
     pth = make_path(alt_pawn, trans_center)
-    alt_pawn.current_path = Array(pth)
+    alt_pawn.set_target_path( Array(pth) )
     alt_pawn.connect("path_complete", self, "_on_test_pawn_path_complete")
     yield()
     alt_pawn.disconnect("path_complete", self, "_on_test_pawn_path_complete")
@@ -313,19 +313,19 @@ func multiple_pawn_test_pattern(alt_pawn):
     pth.append_array(make_path(trans_back, trans_right))
     pth.append_array(make_path(trans_right, trans_front))
     pth.append_array(make_path(trans_front, trans_left))
-    test_pawn.current_path = Array(pth)
+    test_pawn.set_target_path( Array(pth) )
     yield()
     # Criss-cross A
     pth = make_path(test_pawn, trans_front)
     pth.append_array(make_path(trans_front, trans_center))
     pth.append_array(make_path(trans_center, trans_back))
-    test_pawn.current_path = Array(pth)
+    test_pawn.set_target_path( Array(pth) )
     yield()
     # Criss-cross B
     pth = make_path(test_pawn, trans_left)
     pth.append_array(make_path(trans_left, trans_center))
     pth.append_array(make_path(trans_center, trans_right))
-    test_pawn.current_path = Array(pth)
+    test_pawn.set_target_path( Array(pth) )
     yield()
     # Connect
     test_pawn.disconnect("path_complete", self, "_on_test_pawn_path_complete")
@@ -340,7 +340,7 @@ func multiple_pawn_test_pattern(alt_pawn):
 
     # Move the alternate pawn to the partial object
     pth = make_path(alt_pawn, part_center)
-    alt_pawn.current_path = Array(pth)
+    alt_pawn.set_target_path( Array(pth) )
     alt_pawn.connect("path_complete", self, "_on_test_pawn_path_complete")
     yield()
     alt_pawn.disconnect("path_complete", self, "_on_test_pawn_path_complete")
@@ -352,19 +352,19 @@ func multiple_pawn_test_pattern(alt_pawn):
     pth.append_array(make_path(part_back, part_right))
     pth.append_array(make_path(part_right, part_front))
     pth.append_array(make_path(part_front, part_left))
-    test_pawn.current_path = Array(pth)
+    test_pawn.set_target_path( Array(pth) )
     yield()
     # Criss-cross A
     pth = make_path(test_pawn, part_front)
     pth.append_array(make_path(part_front, part_center))
     pth.append_array(make_path(part_center, part_back))
-    test_pawn.current_path = Array(pth)
+    test_pawn.set_target_path( Array(pth) )
     yield()
     # Criss-cross B
     pth = make_path(test_pawn, part_left)
     pth.append_array(make_path(part_left, part_center))
     pth.append_array(make_path(part_center, part_right))
-    test_pawn.current_path = Array(pth)
+    test_pawn.set_target_path( Array(pth) )
     yield()
     # Connect
     test_pawn.disconnect("path_complete", self, "_on_test_pawn_path_complete")
@@ -379,7 +379,7 @@ func multiple_pawn_test_pattern(alt_pawn):
 
     # Move the alternate pawn to the partial object
     pth = make_path(alt_pawn, woods_center)
-    alt_pawn.current_path = Array(pth)
+    alt_pawn.set_target_path( Array(pth) )
     alt_pawn.connect("path_complete", self, "_on_test_pawn_path_complete")
     yield()
     alt_pawn.disconnect("path_complete", self, "_on_test_pawn_path_complete")
@@ -391,19 +391,19 @@ func multiple_pawn_test_pattern(alt_pawn):
     pth.append_array(make_path(woods_back, woods_right))
     pth.append_array(make_path(woods_right, woods_front))
     pth.append_array(make_path(woods_front, woods_left))
-    test_pawn.current_path = Array(pth)
+    test_pawn.set_target_path( Array(pth) )
     yield()
     # Criss-cross A
     pth = make_path(test_pawn, woods_front)
     pth.append_array(make_path(woods_front, woods_center))
     pth.append_array(make_path(woods_center, woods_back))
-    test_pawn.current_path = Array(pth)
+    test_pawn.set_target_path( Array(pth) )
     yield()
     # Criss-cross B
     pth = make_path(test_pawn, woods_left)
     pth.append_array(make_path(woods_left, woods_center))
     pth.append_array(make_path(woods_center, woods_right))
-    test_pawn.current_path = Array(pth)
+    test_pawn.set_target_path( Array(pth) )
     yield()
     # Connect
     test_pawn.disconnect("path_complete", self, "_on_test_pawn_path_complete")

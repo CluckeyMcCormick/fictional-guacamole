@@ -1,6 +1,5 @@
 [gd_scene load_steps=58 format=2]
 
-[ext_resource path="res://motion_ai/pawn/BasePawn.tscn" type="PackedScene" id=1]
 [ext_resource path="res://terrain/farm/Farm.tscn" type="PackedScene" id=2]
 [ext_resource path="res://tests/ViewportShaderTest.gd" type="Script" id=3]
 [ext_resource path="res://scenes/SceneDefaultEnvironment.tres" type="Environment" id=4]
@@ -10,6 +9,7 @@
 [ext_resource path="res://special_effects/viewport_shader_templates/SilhouetteMultiplyShader.material" type="Material" id=8]
 [ext_resource path="res://buildings/Hut.tscn" type="PackedScene" id=9]
 [ext_resource path="res://special_effects/mask64_dither2x2.png" type="Texture" id=10]
+[ext_resource path="res://tests/test_assets/KinematicPawn.tscn" type="PackedScene" id=11]
 [ext_resource path="res://tests/test_assets/pr01_floyd_steinberg.tres" type="SpriteFrames" id=12]
 [ext_resource path="res://terrain/trees/Woods.tscn" type="PackedScene" id=13]
 [ext_resource path="res://tests/test_assets/pr01_riemersma.tres" type="SpriteFrames" id=15]
@@ -336,16 +336,10 @@ size = 15.0
 transform = Transform( 0.707107, -0.408244, 0.577353, 0, 0.816501, 0.577344, -0.707107, -0.408244, 0.577353, 64, 64, 64 )
 size = 15.0
 
-[node name="XrayPawnAlpha" parent="." instance=ExtResource( 1 )]
+[node name="XrayPawnAlpha" parent="." instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 2, 7 )
 position_algorithm = 1
 navigation = NodePath("../Navigation")
-
-[node name="VisualSprite" parent="XrayPawnAlpha" index="3"]
-frame = 2
-
-[node name="WeaponSprite" parent="XrayPawnAlpha" index="4"]
-frame = 13
 
 [node name="HidingMesh" parent="XrayPawnAlpha" instance=ExtResource( 20 )]
 transform = Transform( 0.707107, -0.408244, 0.577353, 0, 0.8165, 0.577345, -0.707107, -0.408244, 0.577353, 10, 10, 10 )
@@ -355,17 +349,14 @@ target_camera = NodePath("../../CameraRig/CoreCamera")
 test_source = NodePath("..")
 animation_length = 0.1
 
-[node name="XrayPawnDefault" parent="." instance=ExtResource( 1 )]
+[node name="XrayPawnDefault" parent="." instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 2, 7 )
 position_algorithm = 1
 navigation = NodePath("../Navigation")
 
 [node name="VisualSprite" parent="XrayPawnDefault" index="3"]
 frames = ExtResource( 16 )
-frame = 16
-
-[node name="WeaponSprite" parent="XrayPawnDefault" index="4"]
-frame = 13
+frame = 21
 
 [node name="HidingMesh" parent="XrayPawnDefault" instance=ExtResource( 20 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 5, 5 )
@@ -375,75 +366,60 @@ target_camera = NodePath("../../CameraRig/CoreCamera")
 test_source = NodePath("../../XrayPawnDefault")
 animation_length = 0.1
 
-[node name="XrayPawnNoDepth" parent="." instance=ExtResource( 1 )]
+[node name="XrayPawnNoDepth" parent="." instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 2, 7 )
 position_algorithm = 1
 navigation = NodePath("../Navigation")
 
 [node name="VisualSprite" parent="XrayPawnNoDepth" index="3"]
 frames = ExtResource( 15 )
-frame = 16
-
-[node name="WeaponSprite" parent="XrayPawnNoDepth" index="4"]
-frame = 13
+frame = 12
 
 [node name="HidingMesh" parent="XrayPawnNoDepth" instance=ExtResource( 20 )]
 material/0 = SubResource( 19 )
 target_camera = NodePath("../../CameraRig/CoreCamera")
 animation_length = 0.1
 
-[node name="MultiplyPawn" parent="." instance=ExtResource( 1 )]
+[node name="MultiplyPawn" parent="." instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 2, 9 )
 position_algorithm = 1
 navigation = NodePath("../Navigation")
 
 [node name="VisualSprite" parent="MultiplyPawn" index="3"]
 frames = ExtResource( 17 )
-frame = 16
-
-[node name="WeaponSprite" parent="MultiplyPawn" index="4"]
-frame = 13
+frame = 21
 
 [node name="HidingMesh" parent="MultiplyPawn" instance=ExtResource( 20 )]
-transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.05, 0, 0.05 )
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.0500002, 0, 0.0500002 )
 mesh = SubResource( 20 )
 material/0 = ExtResource( 8 )
 target_camera = NodePath("../../CameraRig/CoreCamera")
 animation_length = 0.1
 
-[node name="FillPawn" parent="." instance=ExtResource( 1 )]
+[node name="FillPawn" parent="." instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 2, 9 )
 position_algorithm = 1
 navigation = NodePath("../Navigation")
 
 [node name="VisualSprite" parent="FillPawn" index="3"]
 frames = ExtResource( 12 )
-frame = 16
-
-[node name="WeaponSprite" parent="FillPawn" index="4"]
-frame = 13
+frame = 23
 
 [node name="HidingMesh" parent="FillPawn" instance=ExtResource( 20 )]
-transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.05, 0, 0.05 )
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.0500002, 0, 0.0500002 )
 mesh = SubResource( 20 )
 material/0 = ExtResource( 6 )
 target_camera = NodePath("../../CameraRig/CoreCamera")
 animation_length = 0.1
 
-[node name="NormalPawn" parent="." instance=ExtResource( 1 )]
+[node name="NormalPawn" parent="." instance=ExtResource( 11 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 2, 9 )
 position_algorithm = 1
 navigation = NodePath("../Navigation")
 
 [node name="VisualSprite" parent="NormalPawn" index="3"]
 modulate = Color( 0.976471, 0.760784, 0.168627, 1 )
-frame = 2
-
-[node name="WeaponSprite" parent="NormalPawn" index="4"]
-frame = 13
-
-[node name="KinematicDriver" parent="NormalPawn" index="5"]
-drive_body = NodePath("../../NormalPawn")
+frame = 8
 
 [node name="Navigation" type="Navigation" parent="."]
 
@@ -865,8 +841,6 @@ rect_min_size = Vector2( 0, 10 )
 [connection signal="value_changed" from="TimeGUI/Slider" to="." method="_on_Slider_value_changed"]
 
 [editable path="CameraRig"]
-
-[editable path="XrayPawnAlpha"]
 
 [editable path="XrayPawnDefault"]
 

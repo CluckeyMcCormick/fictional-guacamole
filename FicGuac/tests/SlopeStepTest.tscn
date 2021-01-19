@@ -2,7 +2,7 @@
 
 [ext_resource path="res://terrain/mat_terrain_grass_grid.tres" type="Material" id=1]
 [ext_resource path="res://scenes/SceneDefaultEnvironment.tres" type="Environment" id=2]
-[ext_resource path="res://motion_ai/pawn/BasePawn.tscn" type="PackedScene" id=3]
+[ext_resource path="res://tests/test_assets/KinematicPawn.tscn" type="PackedScene" id=3]
 [ext_resource path="res://util/CheckerboardTriplane.tres" type="Material" id=4]
 [ext_resource path="res://tests/SlopeStepTest.gd" type="Script" id=5]
 [ext_resource path="res://util/gui_3d/QuadLabel.tscn" type="PackedScene" id=6]
@@ -209,7 +209,7 @@ far = 130.0
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.6, 0 )
 
 [node name="PawnCamera" type="Camera" parent="Pawn"]
-transform = Transform( 0.707107, -0.408244, 0.577353, 0, 0.816501, 0.577345, -0.707107, -0.408244, 0.577353, 64, 64, 64 )
+transform = Transform( 0.707107, -0.408244, 0.577353, 0, 0.816501, 0.577344, -0.707107, -0.408244, 0.577353, 64, 64, 64 )
 projection = 1
 size = 8.0
 far = 130.0
@@ -805,19 +805,19 @@ margin_bottom = 32.0
 text = "(0, 0, 0)"
 align = 1
 
-[node name="OnFloorLabel" type="VBoxContainer" parent="Items/Labels"]
+[node name="MachineStateLabel" type="VBoxContainer" parent="Items/Labels"]
 margin_left = 576.0
 margin_right = 716.0
 margin_bottom = 32.0
 size_flags_horizontal = 3
 
-[node name="Label" type="Label" parent="Items/Labels/OnFloorLabel"]
+[node name="Label" type="Label" parent="Items/Labels/MachineStateLabel"]
 margin_right = 140.0
 margin_bottom = 14.0
-text = "On Floor:"
+text = "Machine State:"
 align = 1
 
-[node name="Info" type="Label" parent="Items/Labels/OnFloorLabel"]
+[node name="Info" type="Label" parent="Items/Labels/MachineStateLabel"]
 margin_top = 18.0
 margin_right = 140.0
 margin_bottom = 32.0

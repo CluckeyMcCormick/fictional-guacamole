@@ -183,6 +183,6 @@ margin_right = 248.0
 margin_bottom = 32.0
 text = "1"
 align = 1
-[connection signal="target_reached" from="Cubit/KinematicDriverMachine" to="." method="_on_KinematicDriverMachine_target_reached"]
+[connection signal="path_complete" from="Cubit/KinematicDriverMachine" to="." method="_on_KinematicDriverMachine_path_complete"]
 
 [editable path="Cubit"]

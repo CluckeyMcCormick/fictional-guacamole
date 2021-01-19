@@ -179,16 +179,14 @@ func _process(delta):
     # Set the progress bar to reflect the passage of  T I M E
     $Items/Labels/TimerLabel/ProgressBar.value = $Timer.wait_time - $Timer.time_left
     # Set the target label to the target vector
-    $Items/Labels/TargetLabel/Info.text = str( $Pawn/KinematicDriver.target_position )
+    $Items/Labels/TargetLabel/Info.text = str( $Pawn/KinematicDriverMachine.target_position )
     # Set the position label to the position vector
-    $Items/Labels/PositionLabel/Info.text = str( $Pawn.global_transform.origin )
-    # Set whether we're on the floor
-    $Items/Labels/OnFloorLabel/Info.text = str( $Pawn/KinematicDriver._on_floor )
+    $Items/Labels/MachineStateLabel/Info.text = str( $Pawn/KinematicDriverMachine.readable_state )
     # Set the distance to the target vector
-    if $Pawn/KinematicDriver.target_position:
+    if $Pawn/KinematicDriverMachine.target_position:
         $Items/Labels/DistanceLabel/Info.text = str(
             $Pawn.global_transform.origin.distance_to(
-                $Pawn/KinematicDriver.target_position
+                $Pawn/KinematicDriverMachine.target_position
             )
         )
     else:
@@ -209,7 +207,7 @@ func _process(delta):
 # Utility function for telling the pawn to go somewhere, given a node
 func set_pawn_target(target_node : Spatial):
     var position = target_node.global_transform.origin
-    $Pawn.set_path([position])
+    $Pawn.set_target_postion(position)
 
 # This is the real bread and butter of our tests - most of the path-following
 # happens in this particular function, which gets called in response to the Pawn
@@ -282,4 +280,3 @@ func _on_Button_pressed():
         $WorldCamera.current = true
         $Pawn/PawnCamera.current = false
         default_camera = true
-

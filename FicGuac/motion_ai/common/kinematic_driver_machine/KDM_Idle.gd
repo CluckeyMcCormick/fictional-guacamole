@@ -11,12 +11,15 @@ onready var MR = get_node("../..")
 # Extended State Machine Functions
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+func _on_enter() -> void:
+    MR.readable_state = "Idle"
+
 func _on_update(delta) -> void:
     # Get our KinematicCore
     var KC = MR.kinematic_core_node
 
     # If we have a target position, then switch to our "idle" mode
-    if MR.target_position:
+    if MR.target_position or MR.target_path:
         change_state("Walk")
     
     # Otherwise, broadcast that we need to update the visuals of whoever is

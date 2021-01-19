@@ -1,0 +1,18 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://motion_ai/common/falling_body_machine/FallingBodyMachine.gd" type="Script" id=1]
+[ext_resource path="res://motion_ai/common/kinematic_driver_machine/KDM_OnGround.gd" type="Script" id=2]
+[ext_resource path="res://motion_ai/common/falling_body_machine/FBM_Falling.gd" type="Script" id=3]
+
+[node name="FallingBodyMachine" type="Node"]
+script = ExtResource( 1 )
+fsm_owner = null
+animation_player = null
+
+[node name="OnGround" type="Node" parent="."]
+script = ExtResource( 2 )
+
+[node name="Falling" type="Node" parent="."]
+script = ExtResource( 3 )
+fsm_owner = null
+animation_player = null

@@ -65,6 +65,5 @@ func _after_update(delta) -> void:
     # Alternatively, we actually managed to find the floor. If it's in the right
     # range for our floating...
     elif collision.travel.length() <= KC.MINIMUM_FALL_HEIGHT + KC.float_height:
-        # Then we're not falling anymore. Transition to the Idle State, we'll
-        # decide what to do from there.
-        change_state("Idle")
+        # Then we're not falling anymore. Transition to the OnGround State.
+        change_state("OnGround")
