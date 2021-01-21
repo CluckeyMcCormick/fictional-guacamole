@@ -7,6 +7,8 @@ The *Machines* and *Cores* are designed to be as plug-and-play as possible - for
 
 Where some amount of coding is required as part of the plugging, we typically refer to this action as "coupling"; functions created as part of coupling are referred to as "coupling functions". This is especially true for signals.
 
+The *Machines* are somewhat unique in that they represent different phases of AI development, each preserved as separate machines. We maintain older machines for testing purposes, and as proofs-of-concept.
+
 ## KinematicCore
 The *KinematicCore* is the core *motion* component of *Motion AI*. It governs the movement characteristics of an AI.
 
@@ -41,5 +43,18 @@ The value is equivalent to the maximum height it is possible for the `KinematicB
 ##### Max Slope Degrees
 The maximum slope angle of the body can climb, in degrees. 45 degrees is recommended, but you can do some crazy stuff with higher values.
 
+### Constants
+##### `MINIMUM_FALL_HEIGHT`
+When determining whether a `KinematicBody` is on the ground or not, we do a fake move downwards. Even if the body is 100%, undeniably on the ground, this fake move usually returns a non-zero fall length. Ergo, we need an absolute minimum fall distance before we actually fall. This value is the absolute minimum distance a `KinematicBody` has to fall in the floor test to be considered "falling" or "not on the floor".
+
+##### `TARG_DIST_HISTORY_SIZE`
+In order to detect certain errors, we measure distance-to-target and store it in an array. How big is that array - i.e. how big is our history?
+
+##### `TARG_DIST_ERROR_THRESHOLD`
+Detecting the error relies on any entries recurring at least a specified number of times. This constant tracks that magic number.
+
+## Falling Body Machine
+The most basic machine. Developed as a debugging tool to so we can see how sprites sit on a surface, given certain collision models. All it does is fall/move downward.
+
 ## Kinematic Driver Machine
-The most basic machine. Just moves to a point and then idles.
+A step up from the *Falling Body Machine*. This machine accepts either a single point, or an array-path of points. It moves towards it's current target, and works through the current `Array` path of points. Currently only used for testing movement and environment interaction.

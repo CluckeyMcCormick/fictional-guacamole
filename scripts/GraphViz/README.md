@@ -14,11 +14,16 @@ dot -Tpng [input].dot -o [output].png
 ```
 
 ## KDM Hierarchy and Flow
-These two scripts concern our most basic AI machine - the *Kinematic Driver Machine*, frequently abbreviated to the *KDM*. Since it's a machine, it has a complex structure and process.
+These two scripts concern a pretty basic AI machine - the *Kinematic Driver Machine*, frequently abbreviated to the *KDM*. Since it's a machine, it has a complex structure and process.
 
 The *Hierarchy* script creates a graph showing the arrangement of states in the *KDM* scene. That's not too radical but it's key to understanding the next graph.
 
 That would be the graph created by the *Flow* script. This depicts how the states relate to each other and the conditions that cause movements between the states. This is something that otherwise can only be discerned via code inspection.
+
+## FBM Hierarchy and Flow
+These two scripts document a regression of the *Kinematic Driver Machine*: the *Falling Body Machine*.
+
+Like the *KDM*, we have a hierarchy and flow script. They make really simple charts (since there's only two states).
 
 ## XSM Tutorial
 The Extended State Machine (*XSM*) concept can get pretty complicated pretty quickly, so I thought it would be prudent to generate some documentation for how they work. Of course, that required diagrams. A LOT of diagrams. Those are stored here.

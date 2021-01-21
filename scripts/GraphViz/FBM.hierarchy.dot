@@ -1,0 +1,9 @@
+// FBM - the Falling Body Machine
+// Hierarchy - Graphviz Dot
+// Directed Graph
+digraph G {
+    start [label="FBM\nRoot",shape=Mdiamond];
+    
+    start -> Falling;
+    start -> OnGround;
+}
