@@ -207,7 +207,7 @@ func _process(delta):
 # Utility function for telling the pawn to go somewhere, given a node
 func set_pawn_target(target_node : Spatial):
     var position = target_node.global_transform.origin
-    $Pawn.set_target_postion(position)
+    $Pawn.set_target_position(position)
 
 # This is the real bread and butter of our tests - most of the path-following
 # happens in this particular function, which gets called in response to the Pawn

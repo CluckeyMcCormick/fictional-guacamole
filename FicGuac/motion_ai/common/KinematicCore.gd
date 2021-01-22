@@ -33,6 +33,10 @@ export(float) var float_height = 0
 # doesn't climb a stairway to heaven. What's the maximum angle for a slope we
 # can climb, measured in degrees?
 export(float) var max_slope_degrees = 45
+# When we walk off an edge, we do start falling right away, but we'll put off
+# hard transitioning into a "fall" state for this many seconds. This will help
+# make things smoother.
+export(float) var fall_state_delay_time = .1
 
 # If we're not using a raycast to determine if we're on the ground, then we'll
 # test by simulating a downward move. Everytime we do that, we'll usually get a

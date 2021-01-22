@@ -40,7 +40,7 @@ pixel_size = 0.014
 shaded = true
 alpha_cut = 2
 frames = ExtResource( 1 )
-frame = 7
+frame = 8
 playing = true
 
 [node name="WeaponSprite" type="AnimatedSprite3D" parent="."]
@@ -54,8 +54,5 @@ playing = true
 [node name="KinematicCore" parent="." instance=ExtResource( 2 )]
 drive_body = NodePath("..")
 position_function = "get_adjusted_position"
-move_speed = 10.0
-fall_speed = 9.8
-goal_tolerance = 0.1
 float_height = 0.41
-max_slope_degrees = 45.0
+max_slope_degrees = 46.0

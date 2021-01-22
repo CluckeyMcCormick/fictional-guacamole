@@ -13,6 +13,7 @@ onready var MR = get_node("..")
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 func _on_enter() -> void:
     MR.readable_state = "Falling"
+    print("Falling")
 
 func _on_update(delta) -> void:
     # Get our KinematicCore

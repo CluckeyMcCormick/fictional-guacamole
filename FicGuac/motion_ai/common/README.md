@@ -41,7 +41,12 @@ By shrinking the collision shape upward, and adjusting the *float height* approp
 The value is equivalent to the maximum height it is possible for the `KinematicBody` to step up.
 
 ##### Max Slope Degrees
-The maximum slope angle of the body can climb, in degrees. 45 degrees is recommended, but you can do some crazy stuff with higher values.
+The maximum slope angle of the body can climb, in degrees. 45 degrees is recommended, but you can do some crazy stuff with higher values. Also note that the behavior when the slope matches the angle *exactly* can be a bit odd. Usually a body will be able to climb a slope but not without glitching around a bit. Ergo a plus-or-minus buffer of 1 degree is recommended.
+
+##### Fall State Delay Time
+Once we enter a fall state, we're hard locked into it, and whatever machine we've integrated with will stop moving horizontally. However, we don't always want to transition to a fall state. Could you imagine if you locked up or did a ragdoll flop every time you stepped off a curb? No, that's no good.
+
+So, we have a time delay. This many seconds of uninterrupted falling and we'll transition to the fall state.
 
 ### Constants
 ##### `MINIMUM_FALL_HEIGHT`

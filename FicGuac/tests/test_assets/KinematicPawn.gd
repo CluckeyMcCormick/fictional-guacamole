@@ -26,7 +26,7 @@ func _on_KinematicDriverMachine_path_complete(position):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Set the new target position for the Pawn. This allows you to bypass setting an
 # entire path.
-func set_target_postion(new_target_position):
+func set_target_position(new_target_position):
     # That's now our new target position
     $KinematicDriverMachine.target_position = new_target_position
     
