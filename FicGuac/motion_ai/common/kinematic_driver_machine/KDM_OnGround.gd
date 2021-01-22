@@ -15,11 +15,13 @@ var fall_timer_active = false
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 func _on_enter() -> void:
-    # Update the readable state
-    MR.readable_state = "On Ground"
+    # Set the state key. Might seem weird since we have substates, but those
+    # will overwrite as appropriate.
+    MR.state_key = "OnGround"
     # Assert the timer is inactive
     fall_timer_active = false
-  
+    print("Entered OnGround!")
+    
 func _on_update(delta) -> void:
     # Get our KinematicCore
     var KC = MR.kinematic_core_node
@@ -105,5 +107,5 @@ func _on_update(delta) -> void:
 func _on_timeout(name) -> void:
     # If the timer ends, then items time to start falling!
     match name:
-        [FALL_TIMER_NAME]:
+        FALL_TIMER_NAME:
             change_state("Falling")

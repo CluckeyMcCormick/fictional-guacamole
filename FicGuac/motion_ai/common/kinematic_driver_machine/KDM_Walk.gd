@@ -12,21 +12,23 @@ onready var MR = get_node("../..")
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 func _on_enter() -> void:
-    MR.readable_state = "Walk"
+    MR.state_key = "Walk"
+    print("Entered walk zone!")
 
 func _on_update(delta) -> void:
     # Get our KinematicCore
     var KC = MR.kinematic_core_node
     # Did we get a collision result from our most recent move attempt?
     var collision = null
-
+    
     # If we don't have a target position...
-    if not MR.target_position:
+    if MR.target_position == null:
         # Then let's see get the next point path (if we have a path!)
         if not MR.target_path.empty():
             MR.target_position = MR.target_path.pop_front()
         # Otherwise
         else:
+            print("\t\tGoing to Idle!")
             change_state("Idle")
             return
 
@@ -79,17 +81,13 @@ func _on_update(delta) -> void:
         next_movement = next_movement * collision.remainder.length()
         # Now move and colide along that scaled angle
         target.move_and_collide(next_movement)
-    
-    # Otherwise, broadcast that we need to update the visuals of whoever is
-    # listening
-    MR.emit_signal("visual_update", "walk", MR._curr_orient)
 
 func _after_update(delta) -> void:
     # Get our KinematicCore
     var KC = MR.kinematic_core_node
 
     # If we don't have a target position...
-    if not MR.target_position:
+    if MR.target_position == null:
         # Then let's see get the next point path (if we have a path!)
         if not MR.target_path.empty():
             MR.target_position = MR.target_path.pop_front()

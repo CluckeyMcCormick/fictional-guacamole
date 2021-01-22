@@ -8,9 +8,14 @@
 script = ExtResource( 2 )
 
 [node name="VisualSprite" parent="." index="3"]
-frame = 1
+frame = 6
+
+[node name="KinematicCore" parent="." index="5"]
+move_speed = 10.0
+fall_speed = 9.8
+goal_tolerance = 0.1
+fall_state_delay_time = 0.1
 
 [node name="FallingBodyMachine" parent="." index="6" instance=ExtResource( 3 )]
 fsm_owner = NodePath("..")
 kinematic_core = NodePath("../KinematicCore")
-[connection signal="visual_update" from="FallingBodyMachine" to="." method="_on_FallingBodyMachine_visual_update"]

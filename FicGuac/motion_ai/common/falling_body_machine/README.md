@@ -16,16 +16,8 @@ A `Vector3`, where each axis is the current (rough) heading on each axis. The nu
 
 The values are irregularly updated in order to preserve continuity between states. This is particularly necessary for our sprites, which require an angle calculated from this `Vector3`. If this were to reset to (0, 0, 0) when not moving, the sprites would jerk into a common direction when at rest. Always.
 
-##### `readable_state`
-A `String`, indicating the current state (i.e. Walk, OnGround, Falling, etc.). Made for debugging/display purposes.
-
-### Signals
-##### `visual_update`
-While the *Extended States Machine* suggests supplying a animation node, and doing EVERYTHING through that, we're holding off on that for now. That method isn't exactly compatible with our usage of `AnimatedSprite3D`. So instead, we offer a more general solution - states in the machine are free to emit the `visual_update` signal at will; it is up to the scene integrating this machine to update the visuals appropriately.
-
-There are two arguments emitted with this signal. First is the `animation_key`, which indicates the type of animation that needs to be played. It will be something like "walk", "idle", "single\_swing", "single\_stab", etc.
-
-The next argument is an orientation `Vector3`, `curr_orientation`. This indicates the heading/direction/facing of the *FSM Owner* at the time the signal is emitted. For this machine, it's a straight copy of the `_curr_orient` field.
+##### `state_key`
+A `String`, indicating the current state (i.e. Walk, OnGround, Falling, etc.). Useful for setting the sprites animation as well as debugging/display purposes.
 
 ### State Composition
 Excluding the root state, there are two other states: 

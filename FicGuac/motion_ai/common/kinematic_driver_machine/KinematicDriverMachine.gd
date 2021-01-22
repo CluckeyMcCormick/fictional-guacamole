@@ -1,15 +1,6 @@
 tool
 extends StateRoot
 
-# Signal issued when a visual update is recommended. Usage varies by state - may
-# be called very frequently, or almost never. The aniamtion_key is the string
-# identifying the type of animation to play - i.e. walk, idle, swing, etc. The
-# current_orientation is a Vector3 meant to be our general facing on each axis.
-# It's generally just the current velocity vector, passed through. This needs to
-# be defined at the Machine level because it is directly related to the
-# Machine's operations and is the not readily associated with a singular Core.
-signal visual_update(animation_key, curr_orientation)
-
 # Signal issued when this machine reaches it's target. Sends back the Vector3
 # position value that was just reached.
 signal path_complete(position)
@@ -49,8 +40,9 @@ var target_position = null
 # So we have a list of target positions that we're trying to work through?
 var target_path = []
 
-# Human readable string for our current state. Mostly used in debug contexts.
-var readable_state = ""
+# String for our current overall state. Used to track the current state for
+# animation purposes, but also used for debugging.
+var state_key = ""
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -73,3 +65,10 @@ func _ready():
     assert(typeof(target) == typeof(KinematicBody), "FSM Owner must be a KinematicBody node!")
     # Also, we need a KinematicCore
     assert(kinematic_core_node != null, "A KinematicCore node is required!")
+    
+    # Change the default state to "Idle"
+    change_state("Idle")
+    
+    # Force call the idle state's _on_enter since that doesn't seem to work too
+    # well for us.
+    $OnGround/Idle._on_enter()

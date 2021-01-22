@@ -12,7 +12,7 @@ onready var MR = get_node("..")
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 func _on_enter() -> void:
-    MR.readable_state = "Falling"
+    MR.state_key = "Falling"
 
 func _on_update(delta) -> void:
     # Get our KinematicCore
@@ -38,9 +38,6 @@ func _on_update(delta) -> void:
         rem_move = rem_move * collision.remainder.length()
         # Now move and colide along that scaled angle
         target.move_and_collide(rem_move)
-    
-    # Broadcast that we need to update the visuals of whoever is listening
-    MR.emit_signal("visual_update", "walk", MR._curr_orient)
 
 func _after_update(delta) -> void:
     # Get our KinematicCore

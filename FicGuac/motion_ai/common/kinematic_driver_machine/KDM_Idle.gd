@@ -12,7 +12,8 @@ onready var MR = get_node("../..")
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 func _on_enter() -> void:
-    MR.readable_state = "Idle"
+    MR.state_key = "Idle"
+    print("Entered idle zone!")
 
 func _on_update(delta) -> void:
     # Get our KinematicCore
@@ -22,6 +23,3 @@ func _on_update(delta) -> void:
     if MR.target_position or MR.target_path:
         change_state("Walk")
     
-    # Otherwise, broadcast that we need to update the visuals of whoever is
-    # listening
-    MR.emit_signal("visual_update", "idle", MR._curr_orient)

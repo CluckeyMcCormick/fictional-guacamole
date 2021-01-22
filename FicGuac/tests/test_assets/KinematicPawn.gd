@@ -12,6 +12,14 @@ signal path_complete(pawn, position)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
+# Godot Processing - _ready, _process, etc.
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+func _process(delta):
+    sprite_update()
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
 # Kinematic Driver Machine functions
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -41,32 +49,54 @@ func set_target_path(new_target_path):
 # Pawn specific functions
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-func _on_KinematicDriverMachine_visual_update(animation_key, curr_orientation):
+func sprite_update():
     # First, update our current orientation 
-    update_orient_enum(curr_orientation)
+    update_orient_enum($KinematicDriverMachine._curr_orient)
     
     # Our animation string is composed of an animation key - which indicates the
     # type of animation to play (i.e. idle, walk) - and a direction to for that
     # animation (i.e. east, southwest). The two are separated by a '_'.
-    var direction_string
+    var anim_str = ""
+    
+    # First, get the animation key. For now, we'll base this off of the state
+    # key.
+    match $KinematicDriverMachine.state_key:
+        "OnGround", "Idle":
+            anim_str += "idle"
+            
+        "Falling":
+            anim_str += "fall"
+            
+        "Walk":
+            anim_str += "walk"
+            
+        _:
+            print("Unrecognized State Key: ", $KinematicDriverMachine.state_key)
+            anim_str += "idle"
+    
+    # Add the "_"
+    anim_str += "_"
+    
+    # Now, get the direction string
     match _orient_enum:
         SOU_EAST:
-            direction_string = "southeast"
+            anim_str += "southeast"
         EAST:
-            direction_string = "east"
+            anim_str += "east"
         NOR_EAST:
-            direction_string = "northeast"
+            anim_str += "northeast"
         NORTH:
-            direction_string = "north"
+            anim_str += "north"
         NOR_WEST:
-            direction_string = "northwest"
+            anim_str += "northwest"
         WEST:
-            direction_string = "west"
+            anim_str += "west"
         SOU_WEST:
-            direction_string = "southwest"
+            anim_str += "southwest"
         SOUTH:
-            direction_string = "south"
+            anim_str += "south"
     
-    # We got everything we need - set that animation!
-    $VisualSprite.animation = animation_key + '_' + direction_string
-    $WeaponSprite.animation = animation_key + '_' + direction_string
+    # We got everything we need - set that animation (but only if it's different)
+    if $VisualSprite.animation != anim_str or $WeaponSprite.animation != anim_str:
+        $VisualSprite.animation = anim_str
+        $WeaponSprite.animation = anim_str
