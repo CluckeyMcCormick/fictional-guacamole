@@ -33,6 +33,15 @@ Pretty basic - the *move speed* is how quick the KinematicBody moves, in units-p
 ##### Goal Tolerance
 There might be instances where we don't want to stop exactly on the goal position. This configurable allows the body to stop when within a certain distance of the target, rather than being precisely at the target.
 
+##### Tolerance Error Step
+There was an observed issue with the older *KinematicDriver* node where it was consistently undershooting and overshooting it's target position. This resulted in an infinite loop of the driver's body rapidly vibrating back and forth in microscopic steps. We called this the *Microposition Loop Error*.
+
+We now handle this error by slowly increasing the goal tolerance. We do so in a series of steps, until we either reach our goal or decide we're well and truly stuck.
+
+Every time we need to increment the effective goal tolerance, we go up by this amount.
+
+> Exactly why and where this happens is harder to pin down. I've noticed that it tends to happen at the intersection of edges - the edge of a navigation mesh that lies along a y-height difference-edge. I suspect it's got something to do with the interaction between the driver body's collision model, the *KinematicCore*'s floating stuff, and where the navigation mesh seems to think we are. It doesn't seem to happen as often with drive bodies that have smooth collision models (i.e. NOT SQUARES) so I recommend using something like a capsule. It also seems to have something to do with a body that moves too quickly.
+
 ##### Float Height
 This configurable allows us to float the `KinematicBody` a fixed distance above the ground. While it does make the `KinematicBody` float, this was actually intended as a mechanism for stepping-up ledges. The `KinematicBody` behaves differently depending on the current collision shape, but I was finding that running into a small step was mostly stopping the body entirely.
 
@@ -53,10 +62,13 @@ So, we have a time delay. This many seconds of uninterrupted falling and we'll t
 When determining whether a `KinematicBody` is on the ground or not, we do a fake move downwards. Even if the body is 100%, undeniably on the ground, this fake move usually returns a non-zero fall length. Ergo, we need an absolute minimum fall distance before we actually fall. This value is the absolute minimum distance a `KinematicBody` has to fall in the floor test to be considered "falling" or "not on the floor".
 
 ##### `TARG_DIST_HISTORY_SIZE`
-In order to detect certain errors, we measure distance-to-target and store it in an array. How big is that array - i.e. how big is our history?
+In order to detect certain errors (i.e. Microposition Loop, Stuck, etc.), we measure distance-to-target and store it in an array. How big is that array - i.e. how big is our history?
 
 ##### `TARG_DIST_ERROR_THRESHOLD`
-Detecting the error relies on any entries recurring at least a specified number of times. This constant tracks that magic number.
+Detecting certain errors relies on any entries recurring at least a specified number of times. This constant tracks that magic number.
+
+##### `MAX_TOLERANCE_ITERATIONS`
+Once we've detected certain errors, we slowly increment the goal tolerance using a set step value (see the *Tolerance Error Step* configurable). However, we only do that as many times specified by this constant before we just assume that we're stuck. How exactly that's handled depends on the implementation of the machine.
 
 ## Falling Body Machine
 The most basic machine. Developed as a debugging tool to so we can see how sprites sit on a surface, given certain collision models. All it does is fall/move downward.

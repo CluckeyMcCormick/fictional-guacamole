@@ -20,7 +20,6 @@ func _on_enter() -> void:
     MR.state_key = "OnGround"
     # Assert the timer is inactive
     fall_timer_active = false
-    print("Entered OnGround!")
     
 func _on_update(delta) -> void:
     # Get our KinematicCore

@@ -34,14 +34,8 @@ An array containing the last `TARG_DIST_HISTORY_SIZE` measurements of our distan
 ##### `path_complete`
 Indicates that we reached our target position, and are all out of path nodes. The `target_position` variable is cleared before the signal is emitted. The `target_path` will be an empty array. The previous target position is given as a signal argument, just in case it is needed.
 
-##### `error_microposition_loop`
-There was an observed issue with the older *KinematicDriver* node where it was consistently undershooting and overshooting it's target position. This resulted in an infinite loop of the driver's body rapidly vibrating back and forth in microscopic steps.
-
-If we detect this occurrence, the `error_microposition_loop` signal is fired along with the current target position. This gives us an opportunity to handle the problem when it occurs.
-
-Exactly why and where this happens is harder to pin down. I've noticed that it tends to happen at the intersection of edges - the edge of a navigation mesh that lies along a y-height difference-edge. I suspect it's got something to do with the interaction between the driver body's collision model, the *KinematicCore*'s floating stuff, and where the navigation mesh seems to think we are. It doesn't seem to happen as often with drive bodies that have smooth collision models (i.e. NOT SQUARES) so I recommend using something like a capsule.
-
-This error has been observed firing when the driver body is doing something as simple as running into a wall. It serves its purpose well enough for now, but it might need to be adjusted later on.
+##### `error_goal_stuck`
+This signal indicates that the integrated body is stuck. Stuck enough that our previous methods of getting un-stuck failed. This is basically a call for outside intervention.
 
 ### State Composition
 Excluding the root state, there are four other states: 

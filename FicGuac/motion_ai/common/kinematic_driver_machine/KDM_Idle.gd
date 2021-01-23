@@ -13,7 +13,6 @@ onready var MR = get_node("../..")
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 func _on_enter() -> void:
     MR.state_key = "Idle"
-    print("Entered idle zone!")
 
 func _on_update(delta) -> void:
     # Get our KinematicCore

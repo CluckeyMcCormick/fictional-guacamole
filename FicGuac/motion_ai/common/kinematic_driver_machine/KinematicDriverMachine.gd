@@ -5,9 +5,9 @@ extends StateRoot
 # position value that was just reached.
 signal path_complete(position)
 
-# Signal issued when this driver is stuck in a back-and-forth loop. We might be
-# able to change this now that it's a part of the state machine...
-signal error_microposition_loop(target_position)
+# Signal issued when this driver is stuck and our other error resolution methods
+# didn't work.
+signal error_goal_stuck(target_position)
 
 # We need a Kinematic Core so that we know how fast to move, how low to float,
 # which way is down and fast to be down, etc etc.
@@ -15,13 +15,14 @@ export(NodePath) var kinematic_core
 # We resolve the node path into this variable.
 var kinematic_core_node
 
-# Every once in a while, when a body attempts to approach a goal point, it gets
-# stuck. Not in a stuck-on-the-geometry kind of way, but a more odd way. It's
-# like it keeps missing it's goal by mere millimeters, constantly overstepping.
-# I think it's some combination of the navigation mesh and the physics engine
-# not behaving to exact specification. We call this the "Microposition Loop"
-# error. This is to differentiate it from, for example, a body attempting to
-# climb a wall (badly) or a body being pushed backwards.
+# Sometimes - due to the speed of the integrating body (too fast), or perhaps
+# because of the occassional lumpy weirdness of the Navigation Meshes, or even
+# the interplay of falling, floating, and moving - the integrated body will get
+# stuck constantly moving under/over it's target. It somehow shoots past it's
+# target, then move backwards to overshoot it again.  It's like it keeps missing 
+# it's goal by mere millimeters, constantly overstepping. We call this the
+# "Microposition Loop" error. This is to differentiate it from, for example, a
+# body attempting to climb a wall (badly) or a body being pushed backwards.
 
 # To detect when that happens, we capture our distance from our target every
 # time we move. This captured value is appended to the Array. We use this to

@@ -7,6 +7,40 @@ extends Node
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+# If we're not using a raycast to determine if we're on the ground, then we'll
+# test by simulating a downward move. Everytime we do that, we'll usually get a
+# collision value back - even if we're actually on what we'd consider the floor!
+# So, to rectify that, we're only going to move downwards if the distance moved
+# MEETS OR EXCEEDS this value.  
+const MINIMUM_FALL_HEIGHT = .002
+
+# Sometimes - due to the speed of the integrating body (too fast), or perhaps
+# because of the occassional lumpy weirdness of the Navigation Meshes, or even
+# the interplay of falling, floating, and moving - the integrated body will get
+# stuck constantly moving under/over it's target. It somehow shoots past it's
+# target, then move backwards to overshoot it again.  It's like it keeps missing 
+# it's goal by mere millimeters, constantly overstepping. We call this the
+# "Microposition Loop" error. This is to differentiate it from, for example, a
+# body attempting to climb a wall (badly) or a body being pushed backwards.
+
+# To track and detect the "Microposition Loop" Error, we keep a "history" of our
+# distance-to-target.
+
+# How many entries do we keep in the history? If the size exceeds this value,
+# then the oldest entries are removed.
+const TARG_DIST_HISTORY_SIZE = 6
+
+# How many duplicate entries do we need to detect for us to send out a stuck
+# signal? Keep in mind that is tested AFTER the value is added to the array.
+# Ergo, the check will always return at least 1, and the value should be greater.
+const TARG_DIST_ERROR_THRESHOLD = 3
+
+# To resolve the Microposition Loop error, we slowly increment the goal
+# tolerance. How many times do we do that before just concluding that we're
+# stuck and sending out an error? This value is inclusive, i.e. error will be
+# emitted when tolerance iterations exceed this value.
+const MAX_TOLERANCE_ITERATIONS = 5
+
 # Each driver needs a node to move around - what node will this drive move?
 export(NodePath) var drive_body setget set_drive_body
 # We resolve the node path into this variable.
@@ -26,6 +60,9 @@ export(float) var move_speed = 10
 export(float) var fall_speed = 9.8
 # What's our tolerance for meeting our goal?
 export(float) var goal_tolerance = 0.1
+# Every time we increment the goal tolerance (as part of our error handling),
+# how much do we increment by?
+export(float) var tolerance_error_step = .05
 # How much do we float by?
 export(float) var float_height = 0
 # Sometimes, we'll encounter a slope. There has to be a demarcating line where a
@@ -37,31 +74,6 @@ export(float) var max_slope_degrees = 45
 # hard transitioning into a "fall" state for this many seconds. This will help
 # make things smoother.
 export(float) var fall_state_delay_time = .1
-
-# If we're not using a raycast to determine if we're on the ground, then we'll
-# test by simulating a downward move. Everytime we do that, we'll usually get a
-# collision value back - even if we're actually on what we'd consider the floor!
-# So, to rectify that, we're only going to move downwards if the distance moved
-# MEETS OR EXCEEDS this value.  
-const MINIMUM_FALL_HEIGHT = .002
-
-# Every once in a while, when a body attempts to approach a goal point, it gets
-# stuck. Not in a stuck-on-the-geometry kind of way, but a more odd way. It's
-# like it keeps missing it's goal by mere millimeters, constantly overstepping.
-# I think it's some combination of the navigation mesh and the physics engine
-# not behaving to exact specification. We call this the "Microposition Loop"
-# error. This is to differentiate it from, for example, a body attempting to
-# climb a wall (badly) or a body being pushed backwards.
-
-# How many entries do we keep in the adjusted position history? If the size
-# exceeds this value, then the oldest entries are removed.
-const TARG_DIST_HISTORY_SIZE = 6
-
-# How many duplicate entries do we need to detect for us to send out a stuck
-# signal? Keep in mind that this is tested with the current adjuste position,
-# AFTER it is added to the array. Ergo, the check will always return at least 1,
-# and the value should be greater.
-const TARG_DIST_ERROR_THRESHOLD = 3
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #

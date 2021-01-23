@@ -6,15 +6,24 @@ extends State
 # the $ doesn't accept ..
 onready var MR = get_node("../..")
 
+# Our Tol(erance) Inc(rement). We increment every time we detect a stuck error
+# in the hopes that this will solve any issues where the integrating body gets
+# stuck for no reason.
+var _tol_inc = 0
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Extended State Machine Functions
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 func _on_enter() -> void:
+    # Set the state key
     MR.state_key = "Walk"
-    print("Entered walk zone!")
-
+    # Clear the target distance history
+    MR._targ_dist_history.clear()
+    # Clear our tolerance increment
+    _tol_inc = 0
+    
 func _on_update(delta) -> void:
     # Get our KinematicCore
     var KC = MR.kinematic_core_node
@@ -23,12 +32,15 @@ func _on_update(delta) -> void:
     
     # If we don't have a target position...
     if MR.target_position == null:
+        # Reset our tolerance increment. New position should mean that the
+        # microposition error has been avoided.
+        _tol_inc = 0
+        
         # Then let's see get the next point path (if we have a path!)
         if not MR.target_path.empty():
             MR.target_position = MR.target_path.pop_front()
         # Otherwise
         else:
-            print("\t\tGoing to Idle!")
             change_state("Idle")
             return
 
@@ -88,6 +100,9 @@ func _after_update(delta) -> void:
 
     # If we don't have a target position...
     if MR.target_position == null:
+        # Reset our tolerance increment. New position should mean that the
+        # microposition error has been avoided.
+        _tol_inc = 0
         # Then let's see get the next point path (if we have a path!)
         if not MR.target_path.empty():
             MR.target_position = MR.target_path.pop_front()
@@ -97,14 +112,40 @@ func _after_update(delta) -> void:
             return
 
     # Calculate the remaining distance to our objective
-    var remain_length = ( MR.target_position - KC.get_adj_position() ).length()
+    var new_dist = MR.target_position - KC.get_adj_position()
+
+    # Append the distance-to-target to our target distance history array
+    MR._targ_dist_history.append(new_dist)
+    
+    # If we've exceeded the size of the target distance history list,
+    # then shave one off the front.
+    if MR._targ_dist_history.size() > KC.TARG_DIST_HISTORY_SIZE:
+        MR._targ_dist_history.pop_front()
+    
+    # If our current distance is in the history too many times, then
+    # we've encountered a microposition loop error. In other words, we're stuck.
+    if MR._targ_dist_history.count(new_dist) >= KC.TARG_DIST_ERROR_THRESHOLD:
+        # First, increment our goal tolerance. Hopefully that should allow us to
+        # get "close enough" to the goal
+        _tol_inc += 1
+        
+        # If we've incremented one too many times, then we're gonna throw in the
+        # towel. We're stuck. Emit the "stuck" signal, and cap off our tolerance
+        # increment.
+        if _tol_inc > KC.MAX_TOLERANCE_ITERATIONS:
+            # Emit the signal! Sound the horn! Make the call!
+            MR.emit_signal("error_goal_stuck", MR.target_position)
+            # Cap off the tolerance so we don't have a runaway tolerance
+            _tol_inc = KC.MAX_TOLERANCE_ITERATIONS
 
     # If we're close enough to that target position...
-    if remain_length <= KC.goal_tolerance:
+    if new_dist.length() <= KC.goal_tolerance + (KC.tolerance_error_step * _tol_inc):
         # ...then we're done here! Save the target position
         var pos_save = MR.target_position
         # Clear the target
         MR.target_position = null
+        # Reset our tolerance increment.
+        _tol_inc = 0
         
         # Now that we've done that we, need to check 
         if not MR.target_path.empty():
@@ -115,3 +156,9 @@ func _after_update(delta) -> void:
             # It's important we do it this way, since anything receiving the
             # signal could change the variable out from under us.
             MR.emit_signal("path_complete", pos_save)
+
+func _on_exit() -> void:
+    # Clear the target distance history
+    MR._targ_dist_history.clear()
+    # Clear our tolerance increment
+    _tol_inc = 0
