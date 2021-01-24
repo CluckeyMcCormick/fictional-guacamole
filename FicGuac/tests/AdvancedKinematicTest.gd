@@ -23,8 +23,7 @@ onready var slope_label = $DetourNavigation/DetourNavigationMesh/SlopeLabel
 onready var slope_target = $DetourNavigation/DetourNavigationMesh/DynamicLanding/Target
 
 # Fall Test Nodes
-onready var fall_target = $DetourNavigation/DetourNavigationMesh/FallTower/DisappearingPlatform/Target
-onready var fall_shape = $DetourNavigation/DetourNavigationMesh/FallTower/DisappearingPlatform/CollisionShape
+onready var fall_target = $DetourNavigation/DetourNavigationMesh/FallTarget
 
 # Home Test
 onready var home_target = $DetourNavigation/DetourNavigationMesh/HomeTarget
@@ -54,9 +53,6 @@ onready var pawn_default_pos = $KinematicPawn.global_transform.origin
 func _ready():
     # Set the default slope angle
     $ControlContainer/SlopeSlider.value = DEFAULT_SLOPE_ANGLE
-
-func _process(delta): 
-    $ControlContainer/FallBar.value = $FallTestTimer.wait_time - $FallTestTimer.time_left
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -90,7 +86,7 @@ func _on_StepSlider_value_changed(value):
 # When the user changes the configured slope angle, we adjust the slope
 # accordingly.
 func _on_SlopeSlider_value_changed(value):
-    
+    # Use MATH to determine our appropriate measures
     var hypotenuse = SLOPE_LEN_X / cos(deg2rad(value))
     var height = SLOPE_LEN_X * tan(deg2rad(value))
     
@@ -112,6 +108,10 @@ func _on_SlopeSlider_value_changed(value):
         $UpdateTimer.stop()
     # Start the update timer
     $UpdateTimer.start()
+    
+func _on_FallSlider_value_changed(value):
+    # Move the fall target to match the configured height
+    $DetourNavigation/DetourNavigationMesh/FallTarget.global_transform.origin.y = value
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -143,13 +143,8 @@ func _on_CancelButton_pressed():
     # Reset test mode
     exit_test_mode()
     
-    # Ensure our "fall shape" is enabled.
-    fall_shape.disabled = false
-    
     # Move the pawn "Back" to home
     $KinematicPawn.global_transform.origin = pawn_default_pos
-    
-    pass # Replace with function body.
 
 func _on_KinematicPawn_path_complete(pawn, position):
     if yield_func:
@@ -294,51 +289,42 @@ func fall_test():
     # Enter test mode
     enter_test_mode()
     
-    # Get the path
+    # Create a point beneath the fall target to fall onto
+    var fall_landing_zone = fall_target.global_transform.origin
+    fall_landing_zone.y = 0
+    
+    # Get the path from t
     var path = $DetourNavigation/DetourNavigationMesh.find_path(
-        $KinematicPawn.get_translation(), 
-        fall_target.global_transform.origin
-    )
-    
-    # Set the path!
-    $KinematicPawn.set_target_path( Array(path["points"]) )
-    
-    # Wait until we reach the fall point
-    yield()
-    
-    # Disable the platform so the Pawn falls.
-    fall_shape.disabled = true
-    
-    # Clear the Pawn's current targets
-    $KinematicPawn.set_target_path([])
-    $KinematicPawn.set_target_position(null)
-    
-    # Restart the fall timer
-    $FallTestTimer.start()
-    
-    # Yield!
-    yield()
-    
-    # Stop the fall timer
-    $FallTestTimer.stop()
-    
-    # Path home!
-    path = $DetourNavigation/DetourNavigationMesh.find_path(
-        $KinematicPawn.get_translation(), 
+        fall_landing_zone, 
         home_target.global_transform.origin
     )
+
+    # If we didn't actually get a path (it can happen!) report to the user and
+    # dismantle the test
+    if Array(path["points"]).empty():
+        # Inform the user
+        print("No Path! Slope too steep!")
+        # Exit test mode
+        exit_test_mode()
+        # Return null to break the test chain
+        return null
     
     # Set the path!
     $KinematicPawn.set_target_path( Array(path["points"]) )
-
-    # Yield until the Pawn is back home. Ignore the result
-    yield()
+    
+    # Now: teleport to the fall position and FALL
+    $KinematicPawn.global_transform.origin = fall_target.global_transform.origin
+    
+    # Yield until we've returned to the home position
+    var result = yield()
+    
+    if result:
+        print("Test Success!")
+    else:
+        print("Test Failed!")
 
     # Exit test mode
     exit_test_mode()
-    
-    # Re-enable that platform shape we disabled.
-    fall_shape.disabled = false
     
     # Return null so whatever called the yield is cleared
     return null

@@ -22,6 +22,9 @@ onready var north_transform = $DetourNavigation/NorthHut.global_transform
 onready var west_transform = $DetourNavigation/WestHut.global_transform
 onready var south_transform = $DetourNavigation/SouthHut.global_transform
 
+# When the mouse is inspecting the GUI, we don't want to send out a raycast for
+# pathing. So, we'll track the status using this variable.
+var mouse_ignore = false
 
 # Called every physics... frame? Cycle? Tick? Doesn't matter - 'delta' is the
 # elapsed time since the previous frame.
@@ -34,7 +37,7 @@ func _physics_process(delta):
 # Process an input event. Intended for single-press input events (i.e. a button
 # push/click).
 func _input(event):
-    if event.is_action_pressed("formation_order"):
+    if event.is_action_pressed("formation_order") and not mouse_ignore:
         yielded_click = process_mouse_click()
 
 func process_mouse_click():
@@ -87,6 +90,10 @@ func _on_EastButton_toggled(button_pressed):
         # So, remove the east hut
         east_hut.queue_free()
         east_hut = null
+    
+    # Stop the update timer, regardless of whether it's running or not
+    $NavUpdateTimer.stop()
+    
     # Rebake that mesh!
     $DetourNavigation/DetourNavigationMesh.bake_navmesh()
 
@@ -103,6 +110,10 @@ func _on_NorthButton_toggled(button_pressed):
         # So, remove the east hut
         north_hut.queue_free()
         north_hut = null
+
+    # Stop the update timer, regardless of whether it's running or not
+    $NavUpdateTimer.stop()
+
     # Rebake that mesh!
     $DetourNavigation/DetourNavigationMesh.bake_navmesh()
 
@@ -119,11 +130,14 @@ func _on_WestButton_toggled(button_pressed):
         # So, remove the east hut
         west_hut.queue_free()
         west_hut = null
+
+    # Stop the update timer, regardless of whether it's running or not
+    $NavUpdateTimer.stop()
+        
     # Rebake that mesh!
     $DetourNavigation/DetourNavigationMesh.bake_navmesh()
 
 func _on_SouthButton_toggled(button_pressed):
-    print("pressed!")
     # If we just turned the button on...
     if button_pressed:
         south_hut = HUT_SCENE.instance()
@@ -136,5 +150,44 @@ func _on_SouthButton_toggled(button_pressed):
         # So, remove the east hut
         south_hut.queue_free()
         south_hut = null
+    # Stop the update timer, regardless of whether it's running or not
+    $NavUpdateTimer.stop()
     # Rebake that mesh!
     $DetourNavigation/DetourNavigationMesh.bake_navmesh()
+
+func _on_TowerSlider_value_changed(value):
+    $DetourNavigation/FallTower.global_transform.origin.y = value
+    
+    # Since the user can just hold the slider and move it up and down, we delay
+    # the updating until the user hasn't touched it for a set amount of time.
+    # So, (re)start the timer
+    $NavUpdateTimer.start()
+
+func _on_NavUpdateTimer_timeout():
+    # Rebake that mesh!
+    $DetourNavigation/DetourNavigationMesh.bake_navmesh()
+
+# These signals disable the mouse when it hovers over one of our interactable
+# GUI elements
+func _on_TowerSlider_mouse_entered():
+    mouse_ignore = true
+func _on_EastButton_mouse_entered():
+    mouse_ignore = true
+func _on_NorthButton_mouse_entered():
+    mouse_ignore = true
+func _on_WestButton_mouse_entered():
+    mouse_ignore = true
+func _on_SouthButton_mouse_entered():
+    mouse_ignore = true
+
+# These signals enable the mouse once we move off of our GUI elements.
+func _on_TowerSlider_mouse_exited():
+    mouse_ignore = false
+func _on_EastButton_mouse_exited():
+    mouse_ignore = false
+func _on_NorthButton_mouse_exited():
+    mouse_ignore = false
+func _on_WestButton_mouse_exited():
+    mouse_ignore = false
+func _on_SouthButton_mouse_exited():
+    mouse_ignore = false

@@ -179,13 +179,13 @@ func _process(delta):
     
     self.translate( translator )
     
-    if move_clamping_extents.x > 0:
+    if move_clamping_extents.x >= 0:
         translation.x = clamp(
             translation.x,
             recenter_point.x - move_clamping_extents.x,
             recenter_point.x + move_clamping_extents.x
         )
-    if move_clamping_extents.y > 0:
+    if move_clamping_extents.y >= 0:
         translation.z = clamp(
             translation.z,
             recenter_point.z - move_clamping_extents.y,
