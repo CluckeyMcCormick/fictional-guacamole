@@ -10,6 +10,10 @@ extends "res://motion_ai/pawn/BasePawn.gd"
 # previous target).
 signal path_complete(pawn, position)
 
+# Signal issued when this pawn is stuck and our other error resolution methods
+# didn't work.
+signal error_goal_stuck(pawn, target_position)
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Godot Processing - _ready, _process, etc.
@@ -26,6 +30,10 @@ func _process(delta):
 
 func _on_KinematicDriverMachine_path_complete(position):
     emit_signal("path_complete", self, self.get_adjusted_position())
+
+func _on_KinematicDriverMachine_error_goal_stuck(target_position):
+    emit_signal("error_goal_stuck", self, target_position)
+
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #

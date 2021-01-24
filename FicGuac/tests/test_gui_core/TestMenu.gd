@@ -6,6 +6,7 @@ var scene_paths = {
     "Slope Step Test" : "res://tests/SlopeStepTest.tscn",
     "Viewport Shader Test" : "res://tests/ViewportShaderTest.tscn",
     "Dynamic Navigation Mesh Test" : "res://tests/DynamicNavMeshTest.tscn",
+    "Advanced Kinematics Test" : "res://tests/AdvancedKinematicTest.tscn",
     "Weapon Attack Test" : "res://tests/WeaponAttackTest.tscn"
 }
 

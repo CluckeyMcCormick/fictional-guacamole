@@ -5,7 +5,7 @@ These tests frequently serve as the point-of-development for the features they t
 
 Each scene has been designed to run individually. If you wish to run them using a common menu, see the *Test Shell* in the *Test GUI Core*.
 
-Note that the tests are listed here are not necessarily in alphabetical order, but from "simplest" to "most complex".
+Note that the tests are listed here are not necessarily in alphabetical order, but from "simplest" to "most complex". In other words, tests listed later generally build on features that were tested in isolation in the earlier tests. For example, we may have a test for integration with navigation meshes, and then most subsequent tests have navigation meshes as a given.
 
 ## Test Assets
 Some tests require scenes and assets that don't have a place in the wider project. Those wayward items go here. This includes various visual experiments, like alternate sprites.
@@ -37,3 +37,10 @@ This scene tests various *Viewport Shaders* from our *Special Effects* directory
 
 ## Dynamic Navigation Test
 This scene tests dynamic navigation meshes - how the *Pawn* follows them, and how they interact with existing game assets. It also features *Viewport Shaders* in an actual use case.
+
+## Advanced Kinematics Test
+While the *Slope Step Test* was good, it suffered from some pretty serious handicaps. We couldn't skip or cancel tests, the tests were constructed by hand (which was hard to modify), we couldn't modulate the time at all, and it was difficult to observe the *Pawn* falling.
+
+I became that there MUST have been a better way. The *Advanced Kinematics Test* is the sum of that effort. It features three tests - the fall test, the slope test, and the step test. The slope and the step test have configurations so we can test different levels with ease. The fall test allows us to test how the *Pawn* falls.
+
+This test also sports a force-cancel button and a time-dilation slider for extra ease-of-use.

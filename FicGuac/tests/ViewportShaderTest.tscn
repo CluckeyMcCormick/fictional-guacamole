@@ -1,5 +1,6 @@
-[gd_scene load_steps=58 format=2]
+[gd_scene load_steps=59 format=2]
 
+[ext_resource path="res://tests/test_gui_core/TimeGUI.tscn" type="PackedScene" id=1]
 [ext_resource path="res://terrain/farm/Farm.tscn" type="PackedScene" id=2]
 [ext_resource path="res://tests/ViewportShaderTest.gd" type="Script" id=3]
 [ext_resource path="res://scenes/SceneDefaultEnvironment.tres" type="Environment" id=4]
@@ -356,7 +357,7 @@ navigation = NodePath("../Navigation")
 
 [node name="VisualSprite" parent="XrayPawnDefault" index="3"]
 frames = ExtResource( 16 )
-frame = 25
+frame = 30
 
 [node name="HidingMesh" parent="XrayPawnDefault" instance=ExtResource( 20 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 5, 5 )
@@ -373,7 +374,7 @@ navigation = NodePath("../Navigation")
 
 [node name="VisualSprite" parent="XrayPawnNoDepth" index="3"]
 frames = ExtResource( 15 )
-frame = 16
+frame = 21
 
 [node name="HidingMesh" parent="XrayPawnNoDepth" instance=ExtResource( 20 )]
 material/0 = SubResource( 19 )
@@ -387,7 +388,7 @@ navigation = NodePath("../Navigation")
 
 [node name="VisualSprite" parent="MultiplyPawn" index="3"]
 frames = ExtResource( 17 )
-frame = 25
+frame = 30
 
 [node name="HidingMesh" parent="MultiplyPawn" instance=ExtResource( 20 )]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.0500002, 0, 0.0500002 )
@@ -403,7 +404,7 @@ navigation = NodePath("../Navigation")
 
 [node name="VisualSprite" parent="FillPawn" index="3"]
 frames = ExtResource( 12 )
-frame = 27
+frame = 28
 
 [node name="HidingMesh" parent="FillPawn" instance=ExtResource( 20 )]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.0500002, 0, 0.0500002 )
@@ -790,55 +791,8 @@ margin_right = 446.0
 margin_bottom = 46.0
 text = "Skip Test"
 
-[node name="TimeGUI" type="VBoxContainer" parent="."]
-anchor_top = 1.0
-anchor_right = 1.0
-anchor_bottom = 1.0
-margin_left = 10.0
-margin_top = -80.0
-margin_right = -10.0
-__meta__ = {
-"_edit_use_anchors_": false
-}
-
-[node name="TimeScale" type="VBoxContainer" parent="TimeGUI"]
-margin_right = 1004.0
-margin_bottom = 46.0
-
-[node name="Label" type="Label" parent="TimeGUI/TimeScale"]
-margin_right = 1004.0
-margin_bottom = 21.0
-custom_fonts/font = SubResource( 39 )
-text = "Time Scale"
-align = 1
-
-[node name="Value" type="Label" parent="TimeGUI/TimeScale"]
-margin_top = 25.0
-margin_right = 1004.0
-margin_bottom = 46.0
-custom_fonts/font = SubResource( 39 )
-text = "1.0"
-align = 1
-
-[node name="Slider" type="HSlider" parent="TimeGUI"]
-margin_top = 50.0
-margin_right = 1004.0
-margin_bottom = 66.0
-size_flags_horizontal = 3
-size_flags_vertical = 1
-max_value = 1.5
-step = 0.05
-value = 1.0
-tick_count = 15
-ticks_on_borders = true
-
-[node name="ReferenceRect" type="ReferenceRect" parent="TimeGUI"]
-margin_top = 70.0
-margin_right = 1004.0
-margin_bottom = 80.0
-rect_min_size = Vector2( 0, 10 )
+[node name="TimeGUI" parent="." instance=ExtResource( 1 )]
 [connection signal="pressed" from="TestGUI/SkipButton" to="." method="_on_SkipButton_pressed"]
-[connection signal="value_changed" from="TimeGUI/Slider" to="." method="_on_Slider_value_changed"]
 
 [editable path="CameraRig"]
 
