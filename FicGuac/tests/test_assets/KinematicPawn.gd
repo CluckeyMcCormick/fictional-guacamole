@@ -34,7 +34,6 @@ func _on_KinematicDriverMachine_path_complete(position):
 func _on_KinematicDriverMachine_error_goal_stuck(target_position):
     emit_signal("error_goal_stuck", self, target_position)
 
-
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Setters
@@ -49,8 +48,10 @@ func set_target_position(new_target_position):
 # Set the new target position path for the Pawn. The Pawn will dutifully follow
 # these points to reach wherever it's going.
 func set_target_path(new_target_path):
-    # That's now our new target position
+    # That's now our new target path
     $KinematicDriverMachine.target_path = new_target_path
+    # Clear out the target position so it defaults to the first path point
+    $KinematicDriverMachine.target_position = null
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #

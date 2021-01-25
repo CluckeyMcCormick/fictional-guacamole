@@ -73,7 +73,6 @@ func process_mouse_click():
         var path = detour_mesh.find_path($Pawn.get_translation(), result.position)
         # Clear the old path
         $Pawn.set_target_path([])
-        $Pawn.set_target_position(null)
         # Set the new path!
         $Pawn.set_target_path( Array(path["points"]) )
         

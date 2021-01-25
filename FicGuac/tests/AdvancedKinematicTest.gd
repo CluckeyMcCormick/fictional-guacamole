@@ -134,7 +134,6 @@ func _on_CancelButton_pressed():
     
     # Clear the Pawn's current targets
     $KinematicPawn.set_target_path([])
-    $KinematicPawn.set_target_position(null)
     
     # Stop all timers
     $UpdateTimer.stop()
@@ -221,7 +220,6 @@ func slope_test():
     
     # Clear the Pawn's current targets
     $KinematicPawn.set_target_path([])
-    $KinematicPawn.set_target_position(null)
     
     # Path home!
     path = $DetourNavigation/DetourNavigationMesh.find_path(
@@ -273,7 +271,6 @@ func step_test():
     
     # Clear the Pawn's current targets
     $KinematicPawn.set_target_path([])
-    $KinematicPawn.set_target_position(null)
     
     # Path home!
     path = $DetourNavigation/DetourNavigationMesh.find_path(
