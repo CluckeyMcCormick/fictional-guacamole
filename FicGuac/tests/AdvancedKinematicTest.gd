@@ -219,6 +219,10 @@ func slope_test():
     else:
         print("Test Failed!")
     
+    # Clear the Pawn's current targets
+    $KinematicPawn.set_target_path([])
+    $KinematicPawn.set_target_position(null)
+    
     # Path home!
     path = $DetourNavigation/DetourNavigationMesh.find_path(
         $KinematicPawn.get_translation(), 
@@ -266,6 +270,10 @@ func step_test():
         print("Test Success!")
     else:
         print("Test Failed!")
+    
+    # Clear the Pawn's current targets
+    $KinematicPawn.set_target_path([])
+    $KinematicPawn.set_target_position(null)
     
     # Path home!
     path = $DetourNavigation/DetourNavigationMesh.find_path(

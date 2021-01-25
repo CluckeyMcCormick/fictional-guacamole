@@ -13,11 +13,15 @@ animation_player = null
 
 [node name="OnGround" type="Node" parent="."]
 script = ExtResource( 2 )
+disabled = false
+has_regions = false
 fsm_owner = null
 animation_player = null
 
 [node name="Idle" type="Node" parent="OnGround"]
 script = ExtResource( 3 )
+disabled = false
+has_regions = false
 fsm_owner = null
 animation_player = null
 
@@ -28,5 +32,7 @@ animation_player = null
 
 [node name="Falling" type="Node" parent="."]
 script = ExtResource( 4 )
+disabled = false
+has_regions = false
 fsm_owner = null
 animation_player = null

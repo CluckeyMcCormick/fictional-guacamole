@@ -35,7 +35,7 @@ An array containing the last `TARG_DIST_HISTORY_SIZE` measurements of our distan
 Indicates that we reached our target position, and are all out of path nodes. The `target_position` variable is cleared before the signal is emitted. The `target_path` will be an empty array. The previous target position is given as a signal argument, just in case it is needed.
 
 ##### `error_goal_stuck`
-This signal indicates that the integrated body is stuck. Stuck enough that our previous methods of getting un-stuck failed. This is basically a call for outside intervention.
+This signal indicates that the integrated body is stuck. Stuck enough that our previous methods of getting un-stuck failed. This is basically a call for outside intervention. Despite our best efforts, this may not always fire whenever we get objectively stuck (it depends on how much we're "wiggling"). It's like, 99% effective.
 
 ### State Composition
 Excluding the root state, there are four other states: 

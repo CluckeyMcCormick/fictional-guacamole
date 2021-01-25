@@ -22,3 +22,6 @@ Sets the `target_path` variable on the pawn's internal machine. The pawn will it
 ### Signals
 ##### `path_complete`
 Emitted when the current path is complete. Includes the pawn and the path-adjusted position.
+
+##### `error_goal_stuck`
+Signal issued when this pawn is stuck and our other error resolution methods didn't work. A pass-through of the `error_goal_stuck` signal from the *KinematicDriverMachine*. Includes the pawn and the path-adjusted target.

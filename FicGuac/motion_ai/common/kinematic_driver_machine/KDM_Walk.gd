@@ -19,10 +19,6 @@ var _tol_inc = 0
 func _on_enter() -> void:
     # Set the state key
     MR.state_key = "Walk"
-    # Clear the target distance history
-    MR._targ_dist_history.clear()
-    # Clear our tolerance increment
-    _tol_inc = 0
     
 func _on_update(delta) -> void:
     # Get our KinematicCore
@@ -112,10 +108,13 @@ func _after_update(delta) -> void:
             return
 
     # Calculate the remaining distance to our objective
-    var new_dist = MR.target_position - KC.get_adj_position()
+    var new_dist = (MR.target_position - KC.get_adj_position()).length()
+    # Calculate a rounded version for detecting any errors
+    var new_dist_rnd = stepify(new_dist, KC.ERROR_DETECTION_PRECISION)
 
-    # Append the distance-to-target to our target distance history array
-    MR._targ_dist_history.append(new_dist)
+    # Append the distance-to-target to our target distance history array.
+    # Stepify allows us to round to the specified precision
+    MR._targ_dist_history.append( new_dist_rnd )
     
     # If we've exceeded the size of the target distance history list,
     # then shave one off the front.
@@ -124,7 +123,7 @@ func _after_update(delta) -> void:
     
     # If our current distance is in the history too many times, then
     # we've encountered a microposition loop error. In other words, we're stuck.
-    if MR._targ_dist_history.count(new_dist) >= KC.TARG_DIST_ERROR_THRESHOLD:
+    if MR._targ_dist_history.count(new_dist_rnd) >= KC.TARG_DIST_ERROR_THRESHOLD:
         # First, increment our goal tolerance. Hopefully that should allow us to
         # get "close enough" to the goal
         _tol_inc += 1
@@ -139,7 +138,7 @@ func _after_update(delta) -> void:
             _tol_inc = KC.MAX_TOLERANCE_ITERATIONS
 
     # If we're close enough to that target position...
-    if new_dist.length() <= KC.goal_tolerance + (KC.tolerance_error_step * _tol_inc):
+    if new_dist <= KC.goal_tolerance + (KC.tolerance_error_step * _tol_inc):
         # ...then we're done here! Save the target position
         var pos_save = MR.target_position
         # Clear the target
@@ -156,9 +155,3 @@ func _after_update(delta) -> void:
             # It's important we do it this way, since anything receiving the
             # signal could change the variable out from under us.
             MR.emit_signal("path_complete", pos_save)
-
-func _on_exit() -> void:
-    # Clear the target distance history
-    MR._targ_dist_history.clear()
-    # Clear our tolerance increment
-    _tol_inc = 0

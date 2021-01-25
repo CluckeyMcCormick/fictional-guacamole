@@ -27,8 +27,8 @@ const MINIMUM_FALL_HEIGHT = .002
 # distance-to-target.
 
 # How many entries do we keep in the history? If the size exceeds this value,
-# then the oldest entries are removed.
-const TARG_DIST_HISTORY_SIZE = 6
+# then the oldest entries are removed. 
+const TARG_DIST_HISTORY_SIZE = 24 # 24 is enough to capture 99% of errors
 
 # How many duplicate entries do we need to detect for us to send out a stuck
 # signal? Keep in mind that is tested AFTER the value is added to the array.
@@ -40,6 +40,12 @@ const TARG_DIST_ERROR_THRESHOLD = 3
 # stuck and sending out an error? This value is inclusive, i.e. error will be
 # emitted when tolerance iterations exceed this value.
 const MAX_TOLERANCE_ITERATIONS = 5
+
+# Because movement in Godot has a precision of ~6 decimal places, our error
+# detection could be hit or miss if we were looking for EXACT matches. Instead,
+# we'll round the history entries (and our checks) to this decimal position,
+# using the stepify() function.
+const ERROR_DETECTION_PRECISION = .01
 
 # Each driver needs a node to move around - what node will this drive move?
 export(NodePath) var drive_body setget set_drive_body

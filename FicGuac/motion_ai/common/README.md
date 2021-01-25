@@ -70,6 +70,9 @@ Detecting certain errors relies on any entries recurring at least a specified nu
 ##### `MAX_TOLERANCE_ITERATIONS`
 Once we've detected certain errors, we slowly increment the goal tolerance using a set step value (see the *Tolerance Error Step* configurable). However, we only do that as many times specified by this constant before we just assume that we're stuck. How exactly that's handled depends on the implementation of the machine.
 
+##### `ERROR_DETECTION_PRECISION`
+Because movement in Godot has a precision of ~6 decimal places, our error detection could be hit or miss if we were looking for EXACT matches. Instead, we'll round the history entries (and our checks) to this decimal position, using the `stepify()` function. This simplifies error checking and makes it more robust.
+
 ## Falling Body Machine
 The most basic machine. Developed as a debugging tool to so we can see how sprites sit on a surface, given certain collision models. All it does is fall/move downward.
 

@@ -71,7 +71,10 @@ func process_mouse_click():
     if result:
         # Get the path
         var path = detour_mesh.find_path($Pawn.get_translation(), result.position)
-        # Set the path!
+        # Clear the old path
+        $Pawn.set_target_path([])
+        $Pawn.set_target_position(null)
+        # Set the new path!
         $Pawn.set_target_path( Array(path["points"]) )
         
     # Either way, we're no longer waiting on a click
