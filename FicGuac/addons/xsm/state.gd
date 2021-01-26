@@ -1,4 +1,4 @@
-# MIT LICENSE Copyright 2020 Etienne Blanc - ATN
+# MIT LICENSE Copyright 2020-2021 Etienne Blanc - ATN
 # Permission is hereby granted, free of charge, to any person obtaining a copy
 # of this software and associated documentation files (the "Software"), to deal
 # in the Software without restriction, including without limitation the rights
@@ -41,6 +41,11 @@ extends Node
 #   "MyState" is the name of an existing Node State
 #  is_active("MyState") -> bool
 #   returns true if a state "MyState" is active in this xsm
+#  get_active_states() -> Dictionary:
+#   returns a dictionary with all the active States
+#  get_state("MyState) -> State
+#   returns the State Node "MyState". You have to specify "Parent/MyState" if
+#   "MyState" is not a unique name
 #  play("Anim")
 #   plays the animation "Anim" of the State's AnimationPlayer
 #  stop()
@@ -58,26 +63,30 @@ extends Node
 #   returns the active substate (all the children if has_regions)
 
 
-signal state_entered(sender)
-signal state_exited(sender)
-signal state_updated(sender)
-signal state_changed(sender)
+signal state_entered(sender, new_state)
+signal state_exited(sender, new_state)
+signal state_updated(sender, new_state)
+signal state_changed(sender, new_state)
+signal substate_entered(sender)
+signal substate_exited(sender)
+signal substate_changed(sender)
 signal disabled()
 signal enabled()
 
-export var disabled = false setget set_disabled
-export var has_regions = false
+export var disabled := false setget set_disabled
+export var has_regions := false
 #export var is_fallback = false
 export(NodePath) var fsm_owner = null
 export(NodePath) var animation_player = null
 
-var active = false
-var state_root = null
+var active := false
+var state_root : State = null
 var target : Node = null
 var anim_player : AnimationPlayer = null
 var last_state : State = null
-var done_for_this_frame = false
-var state_in_update = false
+var done_for_this_frame := false
+var state_in_update := false
+
 
 #
 # INIT
@@ -105,16 +114,43 @@ func set_disabled(new_disabled) -> void:
 		emit_signal("disabled")
 	else:
 		emit_signal("enabled")
+	set_disabled_children(new_disabled)
+
+
+func set_disabled_children(new_disabled):
+	for c in get_children():
+		c.set_disabled(new_disabled)
+
+
+# Careful, if your substates have the same name,
+# their parents names must be different
+# It would be easier if the state_root name is unique
+func init_children_state_map(dict, new_state_root):
+	state_root = new_state_root
+	for c in get_children():
+		if dict.has(c.name):
+			var curr_state = dict[c.name]
+			var curr_parent = curr_state.get_parent()
+			dict.erase(c.name)
+			dict[ str("%s/%s" % [curr_parent.name, c.name]) ] = curr_state
+			dict[ str("%s/%s" % [name, c.name]) ] = c
+			state_root.duplicate_names[c.name] = 1
+		elif state_root.duplicate_names.has(c.name):
+			dict[ str("%s/%s" % [name, c.name]) ] = c
+			state_root.duplicate_names[c.name] += 1
+		else:
+			dict[c.name] = c
+		c.init_children_state_map(dict, state_root)
 
 
 #
 # FUNCTIONS TO INHERIT
 #
-func _on_enter() -> void:
+func _on_enter(_args) -> void:
 	pass
 
 
-func _after_enter() -> void:
+func _after_enter(_args) -> void:
 	pass
 
 
@@ -126,11 +162,11 @@ func _after_update(_delta) -> void:
 	pass
 
 
-func _before_exit() -> void:
+func _before_exit(_args) -> void:
 	pass
 
 
-func _on_exit() -> void:
+func _on_exit(_args) -> void:
 	pass
 
 
@@ -141,35 +177,36 @@ func _on_timeout(_name) -> void:
 #
 # FUNCTIONS TO CALL IN INHERITED STATES
 #
-func change_state(new_state) -> void:
+func change_state(new_state, args_on_enter = null, args_after_enter = null,
+		args_before_exit = null, args_on_exit = null) -> State:
 	if not state_in_update:
 		state_root.new_pending_state(new_state)
 
 	if done_for_this_frame:
-		return
+		return null
 
 	# if empty, go to itself
 	if new_state == "":
 		new_state = get_name()
 
 	# finds the path to next state, return if null or active
-	var new_state_node = find_state_node(new_state, null)
+	var new_state_node = find_state_node(new_state)
 	if new_state_node == null:
-		return
+		return null
 	if new_state != get_name() and new_state_node.active:
-		return
+		return null
 	if new_state_node.disabled:
-		return
+		return null
 
 	# compare the current path and the new one -> get the common_root
 	var common_root = get_common_root(new_state_node)
 
 	# exits all active children of the old branch,
 	# from farthest to common_root (excluded)
-	common_root.exit_children()
+	common_root.exit_children(args_before_exit, args_on_exit)
 	# enters the nodes of the new branch from the parent to the next_state
 	# enters the first leaf of each following branch
-	common_root.enter_children(new_state_node.get_path())
+	common_root.enter_children(new_state_node.get_path(), args_on_enter, args_after_enter)
 
 	# sets this State as last_state for the new one
 	new_state_node.last_state = self
@@ -179,8 +216,11 @@ func change_state(new_state) -> void:
 
 	# signal the change
 	emit_signal("state_changed", self)
-	state_root.emit_signal("substate_changed", self)
+	if not is_root() :
+		new_state_node.get_parent().emit_signal("substate_changed", new_state_node)
+	state_root.emit_signal("some_state_changed", self, new_state_node)
 #	print("'%s' -> '%s'" % [get_name(), new_state])
+	return new_state_node
 
 
 # New function name
@@ -188,11 +228,20 @@ func goto_state(new_state) -> void:
 	change_state(new_state)
 
 
+func set_active(new_active) -> void:
+	if active and not new_active:
+		active = false
+		state_root.remove_active_state(self)
+	elif new_active and not active:
+		active = true
+		state_root.add_active_state(self)
+
+
 func is_active(name) -> bool:
-	var s = find_state_node(name, null)
+	var s = find_state_node(name)
 	if s == null:
 		return false
-	return s.find_state_node(name, null).active
+	return s.find_state_node(name).active
 
 
 # returns the first active substate or all children if has_regions
@@ -204,6 +253,14 @@ func get_active_substate():
 			if c.active:
 				return c
 	return null
+
+
+func get_state(state_name) -> State:
+	return find_state_node(state_name)
+
+
+func get_active_states() -> Dictionary:
+	return state_root.active_states
 
 
 func play(anim) -> void:
@@ -260,41 +317,40 @@ func has_timer(name) -> bool:
 func init_children_states(root_state, first_branch) -> void:
 	for c in get_children():
 		if c.get_class() == "State":
-			c.active = false
+			c.set_active(false)
 			c.state_root = root_state
 			if c.target == null:
 				c.target = root_state.target
 			if c.anim_player == null:
 				c.anim_player = root_state.anim_player
 			if first_branch and ( has_regions or c == get_child(0) ):
-				c.active = true
+				c.enter()
 				c.last_state = root_state
 				c.init_children_states(root_state, true)
+				c._after_enter(null)
 			else:
 				c.init_children_states(root_state, false)
 
 
-func find_state_node(new_state, just_done) -> State:
+func find_state_node(new_state) -> State:
 	if get_name() == new_state:
 		return self
-	var found = null
-	for c in get_children():
-		if c.get_class() == "State" and c != just_done:
-			found = c.find_state_node(new_state,self)
-			if found != null:
-				return found
-	var parent = get_parent()
-	if parent != null and parent.get_class() == "State" and parent != just_done:
-		found = parent.find_state_node(new_state, self)
-		if found != null:
-			return found
-	return found
+
+	var state_map = state_root.state_map
+	if state_map.has(new_state):
+		return state_map[new_state]
+
+	if state_root.duplicate_names.has(new_state):
+		if state_map.has( str("%s/%s" % [name, new_state]) ):
+			return state_map[ str("%s/%s" % [name, new_state]) ]
+		elif state_map.has( str("%s/%s" % [get_parent().name, new_state]) ):
+			return state_map[ str("%s/%s" % [get_parent().name, new_state]) ]
+
+	return null
 
 
 func get_common_root(new_state) -> State:
 	var new_path = new_state.get_path()
-	# TODO should compare with the current ACTIVE path
-	# Get the active path
 	var result: State = new_state
 	while not result.active and not result.is_root():
 		result = result.get_parent()
@@ -305,7 +361,6 @@ func update(delta) -> void:
 	if active:
 		_on_update(delta)
 		emit_signal("state_updated", self)
-		state_root.emit_signal("substate_updated", self)
 
 
 func update_active_states(delta) -> void:
@@ -320,38 +375,44 @@ func update_active_states(delta) -> void:
 	state_in_update = false
 
 
-func exit() -> void:
-	active = false
+func exit(args = null) -> void:
+	set_active(false)
 	del_timers()
-	_on_exit()
+	_on_exit(args)
 	emit_signal("state_exited", self)
-	state_root.emit_signal("substate_exited", self)
+	if not is_root():
+		get_parent().emit_signal("substate_exited", self)
 
 
-func exit_children() -> void:
+func exit_children(args_before_exit = null, args_on_exit = null) -> void:
 	for c in get_children():
 		if c.get_class() == "State" and c.active:
-			c._before_exit()
+			c._before_exit(args_before_exit)
 			c.exit_children()
-			c.exit()
+			c.exit(args_on_exit)
 
 
-func enter() -> void:
-	active = true
-	_on_enter()
+func enter(args = null) -> void:
+	if disabled:
+		return
+	set_active(true)
+	_on_enter(args)
 	emit_signal("state_entered", self)
-	state_root.emit_signal("substate_entered", self)
+	if not is_root():
+		get_parent().emit_signal("substate_entered", self)
 
 
-func enter_children(new_state_path) -> void:
+func enter_children(new_state_path, args_on_enter = null, args_after_enter = null) -> void:
+	if disabled:
+		return
 	# if hasregions, enter all children and that's all
 	# if newstate's path tall enough, enter child that fits newstate's current lvl
 	# else newstate's path smaller than here, enter first child
 	if has_regions:
 		for c in get_children():
-			c.enter()
-			c.enter_children(new_state_path)
-			c._after_enter()
+			c.enter(args_on_enter)
+			c.enter_children(new_state_path, args_on_enter, args_after_enter)
+			c._after_enter(args_after_enter)
 		return
 
 	var new_state_lvl = new_state_path.get_name_count()
@@ -360,16 +421,16 @@ func enter_children(new_state_path) -> void:
 		for c in get_children():
 			var current_name = new_state_path.get_name(current_lvl)
 			if c.get_class() == "State" and c.get_name() == current_name:
-				c.enter()
-				c.enter_children(new_state_path)
-				c._after_enter()
+				c.enter(args_on_enter)
+				c.enter_children(new_state_path, args_on_enter, args_after_enter)
+				c._after_enter(args_after_enter)
 	else:
 		if get_child_count() > 0:
 			var c = get_child(0)
 			if get_child(0).get_class() == "State":
-				c.enter()
-				c.enter_children(new_state_path)
-				c._after_enter()
+				c.enter(args_on_enter)
+				c.enter_children(new_state_path, args_on_enter, args_after_enter)
+				c._after_enter(args_after_enter)
 
 
 func _on_timer_timeout(name) -> void:

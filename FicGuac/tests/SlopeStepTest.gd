@@ -181,7 +181,7 @@ func _process(delta):
     # Set the target label to the target vector
     $Items/Labels/TargetLabel/Info.text = str( $Pawn/KinematicDriverMachine.target_position )
     # Set the position label to the position vector
-    $Items/Labels/MachineStateLabel/Info.text = str( $Pawn/KinematicDriverMachine.readable_state )
+    $Items/Labels/MachineStateLabel/Info.text = str( $Pawn/KinematicDriverMachine.state_key )
     # Set the distance to the target vector
     if $Pawn/KinematicDriverMachine.target_position:
         $Items/Labels/DistanceLabel/Info.text = str(

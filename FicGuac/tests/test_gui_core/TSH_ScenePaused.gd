@@ -2,7 +2,7 @@ extends State
 
 onready var PauseMenu = get_node("../../PauseLayer/PauseMenu")
 
-func _on_enter() -> void:
+func _on_enter(var arg) -> void:
     # Show the menu
     PauseMenu.visible = true
     # Enable the menu
@@ -16,7 +16,7 @@ func _on_enter() -> void:
     PauseMenu.connect("main_menu", self, "_on_PauseMenu_main_menu")
     PauseMenu.connect("exit_game", self, "_on_PauseMenu_exit_game")
 
-func _on_exit() -> void:
+func _on_exit(var arg) -> void:
     # Hide the menu
     PauseMenu.visible = false
     # Disable the menu

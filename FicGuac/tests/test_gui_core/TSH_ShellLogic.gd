@@ -5,4 +5,4 @@ func _ready():
     # Force "AtMenu" as initial state
     goto_state("AtMenu")
     # Call _on_enter because XSM doesn't do that for initial nodes
-    $AtMenu._on_enter()
+    $AtMenu._on_enter(null)

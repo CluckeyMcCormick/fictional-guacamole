@@ -43,4 +43,4 @@ func _ready():
     
     # Force call the idle state's _on_enter since that doesn't seem to work for
     # default states.
-    $OnGround._on_enter()
+    $OnGround._on_enter(null)

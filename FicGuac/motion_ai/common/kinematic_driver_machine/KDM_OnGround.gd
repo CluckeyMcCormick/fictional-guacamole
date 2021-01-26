@@ -14,7 +14,7 @@ var fall_timer_active = false
 # Extended State Machine Functions
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-func _on_enter() -> void:
+func _on_enter(var arg) -> void:
     # Set the state key. Might seem weird since we have substates, but those
     # will overwrite as appropriate.
     MR.state_key = "OnGround"

@@ -11,7 +11,7 @@ onready var MR = get_node("..")
 # Extended State Machine Functions
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-func _on_enter() -> void:
+func _on_enter(var arg) -> void:
     MR.state_key = "Falling"
 
 func _on_update(delta) -> void:

@@ -2,7 +2,7 @@ extends State
 
 onready var LoadingScreen = get_node("../../LoadingLayer/LoadingScreen")
 
-func _on_enter() -> void:
+func _on_enter(var arg) -> void:
     LoadingScreen.visible = true
     LoadingScreen.initiate_scene_load(target.scene_res)
     
@@ -10,7 +10,7 @@ func _on_enter() -> void:
     LoadingScreen.connect("loading_complete", self, "_on_LoadingScreen_loading_complete")
     LoadingScreen.connect("loading_failed", self, "_on_LoadingScreen_loading_failed")
 
-func _on_exit() -> void:
+func _on_exit(var arg) -> void:
     # Reset the loading screen
     LoadingScreen.reset()
     LoadingScreen.visible = false

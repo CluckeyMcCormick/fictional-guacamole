@@ -4,10 +4,10 @@ extends State
 func _ready():
     self.set_process_input(false)
 
-func _on_enter() -> void:
+func _on_enter(var arg) -> void:
     self.set_process_input(true)
 
-func _on_exit() -> void:
+func _on_exit(var arg) -> void:
     self.set_process_input(false)
 
 func _input(event):

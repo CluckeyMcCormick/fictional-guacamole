@@ -16,7 +16,7 @@ var _tol_inc = 0
 # Extended State Machine Functions
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-func _on_enter() -> void:
+func _on_enter(var arg) -> void:
     # Set the state key
     MR.state_key = "Walk"
     

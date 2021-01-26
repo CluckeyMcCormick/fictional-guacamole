@@ -2,7 +2,7 @@ extends State
 
 onready var TestMenu = get_node("../../TestMenu")
 
-func _on_enter() -> void:
+func _on_enter(var arg) -> void:
     # Assert menu state
     TestMenu.disabled = false
     TestMenu.visible = true
@@ -19,7 +19,7 @@ func _on_enter() -> void:
     # Listen out for a the user picking a scene
     TestMenu.connect("scene_chosen", self, "_on_TestMenu_scene_chosen")
 
-func _on_exit() -> void:
+func _on_exit(var arg) -> void:
     # Assert the menu is disabled
     TestMenu.disabled = true
     # Might as well hide it while we're at it
