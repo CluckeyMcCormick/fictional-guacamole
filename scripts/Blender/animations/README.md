@@ -15,3 +15,6 @@ A forward move of the right arm, with the hand rotating so the angle is basicall
 
 ### `righthand_chop.py`
 A top-to-bottom move of the right arm, with the hand rotating so the angle is basically constant. Designed with a sword in mind; but any one handed weapon will suffice (provided it is placed appropriately in the Pawn's hand).
+
+### `fall.py`
+A static pose that's meant to be our fall animation. This is one is incredibly lazy, I'll admit it. Animation is not my strong suit, my passion, or even a passing interest.
