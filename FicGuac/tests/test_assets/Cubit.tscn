@@ -34,6 +34,13 @@ kinematic_core = NodePath("../KinematicCore")
 [node name="KinematicCore" parent="." instance=ExtResource( 3 )]
 drive_body = NodePath("..")
 position_function = "get_floor_adjusted_position"
+move_speed = 10.0
+fall_speed = 9.8
+goal_tolerance = 0.1
+tolerance_error_step = 0.05
+float_height = 0.0
+max_slope_degrees = 45.0
+fall_state_delay_time = 0.1
 
 [node name="Collision" type="CollisionShape" parent="."]
 shape = SubResource( 1 )
@@ -46,4 +53,3 @@ material/0 = SubResource( 3 )
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.501, 0 )
 mesh = SubResource( 4 )
 material/0 = SubResource( 5 )
-[connection signal="visual_update" from="KinematicDriverMachine" to="." method="_on_KinematicDriverMachine_visual_update"]

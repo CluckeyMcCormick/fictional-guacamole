@@ -11,6 +11,16 @@ var destination setget set_destination
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
+# Godot Processing - _ready, _process, etc.
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+func _process(delta):
+    var orient = $KinematicDriverMachine._curr_orient
+
+    $Cube.rotation_degrees.y = rad2deg(Vector2(-orient.x, orient.z).angle()) + 90
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
 # Kinematic Core coupling functions
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -27,13 +37,3 @@ func get_floor_adjusted_position():
     
     # The adjusted position is at the base of the cube
     return curr_pos - Vector3(0, FLOOR_DISTANCE, 0)
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#
-# Kinematic Driver Machive coupling functions
-#
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-func _on_KinematicDriverMachine_visual_update(animation_key, curr_orientation):
-    var vector_mod = Vector2(-curr_orientation.x, curr_orientation.z)
-
-    $Cube.rotation_degrees.y = rad2deg(vector_mod.angle()) + 90
