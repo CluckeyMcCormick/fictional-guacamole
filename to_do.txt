@@ -16,21 +16,7 @@ To Do:
     We should upgrade to 4.0 as soon as possible. It's just a question of
     whenever that comes out...
 
-3. Develop a new slope step test
-
-    We need a new version of the slope step test. One that can hopefully do a
-    more thorough stress test of the Kinematic Driver Machine.
-    
-    I'm imagining a test where there's only one step, one slope, and maybe a
-    platform of some description for testing falls. The angle of the slope and
-    the height of the ramp can be controlled by GUI sliders. Each test has a
-    different button and the GUI locks while the test is in progress.
-    
-    This may replace the Slope Step Test; however, we may use Dynamic Navigation
-    Meshes for this test in which case it should exist alongside the basic Slope
-    Step Test.
-
-4. Develop a basic attack system using the Sword
+3. Develop a basic attack system using the Sword
 
     We need to create a model/system for attacking. You can look at the
     Kinematic Core, Kinematic Driver Machine, and the overall concept of a
@@ -40,7 +26,7 @@ To Do:
     machine. This machine attacks whatever gets close to it, but can't move.
     It'll basically be a feature complete turret machine-brain. Neat!!!
     
-5. Create weapon models
+4. Create weapon models
 
     We need to create weapons for our pawns to equip! We'll use OpenSCAD to
     design the models. Technically, since we use sprites in-game, we could just
@@ -58,30 +44,55 @@ To Do:
     
     And maybe a jezzail - a long rifle of some sort?
 
-6. ATTACKS!
+5. ATTACKS!
     
     Develop attacks for the weapons outlined above, including ranged attacks.
     That means developing the AI to go with these attacks - positioning and
     attacking at the correct interval. It'll be difficult, but we'll have
     something akin to a prototype when we're done.
 
-7. Improve the Slope-Step Test
+6. Experiment with PicoCAD
 
-    The Slope-Step Test needs some improvement. Right now, we need to wait for
-    every single test to fire. Like, we just wait. We've already done something
-    better with the Viewport Shader Test - we should migrate the test structure
-    (especially the skip test button) from that scene.
+    There's a powerful new tool by one Johan Peitz (@johanpeitz on Twitter) that
+    I've been seeing make the rounds. It's called PicoCAD, and it allows you to
+    draw polygons and generate matching UV with an interface that is INTENSELY
+    reminiscent of Valve's Hammer. AND, it generates UV coordinates. THAT'S
+    RIGHT! IT CAN GENERATE UV COORDINATES!!!!!!!!
     
-8. Come up with a way to bake the procedural building components (?)
+    This opens up the floor for texture work that I had largely given up on. I'd
+    like to use PicoCAD for models that have simple shapes but complex textures
+    (i.e. the Pawn, shields with artwork, war machines, furniture, signs, etc).
+    The more complex shapes where the visuals are more influenced by the
+    silhouette (i.e. the weapons, especially the crossbow) will still be done
+    with OpenSCAD.
+    
+    Unfortunately, this will be the first tool that I've used that isn't free
+    and open source. That does hurt to certain degree but this tool is REALLY
+    worth it.
+    
+    It'll be out on Johan's itch.io at some point in the near future.
+  
+7. Replace the procedural building components (and buildings) with Qodot
 
-    I'm worried about the impact of the procedural building components on the
-    game's performance. Once they're generated there's no issue but it's the
-    start-up and load time that I'm worried about.
-
-    It's possible for us to save the array meshes once they've been generated.
-    I think we can create a plugin that will allow us to bake the components
-    on-demand. We'll probably need to create a separate set of "baked" scenes.
-
-    I'm still unsure about whether this is something even worth doing or not.
-    I'll mull it over...
+    I created the procedural building components with the VERY specific
+    complaint that Godot didn't have anything like Valve's Hammer Editor for
+    creating levels. Instead, the documents recommended BLENDER of all things.
+    Bah!
+    
+    Well, that must have been some time ago, because the documents no longer
+    recommend that. Now, they recommend Qodot.
+    
+    Qodot is an addon that allows you to import Quake `.map` files into Godot,
+    transforming the world brushes and entities into Godot equivalents. When
+    paired with the general purpose Quake mape editor TrenchBroom, this allows
+    you to quickly and easily edit/create levels. 
+    
+    The Hammer Editor was a descendent of the Quake editor, so I would feel
+    right at home. Altough I'm proud of the work I did on the procedural
+    components, this development will largely sideline them. I guess that's
+    fine - they can get their own little directory.
+    
+    I think we'll use this for editing whole levels, as well as creating
+    building components by hands - and yes, I do mean components. Maybe whole
+    buildings? We'll have to work with Qodot to determine what works best.
 
