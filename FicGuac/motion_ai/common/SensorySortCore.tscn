@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://motion_ai/common/SensorySortCore.gd" type="Script" id=1]
+
+[node name="SensorySortCore" type="Node"]
+script = ExtResource( 1 )
