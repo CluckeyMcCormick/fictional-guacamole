@@ -73,8 +73,33 @@ Once we've detected certain errors, we slowly increment the goal tolerance using
 ##### `ERROR_DETECTION_PRECISION`
 Because movement in Godot has a precision of ~6 decimal places, our error detection could be hit or miss if we were looking for EXACT matches. Instead, we'll round the history entries (and our checks) to this decimal position, using the `stepify()` function. This simplifies error checking and makes it more robust.
 
+## SensorySortCore
+The *SensorySort* is the core *sensory* component of *Motion AI*. It handles sensing (observing nearby physics bodies) and sorting (identifying the type of body). Think of it like a radar that both detects things and identifies those things.
+
+### Configurables
+
+##### Primary Sensory Area
+The primary sensory area. Needs to be a 3D `Area` node. Eventually there will be multiple categories of sensory areas to elicit different responses. For now, there's just this one.
+
+### Functions
+##### `get_bodies`
+Returns an array of the currently tracked body `Node`s. Each entry in the array will be unique.
+
+##### `has_bodies`
+Returns a *boolean* value, indicating whether the core is currently tracking bodies or not.
+
+### Signals
+##### `body_entered`
+Emitted when a body enters the *Primary Sensor Area*. Emits the detected body with it. Basically a wrapper for the same signal from the *Primary Sensor Area*.
+
+##### `body_exited`
+Emitted when a body exits the *Primary Sensor Area*. Emits the detected body with it. Basically a wrapper for the same signal from the *Primary Sensor Area*.
+
 ## Falling Body Machine
 The most basic machine. Developed as a debugging tool to so we can see how sprites sit on a surface, given certain collision models. All it does is fall/move downward.
 
 ## Kinematic Driver Machine
 A step up from the *Falling Body Machine*. This machine accepts either a single point, or an array-path of points. It moves towards it's current target, and works through the current `Array` path of points. Currently only used for testing movement and environment interaction.
+
+## Rat Emulation Machine
+This machine builds from the *Kinematic Driver Machine* - the path following has been internalized and the machine now generates its own paths. The machine features several states that control the pawn's pathing and movement, independent of the states that *actually perform* the movement. It can wait, it can wander around, and it can flee from danger. It's a big step forward for the AI.

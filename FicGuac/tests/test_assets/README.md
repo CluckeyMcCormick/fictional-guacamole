@@ -25,3 +25,6 @@ Emitted when the current path is complete. Includes the pawn and the path-adjust
 
 ##### `error_goal_stuck`
 Signal issued when this pawn is stuck and our other error resolution methods didn't work. A pass-through of the `error_goal_stuck` signal from the *KinematicDriverMachine*. Includes the pawn and the path-adjusted target.
+
+## RatPawn
+This is a *BasePawn* with the *RatEmulationMachine* integrated in. This is largely a testbed for that machine. It's a bit bare bones at the moment.

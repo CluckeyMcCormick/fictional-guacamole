@@ -51,11 +51,9 @@ The *OnGround* state is a super state containing the *Walk* and *Idle* states. T
 
 The machine defaults to the *Idle* state. If `target_position` is not null, we will move towards it via the *Walk* state. Once we reach the target position, the next path will be taken from `target_path`. Once `target_path` has been emptied, we will clear `target_position` and emit a `target_reached` signal. If a `target_position` is not set, and we have an empty `target_path`, we will revert to the *Idle* state.
 
-Meanwhile, the *OnGround* state is constantly probing downwards to ensure we are on the ground. If we aren't on the ground for whatever reason, the subordinate states are interrupted and we move to the *Falling* state.
+Meanwhile, the *OnGround* state is constantly probing downwards to ensure we are on the ground. If we aren't, we begin falling, but *without* interrupting the subordinate states. This allows us some "airtime" where we walk on air. The airtime corresponds to the `KinematicCore`'s *Fall State Time Delay* configurable. Once we've fallen for that time duration, we transfer to the *Falling* state proper.
 
-While in the *Falling* state, the only thing we do is fall. That's it.
-
-The `visual_update` signal is regularly emitted throughout the *Falling*, *Idle*, and *Walk* states.
+While in the *Falling* state, the only thing we do is fall. That's it. Once we hit the ground, we go to *Idle*.
 
 This whole process can be observed in this image:
 
