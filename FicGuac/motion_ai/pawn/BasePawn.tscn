@@ -41,7 +41,7 @@ shape = SubResource( 3 )
 [node name="SensoryArea" type="Area" parent="."]
 monitorable = false
 collision_layer = 0
-collision_mask = 16
+collision_mask = 8
 
 [node name="SensoryCollision" type="CollisionShape" parent="SensoryArea"]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, -0.0117323, -4.76837e-07, 0.0024085 )
@@ -54,7 +54,7 @@ pixel_size = 0.014
 shaded = true
 alpha_cut = 2
 frames = ExtResource( 1 )
-frame = 4
+frame = 2
 playing = true
 
 [node name="WeaponSprite" type="AnimatedSprite3D" parent="."]

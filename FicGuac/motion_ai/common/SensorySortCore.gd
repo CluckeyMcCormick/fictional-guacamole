@@ -39,6 +39,10 @@ func set_primary_sensory_area(new_primary_sensory_area):
         warning += "not recommended. Also, it doesn't do anything."
         push_warning(warning)
 
+# Returns an array, listing the bodies we've just sensed
+func get_bodies():
+    return self._sensed_bodies.values()
+
 # This function is very ugly, but it serves a very specific purpose: it allows
 # us to generate warnings in the editor in case the SensoryCore is
 # misconfigured.
@@ -101,4 +105,6 @@ func _on_prime_sensor_body_exited(body):
     # dictionary.
     _sensed_bodies.erase(body)
     emit_signal("body_exited", body)
-    
+
+func has_bodies():
+    return not _sensed_bodies.empty()

@@ -1,0 +1,144 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://scenes/CameraRig.tscn" type="PackedScene" id=1]
+[ext_resource path="res://terrain/mat_terrain_water_grid.tres" type="Material" id=2]
+[ext_resource path="res://scenes/SceneDefaultEnvironment.tres" type="Environment" id=3]
+[ext_resource path="res://tests/test_assets/RatPawn.tscn" type="PackedScene" id=4]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 20, 1, 20 )
+
+[sub_resource type="PlaneMesh" id=2]
+size = Vector2( 40, 40 )
+
+[sub_resource type="CubeMesh" id=3]
+size = Vector3( 1, 1, 1 )
+
+[sub_resource type="ConcavePolygonShape" id=4]
+data = PoolVector3Array( -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, -0.5, 0.5, -0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, 0.5, -0.5, 0.5, 0.5, 0.5, 0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, 0.5, 0.5, -0.5, 0.5, -0.5, -0.5, -0.5, 0.5, -0.5, 0.5, 0.5, -0.5, -0.5, -0.5, -0.5, -0.5 )
+
+[node name="RatEmulationTest" type="Spatial"]
+
+[node name="CameraRig" parent="." instance=ExtResource( 1 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 64, 64 )
+basic_move_rate = 50.0
+camera_size = 18
+max_camera_size = 20
+min_camera_size = 12
+zoom_step = 2
+move_enabled = true
+zoom_enabled = true
+move_clamping_extents = Vector2( 15, 15 )
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = ExtResource( 3 )
+
+[node name="Floor" type="StaticBody" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
+
+[node name="CollisionShape" type="CollisionShape" parent="Floor"]
+shape = SubResource( 1 )
+
+[node name="MeshInstance" type="MeshInstance" parent="Floor"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
+mesh = SubResource( 2 )
+material/0 = ExtResource( 2 )
+
+[node name="RatPawn" parent="." instance=ExtResource( 4 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0 )
+
+[node name="Boxio" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 5 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="StaticBody" type="StaticBody" parent="Boxio"]
+collision_layer = 10
+collision_mask = 0
+
+[node name="CollisionShape" type="CollisionShape" parent="Boxio/StaticBody"]
+shape = SubResource( 4 )
+
+[node name="Boxio2" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -5 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="StaticBody" type="StaticBody" parent="Boxio2"]
+collision_layer = 10
+collision_mask = 0
+
+[node name="CollisionShape" type="CollisionShape" parent="Boxio2/StaticBody"]
+shape = SubResource( 4 )
+
+[node name="Boxio3" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.5, 0 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="StaticBody" type="StaticBody" parent="Boxio3"]
+collision_layer = 10
+collision_mask = 0
+
+[node name="CollisionShape" type="CollisionShape" parent="Boxio3/StaticBody"]
+shape = SubResource( 4 )
+
+[node name="Boxio4" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0.5, 0 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="StaticBody" type="StaticBody" parent="Boxio4"]
+collision_layer = 10
+collision_mask = 0
+
+[node name="CollisionShape" type="CollisionShape" parent="Boxio4/StaticBody"]
+shape = SubResource( 4 )
+
+[node name="Boxio5" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0.5, -5 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="StaticBody" type="StaticBody" parent="Boxio5"]
+collision_layer = 10
+collision_mask = 0
+
+[node name="CollisionShape" type="CollisionShape" parent="Boxio5/StaticBody"]
+shape = SubResource( 4 )
+
+[node name="Boxio6" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0.5, 5 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="StaticBody" type="StaticBody" parent="Boxio6"]
+collision_layer = 10
+collision_mask = 0
+
+[node name="CollisionShape" type="CollisionShape" parent="Boxio6/StaticBody"]
+shape = SubResource( 4 )
+
+[node name="Boxio7" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.5, 5 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="StaticBody" type="StaticBody" parent="Boxio7"]
+collision_layer = 10
+collision_mask = 0
+
+[node name="CollisionShape" type="CollisionShape" parent="Boxio7/StaticBody"]
+shape = SubResource( 4 )
+
+[node name="Boxio8" type="MeshInstance" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.5, -5 )
+mesh = SubResource( 3 )
+material/0 = null
+
+[node name="StaticBody" type="StaticBody" parent="Boxio8"]
+collision_layer = 10
+collision_mask = 0
+
+[node name="CollisionShape" type="CollisionShape" parent="Boxio8/StaticBody"]
+shape = SubResource( 4 )
