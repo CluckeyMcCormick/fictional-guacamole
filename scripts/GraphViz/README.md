@@ -25,5 +25,10 @@ These two scripts document a regression of the *Kinematic Driver Machine*: the *
 
 Like the *KDM*, we have a hierarchy and flow script. They make really simple charts (since there's only two states).
 
+## REM Hierarchy and Flows (State & Data)
+These two scripts document the next AI development stage after the *Kinematic Driver Machine*: the *Rat Emulation Machine*.
+
+This also has a hierarchy script. However, as the first machine to feature *regions*, this machine features multiple flow scripts - one that depicts the flow of control between the different states, and one that depicts the flow of data between the states.
+
 ## XSM Tutorial
 The Extended State Machine (*XSM*) concept can get pretty complicated pretty quickly, so I thought it would be prudent to generate some documentation for how they work. Of course, that required diagrams. A LOT of diagrams. Those are stored here.

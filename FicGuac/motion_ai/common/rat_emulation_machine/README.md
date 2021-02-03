@@ -56,9 +56,11 @@ The Tree Structure can be observed below:
 
 ![Image](./doc_images/REM.hierarchy.png "REM Hierarchy Tree")
 
+### State Control Flow
+
 As we have two regions, we have effectively have two sub-machines:
 
-##### Goals Region
+##### Goal Region
 The main states are the *Idle* and *Wander* states. If, at any point, we detect a body intruding in our sensory area, we transition to the *Flee* state. We return from the *Flee* state to the *Idle* state.
 
 In the *Idle* state, we wait for the amount of time specified by the *Idle Wait Time* configurable before transition to the *Wander* state.
@@ -74,6 +76,20 @@ While in the *Falling* state, the only thing we do is fall. That's it. Once we h
 
 This whole process can be observed in this image:
 
-![Image](./doc_images/KDM.flow.png "REM Flow Tree")
+![Image](./doc_images/REM.flow.state.png "REM State Flow Control Tree")
 
 Note that the *OnGround* state contains the *Idle* and *Walk* states.
+
+### State Data Flow
+
+The manipulation and flow of data in tightly controlled to try and keep things clean. Here "data flow" refers to either observing and reacting to changes in data (i.e. signals), **or** directly manipulating variables.
+
+The *REM* data flow is represented here, where blue is data manipulation and red is a signal reaction:
+
+![Image](./doc_images/REM.flow.data.png "REM Data Flow Control Tree")
+
+What's important to not here is that, while the *Goal Region* does react to signals emitted by the *Physics Travel Region*, there is no direct manipulation from the *Physics Travel Region* to the *Goal Region*. Since signals are open-ended (anyone who wants to listen can feel free) they don't count as direct manipulation.
+
+So, despite being sibling regions, the *Physics Travel Region* is considered wholly subordinate to the *Goal Region*. Of course, it does help that the *Goal Region* doesn't have any variables to manipulate or signals to listen to.
+
+Anyway, you can also observe how data only really flows upwards to the *Root*; nothing flows backwards.

@@ -1,0 +1,52 @@
+// REM - the Rat Emulation Machine
+// Data Flow - Graphviz Dot
+// Directed Graph
+digraph G {
+    rankdir=LR; // Left to Right, instead of Top to Bottom
+    nodesep=.55; // Ensure nodes are separated by at least .55... units?
+    overlap=false; // Nodes are not allowed to overlap.
+    compound=true; // Allow edges between clusters
+    
+    // All the nodes are records
+    node [shape=record];
+    
+    ROOT [label="
+        <name> Rat Emulation Machine Root |
+        <idle_wait> Variable\n\nidle_wait_time |
+        <move_dist> Variable\n\nmove_distance | 
+        <gr_key> Variable\n\ngoal_key |
+        <ptr_key> Variable\n\nphysics_travel_key |
+        <curr_orient> Variable\n\n_curr_orient
+    "];
+    
+    PTR [label="
+        <name> Physics Travel Region |
+        <sgnl_complete> Signal\n\npath_complete |
+        <sgnl_stuck> Signal\n\nerror_goal_stuck |
+        <targ_pos> Variable\n\n_target_position |
+        <targ_path> Variable\n\n_target_path |
+        <states> \nSub-States
+    "];
+
+    GR [label="
+        <name> Goal Region |
+        <states> \nSub-States
+    "];
+    
+    // Establish rank
+    //{rank = source; ROOT;}
+    //{rank = same; PTR; GR;}
+    
+    // Signal Edges
+    edge [color="crimson"];
+    PTR:sgnl_complete -> GR:states;
+    PTR:sgnl_stuck -> GR:states;
+    
+    // Data Manipulation Edges
+    edge [color="dodgerblue"];
+    GR:states:s -> PTR:targ_pos;
+    GR:states:s -> PTR:targ_path;
+    GR:states:s -> ROOT:gr_key;
+    PTR:states -> ROOT:ptr_key;
+    PTR:states -> ROOT:curr_orient;
+}

@@ -1,0 +1,21 @@
+// KDM - the Rat Emulation Machine
+// Hierarchy - Graphviz Dot
+// Directed Graph
+digraph G {
+    start [label="REM\nRoot",shape=Mdiamond];
+    
+    GR_IDLE [label="Idle"];
+    PTR_IDLE [label="Idle"];
+    
+    start -> PhysicsTravelRegion;
+    start -> GoalRegion;
+    
+    PhysicsTravelRegion -> Falling;
+    PhysicsTravelRegion -> OnGround;
+    OnGround -> Walk;
+    OnGround -> PTR_IDLE;
+    
+    GoalRegion -> GR_IDLE;
+    GoalRegion -> Wander;
+    GoalRegion -> Flee;
+}

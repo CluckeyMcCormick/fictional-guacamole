@@ -1,0 +1,90 @@
+// REM - the Rat Emulation Machine
+// State Control Flow - Graphviz Dot
+// Directed Graph
+digraph G {
+    rankdir=LR; // Left to Right, instead of Top to Bottom
+    nodesep=.55; // Ensure nodes are separated by at least .55... units?
+    overlap=false; // Nodes are not allowed to overlap.
+    compound=true; // Allow edges between clusters
+    
+    subgraph CLUSTER_GR {
+        // Subgraph attributes.
+        shape = plaintext;
+        label = <
+            <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+                <TR><TD PORT="name">Goal Region</TD></TR>
+            </TABLE>
+        >;
+        
+        // Declare our nodes ahead of time
+        GR_IDLE [label = "Idle"];
+        GR_WANDER [label = "Wander"];
+        GR_FLEE [label = "Flee"];
+        
+        // Establish the ranks
+        {rank = same; GR_IDLE; }
+        {rank = same; GR_WANDER;}
+        {rank = same; GR_FLEE;}
+        
+        // Idle to Wander Edge
+        edge [label = "Idle Timeout"];
+        GR_IDLE -> GR_WANDER;
+        // Wander to Idle Edge
+        edge [label = "Goal Reached"];
+        GR_WANDER -> GR_IDLE;
+        // to Flee Edges
+        edge [label = "Threat Detected"];
+        GR_IDLE -> GR_FLEE;
+        GR_WANDER -> GR_FLEE;
+        // Flee to Idle
+        edge [label = "Threat Lost"];
+        GR_FLEE -> GR_IDLE;
+    }
+
+    subgraph CLUSTER_PTR {
+        // Subgraph attributes.
+        shape = plaintext;
+        label = <
+            <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+                <TR><TD PORT="name">Physics Travel Region</TD></TR>
+            </TABLE>
+        >;
+        
+        // Declare our nodes ahead of time
+        PTR_FALLING [label = "Falling"];
+        
+        subgraph CLUSTER_PTR_ONGROUND {
+            // Subgraph attributes.
+            shape = plaintext;
+            label = <
+                <TABLE BORDER="0" CELLBORDER="1" CELLSPACING="0">
+                    <TR><TD PORT="name">OnGround</TD></TR>
+                </TABLE>
+            >;
+            
+            // Declare our nodes ahead of time
+            PTR_OG_IDLE [label = "Idle"];
+            PTR_OG_WALK [label = "Walk"];
+            
+            // Establish the ranks
+            {rank = same; PTR_OG_IDLE; }
+            {rank = same; PTR_OG_WALK;}
+            
+            // Idle to Walk Edge
+            edge [label = "Idle Timeout"];
+            PTR_OG_IDLE -> PTR_OG_WALK;
+            // Walk to Idle Edge
+            edge [label = "Goal Reached"];
+            PTR_OG_WALK -> PTR_OG_IDLE;
+        }
+        
+        PTR_FALLING -> PTR_OG_IDLE [label = "Landed"];
+        PTR_OG_WALK -> PTR_FALLING [ltail=CLUSTER_PTR_ONGROUND, label = "Fall Timeout"];
+    }
+    
+    // We start at start!
+    Start [shape=Mdiamond];
+    // Start goes to both idles!
+    Start -> PTR_OG_IDLE;
+    Start -> GR_IDLE;
+}
