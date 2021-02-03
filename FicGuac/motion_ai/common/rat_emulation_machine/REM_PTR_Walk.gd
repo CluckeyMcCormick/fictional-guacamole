@@ -10,6 +10,21 @@ onready var MR = get_node("../../..")
 # PhysicsTravelRegion state, so grab that real quick
 onready var PTR = get_node("../..")
 
+# Sometimes - due to the speed of the integrating body (too fast), or perhaps
+# because of the occassional lumpy weirdness of the Navigation Meshes, or even
+# the interplay of falling, floating, and moving - the integrated body will get
+# stuck constantly moving under/over it's target. It somehow shoots past it's
+# target, then move backwards to overshoot it again.  It's like it keeps missing 
+# it's goal by mere millimeters, constantly overstepping. We call this the
+# "Microposition Loop" error. This is to differentiate it from, for example, a
+# body attempting to climb a wall (badly) or a body being pushed backwards.
+
+# To detect when that happens, we capture our distance from our target every
+# time we move. This captured value is appended to the Array. We use this to
+# ensure we're not rapidly alternating between two or three points, which is a
+# key indicator of the above issue.
+var _targ_dist_history = []
+
 # Our Tol(erance) Inc(rement). We increment every time we detect a stuck error
 # in the hopes that this will solve any issues where the integrating body gets
 # stuck for no reason.
@@ -123,16 +138,16 @@ func _after_update(delta) -> void:
 
     # Append the distance-to-target to our target distance history array.
     # Stepify allows us to round to the specified precision
-    PTR._targ_dist_history.append( new_dist_rnd )
+    _targ_dist_history.append( new_dist_rnd )
     
     # If we've exceeded the size of the target distance history list,
     # then shave one off the front.
-    if PTR._targ_dist_history.size() > KC.TARG_DIST_HISTORY_SIZE:
-        PTR._targ_dist_history.pop_front()
+    if _targ_dist_history.size() > KC.TARG_DIST_HISTORY_SIZE:
+        _targ_dist_history.pop_front()
     
     # If our current distance is in the history too many times, then
     # we've encountered a microposition loop error. In other words, we're stuck.
-    if PTR._targ_dist_history.count(new_dist_rnd) >= KC.TARG_DIST_ERROR_THRESHOLD:
+    if _targ_dist_history.count(new_dist_rnd) >= KC.TARG_DIST_ERROR_THRESHOLD:
         # First, increment our goal tolerance. Hopefully that should allow us to
         # get "close enough" to the goal
         _tol_inc += 1

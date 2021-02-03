@@ -15,21 +15,6 @@ signal path_complete(position)
 # didn't work.
 signal error_goal_stuck(target_position)
 
-# Sometimes - due to the speed of the integrating body (too fast), or perhaps
-# because of the occassional lumpy weirdness of the Navigation Meshes, or even
-# the interplay of falling, floating, and moving - the integrated body will get
-# stuck constantly moving under/over it's target. It somehow shoots past it's
-# target, then move backwards to overshoot it again.  It's like it keeps missing 
-# it's goal by mere millimeters, constantly overstepping. We call this the
-# "Microposition Loop" error. This is to differentiate it from, for example, a
-# body attempting to climb a wall (badly) or a body being pushed backwards.
-
-# To detect when that happens, we capture our distance from our target every
-# time we move. This captured value is appended to the Array. We use this to
-# ensure we're not rapidly alternating between two or three points, which is a
-# key indicator of the above issue.
-var _targ_dist_history = []
-
 # What is our target position - where are we trying to go?
 var _target_position = null setget set_target_position
 
