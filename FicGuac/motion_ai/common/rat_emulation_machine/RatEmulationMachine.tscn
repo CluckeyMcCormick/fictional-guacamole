@@ -11,7 +11,7 @@
 [ext_resource path="res://motion_ai/common/rat_emulation_machine/REM_GR_Idle.gd" type="Script" id=9]
 [ext_resource path="res://motion_ai/common/rat_emulation_machine/REM_GR_Wander.gd" type="Script" id=10]
 
-[node name="RateEmulationMachine" type="Node"]
+[node name="RatEmulationMachine" type="Node"]
 script = ExtResource( 2 )
 has_regions = true
 fsm_owner = null
@@ -24,22 +24,14 @@ animation_player = null
 
 [node name="Idle" type="Node" parent="GoalRegion"]
 script = ExtResource( 9 )
-disabled = false
-has_regions = false
 fsm_owner = null
 animation_player = null
 
 [node name="Wander" type="Node" parent="GoalRegion"]
 script = ExtResource( 10 )
-disabled = false
-has_regions = false
-fsm_owner = null
-animation_player = null
 
 [node name="Flee" type="Node" parent="GoalRegion"]
 script = ExtResource( 6 )
-disabled = false
-has_regions = false
 fsm_owner = null
 animation_player = null
 
@@ -55,8 +47,6 @@ animation_player = null
 
 [node name="Idle" type="Node" parent="PhysicsTravelRegion/OnGround"]
 script = ExtResource( 3 )
-disabled = false
-has_regions = false
 fsm_owner = null
 animation_player = null
 

@@ -99,8 +99,11 @@ func _on_test_pawn_path_complete(pawn, position):
 # Makes an array path between the two
 func make_path(to_node, from_node):
     var pth = $Navigation.get_simple_path(
-        to_node.global_transform.origin, from_node.global_transform.origin
+        from_node.global_transform.origin, to_node.global_transform.origin
     )
+    # Invert the path
+    pth.invert()
+    # Return
     return pth
 
 # Return all of the pawns to their starting position.

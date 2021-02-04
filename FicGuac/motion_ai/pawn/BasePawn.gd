@@ -68,6 +68,8 @@ var _orient_enum = SOUTH
 func _ready():
     # Get the drive target node
     navigation_node = get_node(navigation)
+    # Pass our navigation input down to the Pathing Interface Core
+    $PathingInterfaceCore.navigation_node = navigation_node.get_path()
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #

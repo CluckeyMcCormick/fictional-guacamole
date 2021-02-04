@@ -6,7 +6,7 @@
 [node name="RatPawn" instance=ExtResource( 1 )]
 
 [node name="VisualSprite" parent="." index="4"]
-frame = 3
+frame = 6
 
 [node name="KinematicCore" parent="." index="6"]
 drive_body = NodePath("../../RatPawn")
@@ -15,8 +15,8 @@ position_function = ""
 [node name="SensorySortCore" parent="." index="7"]
 primary_sensory_area = NodePath("../../RatPawn/SensoryArea")
 
-[node name="RateEmulationMachine" parent="." index="8" instance=ExtResource( 2 )]
+[node name="RatEmulationMachine" parent="." index="9" instance=ExtResource( 2 )]
 fsm_owner = NodePath("../../RatPawn")
-animation_player = null
 kinematic_core = NodePath("../KinematicCore")
 sensory_sort_core = NodePath("../SensorySortCore")
+pathing_interface_core = NodePath("../PathingInterfaceCore")

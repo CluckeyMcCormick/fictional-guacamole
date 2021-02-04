@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://motion_ai/pawn/pawn_frames.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://motion_ai/common/KinematicCore.tscn" type="PackedScene" id=2]
 [ext_resource path="res://motion_ai/common/SensorySortCore.tscn" type="PackedScene" id=3]
 [ext_resource path="res://motion_ai/pawn/BasePawn.gd" type="Script" id=4]
+[ext_resource path="res://motion_ai/common/PathingInterfaceCore.tscn" type="PackedScene" id=5]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 0.26, 0.805, 0.26 )
@@ -54,7 +55,7 @@ pixel_size = 0.014
 shaded = true
 alpha_cut = 2
 frames = ExtResource( 1 )
-frame = 2
+frame = 8
 playing = true
 
 [node name="WeaponSprite" type="AnimatedSprite3D" parent="."]
@@ -78,3 +79,5 @@ fall_state_delay_time = 0.25
 
 [node name="SensorySortCore" parent="." instance=ExtResource( 3 )]
 primary_sensory_area = NodePath("../SensoryArea")
+
+[node name="PathingInterfaceCore" parent="." instance=ExtResource( 5 )]

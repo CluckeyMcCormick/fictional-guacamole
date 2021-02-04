@@ -57,8 +57,14 @@ func _on_exit(var arg) -> void:
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Assign a random target 
 func assign_random_target():
+    # Get our PathingInterfaceCore
+    var PIC = MR.pathing_interface_core_node
+    
     # Start with a vector of fixed length
     var point = Vector3(1, 0, 0)
+    
+    # We'll stick the path variable in here
+    var path
     
     # Spin the vector to give us a random angle
     point = point.rotated(Vector3.UP, deg2rad(randi() % 360))
@@ -70,8 +76,11 @@ func assign_random_target():
     # Add it on to the integrating body's current position
     point += target.global_transform.origin
     
-    # Set that random point
-    PTR.set_target_position(point, true)
+    # Path to the point
+    path = PIC.path_between(target.global_transform.origin, point)
+    
+    # Set the path to the random point
+    PTR.set_target_path(path, true)
 
 func _on_phys_trav_region_path_complete(position):
     # The integrating body completed it's path. Hooray! Go to idle.

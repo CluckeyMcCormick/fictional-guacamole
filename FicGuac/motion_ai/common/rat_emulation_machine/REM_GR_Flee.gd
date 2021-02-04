@@ -59,8 +59,13 @@ func _on_exit(var arg) -> void:
 func assign_target_position():
     # Get our SensorySortCore
     var SSC = MR.sensory_sort_core_node
+    # Get our PathingInterfaceCore
+    var PIC = MR.pathing_interface_core_node
     # Create a blank vector for us to add onto
     var move_vec = Vector3.ZERO
+    
+    # We'll stick the path variable in here
+    var path
     
     # For each body we're actively tracking...
     for body in SSC.get_bodies():
@@ -81,8 +86,11 @@ func assign_target_position():
     # Add it on to the integrating body's current position to create a target
     var point = target.global_transform.origin + move_vec
     
-    # Set that random point
-    PTR.set_target_position(point, true)
+    # Path to the point
+    path = PIC.path_between(target.global_transform.origin, point)
+    
+    # Set the path to the random point
+    PTR.set_target_path(path, true)
 
 func _on_phys_trav_region_path_complete(position):
     # Okay - if we're here then we haven't quite escaped whatever we're fleeing
