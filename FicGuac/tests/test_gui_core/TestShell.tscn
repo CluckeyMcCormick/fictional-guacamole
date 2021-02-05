@@ -50,9 +50,3 @@ layer = 3
 
 [node name="LoadingScreen" parent="LoadingLayer" instance=ExtResource( 2 )]
 visible = false
-[connection signal="scene_chosen" from="TestMenu" to="." method="_on_TestMenu_scene_chosen"]
-[connection signal="exit_game" from="PauseLayer/PauseMenu" to="." method="_on_PauseMenu_exit_game"]
-[connection signal="main_menu" from="PauseLayer/PauseMenu" to="." method="_on_PauseMenu_main_menu"]
-[connection signal="resume_game" from="PauseLayer/PauseMenu" to="." method="_on_PauseMenu_resume_game"]
-[connection signal="loading_complete" from="LoadingLayer/LoadingScreen" to="." method="_on_LoadingScreen_loading_complete"]
-[connection signal="loading_failed" from="LoadingLayer/LoadingScreen" to="." method="_on_LoadingScreen_loading_failed"]

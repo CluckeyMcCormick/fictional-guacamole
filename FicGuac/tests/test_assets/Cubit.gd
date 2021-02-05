@@ -1,19 +1,34 @@
 extends KinematicBody
 
-# Since the cubit's position is measured from the origin - which is the center
-# of of the cube. However, our waypoints sit on the floor. So we need to adjust
-# those incoming points vertically. 0.5 is the height of the cubit, and .001396
-# was the OBSERVED remainder.
-const FLOOR_DISTANCE = .001396 + 0.5
+# Signal issued when this machine reaches it's target. Sends back the Vector3
+# position value that was just reached.
+signal path_complete(position)
 
-# This is the destination, which we update when set_destination is called
-var destination setget set_destination
+# Signal issued when this driver is stuck and our other error resolution methods
+# didn't work.
+signal error_goal_stuck(target_position)
+
+# What will the Pawn use to check it's current position and generate paths?
+export(NodePath) var navigation
+# We resolve the node path into this variable.
+var navigation_node
+
+# This is the Cubit's current destination
+var destination
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Godot Processing - _ready, _process, etc.
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+func _ready():
+    # Get the drive target node
+    navigation_node = get_node(navigation)
+    # Pass our navigation input down to the Pathing Interface Core. Calling
+    # get_path() on the resolved node will get the absolute path for the scene,
+    # so that we can ensure the PathingInterfaceCore is configured correctly
+    $PathingInterfaceCore.navigation_node = navigation_node.get_path()
+
 func _process(delta):
     var orient = $KinematicDriverMachine._curr_orient
 
@@ -21,19 +36,17 @@ func _process(delta):
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Kinematic Core coupling functions
+# Kinematic Driver Machine coupling functions
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-# Set the destination of this Cubit. The position must be on the floor. For most
-# purposes (like path following), this is naturally where the point will be.
-func set_destination(floor_position : Vector3):
-    $KinematicDriverMachine.target_position = floor_position
-    destination = floor_position
+# Order the Cubit to move to a specific point.
+func move_to_point(to_point: Vector3):
+    $KinematicDriverMachine.move_to_point(to_point)
+    destination = to_point
 
-func get_floor_adjusted_position():
-    # Get our current position
-    var curr_pos = self.global_transform.origin
-    
-    # The adjusted position is at the base of the cube
-    return curr_pos - Vector3(0, FLOOR_DISTANCE, 0)
+func _on_KinematicDriverMachine_path_complete(position):
+    emit_signal("path_complete", position)
+
+func _on_KinematicDriverMachine_error_goal_stuck(target_position):
+    emit_signal("error_goal_stuck", target_position)

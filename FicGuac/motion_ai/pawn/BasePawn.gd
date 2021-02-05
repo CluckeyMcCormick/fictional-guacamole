@@ -15,25 +15,7 @@ enum {
     NOR_EAST = 1, NOR_WEST = 3, SOU_WEST = 5, SOU_EAST = 7
 }
 
-# We can only really measure the position of the UnitPawn from the center of the
-# node. However, sometimes our destinations are always on the floor. So, we need
-# a constant to calculate our distance to the floor. This value, .742972, was
-# the OBSERVED value.
-const FLOOR_DISTANCE = .742972#.747353
-
-# Pos[ition] Algo[rithm]. In order to path, the Pawn needs to know where it is.
-# There are different ways to calculate that. It's always centered, but the Z
-# value (height) changes.
-enum PosAlgo {
-    FLOOR, # Z is at feet, the floor, whatever you want to call it
-    NAVIGATION, # Pos is given by Navigation's get_closest_point function
-    DETOUR_MESH # Pos is given via some trickery with DetourNavigation
-}
-# Which of the above position algorithms will we use? Note that Navigation and
-# Detour will be broken unless the appropriate navigation node is provided.
-export(PosAlgo) var position_algorithm = PosAlgo.FLOOR
-
-# Each driver needs a node to move around - what node will this drive move?
+# What will the Pawn use to check it's current position and generate paths?
 export(NodePath) var navigation
 # We resolve the node path into this variable.
 var navigation_node
@@ -68,43 +50,13 @@ var _orient_enum = SOUTH
 func _ready():
     # Get the drive target node
     navigation_node = get_node(navigation)
-    # Pass our navigation input down to the Pathing Interface Core
-    $PathingInterfaceCore.navigation_node = navigation_node.get_path()
-
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-#
-# KinematicCore Coupling functions
-#
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-# Get the "algorithmic" position. This is most often used for goal checking -
-# i.e. seeing where we are from a world-mesh perspective
-func get_adjusted_position():
-    # Get our current position
-    var curr_pos = self.global_transform.origin
-    # What's our adjusted vector?
-    var adjusted = Vector3.ZERO
     
-    # How we calculate the "current position" is a configurable, so switch!
-    match position_algorithm:
-        PosAlgo.FLOOR:
-            # Floor - just our current position, down to the feet. Neat!
-            adjusted = curr_pos - Vector3(0, FLOOR_DISTANCE, 0)
-        PosAlgo.NAVIGATION:
-            # Navigation Mesh - we can just use get_closest_point. Easy!
-            adjusted = navigation_node.get_closest_point(curr_pos)
-        PosAlgo.DETOUR_MESH:
-            # DetourNavigationMesh. This mesh doesn't actually give us a method
-            # to easily access where we are on the mesh. So, we'll cheat. We'll
-            # just path FROM our current position TO our current position. I
-            # don't know the performance ramifications of this, but HOPEFULLY
-            # its small. Or some update saves us from this madness...
-            adjusted = navigation_node.find_path(curr_pos, curr_pos)
-            # Unpack what we got back, since we want the first value of a
-            # PoolVector3 array stored in a dict.
-            adjusted = Array(adjusted["points"])[0]
-    
-    return adjusted
+    # IF we have a pathing interface...
+    if navigation_node != null:
+        # Pass our navigation input down to the Pathing Interface Core. Calling
+        # get_path() on the resolved node will get the absolute path for the scene,
+        # so that we can ensure the PathingInterfaceCore is configured correctly
+        $PathingInterfaceCore.navigation_node = navigation_node.get_path()
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #

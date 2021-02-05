@@ -29,7 +29,7 @@ func _on_enter(var arg) -> void:
     
     # Assert the timer is inactive
     fall_timer_active = false
-    
+
 func _on_update(delta) -> void:
     # Get our KinematicCore
     var KC = MR.kinematic_core_node

@@ -29,7 +29,7 @@ func _process(delta):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 func _on_KinematicDriverMachine_path_complete(position):
-    emit_signal("path_complete", self, self.get_adjusted_position())
+    emit_signal("path_complete", self, position)
 
 func _on_KinematicDriverMachine_error_goal_stuck(target_position):
     emit_signal("error_goal_stuck", self, target_position)
@@ -41,17 +41,12 @@ func _on_KinematicDriverMachine_error_goal_stuck(target_position):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Set the new target position for the Pawn. This allows you to bypass setting an
 # entire path.
-func set_target_position(new_target_position):
+func move_to_point(new_target_position):
     # That's now our new target position
-    $KinematicDriverMachine.target_position = new_target_position
-    
-# Set the new target position path for the Pawn. The Pawn will dutifully follow
-# these points to reach wherever it's going.
-func set_target_path(new_target_path):
-    # That's now our new target path
-    $KinematicDriverMachine.target_path = new_target_path
-    # Clear out the target position so it defaults to the first path point
-    $KinematicDriverMachine.target_position = null
+    $KinematicDriverMachine.move_to_point(new_target_position)
+
+func clear_pathing():
+    $KinematicDriverMachine.clear_pathing()
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #

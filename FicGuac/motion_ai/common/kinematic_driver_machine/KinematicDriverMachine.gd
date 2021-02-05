@@ -15,6 +15,12 @@ export(NodePath) var kinematic_core
 # We resolve the node path into this variable.
 var kinematic_core_node
 
+# We also need a Pathing Interface Core so that we can navigate to positions on
+# our own AND determine where we are
+export(NodePath) var pathing_interface_core
+# We resolve the node path into this variable.
+var pathing_interface_core_node
+
 # Sometimes - due to the speed of the integrating body (too fast), or perhaps
 # because of the occassional lumpy weirdness of the Navigation Meshes, or even
 # the interplay of falling, floating, and moving - the integrated body will get
@@ -61,15 +67,30 @@ func _ready():
     
     # Resolve the KinematicCore node
     kinematic_core_node = get_node(kinematic_core)
+    # Resolve the PathingInterfaceCore node
+    pathing_interface_core_node = get_node(pathing_interface_core)
     
     # Also, the target has to be a KinematicBody
     assert(typeof(target) == typeof(KinematicBody), "FSM Owner must be a KinematicBody node!")
     # Also, we need a KinematicCore
     assert(kinematic_core_node != null, "A KinematicCore node is required!")
-    
-    # Change the default state to "Idle"
-    change_state("Idle")
-    
-    # Force call the idle state's _on_enter since that doesn't seem to work too
-    # well for us.
-    $OnGround/Idle._on_enter(null)
+    # Can't forget the Pathing Interface Core!
+    assert(pathing_interface_core_node != null, "A PathingInterfaceCore node is required!")
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Utility Functions
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# The machine generates a path towards the given position and begins following
+# it.
+func move_to_point(to_point : Vector3):
+    self.target_position = null
+    self.target_path = pathing_interface_core_node.path_between(
+        target.global_transform.origin, # FROM the target's position
+        to_point # TO the to_point
+    )
+
+func clear_pathing():
+    self.target_path = []
+    self.target_position = null

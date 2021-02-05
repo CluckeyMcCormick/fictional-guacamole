@@ -3,10 +3,10 @@ extends Control
 var scene_paths = {
     "Pawn Standing Test" : "res://tests/PawnStandingTest.tscn",
     "Cubit Driver Test" : "res://tests/CubitDriverTest.tscn",
-    "Slope Step Test" : "res://tests/SlopeStepTest.tscn",
     "Viewport Shader Test" : "res://tests/ViewportShaderTest.tscn",
     "Dynamic Navigation Mesh Test" : "res://tests/DynamicNavMeshTest.tscn",
     "Advanced Kinematics Test" : "res://tests/AdvancedKinematicTest.tscn",
+    "Rat Emulation Test" : "res://tests/RatEmulationTest.tscn",
     "Attack Model Test" : "res://tests/AttackModelTest.tscn"
 }
 

@@ -23,9 +23,6 @@ func set_navigation_node(new_navigation_node):
     navigation_node = new_navigation_node
     nav_node = get_node(navigation_node)
     
-    print("New navigation node path: ", new_navigation_node)
-    print("Node actual: ", nav_node)
-    
     if Engine.editor_hint:
         update_configuration_warning()
 
@@ -63,12 +60,12 @@ func get_adjusted_position(in_body : Spatial):
     var adjusted = Vector3.ZERO
     
     # If we're using a navigation node, we can just use get_closest_point. Easy!
-    if typeof(nav_node) == typeof(Navigation):
+    if nav_node is Navigation:
         adjusted = nav_node.get_closest_point(curr_pos)
     
     # Otherwise, if it's a spatial, we don't have any recourse but to ASSUME
     # that we're dealing with a DetourNavigationMesh.
-    elif typeof(nav_node) == typeof(Spatial):
+    elif nav_node is Spatial:
         # This mesh doesn't actually give us a method to easily access where we
         # are on the mesh. So, we'll cheat. We'll just path FROM our current
         # position TO our current position. I don't know the performance
@@ -83,31 +80,28 @@ func get_adjusted_position(in_body : Spatial):
     # current position.
     else:
         adjusted = curr_pos
+        push_warning("PIC couldn't get adjusted position due to invalid/null nav_node.")
     
     return adjusted
 
 func path_between(from : Vector3, to : Vector3):
     var path
 
-    # If we're using a navigation node, we can just use get_closest_point. Easy!
-    if typeof(nav_node) == typeof(Navigation):
+    # If we're using a navigation node, we can just use get_simple_path. Easy!
+    if nav_node is Navigation:
         # Get the path
         path = Array(nav_node.get_simple_path(from, to))
-        # Okay, for some reason Godot's vanilla navigation starts with the END
-        # point (to) at the FRONT of the array. I don't know why. To get around
-        # that, we'll invert the array.
-        path.invert()
     
     # Otherwise, if it's a spatial, we don't have any recourse but to ASSUME
     # that we're dealing with a DetourNavigationMesh.
-    elif typeof(nav_node) == typeof(Spatial):
+    elif nav_node is Spatial:
         # Get the path
         path = nav_node.find_path(from, to)
         path = Array(path["points"])
     
-    # Otherwise... Guess I have no idea what's happening. Let's just use the
-    # current position.
+    # Otherwise... Guess I have no idea what's happening. Let's just not path.
     else:
         path = []
+        push_warning("PIC couldn't generate path because of invalid/null nav_node.")
         
     return path

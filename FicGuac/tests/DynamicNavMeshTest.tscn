@@ -1607,7 +1607,6 @@ size = 20.0
 
 [node name="Pawn" parent="." instance=ExtResource( 1 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 2.1, 0 )
-position_algorithm = 2
 navigation = NodePath("../DetourNavigation/DetourNavigationMesh")
 
 [node name="HidingMesh" parent="Pawn" instance=ExtResource( 10 )]

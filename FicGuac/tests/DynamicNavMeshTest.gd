@@ -54,9 +54,6 @@ func process_mouse_click():
     click_waiting = true
     yield()
     
-    # Get our detour mesh
-    var detour_mesh = $DetourNavigation/DetourNavigationMesh
-    
     # We're back! We should now be in the _physics_process, so we can query the
     # world using raycasts. First, let's get the space state.
     var space_state = get_world().direct_space_state
@@ -69,12 +66,8 @@ func process_mouse_click():
     
     # If our query actually got something...
     if result:
-        # Get the path
-        var path = detour_mesh.find_path($Pawn.get_translation(), result.position)
-        # Clear the old path
-        $Pawn.set_target_path([])
-        # Set the new path!
-        $Pawn.set_target_path( Array(path["points"]) )
+        # Move to the Point!
+        $Pawn.move_to_point(result.position)
         
     # Either way, we're no longer waiting on a click
     click_waiting = false

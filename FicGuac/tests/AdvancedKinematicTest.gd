@@ -133,7 +133,7 @@ func _on_CancelButton_pressed():
     yield_func = null
     
     # Clear the Pawn's current targets
-    $KinematicPawn.set_target_path([])
+    $KinematicPawn.clear_pathing()
     
     # Stop all timers
     $UpdateTimer.stop()
@@ -192,24 +192,18 @@ func slope_test():
     # Enter test mode
     enter_test_mode()
     
-    # Get the path
-    var path = $DetourNavigation/DetourNavigationMesh.find_path(
-        $KinematicPawn.get_translation(), 
-        slope_target.global_transform.origin
-    )
+    # Path to the slope target
+    $KinematicPawn.move_to_point(slope_target.global_transform.origin)
 
     # If we didn't actually get a path (it can happen!) report to the user and
     # dismantle the test
-    if Array(path["points"]).empty():
+    if $KinematicPawn/KinematicDriverMachine.target_path.empty():
         # Inform the user
         print("No Path! Slope too steep!")
         # Exit test mode
         exit_test_mode()
         # Return null to break the test chain
         return null
-    
-    # Set the path!
-    $KinematicPawn.set_target_path( Array(path["points"]) )
     
     var result = yield()
     
@@ -219,16 +213,10 @@ func slope_test():
         print("Test Failed!")
     
     # Clear the Pawn's current targets
-    $KinematicPawn.set_target_path([])
+    $KinematicPawn.clear_pathing()
     
-    # Path home!
-    path = $DetourNavigation/DetourNavigationMesh.find_path(
-        $KinematicPawn.get_translation(), 
-        home_target.global_transform.origin
-    )
-    
-    # Set the path!
-    $KinematicPawn.set_target_path( Array(path["points"]) )
+    # Path to the home target
+    $KinematicPawn.move_to_point(home_target.global_transform.origin)
 
     # Yield until the Pawn is back home. Ignore the result
     yield()
@@ -243,24 +231,18 @@ func step_test():
     # Enter test mode
     enter_test_mode()
     
-    # Get the path
-    var path = $DetourNavigation/DetourNavigationMesh.find_path(
-        $KinematicPawn.get_translation(), 
-        step_target.global_transform.origin
-    )
-    
+    # Path to the step target
+    $KinematicPawn.move_to_point(step_target.global_transform.origin)
+
     # If we didn't actually get a path (it can happen!) report to the user and
     # dismantle the test
-    if Array(path["points"]).empty():
+    if $KinematicPawn/KinematicDriverMachine.target_path.empty():
         # Inform the user
         print("No Path! Step too high!")
         # Exit test mode
         exit_test_mode()
         # Return null to break the test chain
         return null
-    
-    # Set the path!
-    $KinematicPawn.set_target_path( Array(path["points"]) )
     
     var result = yield()
     
@@ -270,16 +252,10 @@ func step_test():
         print("Test Failed!")
     
     # Clear the Pawn's current targets
-    $KinematicPawn.set_target_path([])
+    $KinematicPawn.clear_pathing()
     
-    # Path home!
-    path = $DetourNavigation/DetourNavigationMesh.find_path(
-        $KinematicPawn.get_translation(), 
-        home_target.global_transform.origin
-    )
-    
-    # Set the path!
-    $KinematicPawn.set_target_path( Array(path["points"]) )
+    # Path to the home target
+    $KinematicPawn.move_to_point(home_target.global_transform.origin)
 
     # Yield until the Pawn is back home. Ignore the result
     yield()
@@ -294,32 +270,11 @@ func fall_test():
     # Enter test mode
     enter_test_mode()
     
-    # Create a point beneath the fall target to fall onto
-    var fall_landing_zone = fall_target.global_transform.origin
-    fall_landing_zone.y = 0
-    
-    # Get the path from t
-    var path = $DetourNavigation/DetourNavigationMesh.find_path(
-        fall_landing_zone, 
-        home_target.global_transform.origin
-    )
-
-    # If we didn't actually get a path (it can happen!) report to the user and
-    # dismantle the test
-    if Array(path["points"]).empty():
-        # Inform the user
-        print("No Path! Slope too steep!")
-        # Exit test mode
-        exit_test_mode()
-        # Return null to break the test chain
-        return null
-    
-    # Set the path!
-    $KinematicPawn.set_target_path( Array(path["points"]) )
-    
     # Now: teleport to the fall position and FALL
     $KinematicPawn.global_transform.origin = fall_target.global_transform.origin
-    
+    # Path to the home target
+    $KinematicPawn.move_to_point(home_target.global_transform.origin)
+
     # Yield until we've returned to the home position
     var result = yield()
     

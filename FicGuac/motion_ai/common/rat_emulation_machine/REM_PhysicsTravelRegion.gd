@@ -33,11 +33,6 @@ func set_target_position(new_target_position, clear_path=false):
     # If we got told to clear the path, then clear it!
     if clear_path:
         _target_path = []
-    
-    # If we still have a path, inform the user that some weird stuff could
-    # happen here.
-    if not _target_path.empty():
-        push_warning("REM Physics Travel Region had target position set, but still has path points! Integrating Body may exhibit odd pathing!")
 
 func set_target_path(new_target_path, clear_target=true):
     # Set the target position
@@ -47,11 +42,6 @@ func set_target_path(new_target_path, clear_target=true):
     if clear_target:
         _target_position = null
     
-    # If we still have a target position, inform the user that some weird stuff
-    # could happen here.
-    if _target_position != null:
-        push_warning("REM Physics Travel Region had path points set, but still has a target position! Integrating Body may exhibit odd pathing!")
-
 func clear_target_data():
     # Clear the target path
     _target_path = []
