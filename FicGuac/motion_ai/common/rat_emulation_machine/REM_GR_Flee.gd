@@ -92,6 +92,11 @@ func assign_target_position():
     # Set the path to the random point
     PTR.set_target_path(path, true)
 
+    # If our path is empty...
+    if not PTR.has_target_data():
+        # Oh. Dang. Nothing to do but go back to Idle I guess...
+        change_state("GoalRegion/Idle")
+
 func _on_phys_trav_region_path_complete(position):
     # Okay - if we're here then we haven't quite escaped whatever we're fleeing
     # from. Assign a new target position.
@@ -108,11 +113,11 @@ func _on_sensory_sort_core_body_entered(body):
     var SSC = MR.sensory_sort_core_node
     # If we don't have bodies, then idle!
     if not SSC.has_bodies():
-        change_state("Idle")
+        change_state("GoalRegion/Idle")
 
 func _on_sensory_sort_core_body_exited(body):
     # Get our SensorySortCore
     var SSC = MR.sensory_sort_core_node
     # If we have bodies, then idle!
     if not SSC.has_bodies():
-        change_state("Idle")
+        change_state("GoalRegion/Idle")

@@ -41,9 +41,18 @@ func set_target_path(new_target_path, clear_target=true):
     # If we got told to clear the target position, then clear it!
     if clear_target:
         _target_position = null
-    
+ 
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Utility Functions
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 func clear_target_data():
     # Clear the target path
     _target_path = []
     # Clear the target position
     _target_position = null
+
+func has_target_data():
+    return (not _target_path.empty()) or (_target_position != null)

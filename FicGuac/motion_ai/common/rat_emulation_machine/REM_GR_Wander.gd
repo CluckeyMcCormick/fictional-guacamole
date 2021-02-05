@@ -81,14 +81,19 @@ func assign_random_target():
     
     # Set the path to the random point
     PTR.set_target_path(path, true)
+    
+    # If our path is empty...
+    if not PTR.has_target_data():
+        # Oh. Dang. Nothing to do but go back to Idle I guess...
+        change_state("GoalRegion/Idle")
 
 func _on_phys_trav_region_path_complete(position):
     # The integrating body completed it's path. Hooray! Go to idle.
-    change_state("Idle")
+    change_state("GoalRegion/Idle")
 
 func _on_phys_trav_region_error_goal_stuck(target_position):
     # We're stuck? Huh. Guess we should just go to idle anyway.
-    change_state("Idle")
+    change_state("GoalRegion/Idle")
 
 # If a body enters our sensory range...
 func _on_sensory_sort_core_body_entered(body):
