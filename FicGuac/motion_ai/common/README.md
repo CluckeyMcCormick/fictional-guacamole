@@ -13,19 +13,6 @@ The *Machines* are somewhat unique in that they represent different phases of AI
 The *KinematicCore* is the core *motion* component of *Motion AI*. It governs the movement characteristics of an AI.
 
 ### Configurables
-##### Drive Body
-The *KinematicCore* provides several utility functions that are used across states - some of these require a `Node` (for an example, see *Position Function*). It is recommended this be the same node as the corresponding machine's *FSM Owner*. That's not a requirement but things could get out-of-hand otherwise.
-
-##### Position Function
-This is the most complicated configurable in the whole of the *KinematicCore*.
-
-See, checking a `KinematicBody`'s position against a point isn't exactly trivial. Doing the check is trivial, but not deciding what kind of check to perform. See, a point could be aligned with the ground. It could be aligned with the middle of the body. It could be aligned with the body's head. It could require extra function calls to `Navigation` nodes. 
-
-But that's outside the purview of a particular *Machine* or *Core*! That depends on the purpose and form of whatever is using the *AI*.  But we **NEED** that information for the driver to work! 
-
-The *Position Function* configurable is the solution. Provide the name of a function, defined on the configured `KinematicBody`, and the driver will use this function to determine our current point. The function should take no arguments and return a `Vector3`. If this is not set, or is otherwise invalid, we default to using the *Drive Body's* global origin.
-
-Even though it is difficult to configure, this is currently the best solution we have keep the *cores* and *machines* relatively scene-neutral and independent.
 
 ##### Move Speed & Fall Speed
 Pretty basic - the *move speed* is how quick the KinematicBody moves, in units-per-second. The *fall speed* is how quick the KinematicBody falls when not on the floor, in units-per-second. 9.8 units/second, which is the sort of bog-standard for gravity, is the recommended fall speed.
@@ -73,11 +60,30 @@ Once we've detected certain errors, we slowly increment the goal tolerance using
 ##### `ERROR_DETECTION_PRECISION`
 Because movement in Godot has a precision of ~6 decimal places, our error detection could be hit or miss if we were looking for EXACT matches. Instead, we'll round the history entries (and our checks) to this decimal position, using the `stepify()` function. This simplifies error checking and makes it more robust.
 
+## PathingInterfaceCore
+The *PathingInterface* is the core that allows the *Motion AI* to navigate the map independent of any other externalities. It provides configurables for an easy cross-machine interface, as well as several utility functions to allow any machine to path or check it's position.
+
+Unfortunately, because this node requires access to a *Navigation* node of some description, and those almost invariably exist outside of any integrating bodies, there will likely be some integration code required.
+
+### Configurables
+##### Navigation Node
+The node we'll use to navigate the world - can either be a vanilla Godot `Navigation` node or a `DynamicNavigationMesh` node from *Milos Lukic's* *Godot Navigation Light*.
+
+If you're having trouble decoding what node that's really supposed to be, just remember that it's the node that actually has the pathing functions attached to it.
+
+This configurable is a `NodePath` - since any navigation resource will typically exist outside of an integrating body, you will likely need to do a hot/runtime configuration, most likely in some parent node's `_ready` function. I recommend getting the full `NodePath` by calling the `get_path` function on the appropriate node.
+
+### Functions
+##### `get_adjusted_position`
+Returns the position of the given spatial node on the core's *Navigation Node* configurable.
+
+##### `path_between`
+Returns an `Array`-path of points that start at `from_point` and go to `to_point`. May return an empty path.
+
 ## SensorySortCore
 The *SensorySort* is the core *sensory* component of *Motion AI*. It handles sensing (observing nearby physics bodies) and sorting (identifying the type of body). Think of it like a radar that both detects things and identifies those things.
 
 ### Configurables
-
 ##### Primary Sensory Area
 The primary sensory area. Needs to be a 3D `Area` node. Eventually there will be multiple categories of sensory areas to elicit different responses. For now, there's just this one.
 

@@ -14,10 +14,10 @@ We require a `KinematicCore` node to define the movement profile for this machin
 
 ### (Public) Variables
 ##### `target_position`
-The current target position. Set to a `Vector3`, and the Pawn will move towards the specified position.
+The current target position. Set to a `Vector3`, and the Pawn will move towards the specified position. It's recommended that you use the `move_to_point` and `clear_pathing` functions instead of manipulating this value directly.
 
 ##### `target_path`
-The current target path. Set to an `Array` of `Vector3`s, and the Pawn will work through them, moving to each position. One after the other.
+The current target path. Set to an `Array` of `Vector3`s, and the Pawn will work through them, moving to each position. One after the other. It's recommended that you use the `move_to_point` and `clear_pathing` functions instead of manipulating this value directly.
 
 ##### `_curr_orient`
 A `Vector3`, where each axis is the current (rough) heading on each axis. The number is actually equivalent to the last updated velocity on each axis - however, it should only really be used to gauge "heading" or "orientation".
@@ -29,6 +29,13 @@ A `String`, indicating the current state (i.e. Walk, OnGround, Falling, etc.). U
 
 ##### `_targ_dist_history`
 An array containing the last `TARG_DIST_HISTORY_SIZE` measurements of our distance-to-target. That constant is defined in the `KinematicCore`. Used for error detection. Error detection and position tracking are not currently implemented.
+
+### Functions
+##### `move_to_point`
+Instructs the machine to path-and-move from the target body's current position to the specified point. Behavior is undefined if a path cannot generated; most likely outcome is the integrating body defaults to the *Idle* state.
+
+##### `clear_pathing`
+Clears the pathing variables. This will cause the integrated body to stop moving.
 
 ### Signals
 ##### `path_complete`
