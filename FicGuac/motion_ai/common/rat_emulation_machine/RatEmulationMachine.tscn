@@ -46,8 +46,6 @@ animation_player = null
 
 [node name="OnGround" type="Node" parent="PhysicsTravelRegion"]
 script = ExtResource( 4 )
-disabled = false
-has_regions = false
 fsm_owner = null
 animation_player = null
 

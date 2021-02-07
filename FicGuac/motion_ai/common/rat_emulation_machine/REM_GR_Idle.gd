@@ -32,8 +32,8 @@ func _on_enter(var arg) -> void:
     MR.goal_key = "Idle"
     
     # Connect the SensorySortCore functions
-    SSC.connect("body_entered", self, "_on_sensory_sort_core_body_entered")
-    SSC.connect("body_exited", self, "_on_sensory_sort_core_body_entered")
+    SSC.connect("body_entered_fof", self, "_on_sensory_sort_core_body_entered")
+    SSC.connect("body_exited_fof", self, "_on_sensory_sort_core_body_entered")
     
     # Start a timer. Once this times out we'll move to the wander state
     self.add_timer(IDLE_TIMER_NAME, MR.idle_wait_time)
@@ -52,8 +52,8 @@ func _on_exit(var arg) -> void:
     var SSC = MR.sensory_sort_core_node
     
     # Disconnect the SensorySortCore functions
-    SSC.disconnect("body_entered", self, "_on_sensory_sort_core_body_entered")
-    SSC.disconnect("body_exited", self, "_on_sensory_sort_core_body_entered")
+    SSC.disconnect("body_entered_fof", self, "_on_sensory_sort_core_body_entered")
+    SSC.disconnect("body_exited_fof", self, "_on_sensory_sort_core_body_entered")
     
     # Stop any timers that could be happening
     self.del_timers()
@@ -68,12 +68,12 @@ func _on_sensory_sort_core_body_entered(body):
     # Get our SensorySortCore
     var SSC = MR.sensory_sort_core_node
     # If we have bodies, then FLEE!
-    if SSC.has_bodies():
+    if SSC.has_bodies_fof():
         change_state("Flee")
 
 func _on_sensory_sort_core_body_exited(body):
     # Get our SensorySortCore
     var SSC = MR.sensory_sort_core_node
     # If we have bodies, then FLEE!
-    if SSC.has_bodies():
+    if SSC.has_bodies_fof():
         change_state("Flee")

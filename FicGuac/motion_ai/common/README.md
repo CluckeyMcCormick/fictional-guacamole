@@ -83,9 +83,19 @@ Returns an `Array`-path of points that start at `from_point` and go to `to_point
 ## SensorySortCore
 The *SensorySort* is the core *sensory* component of *Motion AI*. It handles sensing (observing nearby physics bodies) and sorting (identifying the type of body). Think of it like a radar that both detects things and identifies those things.
 
+This core uses multiple `Area` nodes to do the appropriate sensing. It is assumed that the nodes are nested, starting with the largest external and moving to the smallest internal node. Using multiple nested areas in this way allows us to create a sort of "priority" structure.
+
 ### Configurables
-##### Primary Sensory Area
-The primary sensory area. Needs to be a 3D `Area` node. Eventually there will be multiple categories of sensory areas to elicit different responses. For now, there's just this one.
+##### General Sensory Area
+The primary sensory area. Needs to be a 3D `Area` node. Used for sensing anything and everything, then sorting those inputs appropriately. Has the lowest priority, and should be the largest of the areas. It should contain the other two areas.
+
+##### Fight or Flight Area
+The secondary sensory area. Needs to be a 3D `Area` node. Called *Fight or Flight* because certain entities entering or exiting this area should trigger a flight or flight response in AI. Has higher priority than the *General Sensory Area*, and should be smaller than it too.
+
+##### Danger Interrupt Area
+The primary sensory area. Needs to be a 3D `Area` node. This area has the highest priority and should be the smallest area. It's meant to capture *imminent* threats that need to interrupt and override whatever the integrating body is doing. Ergo, it should be just a bit bigger than the actual collision model of the integrating body.
+
+This is really here to stop the integrating body from, say, walking into fire.
 
 ### Functions
 ##### `get_bodies`

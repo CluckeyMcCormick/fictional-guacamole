@@ -1,4 +1,4 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=12 format=2]
 
 [ext_resource path="res://motion_ai/pawn/pawn_frames.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://motion_ai/common/KinematicCore.tscn" type="PackedScene" id=2]
@@ -17,13 +17,19 @@ height = 1.21
 radius = 0.260039
 height = 0.69
 
-[sub_resource type="CapsuleShape" id=4]
-radius = 2.65
-height = 2.3
+[sub_resource type="SphereShape" id=4]
+radius = 10.0
+
+[sub_resource type="CylinderShape" id=5]
+radius = 3.0
+
+[sub_resource type="CylinderShape" id=6]
+radius = 0.5
+height = 1.7
 
 [node name="BasePawn" type="KinematicBody"]
 collision_layer = 1024
-collision_mask = 1041
+collision_mask = 17
 script = ExtResource( 4 )
 
 [node name="IdealCollision" type="CollisionShape" parent="."]
@@ -39,14 +45,27 @@ disabled = true
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.2, 0 )
 shape = SubResource( 3 )
 
-[node name="SensoryArea" type="Area" parent="."]
+[node name="GeneralSensoryArea" type="Area" parent="."]
+collision_layer = 0
+collision_mask = 48
+
+[node name="SensoryCollision" type="CollisionShape" parent="GeneralSensoryArea"]
+shape = SubResource( 4 )
+
+[node name="FOFArea" type="Area" parent="."]
 monitorable = false
 collision_layer = 0
 collision_mask = 48
 
-[node name="SensoryCollision" type="CollisionShape" parent="SensoryArea"]
-transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, -0.0117323, -4.76837e-07, 0.0024085 )
-shape = SubResource( 4 )
+[node name="FOFCollision" type="CollisionShape" parent="FOFArea"]
+shape = SubResource( 5 )
+
+[node name="DangerInterruptArea" type="Area" parent="."]
+collision_layer = 0
+collision_mask = 48
+
+[node name="DangerSaveCollision" type="CollisionShape" parent="DangerInterruptArea"]
+shape = SubResource( 6 )
 
 [node name="VisualSprite" type="AnimatedSprite3D" parent="."]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.035, 0 )
@@ -55,7 +74,7 @@ pixel_size = 0.014
 shaded = true
 alpha_cut = 2
 frames = ExtResource( 1 )
-frame = 6
+frame = 8
 playing = true
 
 [node name="WeaponSprite" type="AnimatedSprite3D" parent="."]
@@ -73,7 +92,8 @@ max_slope_degrees = 46.0
 fall_state_delay_time = 0.25
 
 [node name="SensorySortCore" parent="." instance=ExtResource( 3 )]
-primary_sensory_area = NodePath("../SensoryArea")
+general_sensory_area = NodePath("../GeneralSensoryArea")
+fight_or_flight_area = NodePath("../FOFArea")
+danger_interrupt_area = NodePath("../DangerInterruptArea")
 
 [node name="PathingInterfaceCore" parent="." instance=ExtResource( 5 )]
-navigation_node = NodePath("")

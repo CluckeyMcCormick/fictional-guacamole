@@ -27,8 +27,8 @@ func _on_enter(var arg) -> void:
     MR.goal_key = "Flee"
     
     # Connect the SensorySortCore functions
-    SSC.connect("body_entered", self, "_on_sensory_sort_core_body_entered")
-    SSC.connect("body_exited", self, "_on_sensory_sort_core_body_entered")
+    SSC.connect("body_entered_fof", self, "_on_sensory_sort_core_body_entered")
+    SSC.connect("body_exited_fof", self, "_on_sensory_sort_core_body_entered")
     
     # Connect the PhysicsTravelRegion functions
     PTR.connect("path_complete", self, "_on_phys_trav_region_path_complete")
@@ -42,14 +42,13 @@ func _on_exit(var arg) -> void:
     var SSC = MR.sensory_sort_core_node
     
     # Disconnect the SensorySortCore functions
-    SSC.disconnect("body_entered", self, "_on_sensory_sort_core_body_entered")
-    SSC.disconnect("body_exited", self, "_on_sensory_sort_core_body_entered")
+    SSC.disconnect("body_entered_fof", self, "_on_sensory_sort_core_body_entered")
+    SSC.disconnect("body_exited_fof", self, "_on_sensory_sort_core_body_entered")
 
     # Disconnect the PhysicsTravelRegion functions
     PTR.disconnect("path_complete", self, "_on_phys_trav_region_path_complete")
     PTR.disconnect("error_goal_stuck", self, "_on_phys_trav_region_error_goal_stuck")
     
-
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Signal Processing (and Other) Functions
@@ -68,7 +67,7 @@ func assign_target_position():
     var path
     
     # For each body we're actively tracking...
-    for body in SSC.get_bodies():
+    for body in SSC.get_bodies_fof():
         move_vec += body.global_transform.origin - target.global_transform.origin
     
     # So now we have a vector that basically points from the integrating body to
@@ -112,12 +111,12 @@ func _on_sensory_sort_core_body_entered(body):
     # Get our SensorySortCore
     var SSC = MR.sensory_sort_core_node
     # If we don't have bodies, then idle!
-    if not SSC.has_bodies():
+    if not SSC.has_bodies_fof():
         change_state("GoalRegion/Idle")
 
 func _on_sensory_sort_core_body_exited(body):
     # Get our SensorySortCore
     var SSC = MR.sensory_sort_core_node
     # If we have bodies, then idle!
-    if not SSC.has_bodies():
+    if not SSC.has_bodies_fof():
         change_state("GoalRegion/Idle")
