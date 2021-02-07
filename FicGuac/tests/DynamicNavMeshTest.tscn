@@ -1630,6 +1630,8 @@ parameters = SubResource( 117 )
 debug_mesh = SubResource( 118 )
 
 [node name="Floor" type="StaticBody" parent="DetourNavigation"]
+collision_layer = 3
+collision_mask = 3
 
 [node name="PrimaryMesh" type="MeshInstance" parent="DetourNavigation/Floor"]
 mesh = SubResource( 119 )
@@ -1656,8 +1658,8 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -25, 3, 0 )
 
 [node name="TowerRamp03" type="StaticBody" parent="DetourNavigation/FallTower"]
 transform = Transform( -1.53095e-07, -5.57222e-08, -1, -0.34202, 0.939693, 0, 0.939693, 0.34202, -1.62921e-07, -2, -2.425, 0.963 )
-collision_layer = 524289
-collision_mask = 524289
+collision_layer = 7
+collision_mask = 7
 
 [node name="Mesh" type="MeshInstance" parent="DetourNavigation/FallTower/TowerRamp03"]
 layers = 6
@@ -1669,8 +1671,8 @@ shape = SubResource( 125 )
 
 [node name="TowerLanding04" type="StaticBody" parent="DetourNavigation/FallTower"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, -1.731, -2 )
-collision_layer = 524289
-collision_mask = 524289
+collision_layer = 7
+collision_mask = 7
 
 [node name="Mesh" type="MeshInstance" parent="DetourNavigation/FallTower/TowerLanding04"]
 layers = 6
@@ -1682,8 +1684,8 @@ shape = SubResource( 127 )
 
 [node name="TowerRamp05" type="StaticBody" parent="DetourNavigation/FallTower"]
 transform = Transform( -0.939693, -0.34202, 3.25841e-07, -0.34202, 0.939693, 0, -3.06191e-07, -1.11444e-07, -1, 0, -1.373, -2 )
-collision_layer = 524289
-collision_mask = 524289
+collision_layer = 7
+collision_mask = 7
 
 [node name="Mesh" type="MeshInstance" parent="DetourNavigation/FallTower/TowerRamp05"]
 layers = 6
@@ -1695,8 +1697,8 @@ shape = SubResource( 129 )
 
 [node name="TowerLanding06" type="StaticBody" parent="DetourNavigation/FallTower"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -1.03, -2 )
-collision_layer = 524289
-collision_mask = 524289
+collision_layer = 7
+collision_mask = 7
 
 [node name="Mesh" type="MeshInstance" parent="DetourNavigation/FallTower/TowerLanding06"]
 layers = 2
@@ -1708,8 +1710,8 @@ shape = SubResource( 127 )
 
 [node name="TowerRamp07" type="StaticBody" parent="DetourNavigation/FallTower"]
 transform = Transform( -1.53095e-07, -5.57222e-08, 1, -0.34202, 0.939693, 0, -0.939693, -0.34202, -1.62921e-07, 2, -0.672, 0 )
-collision_layer = 524289
-collision_mask = 524289
+collision_layer = 7
+collision_mask = 7
 
 [node name="Mesh" type="MeshInstance" parent="DetourNavigation/FallTower/TowerRamp07"]
 layers = 2
@@ -1721,8 +1723,8 @@ shape = SubResource( 129 )
 
 [node name="TowerLanding08" type="StaticBody" parent="DetourNavigation/FallTower"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, -0.329, 2 )
-collision_layer = 524289
-collision_mask = 524289
+collision_layer = 7
+collision_mask = 7
 
 [node name="Mesh" type="MeshInstance" parent="DetourNavigation/FallTower/TowerLanding08"]
 layers = 2
@@ -1734,8 +1736,8 @@ shape = SubResource( 127 )
 
 [node name="TowerRamp09" type="StaticBody" parent="DetourNavigation/FallTower"]
 transform = Transform( 0.939693, 0.34202, 0, -0.34202, 0.939693, 0, 0, 0, 1, 0, 0.029, 2 )
-collision_layer = 524289
-collision_mask = 524289
+collision_layer = 7
+collision_mask = 7
 
 [node name="Mesh" type="MeshInstance" parent="DetourNavigation/FallTower/TowerRamp09"]
 layers = 2
@@ -1747,8 +1749,8 @@ shape = SubResource( 129 )
 
 [node name="TowerLanding10" type="StaticBody" parent="DetourNavigation/FallTower"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 0.372, 2 )
-collision_layer = 524289
-collision_mask = 524289
+collision_layer = 7
+collision_mask = 7
 
 [node name="Mesh" type="MeshInstance" parent="DetourNavigation/FallTower/TowerLanding10"]
 layers = 2
@@ -1760,8 +1762,8 @@ shape = SubResource( 127 )
 
 [node name="TowerRamp11" type="StaticBody" parent="DetourNavigation/FallTower"]
 transform = Transform( -1.53095e-07, -5.57222e-08, -1, -0.34202, 0.939693, 0, 0.939693, 0.34202, -1.62921e-07, -2, 0.73, 0 )
-collision_layer = 524289
-collision_mask = 524289
+collision_layer = 7
+collision_mask = 7
 
 [node name="Mesh" type="MeshInstance" parent="DetourNavigation/FallTower/TowerRamp11"]
 layers = 6
@@ -1773,8 +1775,8 @@ shape = SubResource( 129 )
 
 [node name="TowerLanding12" type="StaticBody" parent="DetourNavigation/FallTower"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2, 1.073, -2 )
-collision_layer = 524289
-collision_mask = 524289
+collision_layer = 7
+collision_mask = 7
 
 [node name="Mesh" type="MeshInstance" parent="DetourNavigation/FallTower/TowerLanding12"]
 layers = 6
@@ -1786,8 +1788,8 @@ shape = SubResource( 127 )
 
 [node name="TowerRamp13" type="StaticBody" parent="DetourNavigation/FallTower"]
 transform = Transform( -0.939693, -0.34202, 3.25841e-07, -0.34202, 0.939693, 0, -3.06191e-07, -1.11444e-07, -1, 0, 1.431, -2 )
-collision_layer = 524289
-collision_mask = 524289
+collision_layer = 7
+collision_mask = 7
 
 [node name="Mesh" type="MeshInstance" parent="DetourNavigation/FallTower/TowerRamp13"]
 layers = 6
@@ -1799,8 +1801,8 @@ shape = SubResource( 129 )
 
 [node name="TowerLanding14" type="StaticBody" parent="DetourNavigation/FallTower"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.774, -2 )
-collision_layer = 524289
-collision_mask = 524289
+collision_layer = 7
+collision_mask = 7
 
 [node name="Mesh" type="MeshInstance" parent="DetourNavigation/FallTower/TowerLanding14"]
 layers = 2
@@ -1812,8 +1814,8 @@ shape = SubResource( 127 )
 
 [node name="TowerRamp15" type="StaticBody" parent="DetourNavigation/FallTower"]
 transform = Transform( -1.53095e-07, -5.57222e-08, 1, -0.34202, 0.939693, 0, -0.939693, -0.34202, -1.62921e-07, 2, 2.132, 0 )
-collision_layer = 524289
-collision_mask = 524289
+collision_layer = 7
+collision_mask = 7
 
 [node name="Mesh" type="MeshInstance" parent="DetourNavigation/FallTower/TowerRamp15"]
 layers = 2
@@ -1825,8 +1827,8 @@ shape = SubResource( 129 )
 
 [node name="TowerLanding16" type="StaticBody" parent="DetourNavigation/FallTower"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2.475, 2 )
-collision_layer = 524289
-collision_mask = 524289
+collision_layer = 7
+collision_mask = 7
 
 [node name="Mesh" type="MeshInstance" parent="DetourNavigation/FallTower/TowerLanding16"]
 layers = 2
@@ -1837,8 +1839,8 @@ material/0 = ExtResource( 11 )
 shape = SubResource( 127 )
 
 [node name="TowerBody" type="StaticBody" parent="DetourNavigation/FallTower"]
-collision_layer = 2
-collision_mask = 524290
+collision_layer = 7
+collision_mask = 7
 
 [node name="CollisionShape" type="CollisionShape" parent="DetourNavigation/FallTower/TowerBody"]
 shape = SubResource( 130 )

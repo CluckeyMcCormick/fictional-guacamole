@@ -22,8 +22,8 @@ radius = 2.65
 height = 2.3
 
 [node name="BasePawn" type="KinematicBody"]
-collision_layer = 16
-collision_mask = 3
+collision_layer = 1024
+collision_mask = 1041
 script = ExtResource( 4 )
 
 [node name="IdealCollision" type="CollisionShape" parent="."]
@@ -42,7 +42,7 @@ shape = SubResource( 3 )
 [node name="SensoryArea" type="Area" parent="."]
 monitorable = false
 collision_layer = 0
-collision_mask = 8
+collision_mask = 48
 
 [node name="SensoryCollision" type="CollisionShape" parent="SensoryArea"]
 transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, -0.0117323, -4.76837e-07, 0.0024085 )
@@ -55,7 +55,7 @@ pixel_size = 0.014
 shaded = true
 alpha_cut = 2
 frames = ExtResource( 1 )
-frame = 4
+frame = 6
 playing = true
 
 [node name="WeaponSprite" type="AnimatedSprite3D" parent="."]
@@ -76,3 +76,4 @@ fall_state_delay_time = 0.25
 primary_sensory_area = NodePath("../SensoryArea")
 
 [node name="PathingInterfaceCore" parent="." instance=ExtResource( 5 )]
+navigation_node = NodePath("")

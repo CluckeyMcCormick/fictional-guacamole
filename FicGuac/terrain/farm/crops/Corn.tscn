@@ -23,7 +23,7 @@ script = ExtResource( 2 )
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.85, 0 )
 monitorable = false
 collision_layer = 0
-collision_mask = 16
+collision_mask = 1024
 
 [node name="CornShape" type="CollisionShape" parent="CornArea"]
 shape = SubResource( 1 )

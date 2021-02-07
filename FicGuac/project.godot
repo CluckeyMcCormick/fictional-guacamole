@@ -115,15 +115,20 @@ game_core_pause={
 [layer_names]
 
 3d_render/layer_1="Default Render"
-3d_physics/layer_1="Terrain, User Screen Blocking"
+3d_physics/layer_1="Terrain"
 3d_render/layer_2="Obstacle Actual"
-3d_physics/layer_2="Terrain, User Screen Pass-through"
+3d_physics/layer_2="User Ray Blocking"
 3d_render/layer_3="Obstacle Alternate"
+3d_physics/layer_3="Camera Obstrucution"
 3d_render/layer_4="Silhouettable"
 3d_render/layer_5="Special Effects (Rerender)"
-3d_physics/layer_5="Pawn"
+3d_physics/layer_5="Physical Hazard"
 3d_render/layer_6="Special Effects (No rerender)"
-3d_physics/layer_20="Camera Obstrucution"
+3d_physics/layer_6="Intangible Hazard"
+3d_physics/layer_7="Interaction Hint"
+3d_physics/layer_8="World Hint"
+3d_physics/layer_9="Movement Hint"
+3d_physics/layer_11="Agent"
 
 [rendering]
 

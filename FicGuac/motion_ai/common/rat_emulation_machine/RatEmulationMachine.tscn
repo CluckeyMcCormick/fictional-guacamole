@@ -24,8 +24,6 @@ animation_player = null
 
 [node name="Idle" type="Node" parent="GoalRegion"]
 script = ExtResource( 9 )
-disabled = false
-has_regions = false
 fsm_owner = null
 animation_player = null
 
@@ -41,6 +39,8 @@ animation_player = null
 
 [node name="PhysicsTravelRegion" type="Node" parent="."]
 script = ExtResource( 7 )
+disabled = false
+has_regions = false
 fsm_owner = null
 animation_player = null
 

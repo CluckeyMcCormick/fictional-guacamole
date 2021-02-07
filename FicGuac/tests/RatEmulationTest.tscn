@@ -65,7 +65,7 @@ mesh = SubResource( 4 )
 material/0 = null
 
 [node name="StaticBody" type="StaticBody" parent="Boxio"]
-collision_layer = 10
+collision_layer = 16
 collision_mask = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="Boxio/StaticBody"]
@@ -77,7 +77,7 @@ mesh = SubResource( 4 )
 material/0 = null
 
 [node name="StaticBody" type="StaticBody" parent="Boxio2"]
-collision_layer = 10
+collision_layer = 16
 collision_mask = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="Boxio2/StaticBody"]
@@ -89,7 +89,7 @@ mesh = SubResource( 4 )
 material/0 = null
 
 [node name="StaticBody" type="StaticBody" parent="Boxio3"]
-collision_layer = 10
+collision_layer = 16
 collision_mask = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="Boxio3/StaticBody"]
@@ -101,7 +101,7 @@ mesh = SubResource( 4 )
 material/0 = null
 
 [node name="StaticBody" type="StaticBody" parent="Boxio4"]
-collision_layer = 10
+collision_layer = 16
 collision_mask = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="Boxio4/StaticBody"]
@@ -113,7 +113,7 @@ mesh = SubResource( 4 )
 material/0 = null
 
 [node name="StaticBody" type="StaticBody" parent="Boxio5"]
-collision_layer = 10
+collision_layer = 16
 collision_mask = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="Boxio5/StaticBody"]
@@ -125,7 +125,7 @@ mesh = SubResource( 4 )
 material/0 = null
 
 [node name="StaticBody" type="StaticBody" parent="Boxio6"]
-collision_layer = 10
+collision_layer = 16
 collision_mask = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="Boxio6/StaticBody"]
@@ -137,7 +137,7 @@ mesh = SubResource( 4 )
 material/0 = null
 
 [node name="StaticBody" type="StaticBody" parent="Boxio7"]
-collision_layer = 10
+collision_layer = 16
 collision_mask = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="Boxio7/StaticBody"]
@@ -149,7 +149,7 @@ mesh = SubResource( 4 )
 material/0 = null
 
 [node name="StaticBody" type="StaticBody" parent="Boxio8"]
-collision_layer = 10
+collision_layer = 16
 collision_mask = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="Boxio8/StaticBody"]

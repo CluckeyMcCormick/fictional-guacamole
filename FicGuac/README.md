@@ -58,49 +58,74 @@ layers.
 
 And as though that weren't confusing enough, the physics layers are used for more than just collisions. Through 3D Areas, the physics layers also serve as our detection mechanism for when entities enter or exit center spots. In addition, we frequently need to use physics raycasts to determine visibility. We also have to keep in mind that physics is also used for entity picking - actually selecting entities via mouse clicks. Oh, and the collision layers are also used to generate navigation meshes.
 
-So our physics layers need to serve as Collision Detection, Occlusion Detection, and Entity Detection, and Entity Picking. Each physics body then exists on a given set of layers but collides with another set. Perhaps unsurprisingly, these layers are much more messy than the *visual layers*.
+So our physics layers need to serve as Collision Detection, Occlusion Detection, Entity Detection, and Entity Picking. Each physics body then exists on a given set of layers but collides with another set. Perhaps unsurprisingly, these layers are much more messy than the *visual layers*.
 
-Godot naturally supports 20 layers. Each layer can be given a name, to help differentiate it from the other layers. At present, we use 4 layers. These are:
+Godot naturally supports 20 layers. Each layer can be given a name, to help differentiate it from the other layers. To help make things simpler, they layers are grouped into "blocks" based on their purpose. There are three blocks - the *World Matter* block, the *World Dynamics* block, and the *Agent-Entity* block.
 
-- (Bit 0/ Layer 1): **Terrain, User Screen Blocking**
-	+ This layer represents all terrain that blocks even the user's inputs. That is, even the
-	user cannot access what is behind or beyond these terrain pieces. This should only really
-	be used for, like, the floor.
+### World Matter Block
 
-- (Bit 1/ Layer 2): **Terrain, User Screen Pass-through**
-	+ This layer represents all terrain that doesn't block the user's inputs. This should
-	constitute most of the game's impassible terrain - since the user needs to be able to
-	click at objects behind walls.
+This block deals with what I term the *World Matter* - the actual physical, static building blocks of the world. It largely deals with the terrain, and various attributes the terrain can have.
 
-- (Bit 4/ Layer 5): **Pawn**
-	+ This layer denotes that the physics object is a Pawn. This doesn't serve a collision
-	purpose as much as a detection-and-identification one: it allows various Area nodes
-	across multiple scenes to detect when a pawn (and only a pawn) has entered the area's
-	purview.
-	+ This bit isn't adjacent to any of the other layers because we keep adding and removing
-	them. Thw whole thing is in a state of flux so this is where this will sit (for now).
+- (Bit 0/ Layer 1): **Terrain**
+	+ This layer represents all static terrain pieces. Buildings, the floor, etc.
 
-- (Bit 19/ Layer 20): **Camera Obstruction**
+- (Bit 1/ Layer 2): **User Ray Blocking**
+	+ This layer is meant to act as a flag in conjunction with the *Terrain* layer. This
+	is the layer that user input rays (i.e. for object picking) exist on - by placing
+	a terrain piece (or anything for that matter) on this layer, it creates a space
+	block for the user's inputs.
+
+- (Bit 2/ Layer 3): **Camera Obstruction**
 	+ This layer is for any physics body that blocks, obscures, and obstructs the camera.
 	We use this to query whether the camera can currently see a given point in space.
 	+ I fully acknowledge that this layer is a bit odd since it effectively mixes the
 	visual aspects of the engine with the physics aspects. That's not the greatest but
 	it's also the best we can do. This is a important feature, particularly for special
 	effects.
-	+ This layer is occupies the final bit/space because I'm confident this will be in all
-	builds going forward. We generally add layers from the bottom up, so placing it at the
-	back effectively locks it in-place.
 
-Because the game is being actively developed - new features speculated, added, and removed - these layers are in a state of flux. Possible layers that could be added in the future include:
+### World Dynamics Block
 
-- Layers for denoting an entity's "team" for easy friend-or-foe identification.
-- Layer to denote a vehicle (siege weapon, wagons, etc.) for detection/identification.
-- Layers to denote creatures by size (Vermin, Small, Medium, Large) for detection/identification.
-- Layers to denote unit types (i.e. Bear) for detection/identification. The current *Pawn* layer falls under this category.
-- Layers for projectiles for hit/collision detection. This will be a very important aspect of the game so this is a very likely candidate.
-- Layers for items dropped on the ground, which would help us with AI goal-making.
-- AI Hint Layers - one of the unfortunate aspects of Godot's navigation (and the Recast algorithm is general) is that it doesn't allow for decoration of the mesh data. In other words, we can't denote special movement instances like ladders, or place to jump across gaps. So, for any unusual movement options, we'll have to use special AI hints. This will most likely take the form of a 3D area that notifies entering entities.
-- Layers for each type of pickable object - for however many pickable objects there are. This would be important for user inputs.
+This block deals with elements of the world that are more dynamic than the *World Matter* block - those elements that frequently appear and disappear and/or move. This also includes items that need to be detected on the-fly, but are otherwise intangible (like Fire, or AI breadcrumbs).
+
+- (Bit 4/ Layer 5): **Physical Hazard**
+	+ This layer represents physical hazards, like spikes or boulders. A hazard of some
+	sort that has a physical presence that can be collided with and should be pathed
+	around.
+
+- (Bit 5/ Layer 6): **Intangible Hazard**
+	+ Unlike the *Physical Hazard* layer, this one deals with elements that are
+	intangible and can not be collided with - like poisonous gas or fire. However,
+	these
+	elements still need to be detected and pathed around - ergo, they have their own
+	physical layers.
+
+- (Bit 6/ Layer 7): **Interaction Hint**
+	+ This layer is for "hints" - entities that we place in the world in order to
+	somehow advance, inform, or improve the AI. The AI needs to detect these hints
+	dynamically, hence the assignment of a physics layer. This hint layer will
+	specifically denote the target positions for "interacting" with world objects.
+	Like picking up weapons or using furniture.
+	
+- (Bit 7/ Layer 8): **World Hint**
+	+ This hint layer is for world hints, which contain information about the world
+	and may be sought by certain AI. These will most likely be "markers" - marking
+	an area as high ground, or marking an area as a safe zone, or marking out a
+	particular kind of building.
+
+- (Bit 8/ Layer 9): **Movement Hint**
+	+ This hint layer is for movement hints, which describe where movement actions
+	can be taken by certain AI. For example, it may indicate that crouching is
+	required or that a gap can be crossed by jumping.
+
+### Agent-Entity Block
+
+This block is for the various agents (i.e. Motion AI) and entities (items, projectiles, etc.).
+
+- (Bit 10/ Layer 11): **Agent**
+	+ This layer is for active agents (i.e. Motion AI) that move through the
+	world - such as the Pawn.
+
+Because the game is being actively developed - new features speculated, added, and removed - these layers are in a state of flux.
 
 ## Input Mapping
 Godot has a pretty good system for handling inputs - inputs (button presses, mouse clicks, etc.) are mapped with event names at the project level. The individual nodes in the project can then handle these events individually.
@@ -161,11 +186,10 @@ We used to keep all scenes in this folder. Now, it's a directory for scenes and 
 This is a directory of special effects, very much in the movie sense - these scenes and assets are intended purely to create visual effects. Most of our shaders reside here.
 
 ### Terrain
-Anything the characters will climb over, on, under, and through is considered terrain. At present I think this category
-may be overly broad. We may, over time, migrate assets out of this directory into their own directory. In a way, the *Buildings* directory is already an example of that. For now, it suits our purposes well enough.
+Anything the characters will climb over, on, under, and through is considered terrain. At present I think this category may be overly broad. We may, over time, migrate assets out of this directory into their own directory. In a way, the *Buildings* directory is already an example of that. For now, it suits our purposes well enough.
 
 ### Tests
 Games are complicated, and this project is no exception. To help test the game, we've developed individual scenes to put particular game concepts to the test. Those tests reside here.
 
 ### Util
-The contents of this directory are meant for debugging or otherwise enhancing other scenes. It's best to see this as a toolbox that other scenes draw from. 
+The contents of this directory are meant for debugging or otherwise enhancing other scenes. It's best to see this as a toolbox that other scenes draw from.

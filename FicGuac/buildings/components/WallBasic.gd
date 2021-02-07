@@ -117,8 +117,8 @@ func set_shadow_only_mode(new_shadow_mode):
         $CutawayCaps.cast_shadow = shade_only
         # If set to shade only mode, then we're no longer blocking visibility.
         # Turn off the "Camera Obstruction" collision layer.
-        self.set_collision_layer_bit(19, false)
-        self.set_collision_mask_bit(19, false)
+        self.set_collision_layer_bit(2, false)
+        self.set_collision_mask_bit(2, false)
     else:
         $Exterior.cast_shadow = shade_default
         $Interior.cast_shadow = shade_default
@@ -126,8 +126,8 @@ func set_shadow_only_mode(new_shadow_mode):
         $CutawayCaps.cast_shadow = shade_default
         # If set to shade only mode is off, then we're blocking visibility.
         # Turn on the "Camera Obstruction" collision layer.
-        self.set_collision_layer_bit(19, true)
-        self.set_collision_mask_bit(19, true)
+        self.set_collision_layer_bit(2, true)
+        self.set_collision_mask_bit(2, true)
 
 func set_render_bottom_cap(new_bool):
     render_bottom_cap = new_bool

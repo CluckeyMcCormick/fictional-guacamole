@@ -61,7 +61,8 @@ func process_mouse_click():
     var result = space_state.intersect_ray(
         mouse_from, mouse_to, # Ray origin, Ray destination
         [], # Node exclusion list; we exlude nothing!
-        1 # Collision MASK - what to collide with. BIT 0 is terrain (floor/path)
+        2 # Collision MASK - what to collide with. BIT 1 is User Ray Blocking,
+          # in the terrain layer allocation block
     )
     
     # If our query actually got something...

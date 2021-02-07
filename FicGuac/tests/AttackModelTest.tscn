@@ -12,7 +12,7 @@ extents = Vector3( 20, 1, 20 )
 [sub_resource type="PlaneMesh" id=2]
 size = Vector2( 40, 40 )
 
-[sub_resource type="NavigationMesh" id=4]
+[sub_resource type="NavigationMesh" id=3]
 vertices = PoolVector3Array( -19.5, 0.5, -19.5, -19.5, 0.5, 19.5, 19.5, 0.5, 19.5, 19.5, 0.5, -19.5 )
 polygons = [ PoolIntArray( 3, 2, 0 ), PoolIntArray( 0, 2, 1 ) ]
 geometry/parsed_geometry_type = 1
@@ -26,7 +26,7 @@ agent/radius = 0.5
 agent/max_climb = 0.5
 edge/max_length = 0.0
 
-[sub_resource type="SpatialMaterial" id=3]
+[sub_resource type="SpatialMaterial" id=4]
 albedo_color = Color( 0.984314, 1, 0.52549, 1 )
 
 [node name="AttackModelTest" type="Spatial"]
@@ -73,7 +73,7 @@ material/0 = ExtResource( 2 )
 [node name="Navigation" type="Navigation" parent="."]
 
 [node name="NavigationMeshInstance" type="NavigationMeshInstance" parent="Navigation"]
-navmesh = SubResource( 4 )
+navmesh = SubResource( 3 )
 
 [node name="CSGTorus" type="CSGTorus" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.1, 0 )
@@ -81,7 +81,7 @@ inner_radius = 1.9
 outer_radius = 2.1
 sides = 35
 ring_sides = 3
-material = SubResource( 3 )
+material = SubResource( 4 )
 
 [node name="ControlGUI" type="VBoxContainer" parent="."]
 margin_left = 10.0
@@ -138,7 +138,6 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0 )
 
 [node name="TargetPawn" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.3, 0 )
-position_algorithm = 1
 navigation = NodePath("../Navigation")
 [connection signal="value_changed" from="ControlGUI/RadiusSlider" to="." method="_on_RadiusSlider_value_changed"]
 [connection signal="path_complete" from="TargetPawn" to="." method="_on_TargetPawn_path_complete"]
