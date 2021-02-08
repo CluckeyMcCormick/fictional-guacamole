@@ -27,8 +27,8 @@ func _on_enter(var arg) -> void:
     MR.goal_key = "Flee"
     
     # Connect the SensorySortCore functions
-    SSC.connect("body_entered_fof", self, "_on_sensory_sort_core_body_entered")
-    SSC.connect("body_exited_fof", self, "_on_sensory_sort_core_body_entered")
+    SSC.connect("body_entered", self, "_on_sensory_sort_core_body_entered")
+    SSC.connect("body_exited", self, "_on_sensory_sort_core_body_entered")
     
     # Connect the PhysicsTravelRegion functions
     PTR.connect("path_complete", self, "_on_phys_trav_region_path_complete")
@@ -42,8 +42,8 @@ func _on_exit(var arg) -> void:
     var SSC = MR.sensory_sort_core_node
     
     # Disconnect the SensorySortCore functions
-    SSC.disconnect("body_entered_fof", self, "_on_sensory_sort_core_body_entered")
-    SSC.disconnect("body_exited_fof", self, "_on_sensory_sort_core_body_entered")
+    SSC.disconnect("body_entered", self, "_on_sensory_sort_core_body_entered")
+    SSC.disconnect("body_exited", self, "_on_sensory_sort_core_body_entered")
 
     # Disconnect the PhysicsTravelRegion functions
     PTR.disconnect("path_complete", self, "_on_phys_trav_region_path_complete")
@@ -67,7 +67,7 @@ func assign_target_position():
     var path
     
     # For each body we're actively tracking...
-    for body in SSC.get_bodies_fof():
+    for body in SSC.get_bodies(SSC.PRI_AREA_FOF, SSC.GC_THREAT):
         move_vec += body.global_transform.origin - target.global_transform.origin
     
     # So now we have a vector that basically points from the integrating body to
@@ -107,16 +107,38 @@ func _on_phys_trav_region_error_goal_stuck(target_position):
     assign_target_position()
 
 # If a body enters our sensory range...
-func _on_sensory_sort_core_body_entered(body):
+func _on_sensory_sort_core_body_entered(body, priority_area, group_category):
     # Get our SensorySortCore
     var SSC = MR.sensory_sort_core_node
-    # If we don't have bodies, then idle!
-    if not SSC.has_bodies_fof():
-        change_state("GoalRegion/Idle")
+    
+    # Switch based on the priority area
+    match priority_area:
+        SSC.PRI_AREA_GENERAL:
+            pass
+        SSC.PRI_AREA_FOF:
+            # If there's no threats left in the fight-or-flight area, we can go
+            # back to the idle state.
+            if not SSC.has_bodies(SSC.PRI_AREA_FOF, SSC.GC_THREAT):
+                change_state("GoalRegion/Idle")
+        SSC.PRI_AREA_DANGER:
+            pass
+        _:
+            pass
 
-func _on_sensory_sort_core_body_exited(body):
+func _on_sensory_sort_core_body_exited(body, priority_area, group_category):
     # Get our SensorySortCore
     var SSC = MR.sensory_sort_core_node
-    # If we have bodies, then idle!
-    if not SSC.has_bodies_fof():
-        change_state("GoalRegion/Idle")
+    
+    # Switch based on the priority area
+    match priority_area:
+        SSC.PRI_AREA_GENERAL:
+            pass
+        SSC.PRI_AREA_FOF:
+            # If there's no threats left in the fight-or-flight area, we can go
+            # back to the idle state.
+            if not SSC.has_bodies(SSC.PRI_AREA_FOF, SSC.GC_THREAT):
+                change_state("GoalRegion/Idle")
+        SSC.PRI_AREA_DANGER:
+            pass
+        _:
+            pass

@@ -1,17 +1,29 @@
-[gd_scene load_steps=4 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://motion_ai/pawn/BasePawn.tscn" type="PackedScene" id=1]
 [ext_resource path="res://motion_ai/common/rat_emulation_machine/RatEmulationMachine.tscn" type="PackedScene" id=2]
 [ext_resource path="res://tests/test_assets/RatPawn.gd" type="Script" id=3]
+[ext_resource path="res://motion_ai/common/GroupSortMatrix.gd" type="Script" id=4]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 4 )
+threat_groups = PoolStringArray( "rat_threat" )
+goal_groups = PoolStringArray(  )
 
 [node name="RatPawn" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
 
 [node name="VisualSprite" parent="." index="6"]
-frame = 8
+frame = 4
+
+[node name="SensorySortCore" parent="." index="9"]
+group_sort_matrix = SubResource( 1 )
 
 [node name="RatEmulationMachine" parent="." index="11" instance=ExtResource( 2 )]
+disabled = false
 fsm_owner = NodePath("..")
 kinematic_core = NodePath("../KinematicCore")
 sensory_sort_core = NodePath("../SensorySortCore")
 pathing_interface_core = NodePath("../PathingInterfaceCore")
+idle_wait_time = 1.0
+move_distance = 5

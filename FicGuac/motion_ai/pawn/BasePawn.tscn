@@ -1,10 +1,11 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://motion_ai/pawn/pawn_frames.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://motion_ai/common/KinematicCore.tscn" type="PackedScene" id=2]
 [ext_resource path="res://motion_ai/common/SensorySortCore.tscn" type="PackedScene" id=3]
 [ext_resource path="res://motion_ai/pawn/BasePawn.gd" type="Script" id=4]
 [ext_resource path="res://motion_ai/common/PathingInterfaceCore.tscn" type="PackedScene" id=5]
+[ext_resource path="res://motion_ai/common/GroupSortMatrix.gd" type="Script" id=6]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 0.26, 0.805, 0.26 )
@@ -27,6 +28,11 @@ radius = 3.0
 radius = 0.5
 height = 1.7
 
+[sub_resource type="Resource" id=7]
+script = ExtResource( 6 )
+threat_groups = PoolStringArray(  )
+goal_groups = PoolStringArray(  )
+
 [node name="BasePawn" type="KinematicBody"]
 collision_layer = 1024
 collision_mask = 17
@@ -46,8 +52,9 @@ transform = Transform( 1, 0, 0, 0, -1.62921e-07, -1, 0, 1, -1.62921e-07, 0, 0.2,
 shape = SubResource( 3 )
 
 [node name="GeneralSensoryArea" type="Area" parent="."]
+monitorable = false
 collision_layer = 0
-collision_mask = 48
+collision_mask = 1520
 
 [node name="SensoryCollision" type="CollisionShape" parent="GeneralSensoryArea"]
 shape = SubResource( 4 )
@@ -55,14 +62,15 @@ shape = SubResource( 4 )
 [node name="FOFArea" type="Area" parent="."]
 monitorable = false
 collision_layer = 0
-collision_mask = 48
+collision_mask = 1520
 
 [node name="FOFCollision" type="CollisionShape" parent="FOFArea"]
 shape = SubResource( 5 )
 
 [node name="DangerInterruptArea" type="Area" parent="."]
+monitorable = false
 collision_layer = 0
-collision_mask = 48
+collision_mask = 1520
 
 [node name="DangerSaveCollision" type="CollisionShape" parent="DangerInterruptArea"]
 shape = SubResource( 6 )
@@ -74,7 +82,6 @@ pixel_size = 0.014
 shaded = true
 alpha_cut = 2
 frames = ExtResource( 1 )
-frame = 8
 playing = true
 
 [node name="WeaponSprite" type="AnimatedSprite3D" parent="."]
@@ -95,5 +102,6 @@ fall_state_delay_time = 0.25
 general_sensory_area = NodePath("../GeneralSensoryArea")
 fight_or_flight_area = NodePath("../FOFArea")
 danger_interrupt_area = NodePath("../DangerInterruptArea")
+group_sort_matrix = SubResource( 7 )
 
 [node name="PathingInterfaceCore" parent="." instance=ExtResource( 5 )]

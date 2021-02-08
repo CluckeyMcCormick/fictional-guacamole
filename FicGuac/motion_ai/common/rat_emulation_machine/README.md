@@ -1,7 +1,7 @@
 # Rat Emulation Machine
 The machine features several states that control the pawn's pathing and movement, independent of the states that *actually perform* the movement. It can wait, it can wander around, and it can flee from danger. It's a big step forward for the AI.
 
-This machine operates in three modes - in *Idle* mode, the machine doesn't move and waits. In *Wander* mode, the machine wanders in a random direction. In *Flee* mode, the machine moves *away* from 
+This machine operates in three modes - in *Idle* mode, the machine doesn't move and waits. In *Wander* mode, the machine wanders in a random direction. In *Flee* mode, the machine moves *away* from whatever the percieved *Threats* are.
 
 ### Configurables
 This machine features the standard configurable items for a machine `State` (see the *addons* directory for more, and the *xsm* subdirectory for EVEN MORE).
@@ -61,7 +61,7 @@ The Tree Structure can be observed below:
 As we have two regions, we have effectively have two sub-machines:
 
 ##### Goal Region
-The main states are the *Idle* and *Wander* states. If, at any point, we detect a body intruding in our sensory area, we transition to the *Flee* state. We return from the *Flee* state to the *Idle* state.
+The main states are the *Idle* and *Wander* states. If, at any point, we detect a *Threat* body intruding in our *Fight or Flight* sensory area, we transition to the *Flee* state. We return from the *Flee* state to the *Idle* state.
 
 In the *Idle* state, we wait for the amount of time specified by the *Idle Wait Time* configurable before transition to the *Wander* state.
 

@@ -64,7 +64,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, 5 )
 mesh = SubResource( 4 )
 material/0 = null
 
-[node name="StaticBody" type="StaticBody" parent="Boxio"]
+[node name="StaticBody" type="StaticBody" parent="Boxio" groups=[
+"rat_threat",
+]]
 collision_layer = 16
 collision_mask = 0
 
@@ -76,7 +78,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.5, -5 )
 mesh = SubResource( 4 )
 material/0 = null
 
-[node name="StaticBody" type="StaticBody" parent="Boxio2"]
+[node name="StaticBody" type="StaticBody" parent="Boxio2" groups=[
+"rat_threat",
+]]
 collision_layer = 16
 collision_mask = 0
 
@@ -88,7 +92,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.5, 0 )
 mesh = SubResource( 4 )
 material/0 = null
 
-[node name="StaticBody" type="StaticBody" parent="Boxio3"]
+[node name="StaticBody" type="StaticBody" parent="Boxio3" groups=[
+"rat_threat",
+]]
 collision_layer = 16
 collision_mask = 0
 
@@ -100,7 +106,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0.5, 0 )
 mesh = SubResource( 4 )
 material/0 = null
 
-[node name="StaticBody" type="StaticBody" parent="Boxio4"]
+[node name="StaticBody" type="StaticBody" parent="Boxio4" groups=[
+"rat_threat",
+]]
 collision_layer = 16
 collision_mask = 0
 
@@ -112,7 +120,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0.5, -5 )
 mesh = SubResource( 4 )
 material/0 = null
 
-[node name="StaticBody" type="StaticBody" parent="Boxio5"]
+[node name="StaticBody" type="StaticBody" parent="Boxio5" groups=[
+"rat_threat",
+]]
 collision_layer = 16
 collision_mask = 0
 
@@ -124,7 +134,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0.5, 5 )
 mesh = SubResource( 4 )
 material/0 = null
 
-[node name="StaticBody" type="StaticBody" parent="Boxio6"]
+[node name="StaticBody" type="StaticBody" parent="Boxio6" groups=[
+"rat_threat",
+]]
 collision_layer = 16
 collision_mask = 0
 
@@ -136,7 +148,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.5, 5 )
 mesh = SubResource( 4 )
 material/0 = null
 
-[node name="StaticBody" type="StaticBody" parent="Boxio7"]
+[node name="StaticBody" type="StaticBody" parent="Boxio7" groups=[
+"rat_threat",
+]]
 collision_layer = 16
 collision_mask = 0
 
@@ -148,7 +162,9 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0.5, -5 )
 mesh = SubResource( 4 )
 material/0 = null
 
-[node name="StaticBody" type="StaticBody" parent="Boxio8"]
+[node name="StaticBody" type="StaticBody" parent="Boxio8" groups=[
+"rat_threat",
+]]
 collision_layer = 16
 collision_mask = 0
 

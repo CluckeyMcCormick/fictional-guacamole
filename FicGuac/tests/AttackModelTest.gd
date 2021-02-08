@@ -27,15 +27,9 @@ var last_iteration_outside = false
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    # Make the Pawn path to itself
-    var pth = $Navigation.get_simple_path(
-        $TargetPawn.global_transform.origin,
-        $TargetPawn.global_transform.origin
-    )
-    
-    # This should trigger the path_complete signal, kicking off our processing
-    # loop.
-    $TargetPawn.set_target_path( Array(pth) )
+    # Make the Pawn path to itself. This should trigger the path_complete
+    # signal, kicking off our processing loop.
+    $TargetPawn.move_to_point($TargetPawn.global_transform.origin)
     
 func _on_TargetPawn_path_complete(pawn, position):
     # Nab the currently configured radius, since we'll be using that
@@ -88,14 +82,8 @@ func _on_TargetPawn_path_complete(pawn, position):
             new_target *= (radius - TARGET_RADIAL_DEVIATION)
             last_iteration_outside = false
     
-    # Make ourselves a path to our new target position
-    var pth = $Navigation.get_simple_path(
-        $TargetPawn.global_transform.origin,
-        new_target
-    )
-    
     # Pass it to the target pawn
-    $TargetPawn.set_target_path( Array(pth) )
+    $TargetPawn.move_to_point( new_target )
 
 func _on_RadiusSlider_value_changed(value):
     # Set the inner and outer radius values appropriately

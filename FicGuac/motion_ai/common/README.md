@@ -9,6 +9,20 @@ Where some amount of coding is required as part of the plugging, we typically re
 
 The *Machines* are somewhat unique in that they represent different phases of AI development, each preserved as separate machines. We maintain older machines for testing purposes, and as proofs-of-concept.
 
+## GroupSortMatrix
+We identify different spatial elements in this game - hazards, items, projectiles, Motion AI, etc - using Godot's `Node` *Groups*. They're the closest things Godot has to some sort meta-tagging system. In order to build a robust motion AI system, we can't just use global tags (that'd be a bit painful managing global strings like that, anyhow). No, instead we need a way to group tags into universal categories, and leave it up to an integrating body to decide which groups fall into which category.
+
+This custom (scripted) resource provides an interface for listing which groups fall under which category.
+
+### Configurables
+We have one configurable for each *Group Category*.
+
+##### Threat Groups
+A `PoolStringArray`. Each string should be a group that an integrating body treats as a *Threat*. Threats are different from enemies, representing a danger that can't be addressed and should instead be fled from.
+
+##### Goal Groups
+A `PoolStringArray`. Each string should be a group that an integrating body treats as a *Goal*. Goals are just a temporary grouping for anything and everything good. We'll expand it into multiple categories later.
+
 ## KinematicCore
 The *KinematicCore* is the core *motion* component of *Motion AI*. It governs the movement characteristics of an AI.
 
@@ -85,21 +99,52 @@ The *SensorySort* is the core *sensory* component of *Motion AI*. It handles sen
 
 This core uses multiple `Area` nodes to do the appropriate sensing. It is assumed that the nodes are nested, starting with the largest external and moving to the smallest internal node. Using multiple nested areas in this way allows us to create a sort of "priority" structure.
 
+It sorts these inputs into the different *Group Categories* using a *GroupSortMatrix* resource.
+
 ### Configurables
 ##### General Sensory Area
 The primary sensory area. Needs to be a 3D `Area` node. Used for sensing anything and everything, then sorting those inputs appropriately. Has the lowest priority, and should be the largest of the areas. It should contain the other two areas.
 
+This configurable does not support runtime configuration. It is updated once, when the `_ready()` function is called.
+
 ##### Fight or Flight Area
 The secondary sensory area. Needs to be a 3D `Area` node. Called *Fight or Flight* because certain entities entering or exiting this area should trigger a flight or flight response in AI. Has higher priority than the *General Sensory Area*, and should be smaller than it too.
+
+This configurable does not support runtime configuration. It is updated once, when the `_ready()` function is called.
 
 ##### Danger Interrupt Area
 The primary sensory area. Needs to be a 3D `Area` node. This area has the highest priority and should be the smallest area. It's meant to capture *imminent* threats that need to interrupt and override whatever the integrating body is doing. Ergo, it should be just a bit bigger than the actual collision model of the integrating body.
 
 This is really here to stop the integrating body from, say, walking into fire.
 
+This configurable does not support runtime configuration. It is updated once, when the `_ready()` function is called.
+
+##### Group Sort Matrix
+In order to sort the different bodies detected into the the *Group Categories*, the *SensorySortCore* relies on a *GroupSortMatrix* resource.
+
+Unlike other configurables, this one does support runtime value changes. Swapping out this resource will trigger a reappraisal of all tracked objects. The *SensorySortCore* will send out signals as though the bodies were just being discovered. Depending on the number of nodes, categories, and group names, this could have some major memory-processing overhead.
+
+### Constants
+Bodies need to be tracked, retrieved, and emitted with their area and group categories. To provide a common interface, the *SensorySortCore* defines constants for the *priority area* and the *group category*.
+
+##### `PRI_AREA_GENERAL`
+Constant-key for the *General Sensory* priority-area.
+
+##### `PRI_AREA_FOF`
+Constant-key for the *Fight or Flight* priority-area.
+
+##### `PRI_AREA_DANGER`
+Constant-key for the *Danger Interrupt* priority-area.
+
+##### `GC_GOAL`
+Constant-key for the *Goal* group category.
+
+##### `GC_THREAT`
+Constant-key for the *Threat* group category.
+
 ### Functions
 ##### `get_bodies`
-Returns an array of the currently tracked body `Node`s. Each entry in the array will be unique.
+Returns an array of the currently tracked body `Node`s. Each entry in the array will be unique. Requires
 
 ##### `has_bodies`
 Returns a *boolean* value, indicating whether the core is currently tracking bodies or not.

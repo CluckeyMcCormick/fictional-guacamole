@@ -27,8 +27,8 @@ func _on_enter(var arg) -> void:
     MR.goal_key = "Wander"
     
     # Connect the SensorySortCore functions
-    SSC.connect("body_entered_fof", self, "_on_sensory_sort_core_body_entered")
-    SSC.connect("body_exited_fof", self, "_on_sensory_sort_core_body_entered")
+    SSC.connect("body_entered", self, "_on_sensory_sort_core_body_entered")
+    SSC.connect("body_exited", self, "_on_sensory_sort_core_body_entered")
     
     # Connect the PhysicsTravelRegion functions
     PTR.connect("path_complete", self, "_on_phys_trav_region_path_complete")
@@ -42,8 +42,8 @@ func _on_exit(var arg) -> void:
     var SSC = MR.sensory_sort_core_node
     
     # Disconnect the SensorySortCore functions
-    SSC.disconnect("body_entered_fof", self, "_on_sensory_sort_core_body_entered")
-    SSC.disconnect("body_exited_fof", self, "_on_sensory_sort_core_body_entered")
+    SSC.disconnect("body_entered", self, "_on_sensory_sort_core_body_entered")
+    SSC.disconnect("body_exited", self, "_on_sensory_sort_core_body_entered")
 
     # Disconnect the PhysicsTravelRegion functions
     PTR.disconnect("path_complete", self, "_on_phys_trav_region_path_complete")
@@ -95,16 +95,36 @@ func _on_phys_trav_region_error_goal_stuck(target_position):
     change_state("GoalRegion/Idle")
 
 # If a body enters our sensory range...
-func _on_sensory_sort_core_body_entered(body):
+func _on_sensory_sort_core_body_entered(body, priority_area, group_category):
     # Get our SensorySortCore
     var SSC = MR.sensory_sort_core_node
-    # If we have bodies, then FLEE!
-    if SSC.has_bodies_fof():
-        change_state("Flee")
+    
+    # Switch based on the priority area
+    match priority_area:
+        SSC.PRI_AREA_GENERAL:
+            pass
+        SSC.PRI_AREA_FOF:
+            # If there's a threat in the fight-or-flight area, FLEE!
+            if SSC.has_bodies(SSC.PRI_AREA_FOF, SSC.GC_THREAT):
+                change_state("Flee")
+        SSC.PRI_AREA_DANGER:
+            pass
+        _:
+            pass
 
-func _on_sensory_sort_core_body_exited(body):
+func _on_sensory_sort_core_body_exited(body, priority_area, group_category):
     # Get our SensorySortCore
     var SSC = MR.sensory_sort_core_node
-    # If we have bodies, then FLEE!
-    if SSC.has_bodies_fof():
-        change_state("Flee")
+    
+    # Switch based on the priority area
+    match priority_area:
+        SSC.PRI_AREA_GENERAL:
+            pass
+        SSC.PRI_AREA_FOF:
+            # If there's a threat in the fight-or-flight area, FLEE!
+            if SSC.has_bodies(SSC.PRI_AREA_FOF, SSC.GC_THREAT):
+                change_state("Flee")
+        SSC.PRI_AREA_DANGER:
+            pass
+        _:
+            pass
