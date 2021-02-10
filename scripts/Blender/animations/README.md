@@ -18,3 +18,6 @@ A top-to-bottom move of the right arm, with the hand rotating so the angle is ba
 
 ### `fall.py`
 A static pose that's meant to be our fall animation. This is one is incredibly lazy, I'll admit it. Animation is not my strong suit, my passion, or even a passing interest.
+
+### `flee.py`
+An animation for whenever the Pawn is fleeing in terror from something. Just the walk animation, but now with the addition of some flailing arms it's a bit different. This is the first one where the Pawn has Pac-man arms, mostly because I'm lazy.

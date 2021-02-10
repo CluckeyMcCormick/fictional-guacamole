@@ -14,16 +14,16 @@ goal_groups = PoolStringArray(  )
 script = ExtResource( 3 )
 
 [node name="VisualSprite" parent="." index="6"]
-frame = 4
+frame = 1
 
 [node name="SensorySortCore" parent="." index="9"]
 group_sort_matrix = SubResource( 1 )
 
+[node name="PathingInterfaceCore" parent="." index="10"]
+navigation_node = NodePath("")
+
 [node name="RatEmulationMachine" parent="." index="11" instance=ExtResource( 2 )]
-disabled = false
 fsm_owner = NodePath("..")
 kinematic_core = NodePath("../KinematicCore")
 sensory_sort_core = NodePath("../SensorySortCore")
 pathing_interface_core = NodePath("../PathingInterfaceCore")
-idle_wait_time = 1.0
-move_distance = 5

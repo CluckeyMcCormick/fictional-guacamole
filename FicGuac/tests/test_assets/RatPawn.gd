@@ -32,7 +32,13 @@ func sprite_update():
             anim_str += "fall"
             
         "Walk":
-            anim_str += "walk"
+            # Special case - if our current goal key is flee, we have a special
+            # "flee" animation we can use.
+            if $RatEmulationMachine.goal_key == "Flee":
+                anim_str += "flee"
+            # Otherwise, just use the walk.
+            else:
+                anim_str += "walk"
             
         _:
             print("Unrecognized State Key: ", $RatEmulationMachine.physics_travel_key)
