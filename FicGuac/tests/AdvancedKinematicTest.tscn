@@ -1,7 +1,7 @@
 [gd_scene load_steps=32 format=2]
 
 [ext_resource path="res://util/CheckerboardTriplane.tres" type="Material" id=1]
-[ext_resource path="res://terrain/mat_terrain_grass_grid.tres" type="Material" id=2]
+[ext_resource path="res://textures/terrain/material/mat_terrain_grass_grid.tres" type="Material" id=2]
 [ext_resource path="res://addons/godot-navigation-lite/bin/detour_navigation.gdns" type="Script" id=4]
 [ext_resource path="res://addons/godot-navigation-lite/bin/navmesh_parameters.gdns" type="Script" id=5]
 [ext_resource path="res://addons/godot-navigation-lite/bin/navigation.gdnlib" type="GDNativeLibrary" id=6]

@@ -130,3 +130,6 @@ data_*/
 # files - so we're just gonna ignore them.
 *.md.backup
 
+# Trenchbroom (the Quake level editing tool) creates autosave directories, good
+# for working, but not so much for git. Let's ignore those subdirectories...
+autosave/

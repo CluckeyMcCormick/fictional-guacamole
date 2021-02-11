@@ -7,13 +7,16 @@ Each scene has been designed to run individually. If you wish to run them using 
 
 Note that the tests are listed here are not necessarily in alphabetical order, but from "simplest" to "most complex". In other words, tests listed later generally build on features that were tested in isolation in the earlier tests. For example, we may have a test for integration with navigation meshes, and then most subsequent tests have navigation meshes as a given.
 
-## Test Assets
+### Test Assets
 Some tests require scenes and assets that don't have a place in the wider project. Those wayward items go here. This includes various visual experiments, like alternate sprites.
 
-## Test GUI Core
+### Test GUI Core
 One of the problems with running the scenes individually is that it doesn't test certain aspects of Godot. For example, how graceful are scene transitions? Is there a load time associated with certain assets? Is there necessary cleanup that needs to be prepared when a scene exits?
 
 The scenes in *Test GUI Core* provide us with a method for testing these transitions, and provide a common GUI to all test scenes. 
+
+### TrenchBroom
+This directory contains the various `.map` files used by *TrenchBroom* and *Qodot* to generate our test terrain.
 
 ## Pawn Standing Test
 This test is literally just to test how the *Pawn*'s various sprites look when standing still.

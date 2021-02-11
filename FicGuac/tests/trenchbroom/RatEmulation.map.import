@@ -1,0 +1,13 @@
+[remap]
+
+importer="qodot.map"
+type="Resource"
+path="res://.import/RatEmulation.map-040dbb9caef736e050a39057b56e0fc3.tres"
+
+[deps]
+
+source_file="res://tests/trenchbroom/RatEmulation.map"
+dest_files=[ "res://.import/RatEmulation.map-040dbb9caef736e050a39057b56e0fc3.tres" ]
+
+[params]
+

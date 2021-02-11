@@ -191,5 +191,8 @@ Anything the characters will climb over, on, under, and through is considered te
 ### Tests
 Games are complicated, and this project is no exception. To help test the game, we've developed individual scenes to put particular game concepts to the test. Those tests reside here.
 
+### Textures
+This is where *most* of the textures sit - not all of them, but most of them. This directory is mandatory for the *Qodot* addon and the *Trenchbroom*. Any texture that would be used by them, such as terrain textures or building component textures, needs to go in this directory.
+
 ### Util
 The contents of this directory are meant for debugging or otherwise enhancing other scenes. It's best to see this as a toolbox that other scenes draw from.

@@ -1,0 +1,16 @@
+// Game: Fictional Guacamole
+// Format: Standard
+// entity 0
+{
+"classname" "worldspawn"
+"_tb_textures" "textures/building;textures/terrain;textures/util"
+// brush 0
+{
+( -512 512 0 ) ( -512 -512 0 ) ( -512 -512 -64 ) terrain/valve_grid_water 0 0 0 1 1.1111112
+( -512 -512 0 ) ( 512 -512 0 ) ( 512 -512 -64 ) terrain/valve_grid_water 0 0 0 1 1
+( 512 -512 -64 ) ( 512 512 -64 ) ( -512 512 -64 ) terrain/valve_grid_water 0 0 0 1 1
+( -512 512 0 ) ( 512 512 0 ) ( 512 -512 0 ) terrain/valve_grid_water 0 0 0 1 1
+( 512 512 -64 ) ( 512 512 0 ) ( -512 512 0 ) terrain/valve_grid_water 0 0 0 1 1
+( 512 -512 0 ) ( 512 512 0 ) ( 512 512 -64 ) terrain/valve_grid_water 0 0 0 1 1.1111112
+}
+}

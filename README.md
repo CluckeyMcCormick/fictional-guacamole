@@ -61,6 +61,8 @@ Once you've downloaded Godot, running the executable will launch the Project Man
 
 At this point, running or compiling the project is the same as any other Godot project - a tutorial on that exceeds the scope of this document.
 
+One other quick note - we make use of an addon called **Qodot** that allows us to build levels/assets in a Quake level editor called *TrenchBroom*. These maps are loaded into Godot through nodes `QodotMap`s, which you can find scattered throughout the various scenes. However, to load these maps and rebuild them, you need to specify the FULL SYSTEM file path in each scene. And I doubt your exact file path matches mine. So you'll need to change that if you're trying to rebuild scenes or something.
+
 ## Licensing
 Unless otherwise stated (typically through a `.license` file), all the code and assets are distributed under the MIT license.
 

@@ -8,6 +8,15 @@ This library, by **Miloš Lukić**, solves that issue by providing a navigation 
 
 However, it doesn't support Mac OS, which severely limits the platforms we can target. It's also got limited obstacle avoidance. In recognition of this, we'll probably remove it whenever Godot 4.0 comes out, since that version will support dynamic navigation meshes natively.
 
+## Qodot
+One particular gripe I've had with Godot is the lack of an easy way to make models, or a level editor of any kind. Apparently, this is a gripe that's actually common across Unity, Unreal, and Godot. You have to create levels in some sort of third party editor like Blender and then import those in.
+
+This addon by **Josh Palmer** (and several others, it seems) allows us to import Quake style `.map` files into Godot. That's pretty neat, but when paired with the incredible *TrenchBroom* level editor, it makes levels and other complex geometry super easy.
+
+I used to use the *Valve Hammer Editor* (generally just called *Hammer*) to make *Left 4 Dead 2* levels when I was younger. While it's not 1:1, the interface of *TrenchBroom* is very similar; it's also an absolute joy to use.
+
+A quick note - in order to build the `QodotMap` nodes, you need to specify the FULL file path in each scene. So you'll need to change that if you're trying to rebuild scenes or something.
+
 ## XSM Extended State Machine
 This library, created by **Etienne Blanc**, provides us with a solid foundation for making a state machine in Godot. It provides a pretty solid basis and, better yet, it's written entirely in GDScript - that means it should be compatible with all platforms and with Godot 4.0.
 
