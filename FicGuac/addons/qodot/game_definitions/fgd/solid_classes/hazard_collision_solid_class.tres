@@ -1,14 +1,13 @@
 [gd_resource type="Resource" load_steps=3 format=2]
 
 [ext_resource path="res://addons/qodot/src/resources/game-definitions/fgd/qodot_fgd_solid_class.gd" type="Script" id=1]
-[ext_resource path="res://addons/qodot/game_definitions/fgd/solid_classes/trigger.gd" type="Script" id=2]
-
+[ext_resource path="res://addons/qodot/game_definitions/fgd/solid_classes/hazard_collision_solid_class.gd" type="Script" id=2]
 
 [resource]
 script = ExtResource( 1 )
 class_options = "----------------------------------------------------------------"
-classname = "trigger"
-description = "Trigger Volume"
+classname = "hazard_physical"
+description = "Hazard Brush - i.e. for pathing and detection"
 qodot_internal = false
 base_classes = [  ]
 class_properties = {
@@ -21,7 +20,7 @@ meta_properties = {
 
 }
 node_options = "----------------------------------------------------------------"
-node_class = "Area"
+node_class = "StaticBody"
 transient_node = false
 spawn = "----------------------------------------------------------------"
 spawn_type = 2

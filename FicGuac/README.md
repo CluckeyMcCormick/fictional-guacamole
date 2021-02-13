@@ -87,17 +87,12 @@ This block deals with what I term the *World Matter* - the actual physical, stat
 
 This block deals with elements of the world that are more dynamic than the *World Matter* block - those elements that frequently appear and disappear and/or move. This also includes items that need to be detected on the-fly, but are otherwise intangible (like Fire, or AI breadcrumbs).
 
-- (Bit 4/ Layer 5): **Physical Hazard**
-	+ This layer represents physical hazards, like spikes or boulders. A hazard of some
-	sort that has a physical presence that can be collided with and should be pathed
-	around.
+- (Bit 4/ Layer 5): **Hazard**
+	+ This layer represents the collision space of a hazard for pathing and detection 
+	purposes.
 
-- (Bit 5/ Layer 6): **Intangible Hazard**
-	+ Unlike the *Physical Hazard* layer, this one deals with elements that are
-	intangible and can not be collided with - like poisonous gas or fire. However,
-	these
-	elements still need to be detected and pathed around - ergo, they have their own
-	physical layers.
+- (Bit 5/ Layer 6):
+	+ Currently unused.
 
 - (Bit 6/ Layer 7): **Interaction Hint**
 	+ This layer is for "hints" - entities that we place in the world in order to

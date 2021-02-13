@@ -14,25 +14,10 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://motion_ai/common/GroupSortMatrix.gd"
 }, {
-"base": "LiquidLayer",
-"class": "LavaLayer",
+"base": "Spatial",
+"class": "PatrolBreadcrumb",
 "language": "GDScript",
-"path": "res://addons/qodot/game_definitions/worldspawn_layers/liquid/lava.gd"
-}, {
-"base": "Area",
-"class": "LiquidLayer",
-"language": "GDScript",
-"path": "res://addons/qodot/game_definitions/worldspawn_layers/liquid.gd"
-}, {
-"base": "PhysicsEntity",
-"class": "PhysicsBall",
-"language": "GDScript",
-"path": "res://addons/qodot/game_definitions/fgd/point_classes/physics_ball.gd"
-}, {
-"base": "RigidBody",
-"class": "PhysicsEntity",
-"language": "GDScript",
-"path": "res://addons/qodot/game_definitions/fgd/solid_classes/physics.gd"
+"path": "res://addons/qodot/game_definitions/fgd/point_classes/patrol_breadcrumb_point_class.gd"
 }, {
 "base": "Reference",
 "class": "QodotDependencies",
@@ -69,11 +54,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/qodot/src/resources/game-definitions/fgd/qodot_fgd_solid_class.gd"
 }, {
-"base": "QodotEntity",
-"class": "QodotLight",
-"language": "GDScript",
-"path": "res://addons/qodot/game_definitions/fgd/point_classes/light.gd"
-}, {
 "base": "QodotSpatial",
 "class": "QodotMap",
 "language": "GDScript",
@@ -83,11 +63,6 @@ _global_script_classes=[ {
 "class": "QodotPlugin",
 "language": "GDScript",
 "path": "res://addons/qodot/src/qodot_plugin.gd"
-}, {
-"base": "KinematicBody",
-"class": "QodotRotateEntity",
-"language": "GDScript",
-"path": "res://addons/qodot/game_definitions/fgd/solid_classes/rotate.gd"
 }, {
 "base": "Spatial",
 "class": "QodotSpatial",
@@ -139,11 +114,6 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/qodot/src/import_plugins/quake_wad_import_plugin.gd"
 }, {
-"base": "LiquidLayer",
-"class": "SlimeLayer",
-"language": "GDScript",
-"path": "res://addons/qodot/game_definitions/worldspawn_layers/liquid/slime.gd"
-}, {
 "base": "Node",
 "class": "State",
 "language": "GDScript",
@@ -173,18 +143,10 @@ _global_script_classes=[ {
 "class": "TrenchBroomTag",
 "language": "GDScript",
 "path": "res://addons/qodot/src/resources/game-definitions/trenchbroom/trenchbroom_tag.gd"
-}, {
-"base": "LiquidLayer",
-"class": "WaterLayer",
-"language": "GDScript",
-"path": "res://addons/qodot/game_definitions/worldspawn_layers/liquid/water.gd"
 } ]
 _global_script_class_icons={
 "GroupSortMatrix": "",
-"LavaLayer": "",
-"LiquidLayer": "",
-"PhysicsBall": "",
-"PhysicsEntity": "",
+"PatrolBreadcrumb": "",
 "QodotDependencies": "",
 "QodotEntity": "",
 "QodotFGDBaseClass": "",
@@ -192,10 +154,8 @@ _global_script_class_icons={
 "QodotFGDFile": "",
 "QodotFGDPointClass": "",
 "QodotFGDSolidClass": "",
-"QodotLight": "",
 "QodotMap": "",
 "QodotPlugin": "",
-"QodotRotateEntity": "",
 "QodotSpatial": "res://addons/qodot/icons/icon_qodot_spatial.svg",
 "QodotTextureLoader": "",
 "QodotUtil": "",
@@ -206,14 +166,12 @@ _global_script_class_icons={
 "QuakePaletteImportPlugin": "",
 "QuakeWadFile": "",
 "QuakeWadImportPlugin": "",
-"SlimeLayer": "",
 "State": "",
 "StateRoot": "",
 "TrenchBroomFaceAttrib": "",
 "TrenchBroomGameConfigFile": "",
 "TrenchBroomGameConfigFolder": "",
-"TrenchBroomTag": "",
-"WaterLayer": ""
+"TrenchBroomTag": ""
 }
 
 [application]
@@ -314,9 +272,8 @@ game_core_pause={
 3d_physics/layer_3="Camera Obstrucution"
 3d_render/layer_4="Silhouettable"
 3d_render/layer_5="Special Effects (Rerender)"
-3d_physics/layer_5="Physical Hazard"
+3d_physics/layer_5="Hazard"
 3d_render/layer_6="Special Effects (No rerender)"
-3d_physics/layer_6="Intangible Hazard"
 3d_physics/layer_7="Interaction Hint"
 3d_physics/layer_8="World Hint"
 3d_physics/layer_9="Movement Hint"

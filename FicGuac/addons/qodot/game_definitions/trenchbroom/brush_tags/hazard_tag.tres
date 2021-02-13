@@ -4,8 +4,8 @@
 
 [resource]
 script = ExtResource( 1 )
-tag_name = "Detail"
-tag_attributes = [  ]
+tag_name = "Hazard"
+tag_attributes = [ "transparent" ]
 tag_match_type = 4
-tag_pattern = "detail*"
+tag_pattern = "hazard*"
 texture_name = ""

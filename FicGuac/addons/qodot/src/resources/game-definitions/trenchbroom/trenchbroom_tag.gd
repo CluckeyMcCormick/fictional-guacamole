@@ -2,11 +2,11 @@ class_name TrenchBroomTag
 extends Resource
 
 enum TagMatchType {
-	TEXTURE,
-	CONTENT_FLAG,
-	SURFACE_FLAG,
-	SURFACE_PARAM,
-	CLASSNAME
+    TEXTURE,
+    CONTENT_FLAG,
+    SURFACE_FLAG,
+    SURFACE_PARAM,
+    CLASSNAME
 }
 
 export(String) var tag_name : String

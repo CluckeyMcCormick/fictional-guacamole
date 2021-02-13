@@ -1,0 +1,52 @@
+[gd_resource type="Resource" load_steps=3 format=2]
+
+[ext_resource path="res://addons/qodot/src/resources/game-definitions/fgd/qodot_fgd_point_class.gd" type="Script" id=1]
+
+[sub_resource type="GDScript" id=7]
+script/source = "class_name PatrolBreadcrumb
+extends Spatial
+tool
+
+export(Dictionary) var properties setget set_properties
+
+var _internal_group = \"\"
+
+func set_properties(new_properties : Dictionary) -> void:
+    if(properties != new_properties):
+        properties = new_properties
+        update_properties()
+
+func update_properties():
+    if \"group_name\" in properties:
+        # Remove this node from the old group
+        self.remove_from_group(_internal_group)
+        
+        # Retrieve the property
+        _internal_group = properties[\"group_name\"]
+        
+        # Add this node to the new group, with persistence enabled
+        self.add_to_group(_internal_group, true)
+"
+
+[resource]
+script = ExtResource( 1 )
+class_options = "----------------------------------------------------------------"
+classname = "patrol_breadcrumb"
+description = "Patrol Breadcrumb"
+qodot_internal = false
+base_classes = [  ]
+class_properties = {
+"group_name": ""
+}
+class_property_descriptions = {
+"group_name": "Godot group name for this entity."
+}
+meta_properties = {
+
+}
+node_options = "----------------------------------------------------------------"
+node_class = "Spatial"
+transient_node = false
+scene = "----------------------------------------------------------------"
+scripting = "----------------------------------------------------------------"
+script_class = SubResource( 7 )
