@@ -18,8 +18,11 @@ We require a `SensorySortCore` in order to detect the world around us and react 
 ##### Idle Wait Time
 When in the *Idle* state, the machine waits for a certain amount of seconds before transitioning to the *Wander* state. This configurable controls the duration of that time period.
 
-##### Move Distance
-When moving in a given direction, the machine moves a fixed distance. This configurable controls the length of that distance.
+##### Wander Distance
+When the machine is in the wander state, it will randomly pick a direction and move in that direction. How far does it move in that direction?
+
+##### Flee Distance
+When the machine is in the flee state, it will calculate the best direction to move given what it is fleeing from. How far does it move in that direction? Note that it has been observed that too small a distance will cause the integrating body to do a quasi-stutter move. The sum effect is a very SLOW fleeing process.
 
 ### (Public) Variables
 

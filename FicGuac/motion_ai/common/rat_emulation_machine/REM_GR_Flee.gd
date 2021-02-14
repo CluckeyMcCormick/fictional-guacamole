@@ -9,6 +9,8 @@ onready var MR = get_node("../..")
 # We need to communicate with the Physics Travel Region
 onready var PTR = get_node("../../PhysicsTravelRegion")
 
+const SAMPLE_ANGLE_INCREMENT = 45
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Extended State Machine Functions
@@ -80,7 +82,7 @@ func assign_target_position():
     
     # Now, normalize it and then scale the normalization by our move distance
     # configurable
-    move_vec = move_vec.normalized() * MR.move_distance
+    move_vec = move_vec.normalized() * MR.flee_distance
     
     # Add it on to the integrating body's current position to create a target
     var point = target.global_transform.origin + move_vec
@@ -93,8 +95,40 @@ func assign_target_position():
 
     # If our path is empty...
     if not PTR.has_target_data():
-        # Oh. Dang. Nothing to do but go back to Idle I guess...
-        change_state("GoalRegion/Idle")
+        # Then were going to have to test variations on the move vector by
+        # rotating it to different angles.
+
+        # We'll build a list of different angular values, storing them in here        
+        var angles = []
+        # The alternate vector, made by rotating the move vector
+        var alt_vec = Vector3.ZERO
+        
+        # First build out the angles in the order in which we will test them
+        for ang in range(SAMPLE_ANGLE_INCREMENT, 180, SAMPLE_ANGLE_INCREMENT):
+            angles.append(rad2deg( ang))
+            angles.append(rad2deg(-ang))
+        
+        # Now, for each of those angles
+        for ang in angles:
+            # Create the alternate vector by rotating the move vector
+            alt_vec = move_vec.rotated(Vector3.UP, PI / 2)
+            # Add it on to the integrating body's current position to create a
+            # target
+            point = target.global_transform.origin + move_vec
+            # Path to the point
+            path = PIC.path_between(target.global_transform.origin, point)
+            
+            # If we actually have a path...
+            if not path.empty():
+                # SET IT!
+                PTR.set_target_path(path, true)
+                # Break!
+                break
+        
+        # If we STILL don't have a path after ALL of that...
+        if not PTR.has_target_data():
+            # Oh. Dang. Nothing to do but go back to Idle I guess...
+            change_state("GoalRegion/Idle")
 
 func _on_phys_trav_region_path_complete(position):
     # Okay - if we're here then we haven't quite escaped whatever we're fleeing

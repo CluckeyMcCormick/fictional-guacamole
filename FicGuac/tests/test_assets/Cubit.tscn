@@ -31,6 +31,7 @@ script = ExtResource( 2 )
 shape = SubResource( 1 )
 
 [node name="Cube" type="MeshInstance" parent="."]
+layers = 8
 mesh = SubResource( 2 )
 material/0 = SubResource( 3 )
 
@@ -45,8 +46,6 @@ material/0 = SubResource( 5 )
 navigation_node = NodePath("")
 
 [node name="KinematicDriverMachine" parent="." instance=ExtResource( 1 )]
-disabled = false
-has_regions = false
 fsm_owner = NodePath("..")
 kinematic_core = NodePath("../KinematicCore")
 pathing_interface_core = NodePath("../PathingInterfaceCore")

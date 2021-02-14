@@ -31,17 +31,11 @@ animation_player = null
 
 [node name="Wander" type="Node" parent="GoalRegion"]
 script = ExtResource( 10 )
-disabled = false
-has_regions = false
 fsm_owner = null
 animation_player = null
 
 [node name="Flee" type="Node" parent="GoalRegion"]
 script = ExtResource( 6 )
-disabled = false
-has_regions = false
-fsm_owner = null
-animation_player = null
 
 [node name="PhysicsTravelRegion" type="Node" parent="."]
 script = ExtResource( 7 )

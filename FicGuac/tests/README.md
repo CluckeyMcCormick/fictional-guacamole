@@ -28,13 +28,6 @@ Trying to test this in other scenes, where the *Pawn* is frequently moving and s
 ## Cubit Driver Test
 The *Kinematic Driver* is the core concept being tested here. It's meant to test both the driver's basic movement functionality as well as demonstrate how easy it is to make integrate and use the *Kinematic Driver*.
 
-## Slope Step Test
-A very key test, this scene tests how the *Pawn* tackles slopes of a certain steepness and slopes of a certain height. This is very important to how the *Pawn* moves around the world.
-
-It could use an update - there should be a button to skip the current test.
-
-As the potential movement types increase, there will probably be a new test that is similar to this one (yet tests everything a bit more).
-
 ## Viewport Shader Test
 This scene tests various *Viewport Shaders* from our *Special Effects* directory. More specifically, it serves as a test of all the *Viewport Shaders* that are used for cutaways/xray - i.e. showing the position of something behind an occluding surface. It tests how these shaders interact with each other and various extant game assets.
 
@@ -42,8 +35,9 @@ This scene tests various *Viewport Shaders* from our *Special Effects* directory
 This scene tests dynamic navigation meshes - how the *Pawn* follows them, and how they interact with existing game assets. It also features *Viewport Shaders* in an actual use case.
 
 ## Advanced Kinematics Test
-While the *Slope Step Test* was good, it suffered from some pretty serious handicaps. We couldn't skip or cancel tests, the tests were constructed by hand (which was hard to modify), we couldn't modulate the time at all, and it was difficult to observe the *Pawn* falling.
-
-I became that there MUST have been a better way. The *Advanced Kinematics Test* is the sum of that effort. It features three tests - the fall test, the slope test, and the step test. The slope and the step test have configurations so we can test different levels with ease. The fall test allows us to test how the *Pawn* falls.
+The *Advanced Kinematics Test* was constructed to test out the movement abilities of our AI. It features three tests - the fall test, the slope test, and the step test. The slope and the step test have configurations so we can test different levels with ease. The fall test allows us to test how the *Pawn* falls.
 
 This test also sports a force-cancel button and a time-dilation slider for extra ease-of-use.
+
+## Rat Emulation Test
+This test is meant to test out the `RatPawn`, which is an intermediate step in developing our AI. It also serves as an early test of how we can use *Qodot* and *TrenchBroom* classes. 

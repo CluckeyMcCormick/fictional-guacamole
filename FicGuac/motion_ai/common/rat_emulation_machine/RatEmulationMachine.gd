@@ -22,9 +22,12 @@ var pathing_interface_core_node
 # How long do we idle for before we transition to the wandering state?
 export(float, 0.0, 6.0) var idle_wait_time = 1.0
 
-# Currently, the integrating body moves in a line, no matter whether it's
-# fleeing or just going for a walk. 
-export(int, 1, 10) var move_distance = 5
+# When this machine is wandering, how far does it wander? 
+export(int, 1, 10) var wander_distance = 5
+
+# When the machine is fleeing, how far does it flee (before recorrecting it's
+# position)?
+export(float, .1, 10) var flee_distance = 1.0
 
 # The current orientation vector. It is purely for expressing which way the pawn
 # is looking/moving. Mostly inteded to help set the appropriate animation and/or

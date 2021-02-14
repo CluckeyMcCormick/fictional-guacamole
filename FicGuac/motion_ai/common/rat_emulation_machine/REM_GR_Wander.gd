@@ -70,7 +70,7 @@ func assign_random_target():
 
     # Now, normalize it and then scale the normalization by our move distance
     # configurable
-    point = point.normalized() * MR.move_distance
+    point = point.normalized() * MR.wander_distance
     
     # Add it on to the integrating body's current position
     point += target.global_transform.origin
