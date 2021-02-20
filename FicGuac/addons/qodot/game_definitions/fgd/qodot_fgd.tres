@@ -1,6 +1,6 @@
 [gd_resource type="Resource" load_steps=9 format=2]
 
-[ext_resource path="res://addons/qodot/game_definitions/fgd/point_classes/patrol_breadcrumb_point_class.tres" type="Resource" id=1]
+[ext_resource path="res://addons/qodot/game_definitions/fgd/point_classes/ai_breadcrumb_point_class.tres" type="Resource" id=1]
 [ext_resource path="res://addons/qodot/game_definitions/fgd/solid_classes/func_group_solid_class.tres" type="Resource" id=2]
 [ext_resource path="res://addons/qodot/game_definitions/fgd/solid_classes/hazard_collision_solid_class.tres" type="Resource" id=3]
 [ext_resource path="res://addons/qodot/game_definitions/fgd/solid_classes/hazard_area_solid_class.tres" type="Resource" id=4]

@@ -1,4 +1,3 @@
-class_name PatrolBreadcrumb
 extends Spatial
 tool
 

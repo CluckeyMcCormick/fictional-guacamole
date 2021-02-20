@@ -2,7 +2,7 @@
 
 [ext_resource path="res://addons/qodot/src/resources/game-definitions/fgd/qodot_fgd_point_class.gd" type="Script" id=1]
 
-[sub_resource type="GDScript" id=7]
+[sub_resource type="GDScript" id=1]
 script/source = "class_name PatrolBreadcrumb
 extends Spatial
 tool
@@ -31,8 +31,8 @@ func update_properties():
 [resource]
 script = ExtResource( 1 )
 class_options = "----------------------------------------------------------------"
-classname = "patrol_breadcrumb"
-description = "Patrol Breadcrumb"
+classname = "ai_breadcrumb"
+description = "AI Breadcrumb"
 qodot_internal = false
 base_classes = [  ]
 class_properties = {
@@ -49,4 +49,4 @@ node_class = "Spatial"
 transient_node = false
 scene = "----------------------------------------------------------------"
 scripting = "----------------------------------------------------------------"
-script_class = SubResource( 7 )
+script_class = SubResource( 1 )

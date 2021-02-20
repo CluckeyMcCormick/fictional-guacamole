@@ -67,3 +67,12 @@ func _on_JockeyTimer_timeout():
 
 func _on_DaveTimer_timeout():
     assign_new_target($Dave)
+
+func _on_Area_body_entered(body):
+    if body.is_in_group("rat"):
+        # Get the crumbs
+        var crumbs = get_tree().get_nodes_in_group("crumbs")
+        # Pick a random crumb
+        var chosen_crumb = crumbs[randi() % len(crumbs)]
+        # Move the Goal to it!
+        $GoalHandle.global_transform.origin = chosen_crumb.global_transform.origin
