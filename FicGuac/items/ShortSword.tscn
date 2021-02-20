@@ -1,0 +1,22 @@
+[gd_scene load_steps=4 format=2]
+
+[ext_resource path="res://items/core/MasterItem.tscn" type="PackedScene" id=1]
+[ext_resource path="res://items/short_sword.png" type="Texture" id=2]
+
+[sub_resource type="BoxShape" id=1]
+extents = Vector3( 0.14, 0.54, 0.025 )
+
+[node name="ShortSword" instance=ExtResource( 1 )]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0 )
+
+[node name="RotationCore" parent="." index="0"]
+independent_rotation = 4
+carried_rotation = 5
+
+[node name="Sprite3D" parent="." index="2"]
+pixel_size = 0.014
+alpha_cut = 2
+texture = ExtResource( 2 )
+
+[node name="CollisionShape" type="CollisionShape" parent="." index="3"]
+shape = SubResource( 1 )

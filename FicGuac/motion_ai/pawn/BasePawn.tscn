@@ -82,6 +82,7 @@ pixel_size = 0.014
 shaded = true
 alpha_cut = 2
 frames = ExtResource( 1 )
+frame = 2
 playing = true
 
 [node name="WeaponSprite" type="AnimatedSprite3D" parent="."]
@@ -105,3 +106,4 @@ danger_interrupt_area = NodePath("../DangerInterruptArea")
 group_sort_matrix = SubResource( 7 )
 
 [node name="PathingInterfaceCore" parent="." instance=ExtResource( 5 )]
+navigation_node = NodePath("")

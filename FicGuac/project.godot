@@ -14,10 +14,10 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://motion_ai/common/GroupSortMatrix.gd"
 }, {
-"base": "Spatial",
-"class": "PatrolBreadcrumb",
+"base": "RigidBody",
+"class": "MasterItem",
 "language": "GDScript",
-"path": "res://addons/qodot/game_definitions/fgd/point_classes/patrol_breadcrumb_point_class.gd"
+"path": "res://items/core/MasterItem.gd"
 }, {
 "base": "Reference",
 "class": "QodotDependencies",
@@ -146,7 +146,7 @@ _global_script_classes=[ {
 } ]
 _global_script_class_icons={
 "GroupSortMatrix": "",
-"PatrolBreadcrumb": "",
+"MasterItem": "",
 "QodotDependencies": "",
 "QodotEntity": "",
 "QodotFGDBaseClass": "",
@@ -278,6 +278,7 @@ game_core_pause={
 3d_physics/layer_8="World Hint"
 3d_physics/layer_9="Movement Hint"
 3d_physics/layer_11="Agent"
+3d_physics/layer_12="Item"
 
 [rendering]
 
