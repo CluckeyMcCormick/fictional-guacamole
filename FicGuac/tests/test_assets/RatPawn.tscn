@@ -19,7 +19,7 @@ frame = 2
 [node name="SensorySortCore" parent="." index="10"]
 group_sort_matrix = SubResource( 1 )
 
-[node name="RatEmulationMachine" parent="." index="12" instance=ExtResource( 2 )]
+[node name="RatEmulationMachine" parent="." index="13" instance=ExtResource( 2 )]
 disabled = false
 fsm_owner = NodePath("..")
 kinematic_core = NodePath("../KinematicCore")

@@ -46,21 +46,21 @@ func assert_item_state():
             is_visible = true
         
         ItemState.CARRIED:
-            detectable = true
+            detectable = false
             collision_on = false
             physics_move_on = false
             state_rotation = $RotationCore.get_carried_rotation()
             is_visible = true
           
         ItemState.STOWED:
-            detectable = true
+            detectable = false
             collision_on = false
             physics_move_on = false
             state_rotation = $RotationCore.get_stowed_rotation()
             is_visible = true
 
         ItemState.HIDDEN:
-            detectable = true
+            detectable = false
             collision_on = false
             physics_move_on = false
             state_rotation = self.rotation_degrees # No rotational change

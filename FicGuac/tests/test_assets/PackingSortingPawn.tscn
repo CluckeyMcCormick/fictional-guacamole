@@ -1,0 +1,28 @@
+[gd_scene load_steps=6 format=2]
+
+[ext_resource path="res://motion_ai/pawn/BasePawn.tscn" type="PackedScene" id=1]
+[ext_resource path="res://motion_ai/common/packing_sorting_rat_machine/PackingSortingRatMachine.tscn" type="PackedScene" id=2]
+[ext_resource path="res://tests/test_assets/PackingSortingPawn.gd" type="Script" id=3]
+[ext_resource path="res://motion_ai/common/GroupSortMatrix.gd" type="Script" id=4]
+
+[sub_resource type="Resource" id=1]
+script = ExtResource( 4 )
+threat_groups = PoolStringArray( "packing_threat" )
+goal_groups = PoolStringArray( "packing_goal" )
+
+[node name="PackingSortingPawn" instance=ExtResource( 1 )]
+script = ExtResource( 3 )
+
+[node name="VisualSprite" parent="." index="7"]
+frame = 5
+
+[node name="SensorySortCore" parent="." index="10"]
+general_sensory_area = NodePath("../../PackingSortingPawn/GeneralSensoryArea")
+danger_interrupt_area = NodePath("../../PackingSortingPawn/DangerInterruptArea")
+group_sort_matrix = SubResource( 1 )
+
+[node name="PSRM" parent="." index="13" instance=ExtResource( 2 )]
+kinematic_core = NodePath("../KinematicCore")
+sensory_sort_core = NodePath("../SensorySortCore")
+pathing_interface_core = NodePath("../PathingInterfaceCore")
+item_management_core = NodePath("../ItemManagementCore")

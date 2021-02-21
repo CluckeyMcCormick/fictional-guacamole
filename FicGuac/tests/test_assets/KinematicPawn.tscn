@@ -7,11 +7,14 @@
 [node name="KinematicPawn" instance=ExtResource( 1 )]
 script = ExtResource( 2 )
 
+[node name="VisualSprite" parent="." index="7"]
+frame = 7
+
 [node name="KinematicCore" parent="." index="9"]
 goal_tolerance = 0.1
 fall_state_delay_time = 0.1
 
-[node name="KinematicDriverMachine" parent="." index="12" instance=ExtResource( 3 )]
+[node name="KinematicDriverMachine" parent="." index="13" instance=ExtResource( 3 )]
 disabled = false
 has_regions = false
 fsm_owner = NodePath("..")

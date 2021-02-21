@@ -337,70 +337,78 @@ func _on_danger_sensor_body_entered(body):
 func _on_danger_sensor_body_exited(body):
     _remove_body(body, PRI_AREA_DANGER)
 
+func _get_group_category_strings(group_category):
+    
+    var strings
+    
+    match group_category:
+        GC_GOAL:
+            strings = group_sort_matrix.goal_groups
+        GC_THREAT:
+            strings = group_sort_matrix.threat_groups
+    
+    return strings
+
 #
 # Add and Remove Body Utility Functions
 #
 func _add_body(body, priority_area):
+    # We only emit a "body_entered" signal once, even if a body exists in
+    # multiple group categories. The highest priority group category is the
+    # category that gets emitted.
     var already_emitted = false
     
-    # Check the threat group first, since this is the most important.
-    for threat_group_str in group_sort_matrix.threat_groups:
-        # If the body is in one of these goal groups...
-        if body.is_in_group(threat_group_str):
-            # Stick it in the appropriate body bucket
-            _bodies[priority_area][GC_THREAT][body] = body
-            # Emit the signal! ...if we haven't already
-            if not already_emitted:
-                emit_signal("body_entered", body, priority_area, GC_THREAT)
-                already_emitted = true
-            # Break the loop - we only needed membership in ONE of the threat
-            # groups for this to be valid.
-            break;
-    
-    # Next - THE GOAL GROUP!
-    for goal_group_str in group_sort_matrix.goal_groups:
-        # If the body is in one of these goal groups...
-        if body.is_in_group(goal_group_str):
-            # Stick it in the appropriate body bucket
-            _bodies[priority_area][GC_GOAL][body] = body
-            # Emit the signal! ...if we haven't already
-            if not already_emitted:
-                emit_signal("body_entered", body, priority_area, GC_GOAL)
-                already_emitted = true
-            # Break the loop - we only needed membership in ONE of the goal
-            # groups for this to be valid.
-            break;
+    # Iterate over our categories, in order of priority.
+    for category in [GC_THREAT, GC_GOAL]:
+        
+        # If the body has already been tracked at this priority area and group
+        # category, then skip this category. This will prevent us from sending
+        # redundant entry and exit signals - believe it or not, that could have
+        # some dangerous consequences...
+        if body in _bodies[priority_area][category]:
+            continue
+        
+        # For each string (each group name) in this current category...
+        for curr_grp_str in _get_group_category_strings(category):
+            # If this body is a member of that group...
+            if body.is_in_group(curr_grp_str):
+                # Stick it in the appropriate body bucket
+                _bodies[priority_area][category][body] = body
+                # Emit the signal! ...if we haven't already
+                if not already_emitted:
+                    emit_signal("body_entered", body, priority_area, category)
+                    already_emitted = true
+                # Break out of the category strings loop - we only needed
+                # membership in ONE of the goal groups for this to be valid.
+                break;
 
 func _remove_body(body, priority_area):
     var already_emitted = false
     
-    # Check the threat group first, since this is the most important.
-    for threat_group_str in group_sort_matrix.threat_groups:
-        # If the body is in one of these goal groups...
-        if body.is_in_group(threat_group_str):
-            # Stick it in the appropriate body bucket
-            _bodies[priority_area][GC_THREAT].erase(body)
-            # Emit the signal! ...if we haven't already
-            if not already_emitted:
-                emit_signal("body_exited", body, priority_area, GC_THREAT)
-                already_emitted = true
-            # Break the loop - we only needed membership in ONE of the threat
-            # groups for this to be valid.
-            break;
-    
-    # Check the goal group list first
-    for goal_group_str in group_sort_matrix.goal_groups:
-        # If the body is in one of these goal groups...
-        if body.is_in_group(goal_group_str):
-            # Stick it in the appropriate body bucket
-            _bodies[priority_area][GC_GOAL].erase(body)
-            # Emit the signal! ...if we haven't already
-            if not already_emitted:
-                emit_signal("body_exited", body, priority_area, GC_GOAL)
-                already_emitted = true
-            # Break the loop - we only needed membership in ONE of the goal
-            # groups for this to be valid.
-            break;
+    # Iterate over our categories, in order of priority. Higher priority goes
+    # first.
+    for category in [GC_THREAT, GC_GOAL]:
+        
+        # If the body has already been removed at this priority area and group
+        # category, then skip this category. This will prevent us from sending
+        # redundant entry and exit signals - believe it or not, that could have
+        # some dangerous consequences...
+        if not body in _bodies[priority_area][category]:
+            continue
+        
+        # For each string (each group name) in this current category...
+        for curr_grp_str in _get_group_category_strings(category):
+            # If this body is a member of that group...
+            if body.is_in_group(curr_grp_str):
+                # Stick it in the appropriate body bucket
+                _bodies[priority_area][category].erase(body)
+                # Emit the signal! ...if we haven't already
+                if not already_emitted:
+                    emit_signal("body_exited", body, priority_area, category)
+                    already_emitted = true
+                # Break out of the category strings loop - we only needed
+                # membership in ONE of the goal groups for this to be valid.
+                break;
 
 #
 # Body Status Check Functions

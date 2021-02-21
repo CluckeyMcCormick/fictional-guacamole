@@ -57,7 +57,9 @@ move_clamping_extents = Vector2( 8, 8 )
 [node name="ShortSword" parent="." instance=ExtResource( 5 )]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 2.7, 0 )
 
-[node name="PawnCorpse" parent="." instance=ExtResource( 4 )]
+[node name="PawnCorpse" parent="." groups=[
+"packing_goal",
+] instance=ExtResource( 4 )]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 2.7, 0 )
 
 [node name="PackingSortingPawn" parent="." instance=ExtResource( 6 )]
