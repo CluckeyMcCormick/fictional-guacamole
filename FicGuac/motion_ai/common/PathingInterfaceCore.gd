@@ -21,10 +21,13 @@ var nav_node
 # whenever it gets set. Also updates our configuration warning.
 func set_navigation_node(new_navigation_node):
     navigation_node = new_navigation_node
-    nav_node = get_node(navigation_node)
-    
+        
+    # If we're in the engine, update our configuration warning
     if Engine.editor_hint:
         update_configuration_warning()
+    # Otherwise, update the nav node
+    else:
+        nav_node = get_node(navigation_node)
 
 # This function is very ugly, but it serves a very specific purpose: it allows
 # us to generate warnings in the editor in case the KinematicDriver is

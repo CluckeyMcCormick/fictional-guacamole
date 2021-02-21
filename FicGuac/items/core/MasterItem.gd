@@ -37,9 +37,6 @@ func assert_item_state():
     var state_rotation = Vector3.ZERO
     var is_visible = true
 
-    print(item_state)
-    print("\t", $RotationCore)
-
     match item_state:
         ItemState.INDEPENDENT:
             detectable = true

@@ -13,18 +13,18 @@ goal_groups = PoolStringArray(  )
 [node name="RatPawn" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
 
-[node name="VisualSprite" parent="." index="6"]
+[node name="VisualSprite" parent="." index="7"]
 frame = 2
 
-[node name="SensorySortCore" parent="." index="9"]
+[node name="SensorySortCore" parent="." index="10"]
 group_sort_matrix = SubResource( 1 )
 
-[node name="PathingInterfaceCore" parent="." index="10"]
-navigation_node = NodePath("")
-
-[node name="RatEmulationMachine" parent="." index="11" instance=ExtResource( 2 )]
+[node name="RatEmulationMachine" parent="." index="12" instance=ExtResource( 2 )]
+disabled = false
 fsm_owner = NodePath("..")
 kinematic_core = NodePath("../KinematicCore")
 sensory_sort_core = NodePath("../SensorySortCore")
 pathing_interface_core = NodePath("../PathingInterfaceCore")
+idle_wait_time = 1.0
+wander_distance = 5
 flee_distance = 2.0

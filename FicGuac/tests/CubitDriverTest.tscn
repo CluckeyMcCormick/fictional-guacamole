@@ -9,6 +9,8 @@
 
 
 
+
+
 [sub_resource type="NavigationMesh" id=1]
 vertices = PoolVector3Array( 0, 0.2, -9.9, -9.9, 0.2, 0, -9.9, 0.2, 9.9, 0, 0.2, 9.9, 9.9, 0.2, 0, 9.9, 0.2, -9.9, 0, 0.2, 9.9, 9.9, 0.2, 9.9, 9.9, 0.2, 0, 0, 0.2, -9.9, -9.9, 0.2, -9.9, -9.9, 0.2, 0 )
 polygons = [ PoolIntArray( 5, 4, 0 ), PoolIntArray( 0, 4, 3 ), PoolIntArray( 0, 3, 1 ), PoolIntArray( 1, 3, 2 ), PoolIntArray( 8, 7, 6 ), PoolIntArray( 11, 10, 9 ) ]

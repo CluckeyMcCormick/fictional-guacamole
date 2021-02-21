@@ -13,10 +13,10 @@ transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0
 independent_rotation = 4
 carried_rotation = 5
 
-[node name="Sprite3D" parent="." index="2"]
+[node name="Sprite3D" parent="." index="1"]
 pixel_size = 0.014
 alpha_cut = 2
 texture = ExtResource( 2 )
 
-[node name="CollisionShape" type="CollisionShape" parent="." index="3"]
+[node name="CollisionShape" type="CollisionShape" parent="." index="2"]
 shape = SubResource( 1 )

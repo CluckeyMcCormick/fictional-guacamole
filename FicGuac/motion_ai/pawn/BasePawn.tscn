@@ -1,4 +1,4 @@
-[gd_scene load_steps=14 format=2]
+[gd_scene load_steps=15 format=2]
 
 [ext_resource path="res://motion_ai/pawn/pawn_frames.tres" type="SpriteFrames" id=1]
 [ext_resource path="res://motion_ai/common/KinematicCore.tscn" type="PackedScene" id=2]
@@ -23,6 +23,8 @@ radius = 10.0
 
 [sub_resource type="CylinderShape" id=5]
 radius = 3.0
+
+[sub_resource type="CylinderShape" id=8]
 
 [sub_resource type="CylinderShape" id=6]
 radius = 0.5
@@ -54,7 +56,7 @@ shape = SubResource( 3 )
 [node name="GeneralSensoryArea" type="Area" parent="."]
 monitorable = false
 collision_layer = 0
-collision_mask = 1520
+collision_mask = 3568
 
 [node name="SensoryCollision" type="CollisionShape" parent="GeneralSensoryArea"]
 shape = SubResource( 4 )
@@ -62,15 +64,23 @@ shape = SubResource( 4 )
 [node name="FOFArea" type="Area" parent="."]
 monitorable = false
 collision_layer = 0
-collision_mask = 1520
+collision_mask = 3568
 
 [node name="FOFCollision" type="CollisionShape" parent="FOFArea"]
 shape = SubResource( 5 )
 
+[node name="InteractionArea" type="Area" parent="."]
+monitorable = false
+collision_layer = 0
+collision_mask = 3568
+
+[node name="CollisionShape" type="CollisionShape" parent="InteractionArea"]
+shape = SubResource( 8 )
+
 [node name="DangerInterruptArea" type="Area" parent="."]
 monitorable = false
 collision_layer = 0
-collision_mask = 1520
+collision_mask = 3568
 
 [node name="DangerSaveCollision" type="CollisionShape" parent="DangerInterruptArea"]
 shape = SubResource( 6 )
@@ -82,7 +92,6 @@ pixel_size = 0.014
 shaded = true
 alpha_cut = 2
 frames = ExtResource( 1 )
-frame = 2
 playing = true
 
 [node name="WeaponSprite" type="AnimatedSprite3D" parent="."]
@@ -102,8 +111,8 @@ fall_state_delay_time = 0.25
 [node name="SensorySortCore" parent="." instance=ExtResource( 3 )]
 general_sensory_area = NodePath("../GeneralSensoryArea")
 fight_or_flight_area = NodePath("../FOFArea")
+interaction_range_area = NodePath("../InteractionArea")
 danger_interrupt_area = NodePath("../DangerInterruptArea")
 group_sort_matrix = SubResource( 7 )
 
 [node name="PathingInterfaceCore" parent="." instance=ExtResource( 5 )]
-navigation_node = NodePath("")
