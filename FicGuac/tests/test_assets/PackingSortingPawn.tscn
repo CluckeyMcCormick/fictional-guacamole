@@ -14,7 +14,7 @@ goal_groups = PoolStringArray( "packing_goal" )
 script = ExtResource( 3 )
 
 [node name="VisualSprite" parent="." index="7"]
-frame = 5
+frame = 8
 
 [node name="SensorySortCore" parent="." index="10"]
 general_sensory_area = NodePath("../../PackingSortingPawn/GeneralSensoryArea")

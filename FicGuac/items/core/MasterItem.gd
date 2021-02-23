@@ -1,95 +1,67 @@
 class_name MasterItem
 extends RigidBody
-tool
 
-# What's the item's current state? Is it actively out it in the world, or is it
-# being carried, or stored, or hidden away somewhere?
-enum ItemState {INDEPENDENT, CARRIED, STOWED, HIDDEN}
-# The configurable for controlling the item's state. The item's state has
-# important implications for how it behaves in the wider game world.
-export(ItemState) var item_state setget set_item_state
-
-# --------------------------------------------------------
-#
-# Setters
-#
-# --------------------------------------------------------
-
-func set_item_state(new_state):
-    # Set the new state
-    item_state = new_state
-    # Assert the item state
-    assert_item_state()
+onready var visual_scene = preload("res://items/core/VisualItemShell.tscn")
 
 # --------------------------------------------------------
 #
 # Utility Functions
 #
 # --------------------------------------------------------
+func initialize(new_visual, new_data):
+    # First, get our visual and data nodes
+    var visual = $VisualComponent
+    var data = $DataComponent
 
-func assert_item_state():
-    # Rather than updating the class variables individually, we'll set these "test"
-    # variables according to the state. We'll then change the different class
-    # variables appropriately. That'll save us on copy-paste code. 
-    var detectable = true
-    var collision_on = true
-    var physics_move_on = true
-    var state_rotation = Vector3.ZERO
-    var is_visible = true
-
-    match item_state:
-        ItemState.INDEPENDENT:
-            detectable = true
-            collision_on = true
-            physics_move_on = true
-            state_rotation = $RotationCore.get_independent_rotation()
-            is_visible = true
+    # If we have a visual component, remove and destroy it
+    if visual != null:
+        self.remove_child(visual)
+        visual.queue_free()
+    
+    # If we have a data component, remove and destroy it
+    if data != null:
+        self.remove_child(data)
+        data.queue_free()
         
-        ItemState.CARRIED:
-            detectable = false
-            collision_on = false
-            physics_move_on = false
-            state_rotation = $RotationCore.get_carried_rotation()
-            is_visible = true
-          
-        ItemState.STOWED:
-            detectable = false
-            collision_on = false
-            physics_move_on = false
-            state_rotation = $RotationCore.get_stowed_rotation()
-            is_visible = true
+    # Add in the data and visual components
+    self.add_child(new_visual)
+    self.add_child(new_data)
+    new_visual.set_owner(self)
+    new_data.set_owner(self)
 
-        ItemState.HIDDEN:
-            detectable = false
-            collision_on = false
-            physics_move_on = false
-            state_rotation = self.rotation_degrees # No rotational change
-            is_visible = false
+    # Assert the groups
+    new_data.assert_groups(self)
     
-    # If we're detectable...
-    if detectable:
-        # Then we exist on the item layer
-        self.collision_layer = 2048
-    else:
-        # Otherwise, we don't exist on any layer.
-        self.collision_layer = 0
+    # All done!
+
+func _to_visual_item():
+    # First, get our visual and data nodes
+    var visual = $VisualComponent
+    var data = $DataComponent
     
-    # If we're colliding with stuff...
-    if collision_on:
-        # Collides with terrain and items
-        self.collision_mask = 2049
-    else:
-        # Otherwise, collide with nothing
-        self.collision_mask = 0
+    # If we don't have one of those, then something's off. Just return null so
+    # whatever called this function knows something messed up.
+    if visual == null or data == null:
+        return null
     
-    # Set the Rigid Body state depending on whether physics is "on" or not
-    if physics_move_on:
-        self.mode = RigidBody.MODE_RIGID
-    else:
-        self.mode = RigidBody.MODE_STATIC
+    # Save the groups
+    data._group_strings = self.get_groups()
     
-    # Assert rotation
-    self.rotation_degrees = state_rotation
+    # Create a new visual instance
+    var visual_instance = visual_scene.instance()
     
-    # Visible!
-    self.visible = is_visible
+    # Detach the visual and data components
+    self.remove_child(visual)
+    self.remove_child(data)
+    
+    # Initialize the visual instance
+    visual_instance.initialize(visual, data)
+    
+    # Free ourselves from our own parent
+    self.get_parent().remove_child(self)
+    
+    # Free the physical item
+    self.queue_free()
+    
+    # Return the visual instance
+    return visual_instance

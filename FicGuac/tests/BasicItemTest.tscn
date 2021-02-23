@@ -1,10 +1,9 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=9 format=2]
 
 [ext_resource path="res://textures/terrain/material/mat_terrain_grass_textured.tres" type="Material" id=1]
 [ext_resource path="res://tests/test_assets/StandardizedEnvironment.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/CameraRig.tscn" type="PackedScene" id=3]
 [ext_resource path="res://items/PawnCorpse.tscn" type="PackedScene" id=4]
-[ext_resource path="res://items/ShortSword.tscn" type="PackedScene" id=5]
 [ext_resource path="res://tests/test_assets/PackingSortingPawn.tscn" type="PackedScene" id=6]
 
 [sub_resource type="NavigationMesh" id=1]
@@ -54,14 +53,11 @@ move_enabled = true
 zoom_enabled = true
 move_clamping_extents = Vector2( 8, 8 )
 
-[node name="ShortSword" parent="." instance=ExtResource( 5 )]
-transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 2.7, 0 )
+[node name="PackingSortingPawn" parent="." instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.7, 0, 2.2 )
+navigation = NodePath("../Navigation")
 
 [node name="PawnCorpse" parent="." groups=[
 "packing_goal",
 ] instance=ExtResource( 4 )]
-transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 2.7, 0 )
-
-[node name="PackingSortingPawn" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 2, 2 )
-navigation = NodePath("../Navigation")
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 2.8, 0 )
