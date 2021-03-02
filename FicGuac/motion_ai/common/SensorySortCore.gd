@@ -1,4 +1,5 @@
 tool
+class_name SensorySortCore
 extends Node
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -9,10 +10,7 @@ extends Node
 
 # Pri(ority) Area constants. Used to communicate priority (i.e. which area was
 # entered) in our signals.
-enum {
-    PRI_AREA_GENERAL = 0, PRI_AREA_FOF = 1, PRI_AREA_INTERACT = 2,
-    PRI_AREA_DANGER = 3
-}
+enum PRI_AREA { GENERAL = 0, FOF = 1, INTERACT = 2, DANGER = 3 }
 
 # G(roup) C(ategory) constants - we use this to communicate the type of body
 # that has just been sensed.
@@ -148,20 +146,20 @@ func set_group_sort_matrix(new_group_sort_matrix):
     var wd_interact = {}
     var wd_danger = {}
     
-    for subdict_key in _bodies[PRI_AREA_GENERAL]:
-        for body in _bodies[PRI_AREA_GENERAL][subdict_key]:
+    for subdict_key in _bodies[PRI_AREA.GENERAL]:
+        for body in _bodies[PRI_AREA.GENERAL][subdict_key]:
             wd_general[body] = body
 
-    for subdict_key in _bodies[PRI_AREA_FOF]:
-        for body in _bodies[PRI_AREA_FOF][subdict_key]:
+    for subdict_key in _bodies[PRI_AREA.FOF]:
+        for body in _bodies[PRI_AREA.FOF][subdict_key]:
             wd_fof[body] = body
 
-    for subdict_key in _bodies[PRI_AREA_INTERACT]:
-        for body in _bodies[PRI_AREA_INTERACT][subdict_key]:
+    for subdict_key in _bodies[PRI_AREA.INTERACT]:
+        for body in _bodies[PRI_AREA.INTERACT][subdict_key]:
             wd_interact[body] = body
          
-    for subdict_key in _bodies[PRI_AREA_DANGER]:
-        for body in _bodies[PRI_AREA_DANGER][subdict_key]:
+    for subdict_key in _bodies[PRI_AREA.DANGER]:
+        for body in _bodies[PRI_AREA.DANGER][subdict_key]:
             wd_danger[body] = body
 
     # Next, reset the bodies dictionary
@@ -170,25 +168,25 @@ func set_group_sort_matrix(new_group_sort_matrix):
     # Now, we'll go through and add the bodies, starting with the general
     # sensory priority and working up to the danger priority.
     for body in wd_general:
-        _add_body(body, PRI_AREA_GENERAL)
+        _add_body(body, PRI_AREA.GENERAL)
 
     for body in wd_fof:
-        _add_body(body, PRI_AREA_FOF)
+        _add_body(body, PRI_AREA.FOF)
 
     for body in wd_interact:
-        _add_body(body, PRI_AREA_INTERACT)
+        _add_body(body, PRI_AREA.INTERACT)
         
     for body in wd_general:
-        _add_body(body, PRI_AREA_DANGER)
+        _add_body(body, PRI_AREA.DANGER)
 
 # Technically this "gets" a new dict. Technically not a getter - SUE ME!
 func _generate_empty_body_dict():
     # The priority area keys
     var pri_area_keys = [
-        PRI_AREA_GENERAL, PRI_AREA_FOF, PRI_AREA_INTERACT, PRI_AREA_DANGER
+        PRI_AREA.GENERAL, PRI_AREA.FOF, PRI_AREA.INTERACT, PRI_AREA.DANGER
     ]
     # The group category keys
-    var group_cat_keys = [ GC_GOAL, GC_THREAT]
+    var group_cat_keys = [ GC_GOAL, GC_THREAT ]
     
     # The dictionary we're working in
     var make_dict = {}
@@ -314,28 +312,28 @@ func _ready():
 # Sensor-signal Response Functions
 #
 func _on_general_sensor_body_entered(body):
-    _add_body(body, PRI_AREA_GENERAL)
+    _add_body(body, PRI_AREA.GENERAL)
 
 func _on_general_sensor_body_exited(body):
-    _remove_body(body, PRI_AREA_GENERAL)
+    _remove_body(body, PRI_AREA.GENERAL)
 
 func _on_fof_sensor_body_entered(body):
-    _add_body(body, PRI_AREA_FOF)
+    _add_body(body, PRI_AREA.FOF)
     
 func _on_fof_sensor_body_exited(body):
-    _remove_body(body, PRI_AREA_FOF)
+    _remove_body(body, PRI_AREA.FOF)
 
 func _on_interact_sensor_body_entered(body):
-    _add_body(body, PRI_AREA_INTERACT)
+    _add_body(body, PRI_AREA.INTERACT)
     
 func _on_interact_sensor_body_exited(body):
-    _remove_body(body, PRI_AREA_INTERACT)
+    _remove_body(body, PRI_AREA.INTERACT)
 
 func _on_danger_sensor_body_entered(body):
-    _add_body(body, PRI_AREA_DANGER)
+    _add_body(body, PRI_AREA.DANGER)
 
 func _on_danger_sensor_body_exited(body):
-    _remove_body(body, PRI_AREA_DANGER)
+    _remove_body(body, PRI_AREA.DANGER)
 
 func _get_group_category_strings(group_category):
     

@@ -115,6 +115,11 @@ _global_script_classes=[ {
 "path": "res://addons/qodot/src/import_plugins/quake_wad_import_plugin.gd"
 }, {
 "base": "Node",
+"class": "SensorySortCore",
+"language": "GDScript",
+"path": "res://motion_ai/common/SensorySortCore.gd"
+}, {
+"base": "Node",
 "class": "State",
 "language": "GDScript",
 "path": "res://addons/xsm/state.gd"
@@ -171,6 +176,7 @@ _global_script_class_icons={
 "QuakePaletteImportPlugin": "",
 "QuakeWadFile": "",
 "QuakeWadImportPlugin": "",
+"SensorySortCore": "",
 "State": "",
 "StateRoot": "",
 "TrenchBroomFaceAttrib": "",

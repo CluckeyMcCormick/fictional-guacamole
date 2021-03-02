@@ -1,0 +1,6 @@
+[gd_scene load_steps=2 format=2]
+
+[ext_resource path="res://motion_ai/common/tasking/TaskTemplate.gd" type="Script" id=1]
+
+[node name="TaskTemplate" type="Node"]
+script = ExtResource( 1 )
