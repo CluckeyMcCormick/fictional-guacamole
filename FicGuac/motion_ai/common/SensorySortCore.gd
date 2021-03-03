@@ -415,7 +415,17 @@ func has_bodies(priority_area, group_category):
     # Just check and see if we have bodies for the given priority area and group
     # category.
     return not _bodies[priority_area][group_category].empty()
-    
+
+func has_specific_body(body, priority_area):
+    # Iterate over our categories
+    for category in [GC_THREAT, GC_GOAL]:
+        # If the body exists in this category,
+        if body in _bodies[priority_area][category]:
+            # Then we found it! Return true
+            return true
+    # Otherwise... Nope! No body! Return false
+    return false
+
 func get_bodies(priority_area, group_category):
     # Return all of the keys for the given priority area and group category.
     # Techincally either keys or values would work.

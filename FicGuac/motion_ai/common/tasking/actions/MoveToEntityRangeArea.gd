@@ -58,11 +58,25 @@ func _on_enter(var arg) -> void:
     
     # We just got here - we've been stuck 0 times!
     _stuck_repath_count = 0
+    # And we definitely didn't succeed yet!
+    _action_success = false
     
     # Path to our target entity
     path_to_target()
+    
+    # Now that we've got everything set up - what if we started with the item
+    # already in range? That'd be a bit silly, but it could happen. And if it
+    # does...
+    if SSC.has_specific_body(_target_entity, range_area):
+        # Then that was easy! Call this a success and inform the world!
+        _action_success = true
+        emit_signal("action_success")
 
 func _on_update(delta) -> void:
+    # If we already succeeded, then this doesn't matter. Back out!
+    if _action_success:
+        return
+    
     # If our target entity is gone, that's a failure!
     if _entity_wrap.get_ref() == null:
         emit_signal("action_failure", FC_LOST_ENTITY)
@@ -116,6 +130,10 @@ func path_to_target():
 
 # If a body enters our sensory range...
 func _on_sensory_sort_core_body_entered(body, priority_area, group_category):
+    # If we already succeeded, then this doesn't matter. Back out!
+    if _action_success:
+        return
+    
     # Get our SensorySortCore
     var SSC = MR.sensory_sort_core_node
     
@@ -129,11 +147,16 @@ func _on_phys_trav_region_path_complete(position):
     # If we already succeeded, then this doesn't matter. Back out!
     if _action_success:
         return
+        
     # Wait. Did we arrive and not actually see the entity we wanted to see? That
     # seems bad. In fact, that's a failure - FC_NO_DETECT
     emit_signal("action_failure", FC_NO_DETECT)
 
 func _on_phys_trav_region_error_goal_stuck(target_position):
+    # If we already succeeded, then this doesn't matter. Back out!
+    if _action_success:
+        return
+    
     # We're stuck? Huh. Let's increment our counter...
     _stuck_repath_count += 1
     
