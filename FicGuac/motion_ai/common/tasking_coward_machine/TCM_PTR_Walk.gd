@@ -40,7 +40,7 @@ func _on_enter(var arg) -> void:
     # often), then force the configuration
     if not MR._machine_configured:
         MR._force_configure()
-    
+
     # Set the physics travel key
     MR.physics_travel_key = "Walk"
     
@@ -49,6 +49,8 @@ func _on_update(delta) -> void:
     var KC = MR.kinematic_core_node
     # Get our PathingInterfaceCore
     var PIC = MR.pathing_interface_core_node
+    # Get our current target body
+    var target = MR.target_body_node
     # Did we get a collision result from our most recent move attempt?
     var collision = null
     
@@ -121,6 +123,8 @@ func _after_update(delta) -> void:
     var KC = MR.kinematic_core_node
     # Get our PathingInterfaceCore
     var PIC = MR.pathing_interface_core_node
+    # Get our current target body
+    var target = MR.target_body_node
 
     # If we don't have a target position...
     if PTR._target_position == null:

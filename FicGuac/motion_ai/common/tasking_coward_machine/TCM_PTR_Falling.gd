@@ -20,13 +20,15 @@ func _on_enter(var arg) -> void:
     # often), then force the configuration
     if not MR._machine_configured:
         MR._force_configure()
-    
+
     # Set the physics travel key
     MR.physics_travel_key = "Falling"
 
 func _on_update(delta) -> void:
     # Get our KinematicCore
     var KC = MR.kinematic_core_node
+    # Get our current target body
+    var target = MR.target_body_node
     # Did we get a collision result from our most recent move attempt?
     var collision
     
@@ -52,6 +54,8 @@ func _on_update(delta) -> void:
 func _after_update(delta) -> void:
     # Get our KinematicCore
     var KC = MR.kinematic_core_node
+    # Get our current target body
+    var target = MR.target_body_node
     # Do a fake move downward just to determine if we're on the ground.
     var collision = target.move_and_collide(
         # Move vector (straight down). We need to at least check our fall speed,

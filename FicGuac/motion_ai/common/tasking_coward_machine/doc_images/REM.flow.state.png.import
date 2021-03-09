@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/REM.flow.data.png-e2dfb5d9703ebb17861cab25f41835ce.stex"
+path="res://.import/REM.flow.state.png-85cd795739b8b3e1ee2aa99d1da14dd7.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://motion_ai/common/packing_sorting_rat_machine/doc_images/REM.flow.data.png"
-dest_files=[ "res://.import/REM.flow.data.png-e2dfb5d9703ebb17861cab25f41835ce.stex" ]
+source_file="res://motion_ai/common/tasking_coward_machine/doc_images/REM.flow.state.png"
+dest_files=[ "res://.import/REM.flow.state.png-85cd795739b8b3e1ee2aa99d1da14dd7.stex" ]
 
 [params]
 

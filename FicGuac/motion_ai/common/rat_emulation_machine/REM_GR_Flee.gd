@@ -69,7 +69,7 @@ func assign_target_position():
     var path
     
     # For each body we're actively tracking...
-    for body in SSC.get_bodies(SSC.PRI_AREA_FOF, SSC.GC_THREAT):
+    for body in SSC.get_bodies(SSC.PRI_AREA.FOF, SSC.GC_THREAT):
         move_vec += body.global_transform.origin - target.global_transform.origin
     
     # So now we have a vector that basically points from the integrating body to
@@ -147,14 +147,14 @@ func _on_sensory_sort_core_body_entered(body, priority_area, group_category):
     
     # Switch based on the priority area
     match priority_area:
-        SSC.PRI_AREA_GENERAL:
+        SSC.PRI_AREA.GENERAL:
             pass
-        SSC.PRI_AREA_FOF:
+        SSC.PRI_AREA.FOF:
             # If there's no threats left in the fight-or-flight area, we can go
             # back to the idle state.
-            if not SSC.has_bodies(SSC.PRI_AREA_FOF, SSC.GC_THREAT):
+            if not SSC.has_bodies(SSC.PRI_AREA.FOF, SSC.GC_THREAT):
                 change_state("GoalRegion/Idle")
-        SSC.PRI_AREA_DANGER:
+        SSC.PRI_AREA.DANGER:
             pass
         _:
             pass
@@ -165,14 +165,14 @@ func _on_sensory_sort_core_body_exited(body, priority_area, group_category):
     
     # Switch based on the priority area
     match priority_area:
-        SSC.PRI_AREA_GENERAL:
+        SSC.PRI_AREA.GENERAL:
             pass
-        SSC.PRI_AREA_FOF:
+        SSC.PRI_AREA.FOF:
             # If there's no threats left in the fight-or-flight area, we can go
             # back to the idle state.
-            if not SSC.has_bodies(SSC.PRI_AREA_FOF, SSC.GC_THREAT):
+            if not SSC.has_bodies(SSC.PRI_AREA.FOF, SSC.GC_THREAT):
                 change_state("GoalRegion/Idle")
-        SSC.PRI_AREA_DANGER:
+        SSC.PRI_AREA.DANGER:
             pass
         _:
             pass

@@ -4,7 +4,7 @@ extends "res://motion_ai/common/tasking/actions/ActionTemplate.gd"
 # above/is inherited by this scene 
 
 # The target position that we're attempting to move to. Should be set (via code)
-# by the parent task
+# by the parent task. Should be a global.
 var _target_position
 # How many times have we gotten stuck and repathed as a result?
 var _stuck_repath_count = 0
@@ -59,6 +59,8 @@ func path_to_target():
     
     # Generate a path to the target position!
     path = PIC.path_between(target.global_transform.origin, _target_position)
+    
+    
     
     # Now pass the path to our pathing region
     PTR.set_target_path(path, true)

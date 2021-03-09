@@ -6,9 +6,9 @@ extends "res://motion_ai/common/tasking/TaskTemplate.gd"
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~0
 
-func initialize(machine_root, physics_travel_region, wander_distance):
+func initialize(machine_root, physics_travel_region, target_body, wander_distance):
     # Initialize the template's variables
-    _template_initialize(machine_root, physics_travel_region)
+    _template_initialize(machine_root, physics_travel_region, target_body)
     
     # Start with a vector of fixed length
     var point = Vector3(1, 0, 0)

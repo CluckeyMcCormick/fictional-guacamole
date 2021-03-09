@@ -23,7 +23,7 @@ func _on_enter(var arg) -> void:
     if not MR._machine_configured:
         MR._force_configure()
     
-    # # Set the physics travel key. Might seem weird since we have substates,
+    # Set the physics travel key. Might seem weird since we have substates,
     # but those will overwrite as appropriate.
     MR.physics_travel_key = "OnGround"
     
@@ -33,6 +33,8 @@ func _on_enter(var arg) -> void:
 func _on_update(delta) -> void:
     # Get our KinematicCore
     var KC = MR.kinematic_core_node
+    # Get our current target body
+    var target = MR.target_body_node
     # Did we get a collision result from our most recent move attempt?
     var collision = null
     

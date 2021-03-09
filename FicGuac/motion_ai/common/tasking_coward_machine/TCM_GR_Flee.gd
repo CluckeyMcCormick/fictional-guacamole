@@ -21,7 +21,7 @@ func _on_enter(var arg) -> void:
     # often), then force the configuration
     if not MR._machine_configured:
         MR._force_configure()
-    
+
     # Get our SensorySortCore
     var SSC = MR.sensory_sort_core_node
     
@@ -62,6 +62,8 @@ func assign_target_position():
     var SSC = MR.sensory_sort_core_node
     # Get our PathingInterfaceCore
     var PIC = MR.pathing_interface_core_node
+    # Get our current target body
+    var target = MR.target_body_node
     # Create a blank vector for us to add onto
     var move_vec = Vector3.ZERO
     
@@ -69,7 +71,7 @@ func assign_target_position():
     var path
     
     # For each body we're actively tracking...
-    for body in SSC.get_bodies(SSC.PRI_AREA_FOF, SSC.GC_THREAT):
+    for body in SSC.get_bodies(SSC.PRI_AREA.FOF, SSC.GC_THREAT):
         move_vec += body.global_transform.origin - target.global_transform.origin
     
     # So now we have a vector that basically points from the integrating body to
@@ -147,17 +149,11 @@ func _on_sensory_sort_core_body_entered(body, priority_area, group_category):
     
     # Switch based on the priority area
     match priority_area:
-        SSC.PRI_AREA_GENERAL:
-            pass
-        SSC.PRI_AREA_FOF:
+        SSC.PRI_AREA.FOF:
             # If there's no threats left in the fight-or-flight area, we can go
             # back to the idle state.
-            if not SSC.has_bodies(SSC.PRI_AREA_FOF, SSC.GC_THREAT):
+            if not SSC.has_bodies(SSC.PRI_AREA.FOF, SSC.GC_THREAT):
                 change_state("GoalRegion/Idle")
-        SSC.PRI_AREA_INTERACT:
-            pass
-        SSC.PRI_AREA_DANGER:
-            pass
         _:
             pass
 
@@ -167,16 +163,10 @@ func _on_sensory_sort_core_body_exited(body, priority_area, group_category):
     
     # Switch based on the priority area
     match priority_area:
-        SSC.PRI_AREA_GENERAL:
-            pass
-        SSC.PRI_AREA_FOF:
+        SSC.PRI_AREA.FOF:
             # If there's no threats left in the fight-or-flight area, we can go
             # back to the idle state.
-            if not SSC.has_bodies(SSC.PRI_AREA_FOF, SSC.GC_THREAT):
+            if not SSC.has_bodies(SSC.PRI_AREA.FOF, SSC.GC_THREAT):
                 change_state("GoalRegion/Idle")
-        SSC.PRI_AREA_INTERACT:
-            pass
-        SSC.PRI_AREA_DANGER:
-            pass
         _:
             pass

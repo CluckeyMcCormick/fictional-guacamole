@@ -4,7 +4,7 @@
 [ext_resource path="res://tests/test_assets/StandardizedEnvironment.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/CameraRig.tscn" type="PackedScene" id=3]
 [ext_resource path="res://items/PawnCorpse.tscn" type="PackedScene" id=4]
-[ext_resource path="res://tests/test_assets/PackingSortingPawn.tscn" type="PackedScene" id=6]
+[ext_resource path="res://tests/test_assets/TaskingCowardPawn.tscn" type="PackedScene" id=6]
 
 [sub_resource type="NavigationMesh" id=1]
 vertices = PoolVector3Array( -0.2, 0.4, -7.4, -7.4, 0.4, -7.4, -7.4, 0.4, -0.2, -0.2, 0.4, 7.3, 7.3, 0.4, 7.3, 7.3, 0.4, -0.2, -7.4, 0.4, -0.2, -7.4, 0.4, 7.3, -0.2, 0.4, 7.3, 7.3, 0.4, -0.2, 7.3, 0.4, -7.4, -0.2, 0.4, -7.4 )
@@ -53,11 +53,11 @@ move_enabled = true
 zoom_enabled = true
 move_clamping_extents = Vector2( 8, 8 )
 
-[node name="PackingSortingPawn" parent="." instance=ExtResource( 6 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.7, 0, 2.2 )
-navigation = NodePath("../Navigation")
-
 [node name="PawnCorpse" parent="." groups=[
 "packing_goal",
 ] instance=ExtResource( 4 )]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 2.8, 0 )
+
+[node name="TaskingCowardPawn" parent="." instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 5 )
+navigation = NodePath("../Navigation")

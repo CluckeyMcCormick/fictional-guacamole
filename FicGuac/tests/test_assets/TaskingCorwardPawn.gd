@@ -15,7 +15,7 @@ func _process(delta):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 func sprite_update():
     # First, update our current orientation 
-    update_orient_enum($PSRM._curr_orient)
+    update_orient_enum($TaskingCowardMachine._curr_orient)
     
     # Our animation string is composed of an animation key - which indicates the
     # type of animation to play (i.e. idle, walk) - and a direction to for that
@@ -24,7 +24,7 @@ func sprite_update():
     
     # First, get the animation key. For now, we'll base this off of the state
     # key.
-    match $PSRM.physics_travel_key:
+    match $TaskingCowardMachine.physics_travel_key:
         "OnGround", "Idle":
             anim_str += "idle"
             
@@ -34,14 +34,14 @@ func sprite_update():
         "Walk":
             # Special case - if our current goal key is flee, we have a special
             # "flee" animation we can use.
-            if $PSRM.goal_key == "Flee":
+            if $TaskingCowardMachine.goal_key == "Flee":
                 anim_str += "flee"
             # Otherwise, just use the walk.
             else:
                 anim_str += "walk"
             
         _:
-            print("Unrecognized State Key: ", $PSRM.physics_travel_key)
+            print("Unrecognized State Key: ", $TaskingCowardMachine.physics_travel_key)
             anim_str += "idle"
     
     # Add the "_"

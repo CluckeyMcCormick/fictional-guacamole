@@ -9,9 +9,16 @@ onready var MR = get_node("../..")
 # We need to communicate with the Physics Travel Region
 onready var PTR = get_node("../../PhysicsTravelRegion")
 
-# This state is literally just the Pawn waiting around. We don't want the
+# We also need to communicate with the Task Manager Region
+onready var TMR = get_node("../../TaskManagerRegion")
+
+# Preload our random wandering task so we can instance it on demand
+var WANDER_TASK_PRELOAD = preload("res://motion_ai/common/tasking/WanderRandom.tscn")
+
+# This state is either the body standing still or wandering in a random
+# direction. When we're not wandering, we're idling. We don't want the
 # integrating body to stand still for too long, so we'll start a timer and then
-# go back to the wandering state when we're done.
+# start another wandering task when we're done.
 const IDLE_TIMER_NAME = "IdleTimeout"
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -35,17 +42,27 @@ func _on_enter(var arg) -> void:
     SSC.connect("body_entered", self, "_on_sensory_sort_core_body_entered")
     SSC.connect("body_exited", self, "_on_sensory_sort_core_body_entered")
     
-    # Start a timer. Once this times out we'll move to the wander state
-    self.add_timer(IDLE_TIMER_NAME, MR.idle_wait_time)
+    # Connect the TaskManagerRegion functions
+    TMR.connect("current_task_succeeded", self, "_on_tmr_current_task_succeeded")
+    TMR.connect("current_task_failed", self, "_on_tmr_current_task_failed")
     
-    # Clear any move data we had, since we're supposed to be idling
-    PTR.clear_target_data()
+    # Instance out a new wander task.
+    var new_wander = WANDER_TASK_PRELOAD.instance()
+    # Initialize!
+    new_wander.initialize(MR, PTR, MR.target_body_node, MR.wander_distance)
+    # Add the task to the task manager
+    TMR.set_new_task(new_wander)
 
 func _on_timeout(name) -> void:
     # If the timer ends, then it's time to start wandering!
     match name:
         IDLE_TIMER_NAME:
-            change_state("Wander")
+            # Instance out a new wander task.
+            var new_wander = WANDER_TASK_PRELOAD.instance()
+            # Initialize!
+            new_wander.initialize(MR, PTR, MR.target_body_node, MR.wander_distance)
+            # Add the task to the task manager
+            TMR.set_new_task(new_wander)
 
 func _on_exit(var arg) -> void:
     # Get our SensorySortCore
@@ -54,7 +71,13 @@ func _on_exit(var arg) -> void:
     # Disconnect the SensorySortCore functions
     SSC.disconnect("body_entered", self, "_on_sensory_sort_core_body_entered")
     SSC.disconnect("body_exited", self, "_on_sensory_sort_core_body_entered")
-    
+  
+    # Disconnect the TaskManagerRegion functions
+    TMR.disconnect("current_task_succeeded", self, "_on_tmr_current_task_succeeded")
+    TMR.disconnect("current_task_failed", self, "_on_tmr_current_task_failed")
+  
+    # We're not going to remove the current task.
+       
     # Stop any timers that could be happening
     self.del_timers()
 
@@ -72,23 +95,10 @@ func _on_sensory_sort_core_body_entered(body, priority_area, group_category):
     
     # Switch based on the priority area
     match priority_area:
-        SSC.PRI_AREA_GENERAL:
-            pass
-        SSC.PRI_AREA_FOF:
+        SSC.PRI_AREA.FOF:
             # If there's a threat in the fight-or-flight area, FLEE!
-            if SSC.has_bodies(SSC.PRI_AREA_FOF, SSC.GC_THREAT):
+            if SSC.has_bodies(SSC.PRI_AREA.FOF, SSC.GC_THREAT):
                 change_state("Flee")
-        SSC.PRI_AREA_INTERACT:
-            print("IDLE INTERACT! CAT: ", group_category)
-            print("\t GC BE OF ", SSC.GC_GOAL)
-            # If this body is a GOAL...
-            if group_category == SSC.GC_GOAL:
-                # THEN GRAB IT!!!!
-                IMC.grab_item(body)
-                print("GRABBED!")
-        
-        SSC.PRI_AREA_DANGER:
-            pass
         _:
             pass
 
@@ -98,15 +108,28 @@ func _on_sensory_sort_core_body_exited(body, priority_area, group_category):
     
     # Switch based on the priority area
     match priority_area:
-        SSC.PRI_AREA_GENERAL:
-            pass
-        SSC.PRI_AREA_FOF:
+        SSC.PRI_AREA.FOF:
             # If there's a threat in the fight-or-flight area, FLEE!
-            if SSC.has_bodies(SSC.PRI_AREA_FOF, SSC.GC_THREAT):
+            if SSC.has_bodies(SSC.PRI_AREA.FOF, SSC.GC_THREAT):
                 change_state("Flee")
-        SSC.PRI_AREA_INTERACT:
-            pass
-        SSC.PRI_AREA_DANGER:
-            pass
         _:
             pass
+
+func _on_tmr_current_task_succeeded(task):
+    # We succeeded! Hooray! Destroy the task!
+    TMR.remove_current_task()
+    # Stop any timers that could be happening
+    self.del_timers()
+    # Start a timer. Once this times out we'll put another random wandering task
+    # into the task manager
+    self.add_timer(IDLE_TIMER_NAME, MR.idle_wait_time)
+
+func _on_tmr_current_task_failed(task):
+    # We failed? Oh well. Remove the current task.
+    TMR.remove_current_task()
+    
+    # Stop any timers that could be happening
+    self.del_timers()
+    # Start a timer. Once this times out we'll put another random wandering task
+    # into the task manager
+    self.add_timer(IDLE_TIMER_NAME, MR.idle_wait_time)

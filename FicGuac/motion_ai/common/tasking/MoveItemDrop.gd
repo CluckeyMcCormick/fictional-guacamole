@@ -6,9 +6,9 @@ extends "res://motion_ai/common/tasking/TaskTemplate.gd"
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~0
 
-func initialize(machine_root, physics_travel_region, item, position):
+func initialize(machine_root, physics_travel_region, target_body, item, position):
     # Initialize the template's variables
-    _template_initialize(machine_root, physics_travel_region)
+    _template_initialize(machine_root, physics_travel_region, target_body)
     
     # Pass the item down to the states that need it.
     $MoveToEntityRangeArea._target_entity = item
