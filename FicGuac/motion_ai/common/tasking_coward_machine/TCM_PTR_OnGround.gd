@@ -33,8 +33,8 @@ func _on_enter(var arg) -> void:
 func _on_update(delta) -> void:
     # Get our KinematicCore
     var KC = MR.kinematic_core_node
-    # Get our current target body
-    var target = MR.target_body_node
+    # Get our current integrating body
+    var itgr_body = MR.integrating_body_node
     # Did we get a collision result from our most recent move attempt?
     var collision = null
     
@@ -44,7 +44,7 @@ func _on_update(delta) -> void:
     
     # Do a fake move downward just to determine if we're on the ground. How we
     # do that changes depending on whether or not we have a floor raycast
-    collision = target.move_and_collide(
+    collision = itgr_body.move_and_collide(
         # Move vector (straight down). We need to at least check our fall speed,
         # our minimum fall height, and our float height.
         Vector3.DOWN * (KC.fall_speed + KC.MINIMUM_FALL_HEIGHT + KC.float_height),
@@ -79,7 +79,7 @@ func _on_update(delta) -> void:
         # height we're supposed to be floating at?
         elif collision.travel.length() < KC.float_height:
             # In that case, move up by however much we're down by
-            target.move_and_collide(
+            itgr_body.move_and_collide(
                 Vector3.UP * (KC.float_height - collision.travel.length())
             )
     
@@ -93,7 +93,7 @@ func _on_update(delta) -> void:
     # Otherwise...
     else:
         # We're not on the floor. First thing we should do is move downwards.
-        collision = target.move_and_collide(Vector3.DOWN * (KC.fall_speed * delta))
+        collision = itgr_body.move_and_collide(Vector3.DOWN * (KC.fall_speed * delta))
         
         # If we collided with something, and we still have a ways to go...
         if collision and collision.remainder.length() != 0:
@@ -107,7 +107,7 @@ func _on_update(delta) -> void:
             # Scale it to the length of the previous remaining movement
             next_movement = next_movement * collision.remainder.length()
             # Now move and colide along that scaled angle
-            target.move_and_collide(next_movement)
+            itgr_body.move_and_collide(next_movement)
             
         # If we don't have a fall timer ongoing, start one
         if not fall_timer_active:

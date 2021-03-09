@@ -27,13 +27,13 @@ func _on_enter(var arg) -> void:
 func _on_update(delta) -> void:
     # Get our KinematicCore
     var KC = MR.kinematic_core_node
-    # Get our current target body
-    var target = MR.target_body_node
+    # Get our current integrating body
+    var itgr_body = MR.integrating_body_node
     # Did we get a collision result from our most recent move attempt?
     var collision
     
     # Do the move!
-    collision = target.move_and_collide(Vector3.DOWN * KC.fall_speed * delta)
+    collision = itgr_body.move_and_collide(Vector3.DOWN * KC.fall_speed * delta)
     
     # We're definitely falling!
     MR._curr_orient.y = -KC.fall_speed
@@ -49,15 +49,15 @@ func _on_update(delta) -> void:
         # Scale it to the length of the previous remaining movement
         rem_move = rem_move * collision.remainder.length()
         # Now move and colide along that scaled angle
-        target.move_and_collide(rem_move)
+        itgr_body.move_and_collide(rem_move)
 
 func _after_update(delta) -> void:
     # Get our KinematicCore
     var KC = MR.kinematic_core_node
-    # Get our current target body
-    var target = MR.target_body_node
+    # Get our current integrating body
+    var itgr_body = MR.integrating_body_node
     # Do a fake move downward just to determine if we're on the ground.
-    var collision = target.move_and_collide(
+    var collision = itgr_body.move_and_collide(
         # Move vector (straight down). We need to at least check our fall speed,
         # our minimum fall height, and our float height.
         Vector3(0, -KC.fall_speed - KC.MINIMUM_FALL_HEIGHT - KC.float_height, 0),

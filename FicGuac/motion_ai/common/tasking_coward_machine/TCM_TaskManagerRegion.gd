@@ -29,9 +29,6 @@ func remove_current_task():
     if current_task == null:
         return
     
-    # Remove the task-child
-    self.remove_child(current_task)
-    
     # Detach the signal functions - important that we do this after removing the
     # task as a child (since that would call the _on_exit function)
     current_task.disconnect("task_succeeded", self, "_on_current_task_succeeded")
@@ -46,9 +43,6 @@ func set_new_task(new_task):
     # If we still have a task, REMOVE IT
     if current_task != null:
         remove_current_task()
-    
-    # We now own this task
-    new_task.owner = self
     
     # Hook up our signals - important that we do this before adding the task as
     # a child (since that would call the _ready/_on_enter functions)

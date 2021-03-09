@@ -12,6 +12,7 @@ onready var MR = get_node("..")
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 func _on_enter(var arg) -> void:
+    print("In GOALREGION on enter")
     # If our machine root hasn't been configured (it happens unfortunately
     # often), then force the configuration
     if not MR._machine_configured:

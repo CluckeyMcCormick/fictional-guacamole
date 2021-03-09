@@ -1,11 +1,11 @@
 tool
 extends Node
 
-# We need a Kinematic Core so that we know how fast to move, how low to float,
-# which way is down and fast to be down, etc etc.
-export(NodePath) var target_body
+# Every AI machine has an integrating body - the body that will be moved to and
+# from with this machine.
+export(NodePath) var integrating_body
 # We resolve the node path into this variable.
-var target_body_node
+var integrating_body_node
 
 # We need a Kinematic Core so that we know how fast to move, how low to float,
 # which way is down and fast to be down, etc etc.
@@ -84,14 +84,14 @@ func _ready():
 func _force_configure():
     
     # Get all the nodes
-    target_body_node = get_node(target_body)
+    integrating_body_node = get_node(integrating_body)
     kinematic_core_node = get_node(kinematic_core)
     sensory_sort_core_node = get_node(sensory_sort_core)
     pathing_interface_core_node = get_node(pathing_interface_core)
     item_management_core_node = get_node(item_management_core)
 
     # The target has to be a KinematicBody
-    assert(typeof(target_body_node) == typeof(KinematicBody), "Target Body must be a KinematicBody node!")
+    assert(typeof(integrating_body_node) == typeof(KinematicBody), "Integrating Body must be a KinematicBody node!")
     # Also, we need a KinematicCore
     assert(kinematic_core_node != null, "A KinematicCore node is required!")
     # AAAAAND a we need a SensorySortCore

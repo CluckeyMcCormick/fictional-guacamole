@@ -16,8 +16,6 @@ script = ExtResource( 6 )
 
 [node name="GoalRegion" type="Node" parent="."]
 script = ExtResource( 2 )
-disabled = false
-has_regions = false
 fsm_owner = null
 animation_player = null
 
@@ -28,8 +26,6 @@ animation_player = null
 
 [node name="Flee" type="Node" parent="GoalRegion"]
 script = ExtResource( 1 )
-disabled = false
-has_regions = false
 fsm_owner = null
 animation_player = null
 
@@ -53,14 +49,8 @@ animation_player = null
 
 [node name="Walk" type="Node" parent="PhysicsTravelRegion/OnGround"]
 script = ExtResource( 5 )
-disabled = false
-has_regions = false
-fsm_owner = null
-animation_player = null
 
 [node name="Falling" type="Node" parent="PhysicsTravelRegion"]
 script = ExtResource( 4 )
-disabled = false
-has_regions = false
 fsm_owner = null
 animation_player = null

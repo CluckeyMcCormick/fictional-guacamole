@@ -49,7 +49,7 @@ func _on_enter(var arg) -> void:
     # Instance out a new wander task.
     var new_wander = WANDER_TASK_PRELOAD.instance()
     # Initialize!
-    new_wander.initialize(MR, PTR, MR.target_body_node, MR.wander_distance)
+    new_wander.initialize(MR, PTR, MR.integrating_body_node, MR.wander_distance)
     # Add the task to the task manager
     TMR.set_new_task(new_wander)
 
@@ -60,7 +60,7 @@ func _on_timeout(name) -> void:
             # Instance out a new wander task.
             var new_wander = WANDER_TASK_PRELOAD.instance()
             # Initialize!
-            new_wander.initialize(MR, PTR, MR.target_body_node, MR.wander_distance)
+            new_wander.initialize(MR, PTR, MR.integrating_body_node, MR.wander_distance)
             # Add the task to the task manager
             TMR.set_new_task(new_wander)
 

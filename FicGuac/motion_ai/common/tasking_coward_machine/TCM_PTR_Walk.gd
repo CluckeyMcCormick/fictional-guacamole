@@ -49,8 +49,8 @@ func _on_update(delta) -> void:
     var KC = MR.kinematic_core_node
     # Get our PathingInterfaceCore
     var PIC = MR.pathing_interface_core_node
-    # Get our current target body
-    var target = MR.target_body_node
+    # Get our current integrating body
+    var itgr_body = MR.integrating_body_node
     # Did we get a collision result from our most recent move attempt?
     var collision = null
     
@@ -69,7 +69,7 @@ func _on_update(delta) -> void:
             return
 
     # How far are we from our target position?
-    var distance_to = PTR._target_position - PIC.get_adjusted_position(target)
+    var distance_to = PTR._target_position - PIC.get_adjusted_position(itgr_body)
     # We really only care about the X and Z, so we're gonna zero out the y
     # distance left - since we currently can't purposefully or explicitly move 
     # up or down.
@@ -98,7 +98,7 @@ func _on_update(delta) -> void:
     var z = normal_dist.z * KC.move_speed
     
     # Do the move!
-    collision = target.move_and_collide(Vector3(x, 0, z) * delta)
+    collision = itgr_body.move_and_collide(Vector3(x, 0, z) * delta)
     
     # Update our "current orientation"
     MR._curr_orient.x = x
@@ -116,15 +116,15 @@ func _on_update(delta) -> void:
         # Scale it to the length of the previous remaining movement
         next_movement = next_movement * collision.remainder.length()
         # Now move and colide along that scaled angle
-        target.move_and_collide(next_movement)
+        itgr_body.move_and_collide(next_movement)
 
 func _after_update(delta) -> void:
     # Get our KinematicCore
     var KC = MR.kinematic_core_node
     # Get our PathingInterfaceCore
     var PIC = MR.pathing_interface_core_node
-    # Get our current target body
-    var target = MR.target_body_node
+    # Get our current integrating body
+    var itgr_body = MR.integrating_body_node
 
     # If we don't have a target position...
     if PTR._target_position == null:
@@ -140,7 +140,7 @@ func _after_update(delta) -> void:
             return
 
     # Calculate the remaining distance to our objective
-    var new_dist = (PTR._target_position - PIC.get_adjusted_position(target)).length()
+    var new_dist = (PTR._target_position - PIC.get_adjusted_position(itgr_body)).length()
     # Calculate a rounded version for detecting any errors
     var new_dist_rnd = stepify(new_dist, KC.ERROR_DETECTION_PRECISION)
 

@@ -62,8 +62,8 @@ func assign_target_position():
     var SSC = MR.sensory_sort_core_node
     # Get our PathingInterfaceCore
     var PIC = MR.pathing_interface_core_node
-    # Get our current target body
-    var target = MR.target_body_node
+    # Get our current integrating body
+    var itgr_body = MR.integrating_body_node
     # Create a blank vector for us to add onto
     var move_vec = Vector3.ZERO
     
@@ -72,7 +72,7 @@ func assign_target_position():
     
     # For each body we're actively tracking...
     for body in SSC.get_bodies(SSC.PRI_AREA.FOF, SSC.GC_THREAT):
-        move_vec += body.global_transform.origin - target.global_transform.origin
+        move_vec += body.global_transform.origin - itgr_body.global_transform.origin
     
     # So now we have a vector that basically points from the integrating body to
     # whatever it's trying to get away from. So, now we'll invert it so it
@@ -87,10 +87,10 @@ func assign_target_position():
     move_vec = move_vec.normalized() * MR.flee_distance
     
     # Add it on to the integrating body's current position to create a target
-    var point = target.global_transform.origin + move_vec
+    var point = itgr_body.global_transform.origin + move_vec
     
     # Path to the point
-    path = PIC.path_between(target.global_transform.origin, point)
+    path = PIC.path_between(itgr_body.global_transform.origin, point)
     
     # Set the path to the random point
     PTR.set_target_path(path, true)
@@ -116,9 +116,9 @@ func assign_target_position():
             alt_vec = move_vec.rotated(Vector3.UP, PI / 2)
             # Add it on to the integrating body's current position to create a
             # target
-            point = target.global_transform.origin + move_vec
+            point = itgr_body.global_transform.origin + move_vec
             # Path to the point
-            path = PIC.path_between(target.global_transform.origin, point)
+            path = PIC.path_between(itgr_body.global_transform.origin, point)
             
             # If we actually have a path...
             if not path.empty():

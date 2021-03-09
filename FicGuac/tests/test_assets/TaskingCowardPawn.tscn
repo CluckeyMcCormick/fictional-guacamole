@@ -14,15 +14,18 @@ goal_groups = PoolStringArray( "packing_goal" )
 script = ExtResource( 3 )
 
 [node name="VisualSprite" parent="." index="7"]
-frame = 0
+frame = 8
 
 [node name="SensorySortCore" parent="." index="10"]
 fight_or_flight_area = NodePath("../../TaskingCowardPawn/FOFArea")
 interaction_range_area = NodePath("../../TaskingCowardPawn/InteractionArea")
 group_sort_matrix = SubResource( 1 )
 
+[node name="PathingInterfaceCore" parent="." index="11"]
+navigation_node = NodePath("")
+
 [node name="TaskingCowardMachine" parent="." index="13" instance=ExtResource( 2 )]
-target_body = NodePath("..")
+integrating_body = NodePath("..")
 kinematic_core = NodePath("../../TaskingCowardPawn/KinematicCore")
 sensory_sort_core = NodePath("../../TaskingCowardPawn/SensorySortCore")
 pathing_interface_core = NodePath("../../TaskingCowardPawn/PathingInterfaceCore")
