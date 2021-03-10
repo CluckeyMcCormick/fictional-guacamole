@@ -11,6 +11,7 @@ threat_groups = PoolStringArray( "rat_threat" )
 goal_groups = PoolStringArray(  )
 
 [node name="RatPawn" instance=ExtResource( 1 )]
+collision_mask = 1
 script = ExtResource( 3 )
 
 [node name="VisualSprite" parent="." index="7"]

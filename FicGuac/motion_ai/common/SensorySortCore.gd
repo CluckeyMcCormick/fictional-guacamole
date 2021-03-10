@@ -12,10 +12,10 @@ extends Node
 # entered) in our signals.
 enum PRI_AREA { GENERAL = 0, FOF = 1, INTERACT = 2, DANGER = 3 }
 
-# G(roup) C(ategory) constants - we use this to communicate the type of body
+# Group Cat(egory) constants - we use this to communicate the type of body
 # that has just been sensed.
-enum {
-    GC_GOAL = 0, GC_THREAT = 1
+enum GROUP_CAT {
+    GOAL = 0, THREAT = 1
 }
 
 # What's our General Sensory area? This is the broadest area, made for detecting
@@ -186,7 +186,7 @@ func _generate_empty_body_dict():
         PRI_AREA.GENERAL, PRI_AREA.FOF, PRI_AREA.INTERACT, PRI_AREA.DANGER
     ]
     # The group category keys
-    var group_cat_keys = [ GC_GOAL, GC_THREAT ]
+    var group_cat_keys = [ GROUP_CAT.GOAL, GROUP_CAT.THREAT ]
     
     # The dictionary we're working in
     var make_dict = {}
@@ -340,9 +340,9 @@ func _get_group_category_strings(group_category):
     var strings
     
     match group_category:
-        GC_GOAL:
+        GROUP_CAT.GOAL:
             strings = group_sort_matrix.goal_groups
-        GC_THREAT:
+        GROUP_CAT.THREAT:
             strings = group_sort_matrix.threat_groups
     
     return strings
@@ -357,7 +357,7 @@ func _add_body(body, priority_area):
     var already_emitted = false
     
     # Iterate over our categories, in order of priority.
-    for category in [GC_THREAT, GC_GOAL]:
+    for category in [GROUP_CAT.THREAT, GROUP_CAT.GOAL]:
         
         # If the body has already been tracked at this priority area and group
         # category, then skip this category. This will prevent us from sending
@@ -385,7 +385,7 @@ func _remove_body(body, priority_area):
     
     # Iterate over our categories, in order of priority. Higher priority goes
     # first.
-    for category in [GC_THREAT, GC_GOAL]:
+    for category in [GROUP_CAT.THREAT, GROUP_CAT.GOAL]:
         
         # If the body has already been removed at this priority area and group
         # category, then skip this category. This will prevent us from sending
@@ -418,7 +418,7 @@ func has_bodies(priority_area, group_category):
 
 func has_specific_body(body, priority_area):
     # Iterate over our categories
-    for category in [GC_THREAT, GC_GOAL]:
+    for category in [GROUP_CAT.THREAT, GROUP_CAT.GOAL]:
         # If the body exists in this category,
         if body in _bodies[priority_area][category]:
             # Then we found it! Return true

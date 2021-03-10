@@ -5,7 +5,7 @@ extends "res://motion_ai/common/tasking/actions/ActionTemplate.gd"
 
 # We're trying to get within range of a target, the range being based off a
 # given priority area. Which priority area are we attempting to move in to?
-export(SensorySortCore.PRI_AREA) var range_area
+export(SensorySortCore.PRI_AREA) var target_area
 # The entity that we're attempting to range-in on. Should be set (via code) by
 # the parent task
 var _target_entity
@@ -67,7 +67,7 @@ func _on_enter(var arg) -> void:
     # Now that we've got everything set up - what if we started with the item
     # already in range? That'd be a bit silly, but it could happen. And if it
     # does...
-    if SSC.has_specific_body(_target_entity, range_area):
+    if SSC.has_specific_body(_target_entity, target_area):
         # Then that was easy! Call this a success and inform the world!
         _action_success = true
         emit_signal("action_success")
@@ -138,7 +138,7 @@ func _on_sensory_sort_core_body_entered(body, priority_area, group_category):
     var SSC = MR.sensory_sort_core_node
     
     # Switch based on the priority area
-    if priority_area == range_area && body == _target_entity:
+    if priority_area == target_area && body == _target_entity:
         # We succeeded! Mark success and inform the world!
         _action_success = true
         emit_signal("action_success")

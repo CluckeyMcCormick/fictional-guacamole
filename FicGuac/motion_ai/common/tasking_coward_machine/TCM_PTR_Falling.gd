@@ -78,4 +78,4 @@ func _after_update(delta) -> void:
     elif collision.travel.length() <= KC.MINIMUM_FALL_HEIGHT + KC.float_height:
         # Then we're not falling anymore. Transition to the Idle State, we'll
         # decide what to do from there.
-        change_state("OnGround/Idle")
+        change_state("Idle")

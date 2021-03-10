@@ -60,8 +60,6 @@ func path_to_target():
     # Generate a path to the target position!
     path = PIC.path_between(target.global_transform.origin, _target_position)
     
-    
-    
     # Now pass the path to our pathing region
     PTR.set_target_path(path, true)
 

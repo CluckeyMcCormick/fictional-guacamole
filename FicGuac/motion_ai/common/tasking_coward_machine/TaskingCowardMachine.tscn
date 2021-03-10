@@ -1,7 +1,7 @@
 [gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://motion_ai/common/tasking_coward_machine/TCM_GR_Flee.gd" type="Script" id=1]
-[ext_resource path="res://motion_ai/common/tasking_coward_machine/TCM_GoalRegion.gd" type="Script" id=2]
+[ext_resource path="res://addons/xsm/state_root.gd" type="Script" id=2]
 [ext_resource path="res://motion_ai/common/tasking_coward_machine/TCM_GR_Idle.gd" type="Script" id=3]
 [ext_resource path="res://motion_ai/common/tasking_coward_machine/TCM_PTR_Falling.gd" type="Script" id=4]
 [ext_resource path="res://motion_ai/common/tasking_coward_machine/TCM_PTR_Walk.gd" type="Script" id=5]
@@ -34,6 +34,8 @@ script = ExtResource( 11 )
 
 [node name="PhysicsTravelRegion" type="Node" parent="."]
 script = ExtResource( 7 )
+disabled = false
+has_regions = false
 fsm_owner = null
 animation_player = null
 
@@ -49,6 +51,8 @@ animation_player = null
 
 [node name="Walk" type="Node" parent="PhysicsTravelRegion/OnGround"]
 script = ExtResource( 5 )
+fsm_owner = null
+animation_player = null
 
 [node name="Falling" type="Node" parent="PhysicsTravelRegion"]
 script = ExtResource( 4 )

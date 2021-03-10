@@ -7,22 +7,20 @@
 
 [sub_resource type="Resource" id=1]
 script = ExtResource( 4 )
-threat_groups = PoolStringArray( "packing_threat" )
+threat_groups = PoolStringArray( "packing_threat", "rat_threat" )
 goal_groups = PoolStringArray( "packing_goal" )
 
 [node name="TaskingCowardPawn" instance=ExtResource( 1 )]
+collision_mask = 1
 script = ExtResource( 3 )
 
 [node name="VisualSprite" parent="." index="7"]
-frame = 8
+frame = 0
 
 [node name="SensorySortCore" parent="." index="10"]
 fight_or_flight_area = NodePath("../../TaskingCowardPawn/FOFArea")
 interaction_range_area = NodePath("../../TaskingCowardPawn/InteractionArea")
 group_sort_matrix = SubResource( 1 )
-
-[node name="PathingInterfaceCore" parent="." index="11"]
-navigation_node = NodePath("")
 
 [node name="TaskingCowardMachine" parent="." index="13" instance=ExtResource( 2 )]
 integrating_body = NodePath("..")

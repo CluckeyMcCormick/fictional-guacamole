@@ -11,7 +11,7 @@ func initialize(machine_root, physics_travel_region, target_body, item, position
     _template_initialize(machine_root, physics_travel_region, target_body)
     
     # Pass the item down to the states that need it.
-    $MoveToEntityRangeArea._target_entity = item
+    $MoveToEntityPriorityArea._target_entity = item
     $GrabItem._target_entity = item
     
     # Pass the position down to the states that need it.
@@ -31,11 +31,11 @@ func _on_DropItemCautionary_action_success():
     # We did it. Hooray! Okay, now let's move into range of the item.
     change_state("MoveToEntityRangeArea")
 
-func _on_MoveToEntityRangeArea_action_failure(failure_code):
+func _on_MoveToEntityPriorityArea_action_failure(failure_code):
     # Oh, we failed. Dang. Fail the task, I guess.
     emit_signal("task_failed")
 
-func _on_MoveToEntityRangeArea_action_success():
+func _on_MoveToEntityPriorityArea_action_success():
     # We did it. Hooray! Let's grab the item.
     change_state("GrabItem")
 

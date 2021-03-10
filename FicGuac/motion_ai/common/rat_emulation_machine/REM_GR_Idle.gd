@@ -74,7 +74,7 @@ func _on_sensory_sort_core_body_entered(body, priority_area, group_category):
             pass
         SSC.PRI_AREA.FOF:
             # If there's a threat in the fight-or-flight area, FLEE!
-            if SSC.has_bodies(SSC.PRI_AREA.FOF, SSC.GC_THREAT):
+            if SSC.has_bodies(SSC.PRI_AREA.FOF, SSC.GROUP_CAT.THREAT):
                 change_state("Flee")
         SSC.PRI_AREA.DANGER:
             pass
@@ -91,7 +91,7 @@ func _on_sensory_sort_core_body_exited(body, priority_area, group_category):
             pass
         SSC.PRI_AREA.FOF:
             # If there's a threat in the fight-or-flight area, FLEE!
-            if SSC.has_bodies(SSC.PRI_AREA.FOF, SSC.GC_THREAT):
+            if SSC.has_bodies(SSC.PRI_AREA.FOF, SSC.GROUP_CAT.THREAT):
                 change_state("Flee")
         SSC.PRI_AREA.DANGER:
             pass

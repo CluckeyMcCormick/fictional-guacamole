@@ -76,7 +76,8 @@ func _on_exit(var arg) -> void:
     TMR.disconnect("current_task_succeeded", self, "_on_tmr_current_task_succeeded")
     TMR.disconnect("current_task_failed", self, "_on_tmr_current_task_failed")
   
-    # We're not going to remove the current task.
+    # Remove the current task - just in case!
+    TMR.remove_current_task()
        
     # Stop any timers that could be happening
     self.del_timers()
@@ -97,7 +98,7 @@ func _on_sensory_sort_core_body_entered(body, priority_area, group_category):
     match priority_area:
         SSC.PRI_AREA.FOF:
             # If there's a threat in the fight-or-flight area, FLEE!
-            if SSC.has_bodies(SSC.PRI_AREA.FOF, SSC.GC_THREAT):
+            if SSC.has_bodies(SSC.PRI_AREA.FOF, SSC.GROUP_CAT.THREAT):
                 change_state("Flee")
         _:
             pass
@@ -110,7 +111,7 @@ func _on_sensory_sort_core_body_exited(body, priority_area, group_category):
     match priority_area:
         SSC.PRI_AREA.FOF:
             # If there's a threat in the fight-or-flight area, FLEE!
-            if SSC.has_bodies(SSC.PRI_AREA.FOF, SSC.GC_THREAT):
+            if SSC.has_bodies(SSC.PRI_AREA.FOF, SSC.GROUP_CAT.THREAT):
                 change_state("Flee")
         _:
             pass
