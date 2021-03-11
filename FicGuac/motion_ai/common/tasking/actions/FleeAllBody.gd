@@ -10,6 +10,10 @@ export(SensorySortCore.PRI_AREA) var priority_area
 # What kind of body are we trying to flee?
 export(SensorySortCore.GROUP_CAT) var group_category
 
+# When a body of the appropriate category enters the specified priority area, do
+# we dynamically update the flee vector?
+export(bool) var dynamic_flee_vector = false
+
 # When we do flee, how far do we flee?
 var flee_distance
 
@@ -205,6 +209,8 @@ func _on_sensory_sort_core_body_entered(body, pri_area, group_category):
             if not SSC.get_bodies(priority_area, group_category):
                 _action_success = true
                 emit_signal("action_success")
+            elif dynamic_flee_vector:
+                assign_flee_vector()
         _:
             pass
 # If a body exits our sensory range...
@@ -224,5 +230,7 @@ func _on_sensory_sort_core_body_exited(body, pri_area, group_category):
             if not SSC.get_bodies(priority_area, group_category):
                 _action_success = true
                 emit_signal("action_success")
+            elif dynamic_flee_vector:
+                assign_flee_vector()
         _:
             pass

@@ -10,5 +10,6 @@ script = ExtResource( 2 )
 [node name="FleeAllBody" parent="." index="0" instance=ExtResource( 3 )]
 priority_area = 1
 group_category = 1
+dynamic_flee_vector = true
 [connection signal="action_failure" from="FleeAllBody" to="." method="_on_FleeAllBody_action_failure"]
 [connection signal="action_success" from="FleeAllBody" to="." method="_on_FleeAllBody_action_success"]

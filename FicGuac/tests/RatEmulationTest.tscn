@@ -345,7 +345,6 @@ navmesh = SubResource( 2 )
 ] instance=ExtResource( 4 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.2, 0 )
 visible = false
-collision_mask = 1
 navigation = NodePath("../RatNavigation")
 
 [node name="Blocky" parent="." groups=[
@@ -880,7 +879,6 @@ transform = Transform( 0.382393, -0.680099, 0.625493, 0, 0.67694, 0.736038, -0.9
 
 [node name="TaskingCowardPawn" parent="." instance=ExtResource( 13 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.2, -3.8 )
-collision_mask = 1
 navigation = NodePath("../RatNavigation")
 [connection signal="could_not_path" from="Blocky" to="." method="_on_Blocky_could_not_path"]
 [connection signal="error_goal_stuck" from="Blocky" to="." method="_on_Blocky_error_goal_stuck"]
