@@ -47,5 +47,5 @@ func assert_groups(node : Node):
         node.remove_from_group(grp)
     
     # Then, add all of the groups we have to this Node
-    for grp in node._group_strings:
+    for grp in self._group_strings:
         node.add_to_group(grp)

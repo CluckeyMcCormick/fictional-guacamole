@@ -53,7 +53,7 @@ func drop_item():
     
     # First, physicallize the node. This will separate it from ourselves.
     # Turn it into a visual item
-    var physical_node = current_item._to_visual_item()
+    var physical_node = current_item._to_physical_item()
     # Move the item out there
     target_node.add_child(physical_node)
     # Assert ownership

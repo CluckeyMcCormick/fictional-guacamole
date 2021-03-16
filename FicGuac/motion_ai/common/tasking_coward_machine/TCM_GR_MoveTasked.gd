@@ -12,14 +12,13 @@ onready var PTR = get_node("../../PhysicsTravelRegion")
 # We also need to communicate with the Task Manager Region
 onready var TMR = get_node("../../TaskManagerRegion")
 
-# Preload our random wandering task so we can instance it on demand
-var WANDER_TASK_PRELOAD = preload("res://motion_ai/common/tasking/WanderRandom.tscn")
+# Preload our item moving task so we can instance it on demand
+var MOVE_ITEM_TASK_PRELOAD = preload("res://motion_ai/common/tasking/MoveItemDrop.tscn")
 
-# This state is either the body standing still or wandering in a random
-# direction. When we're not wandering, we're idling. We don't want the
-# integrating body to stand still for too long, so we'll start a timer and then
-# start another wandering task when we're done.
-const IDLE_TIMER_NAME = "IdleTimeout"
+# The item we're trying to pick up
+var item
+# The position we're trying to move to
+var final_pos
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -32,7 +31,7 @@ func _on_enter(var arg) -> void:
     if not MR._machine_configured:
         MR._force_configure()
     
-    # Get our SensorySortCore
+# Get our SensorySortCore
     var SSC = MR.sensory_sort_core_node
     
     # Set the goal key
@@ -46,26 +45,12 @@ func _on_enter(var arg) -> void:
     TMR.connect("current_task_succeeded", self, "_on_tmr_current_task_succeeded")
     TMR.connect("current_task_failed", self, "_on_tmr_current_task_failed")
     
-    # Connect to the Machine Root's "Task Assigned" function
-    MR.connect("move_task_assigned", self, "_on_move_task_assigned")
-    
     # Instance out a new wander task.
-    var new_wander = WANDER_TASK_PRELOAD.instance()
+    var new_move_item = MOVE_ITEM_TASK_PRELOAD.instance()
     # Initialize!
-    new_wander.initialize(MR, PTR, MR.integrating_body_node, MR.wander_distance)
+    new_move_item.initialize(MR, PTR, MR.integrating_body_node, item, final_pos)
     # Add the task to the task manager
-    TMR.set_new_task(new_wander)
-
-func _on_timeout(name) -> void:
-    # If the timer ends, then it's time to start wandering!
-    match name:
-        IDLE_TIMER_NAME:
-            # Instance out a new wander task.
-            var new_wander = WANDER_TASK_PRELOAD.instance()
-            # Initialize!
-            new_wander.initialize(MR, PTR, MR.integrating_body_node, MR.wander_distance)
-            # Add the task to the task manager
-            TMR.set_new_task(new_wander)
+    TMR.set_new_task(new_move_item)
 
 func _on_exit(var arg) -> void:
     # Get our SensorySortCore
@@ -79,14 +64,14 @@ func _on_exit(var arg) -> void:
     TMR.disconnect("current_task_succeeded", self, "_on_tmr_current_task_succeeded")
     TMR.disconnect("current_task_failed", self, "_on_tmr_current_task_failed")
   
-    # Disconnect to the Machine Root's "Task Assigned" function
-    MR.disconnect("move_task_assigned", self, "_on_move_task_assigned")
+    # Clear the target item
+    item = null
+    
+    # Clear the final position
+    final_pos = null
 
     # Remove the current task - just in case!
     TMR.remove_current_task()
-       
-    # Stop any timers that could be happening
-    self.del_timers()
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -124,29 +109,13 @@ func _on_sensory_sort_core_body_exited(body, priority_area, group_category):
 
 # If the current task succeeds...
 func _on_tmr_current_task_succeeded(task):
-    # We succeeded! Hooray! Destroy the task!
-    TMR.remove_current_task()
-    # Stop any timers that could be happening
-    self.del_timers()
-    # Start a timer. Once this times out we'll put another random wandering task
-    # into the task manager
-    self.add_timer(IDLE_TIMER_NAME, MR.idle_wait_time)
+    print("Move task SUCCEEDED!")
+    # We succeeded! Hooray! Back to idle.
+    change_state("Idle")
     
 # If the current task fails...
 func _on_tmr_current_task_failed(task):
-    # We failed? Oh well. Remove the current task.
-    TMR.remove_current_task()
-    
-    # Stop any timers that could be happening
-    self.del_timers()
-    # Start a timer. Once this times out we'll put another random wandering task
-    # into the task manager
-    self.add_timer(IDLE_TIMER_NAME, MR.idle_wait_time)
+    print("Move task FAILED!")
+    # We failed? Oh well. Back to idle.
+    change_state("Idle")
 
-func _on_move_task_assigned(item, final_pos):
-    # Set the item
-    get_node("../MoveTasked").item = item
-    # Set the final position
-    get_node("../MoveTasked").final_pos = final_pos
-    # Change to the tasking state
-    change_state("MoveTasked")

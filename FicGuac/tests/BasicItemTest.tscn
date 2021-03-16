@@ -1,9 +1,10 @@
-[gd_scene load_steps=9 format=2]
+[gd_scene load_steps=10 format=2]
 
 [ext_resource path="res://textures/terrain/material/mat_terrain_grass_textured.tres" type="Material" id=1]
 [ext_resource path="res://tests/test_assets/StandardizedEnvironment.tscn" type="PackedScene" id=2]
 [ext_resource path="res://scenes/CameraRig.tscn" type="PackedScene" id=3]
 [ext_resource path="res://items/PawnCorpse.tscn" type="PackedScene" id=4]
+[ext_resource path="res://tests/BasicItemTest.gd" type="Script" id=5]
 [ext_resource path="res://tests/test_assets/TaskingCowardPawn.tscn" type="PackedScene" id=6]
 
 [sub_resource type="NavigationMesh" id=1]
@@ -21,6 +22,7 @@ size = Vector3( 16, 1, 16 )
 points = PoolVector3Array( -8, 0.5, 8, 8, 0.5, -8, 8, 0.5, 8, -8, 0.5, -8, -8, -0.5, 8, 8, -0.5, -8, 8, -0.5, 8, -8, -0.5, -8, 8, 0.5, 8, -8, 0.5, -8, 8, 0.5, -8, -8, 0.5, 8, 8, -0.5, 8, -8, -0.5, -8, 8, -0.5, -8, -8, -0.5, 8, 8, 0.5, 8, -8, -0.5, 8, -8, 0.5, 8, 8, -0.5, 8, 8, 0.5, -8, -8, -0.5, -8, -8, 0.5, -8, 8, -0.5, -8 )
 
 [node name="BasicItemTest" type="Spatial"]
+script = ExtResource( 5 )
 
 [node name="Navigation" type="Navigation" parent="."]
 
@@ -56,8 +58,17 @@ move_clamping_extents = Vector2( 8, 8 )
 [node name="PawnCorpse" parent="." groups=[
 "packing_goal",
 ] instance=ExtResource( 4 )]
-transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 2.8, 0 )
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -5, 2.8, 5 )
 
 [node name="TaskingCowardPawn" parent="." instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 5 )
 navigation = NodePath("../Navigation")
+
+[node name="Position3D" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.1, -6 )
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 5.0
+one_shot = true
+autostart = true
+[connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]

@@ -4,7 +4,7 @@ extends "res://motion_ai/common/tasking/TaskTemplate.gd"
 #
 # Utility Functions
 #
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~0
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 func initialize(machine_root, physics_travel_region, target_body, item, position):
     # Initialize the template's variables
@@ -23,13 +23,14 @@ func initialize(machine_root, physics_travel_region, target_body, item, position
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 func _on_DropItemCautionary_action_failure(failure_code):
+    print("Drop Failed, trying to change state")
     # We didn't drop an item. That could only be because we didn't have an item
     # to drop. Oh well! We mostly did that just in case we had an item still.
-    change_state("MoveToEntityRangeArea")
+    change_state("MoveToEntityPriorityArea")
 
 func _on_DropItemCautionary_action_success():
     # We did it. Hooray! Okay, now let's move into range of the item.
-    change_state("MoveToEntityRangeArea")
+    change_state("MoveToEntityPriorityArea")
 
 func _on_MoveToEntityPriorityArea_action_failure(failure_code):
     # Oh, we failed. Dang. Fail the task, I guess.

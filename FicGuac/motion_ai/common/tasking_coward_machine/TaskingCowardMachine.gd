@@ -63,6 +63,12 @@ var goal_key = ""
 # tracked by this variable.
 var _machine_configured = false
 
+# This is a signal unique to the TaskingCowardMachine, since it was designed to
+# accept input directly via code. The signal indicates the machine was ordered
+# to move an item to a specified location. Should only really be used by one of
+# the regions sub-machines.
+signal move_task_assigned(item, final_pos)
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Godot Processing - _ready, _process, etc.
@@ -103,3 +109,12 @@ func _force_configure():
     
     # Machine is configured!
     _machine_configured = true
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Utility Functions
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+# Order the machine to move an item to a specified position
+func move_item(item, final_pos):
+    emit_signal("move_task_assigned", item, final_pos)
