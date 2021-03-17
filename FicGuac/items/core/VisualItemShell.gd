@@ -48,6 +48,10 @@ func _to_physical_item():
     # Initialize the physical instance
     physical_instance.initialize(visual, data)
     
+    # Set the location of the physical instance to match the global location and
+    # orientation of this VisualItemShell
+    physical_instance.global_transform = self.global_transform
+    
     # Free ourselves from our own parent
     self.get_parent().remove_child(self)
     
