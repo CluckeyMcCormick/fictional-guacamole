@@ -56,8 +56,8 @@ func _on_exit(var arg) -> void:
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Assign a random target 
 func assign_random_target():
-    # Get our PathingInterfaceCore
-    var PIC = MR.pathing_interface_core_node
+    # Get our LevelInterfaceCore
+    var LIC = MR.level_interface_core_node
     
     # Start with a vector of fixed length
     var point = Vector3(1, 0, 0)
@@ -76,7 +76,7 @@ func assign_random_target():
     point += target.global_transform.origin
     
     # Path to the point
-    path = PIC.path_between(target.global_transform.origin, point)
+    path = LIC.path_between(target.global_transform.origin, point)
     
     # Set the path to the random point
     PTR.set_target_path(path, true)

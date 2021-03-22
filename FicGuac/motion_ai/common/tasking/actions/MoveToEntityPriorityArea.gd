@@ -104,8 +104,8 @@ func _on_exit(var arg) -> void:
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 func path_to_target():
-    # Get our PathingInterfaceCore
-    var PIC = MR.pathing_interface_core_node
+    # Get our LevelInterfaceCore
+    var LIC = MR.level_interface_core_node
     
     # The path we got out of the PathingInterfaceCore
     var path
@@ -118,7 +118,7 @@ func path_to_target():
     PTR.clear_target_data()
     
     # Generate a path to the target entity!
-    path = PIC.path_between(target.global_transform.origin, _entity_position)
+    path = LIC.path_between(target.global_transform.origin, _entity_position)
     
     # Now pass the path to our pathing region
     PTR.set_target_path(path, true)

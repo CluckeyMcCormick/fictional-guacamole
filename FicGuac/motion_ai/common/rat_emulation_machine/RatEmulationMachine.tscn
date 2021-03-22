@@ -14,8 +14,6 @@
 [node name="RatEmulationMachine" type="Node"]
 script = ExtResource( 2 )
 has_regions = true
-fsm_owner = null
-animation_player = null
 
 [node name="GoalRegion" type="Node" parent="."]
 script = ExtResource( 8 )
@@ -24,15 +22,11 @@ animation_player = null
 
 [node name="Idle" type="Node" parent="GoalRegion"]
 script = ExtResource( 9 )
-disabled = false
-has_regions = false
 fsm_owner = null
 animation_player = null
 
 [node name="Wander" type="Node" parent="GoalRegion"]
 script = ExtResource( 10 )
-fsm_owner = null
-animation_player = null
 
 [node name="Flee" type="Node" parent="GoalRegion"]
 script = ExtResource( 6 )
@@ -60,10 +54,6 @@ animation_player = null
 
 [node name="Walk" type="Node" parent="PhysicsTravelRegion/OnGround"]
 script = ExtResource( 5 )
-disabled = false
-has_regions = false
-fsm_owner = null
-animation_player = null
 
 [node name="Falling" type="Node" parent="PhysicsTravelRegion"]
 script = ExtResource( 1 )

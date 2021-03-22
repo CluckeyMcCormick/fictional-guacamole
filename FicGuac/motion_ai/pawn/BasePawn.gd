@@ -53,10 +53,10 @@ func _ready():
     
     # IF we have a pathing interface...
     if navigation_node != null:
-        # Pass our navigation input down to the Pathing Interface Core. Calling
+        # Pass our navigation input down to the Level Interface Core. Calling
         # get_path() on the resolved node will get the absolute path for the scene,
         # so that we can ensure the PathingInterfaceCore is configured correctly
-        $PathingInterfaceCore.navigation_node = navigation_node.get_path()
+        $LevelInterfaceCore.navigation_node = navigation_node.get_path()
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #

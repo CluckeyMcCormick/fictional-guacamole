@@ -4,7 +4,7 @@
 [ext_resource path="res://motion_ai/common/KinematicCore.tscn" type="PackedScene" id=2]
 [ext_resource path="res://motion_ai/common/SensorySortCore.tscn" type="PackedScene" id=3]
 [ext_resource path="res://motion_ai/pawn/BasePawn.gd" type="Script" id=4]
-[ext_resource path="res://motion_ai/common/PathingInterfaceCore.tscn" type="PackedScene" id=5]
+[ext_resource path="res://motion_ai/common/LevelInterfaceCore.tscn" type="PackedScene" id=5]
 [ext_resource path="res://motion_ai/common/GroupSortMatrix.gd" type="Script" id=6]
 [ext_resource path="res://motion_ai/common/ItemManagementCore.tscn" type="PackedScene" id=7]
 
@@ -92,7 +92,7 @@ pixel_size = 0.014
 shaded = true
 alpha_cut = 2
 frames = ExtResource( 1 )
-frame = 3
+frame = 4
 playing = true
 
 [node name="WeaponSprite" type="AnimatedSprite3D" parent="."]
@@ -116,7 +116,8 @@ interaction_range_area = NodePath("../InteractionArea")
 danger_interrupt_area = NodePath("../DangerInterruptArea")
 group_sort_matrix = SubResource( 8 )
 
-[node name="PathingInterfaceCore" parent="." instance=ExtResource( 5 )]
+[node name="LevelInterfaceCore" parent="." instance=ExtResource( 5 )]
+navigation_node = NodePath("")
 
 [node name="ItemManagementCore" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.075, 0.875, 0.075 )

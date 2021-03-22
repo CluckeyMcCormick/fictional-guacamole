@@ -6,6 +6,10 @@ const DEFAULT_ROTATION_NO3D = Vector3(-90, 45, 0)
 
 # The current item we're holding on to.
 var current_item = null
+# Whenever we drop an item, we need to attach it to another parent in the scene.
+# If this is set to a node (or just a non-null value), we will attach to the
+# specified node. Otherwise, we'll attach to something more... stupid.
+var dedicated_parent_node = null
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -46,18 +50,31 @@ func grab_item(node : MasterItem):
         current_item.rotation_degrees = DEFAULT_ROTATION_NO3D
 
 func drop_item():
-    # Very dumb assumption - since the core probably sits as an integrating body
-    # in a scene, then our parent's parent is PROBABLY where the item should go.
-    # It's TOO genius to NOT WORK!
-    var target_node = get_parent().get_parent()
+    # This is the node that we'll attach the item (if we have an item to drop)
+    var target_parent
     
+    if current_item == null:
+        return
+    
+    # If we have a dedicated parent node...
+    if dedicated_parent_node != null:
+        # Let's use that for our target parent
+        target_parent = dedicated_parent_node
+        
+    # Otherwise, let's do something stupid...
+    else:
+        # Very dumb assumption - since the core probably sits as an integrating
+        # body in a scene, then our parent's parent is PROBABLY where the item
+        # should go. It's TOO genius to NOT WORK!
+        target_parent = get_parent().get_parent()
+        
     # First, physicallize the node. This will separate it from ourselves.
     # Turn it into a visual item
     var physical_node = current_item._to_physical_item()
     # Move the item out there
-    target_node.add_child(physical_node)
+    target_parent.add_child(physical_node)
     # Assert ownership
-    target_node.set_owner(physical_node)
+    target_parent.set_owner(physical_node)
     
     # Clear our tracker - it's out of our hands now!
     current_item = null

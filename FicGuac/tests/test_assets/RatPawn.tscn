@@ -11,21 +11,18 @@ threat_groups = PoolStringArray( "rat_threat" )
 goal_groups = PoolStringArray(  )
 
 [node name="RatPawn" instance=ExtResource( 1 )]
-collision_mask = 1
 script = ExtResource( 3 )
 
 [node name="VisualSprite" parent="." index="7"]
-frame = 2
+frame = 0
 
 [node name="SensorySortCore" parent="." index="10"]
 group_sort_matrix = SubResource( 1 )
 
 [node name="RatEmulationMachine" parent="." index="13" instance=ExtResource( 2 )]
-disabled = false
 fsm_owner = NodePath("..")
+animation_player = null
 kinematic_core = NodePath("../KinematicCore")
 sensory_sort_core = NodePath("../SensorySortCore")
-pathing_interface_core = NodePath("../PathingInterfaceCore")
-idle_wait_time = 1.0
-wander_distance = 5
+level_interface_core = NodePath("../LevelInterfaceCore")
 flee_distance = 2.0

@@ -22,7 +22,7 @@ func _ready():
     
 # Update the GUI so we know what's up
 func _process(delta):
-    var cubit_adj_pos = $Cubit/PathingInterfaceCore.get_adjusted_position($Cubit)
+    var cubit_adj_pos = $Cubit/LevelInterfaceCore.get_adjusted_position($Cubit)
     
     # Set the test text
     $Items/TestLabel/Info.text = str(node_index)

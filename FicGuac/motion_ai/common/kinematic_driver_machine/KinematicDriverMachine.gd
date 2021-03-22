@@ -15,11 +15,11 @@ export(NodePath) var kinematic_core
 # We resolve the node path into this variable.
 var kinematic_core_node
 
-# We also need a Pathing Interface Core so that we can navigate to positions on
-# our own AND determine where we are
-export(NodePath) var pathing_interface_core
+# We also need a Level Interface Core so we can interface with different
+# elements of the current level
+export(NodePath) var level_interface_core
 # We resolve the node path into this variable.
-var pathing_interface_core_node
+var level_interface_core_node
 
 # Sometimes - due to the speed of the integrating body (too fast), or perhaps
 # because of the occassional lumpy weirdness of the Navigation Meshes, or even
@@ -67,15 +67,15 @@ func _ready():
     
     # Resolve the KinematicCore node
     kinematic_core_node = get_node(kinematic_core)
-    # Resolve the PathingInterfaceCore node
-    pathing_interface_core_node = get_node(pathing_interface_core)
+    # Resolve the LevelInterfaceCore node
+    level_interface_core_node = get_node(level_interface_core)
     
     # Also, the target has to be a KinematicBody
     assert(typeof(target) == typeof(KinematicBody), "FSM Owner must be a KinematicBody node!")
     # Also, we need a KinematicCore
     assert(kinematic_core_node != null, "A KinematicCore node is required!")
-    # Can't forget the Pathing Interface Core!
-    assert(pathing_interface_core_node != null, "A PathingInterfaceCore node is required!")
+    # Can't forget the Level Interface Core!
+    assert(level_interface_core_node != null, "A LevelInterfaceCore node is required!")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -86,7 +86,7 @@ func _ready():
 # it.
 func move_to_point(to_point : Vector3):
     self.target_position = null
-    self.target_path = pathing_interface_core_node.path_between(
+    self.target_path = level_interface_core_node.path_between(
         target.global_transform.origin, # FROM the target's position
         to_point # TO the to_point
     )

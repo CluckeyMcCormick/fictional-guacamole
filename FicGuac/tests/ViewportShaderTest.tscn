@@ -353,12 +353,9 @@ animation_length = 0.1
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 2, 7 )
 navigation = NodePath("../Navigation")
 
-[node name="VisualSprite" parent="XrayPawnDefault" index="6"]
+[node name="VisualSprite" parent="XrayPawnDefault" index="7"]
 frames = ExtResource( 16 )
-frame = 17
-
-[node name="PathingInterfaceCore" parent="XrayPawnDefault" index="11"]
-navigation_node = NodePath("")
+frame = 1
 
 [node name="HidingMesh" parent="XrayPawnDefault" instance=ExtResource( 20 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 5, 5 )
@@ -372,12 +369,9 @@ animation_length = 0.1
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 2, 7 )
 navigation = NodePath("../Navigation")
 
-[node name="VisualSprite" parent="XrayPawnNoDepth" index="6"]
+[node name="VisualSprite" parent="XrayPawnNoDepth" index="7"]
 frames = ExtResource( 15 )
-frame = 8
-
-[node name="PathingInterfaceCore" parent="XrayPawnNoDepth" index="11"]
-navigation_node = NodePath("")
+frame = 24
 
 [node name="HidingMesh" parent="XrayPawnNoDepth" instance=ExtResource( 20 )]
 material/0 = SubResource( 19 )
@@ -388,12 +382,9 @@ animation_length = 0.1
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 7, 2, 9 )
 navigation = NodePath("../Navigation")
 
-[node name="VisualSprite" parent="MultiplyPawn" index="6"]
+[node name="VisualSprite" parent="MultiplyPawn" index="7"]
 frames = ExtResource( 17 )
-frame = 17
-
-[node name="PathingInterfaceCore" parent="MultiplyPawn" index="11"]
-navigation_node = NodePath("")
+frame = 1
 
 [node name="HidingMesh" parent="MultiplyPawn" instance=ExtResource( 20 )]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.0500002, 0, 0.0500002 )
@@ -406,12 +397,9 @@ animation_length = 0.1
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 9, 2, 9 )
 navigation = NodePath("../Navigation")
 
-[node name="VisualSprite" parent="FillPawn" index="6"]
+[node name="VisualSprite" parent="FillPawn" index="7"]
 frames = ExtResource( 12 )
-frame = 15
-
-[node name="PathingInterfaceCore" parent="FillPawn" index="11"]
-navigation_node = NodePath("")
+frame = 31
 
 [node name="HidingMesh" parent="FillPawn" instance=ExtResource( 20 )]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.0500002, 0, 0.0500002 )
@@ -424,11 +412,9 @@ animation_length = 0.1
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 11, 2, 9 )
 navigation = NodePath("../Navigation")
 
-[node name="VisualSprite" parent="NormalPawn" index="6"]
+[node name="VisualSprite" parent="NormalPawn" index="7"]
 modulate = Color( 0.976471, 0.760784, 0.168627, 1 )
-
-[node name="PathingInterfaceCore" parent="NormalPawn" index="11"]
-navigation_node = NodePath("")
+frame = 7
 
 [node name="Navigation" type="Navigation" parent="."]
 
@@ -551,7 +537,7 @@ mesh = SubResource( 27 )
 material/0 = SubResource( 28 )
 
 [node name="StaticBody" type="StaticBody" parent="Navigation/NavigationMeshInstance/OpaquePlinth/OpaqueBox"]
-collision_layer = 524288
+collision_layer = 4
 collision_mask = 2147483648
 
 [node name="CollisionShape" type="CollisionShape" parent="Navigation/NavigationMeshInstance/OpaquePlinth/OpaqueBox/StaticBody"]
@@ -639,7 +625,7 @@ mesh = SubResource( 32 )
 material/0 = SubResource( 33 )
 
 [node name="StaticBody" type="StaticBody" parent="Navigation/NavigationMeshInstance/TransparentPlinth/TransparentBox"]
-collision_layer = 524288
+collision_layer = 4
 collision_mask = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="Navigation/NavigationMeshInstance/TransparentPlinth/TransparentBox/StaticBody"]
@@ -712,7 +698,7 @@ mesh = SubResource( 35 )
 material/0 = ExtResource( 7 )
 
 [node name="StaticBody" type="StaticBody" parent="Navigation/NavigationMeshInstance/PartialPlinth/PartialA"]
-collision_layer = 524288
+collision_layer = 4
 collision_mask = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="Navigation/NavigationMeshInstance/PartialPlinth/PartialA/StaticBody"]
@@ -725,7 +711,7 @@ mesh = SubResource( 37 )
 material/0 = ExtResource( 7 )
 
 [node name="StaticBody" type="StaticBody" parent="Navigation/NavigationMeshInstance/PartialPlinth/PartialB"]
-collision_layer = 524288
+collision_layer = 4
 collision_mask = 0
 
 [node name="CollisionShape" type="CollisionShape" parent="Navigation/NavigationMeshInstance/PartialPlinth/PartialB/StaticBody"]

@@ -47,8 +47,8 @@ func _on_enter(var arg) -> void:
 func _on_update(delta) -> void:
     # Get our KinematicCore
     var KC = MR.kinematic_core_node
-    # Get our PathingInterfaceCore
-    var PIC = MR.pathing_interface_core_node
+    # Get our LevelInterfaceCore
+    var LIC = MR.level_interface_core_node
     # Get our current integrating body
     var itgr_body = MR.integrating_body_node
     # Did we get a collision result from our most recent move attempt?
@@ -69,7 +69,7 @@ func _on_update(delta) -> void:
             return
 
     # How far are we from our target position?
-    var distance_to = PTR._target_position - PIC.get_adjusted_position(itgr_body)
+    var distance_to = PTR._target_position - LIC.get_adjusted_position(itgr_body)
     # We really only care about the X and Z, so we're gonna zero out the y
     # distance left - since we currently can't purposefully or explicitly move 
     # up or down.
@@ -121,8 +121,8 @@ func _on_update(delta) -> void:
 func _after_update(delta) -> void:
     # Get our KinematicCore
     var KC = MR.kinematic_core_node
-    # Get our PathingInterfaceCore
-    var PIC = MR.pathing_interface_core_node
+    # Get our LevelInterfaceCore
+    var LIC = MR.level_interface_core_node
     # Get our current integrating body
     var itgr_body = MR.integrating_body_node
 
@@ -140,7 +140,7 @@ func _after_update(delta) -> void:
             return
 
     # Calculate the remaining distance to our objective
-    var new_dist = (PTR._target_position - PIC.get_adjusted_position(itgr_body)).length()
+    var new_dist = (PTR._target_position - LIC.get_adjusted_position(itgr_body)).length()
     # Calculate a rounded version for detecting any errors
     var new_dist_rnd = stepify(new_dist, KC.ERROR_DETECTION_PRECISION)
 

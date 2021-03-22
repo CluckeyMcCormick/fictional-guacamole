@@ -13,11 +13,11 @@ export(NodePath) var sensory_sort_core
 # We resolve the node path into this variable.
 var sensory_sort_core_node
 
-# We also need a Pathing Interface Core so that we can navigate to positions on
-# our own AND determine where we are
-export(NodePath) var pathing_interface_core
+# We also need a Level Interface Core so we can interface with different
+# elements of the current level
+export(NodePath) var level_interface_core
 # We resolve the node path into this variable.
-var pathing_interface_core_node
+var level_interface_core_node
 
 # How long do we idle for before we transition to the wandering state?
 export(float, 0.0, 6.0) var idle_wait_time = 1.0
@@ -74,8 +74,8 @@ func _force_configure():
     kinematic_core_node = get_node(kinematic_core)
     # Resolve the SensorySortCore node
     sensory_sort_core_node = get_node(sensory_sort_core)
-    # Resolve the PathingInterfaceCore node
-    pathing_interface_core_node = get_node(pathing_interface_core)
+    # Resolve the LevelInterfaceCore node
+    level_interface_core_node = get_node(level_interface_core)
     
     # Also, the target has to be a KinematicBody
     assert(typeof(target) == typeof(KinematicBody), "FSM Owner must be a KinematicBody node!")
@@ -83,8 +83,8 @@ func _force_configure():
     assert(kinematic_core_node != null, "A KinematicCore node is required!")
     # AAAAAND a we need a SensorySortCore
     assert(sensory_sort_core_node != null, "A SensorySortCore node is required!")
-    # Can't forget the Pathing Interface Core!
-    assert(pathing_interface_core_node != null, "A PathingInterfaceCore node is required!")
+    # Can't forget the Level Interface Core!
+    assert(level_interface_core_node != null, "A LevelInterfaceCore node is required!")
     
     # The machine is configured. Hooray!
     _machine_configured = true

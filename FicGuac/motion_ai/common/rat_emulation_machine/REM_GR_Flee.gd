@@ -60,8 +60,8 @@ func _on_exit(var arg) -> void:
 func assign_target_position():
     # Get our SensorySortCore
     var SSC = MR.sensory_sort_core_node
-    # Get our PathingInterfaceCore
-    var PIC = MR.pathing_interface_core_node
+    # Get our LevelInterfaceCore
+    var LIC = MR.level_interface_core_node
     # Create a blank vector for us to add onto
     var move_vec = Vector3.ZERO
     
@@ -88,7 +88,7 @@ func assign_target_position():
     var point = target.global_transform.origin + move_vec
     
     # Path to the point
-    path = PIC.path_between(target.global_transform.origin, point)
+    path = LIC.path_between(target.global_transform.origin, point)
     
     # Set the path to the random point
     PTR.set_target_path(path, true)
@@ -116,7 +116,7 @@ func assign_target_position():
             # target
             point = target.global_transform.origin + move_vec
             # Path to the point
-            path = PIC.path_between(target.global_transform.origin, point)
+            path = LIC.path_between(target.global_transform.origin, point)
             
             # If we actually have a path...
             if not path.empty():
