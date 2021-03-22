@@ -7,6 +7,7 @@ var scene_paths = {
     "Dynamic Navigation Mesh Test" : "res://tests/DynamicNavMeshTest.tscn",
     "Advanced Kinematics Test" : "res://tests/AdvancedKinematicTest.tscn",
     "Rat Emulation Test" : "res://tests/RatEmulationTest.tscn",
+    "Basic Item Test" : "res://tests/BasicItemTest.tscn",
     "Attack Model Test" : "res://tests/AttackModelTest.tscn"
 }
 
