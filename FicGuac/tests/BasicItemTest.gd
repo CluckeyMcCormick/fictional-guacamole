@@ -2,6 +2,6 @@ extends Spatial
 
 func _on_Timer_timeout():  
     $TaskingCowardPawn.move_item(
-        $PawnCorpse,
+        $ItemManager/PawnCorpse,
         $Position3D.global_transform.origin
     )

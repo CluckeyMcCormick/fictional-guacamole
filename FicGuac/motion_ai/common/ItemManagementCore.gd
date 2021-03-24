@@ -6,10 +6,29 @@ const DEFAULT_ROTATION_NO3D = Vector3(-90, 45, 0)
 
 # The current item we're holding on to.
 var current_item = null
+
 # Whenever we drop an item, we need to attach it to another parent in the scene.
-# If this is set to a node (or just a non-null value), we will attach to the
-# specified node. Otherwise, we'll attach to something more... stupid.
-var dedicated_parent_node = null
+# The Level Interface Core has a field for a dedicated item-parent. If we don't
+# have this core, or the node doesn't point at anything, we'll attach to
+# something more... stupid.
+export(NodePath) var level_interace_core setget set_level_interface_core
+# We resolve the node path into this variable.
+var lic_node = null
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Setters and Getters
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# Set the level interface core. Unlike most cores, we actually resolve the node
+# path whenever it gets set.
+func set_level_interface_core(new_level_interace_core):
+    level_interace_core = new_level_interace_core
+        
+    # If we're not in the engine, update our configuration warning
+    if not Engine.editor_hint:
+        lic_node = get_node(level_interace_core)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -53,13 +72,14 @@ func drop_item():
     # This is the node that we'll attach the item (if we have an item to drop)
     var target_parent
     
+    # If we don't have an item, just bounce
     if current_item == null:
         return
     
-    # If we have a dedicated parent node...
-    if dedicated_parent_node != null:
+    # If we have a Level Interface core with an item node...
+    if lic_node != null && lic_node.item_node != null:
         # Let's use that for our target parent
-        target_parent = dedicated_parent_node
+        target_parent = lic_node.item_node
         
     # Otherwise, let's do something stupid...
     else:

@@ -92,7 +92,7 @@ pixel_size = 0.014
 shaded = true
 alpha_cut = 2
 frames = ExtResource( 1 )
-frame = 4
+frame = 7
 playing = true
 
 [node name="WeaponSprite" type="AnimatedSprite3D" parent="."]
@@ -117,7 +117,7 @@ danger_interrupt_area = NodePath("../DangerInterruptArea")
 group_sort_matrix = SubResource( 8 )
 
 [node name="LevelInterfaceCore" parent="." instance=ExtResource( 5 )]
-navigation_node = NodePath("")
 
 [node name="ItemManagementCore" parent="." instance=ExtResource( 7 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0.075, 0.875, 0.075 )
+level_interace_core = NodePath("../LevelInterfaceCore")

@@ -12,9 +12,11 @@ goal_groups = PoolStringArray( "packing_goal" )
 
 [node name="TaskingCowardPawn" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
+navigation = NodePath("")
+equipment = 0
 
 [node name="VisualSprite" parent="." index="7"]
-frame = 0
+frame = 1
 
 [node name="SensorySortCore" parent="." index="10"]
 fight_or_flight_area = NodePath("../../TaskingCowardPawn/FOFArea")

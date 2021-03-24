@@ -20,6 +20,11 @@ export(NodePath) var navigation
 # We resolve the node path into this variable.
 var navigation_node
 
+# Where will the Pawn drop items, when items need to be dropped?
+export(NodePath) var item_parent
+# We resolve the node path into this variable.
+var item_parent_node
+
 # We'll preload all the weapon frames we need since we'll have to change them on
 # the fly.
 const short_sword_frames = preload("res://motion_ai/pawn/weapon_sprites/pawn_short_sword_frames.tres")
@@ -48,15 +53,27 @@ var _orient_enum = SOUTH
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    # Get the drive target node
+    # Get the navigation node
     navigation_node = get_node(navigation)
+    
+    # Get the item parent node
+    item_parent_node = get_node(item_parent)
     
     # IF we have a pathing interface...
     if navigation_node != null:
         # Pass our navigation input down to the Level Interface Core. Calling
-        # get_path() on the resolved node will get the absolute path for the scene,
-        # so that we can ensure the PathingInterfaceCore is configured correctly
+        # get_path() on the resolved node will get the absolute path for the
+        # scene, so that we can ensure the LevelInterfaceCore is configured
+        # correctly
         $LevelInterfaceCore.navigation_node = navigation_node.get_path()
+
+    # IF we have a parent node to drop items on...
+    if item_parent_node != null:
+        # Pass our "item drop" input down to the Level Interface Core. Calling
+        # get_path() on the resolved node will get the absolute path for the
+        # scene, so that we can ensure the LevelInterfaceCore is configured
+        # correctly
+        $LevelInterfaceCore.item_parent_node = item_parent_node.get_path()
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #

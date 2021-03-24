@@ -6,10 +6,17 @@ extends Node
 # Variable Declarations
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-# Each driver needs a node to move around - what node will this drive move?
+# In order to navigate the world, we need a dedicated mesh to work against. What
+# mesh-node will we use?
 export(NodePath) var navigation_node setget set_navigation_node
 # We resolve the node path into this variable.
 var nav_node
+
+# When our machine drops items, we need a parent to place the items under. What
+# should that item be?
+export(NodePath) var item_parent_node setget set_item_parent_node
+# We resolve the node path into this variable.
+var item_node
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -17,7 +24,7 @@ var nav_node
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-# Set the drive body. Unlike most cores, we actually resolve the node path
+# Set the navigation node. Unlike most cores, we actually resolve the node path
 # whenever it gets set. Also updates our configuration warning.
 func set_navigation_node(new_navigation_node):
     navigation_node = new_navigation_node
@@ -29,6 +36,18 @@ func set_navigation_node(new_navigation_node):
     else:
         nav_node = get_node(navigation_node)
 
+# Set the item parent node. Unlike most cores, we actually resolve the node path
+# whenever it gets set. Also updates our configuration warning.
+func set_item_parent_node(new_item_parent_node):
+    item_parent_node = new_item_parent_node
+    
+    # If we're in the engine, update our configuration warning
+    if Engine.editor_hint:
+        update_configuration_warning()
+    # Otherwise, update the drop node
+    else:
+        item_node = get_node(item_parent_node)
+
 # This function is very ugly, but it serves a very specific purpose: it allows
 # us to generate warnings in the editor in case the KinematicDriver is
 # misconfigured.
@@ -36,15 +55,25 @@ func _get_configuration_warning():
     # (W)a(RN)ing (STR)ing
     var wrnstr= ""
     
-    # Get the body - but only if we have a body to get!
+    # Get the navigation node - but only if we have a node to get!
     if navigation_node != "":
         nav_node = get_node(navigation_node)
-    
-    # Test 1: Check if we have a node
+
+    # Test 1: Check if we have a navigation node
     if nav_node == null:
         wrnstr += "No Navigation Node specified, or path is invalid!\n"
-        wrnstr += "Pathing Interface Core does allow for runtime configuration\n"
+        wrnstr += "Level Interface Core does allow for runtime configuration\n"
         wrnstr += "via set_navigation_node if preconfiguring is impractical.\n"
+
+    # Get the item drop parent node - but only if we have a node to get!
+    if item_parent_node != "":
+        item_node = get_node(item_parent_node)
+
+    # Test 2: Check if we have a item parent node
+    if item_node == null:
+        wrnstr += "No Item Parent Node specified, or path is invalid!\n"
+        wrnstr += "Level Interface Core does allow for runtime configuration\n"
+        wrnstr += "via set_item_parent_node if preconfiguring is impractical.\n"
     
     return wrnstr
 
@@ -83,7 +112,7 @@ func get_adjusted_position(in_body : Spatial):
     # current position.
     else:
         adjusted = curr_pos
-        push_warning("PIC couldn't get adjusted position due to invalid/null nav_node.")
+        push_warning("LIC couldn't get adjusted position due to invalid/null nav_node.")
     
     return adjusted
 
@@ -105,6 +134,6 @@ func path_between(from : Vector3, to : Vector3):
     # Otherwise... Guess I have no idea what's happening. Let's just not path.
     else:
         path = []
-        push_warning("PIC couldn't generate path because of invalid/null nav_node.")
+        push_warning("LIC couldn't generate path because of invalid/null nav_node.")
         
     return path

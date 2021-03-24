@@ -55,7 +55,9 @@ move_enabled = true
 zoom_enabled = true
 move_clamping_extents = Vector2( 8, 8 )
 
-[node name="PawnCorpse" parent="." groups=[
+[node name="ItemManager" type="Spatial" parent="."]
+
+[node name="PawnCorpse" parent="ItemManager" groups=[
 "packing_goal",
 ] instance=ExtResource( 4 )]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -5, 2.8, 5 )
@@ -63,6 +65,7 @@ transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -
 [node name="TaskingCowardPawn" parent="." instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 5 )
 navigation = NodePath("../Navigation")
+item_parent = NodePath("../ItemManager")
 
 [node name="Position3D" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 6, 0.1, -6 )
