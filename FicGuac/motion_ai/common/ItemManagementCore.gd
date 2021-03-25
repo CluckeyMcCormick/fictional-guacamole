@@ -26,9 +26,22 @@ var lic_node = null
 func set_level_interface_core(new_level_interace_core):
     level_interace_core = new_level_interace_core
         
-    # If we're not in the engine, update our configuration warning
+    # If we're not in the engine, get the node
     if not Engine.editor_hint:
         lic_node = get_node(level_interace_core)
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Godot Processing - _ready, _process, etc.
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+func _ready():
+    # If we have a level interface core...
+    if level_interace_core:
+        # Get it! This may not have been resolved yet, since this node may have
+        # not been in the scene tree before now
+        lic_node = get_node(level_interace_core)
+
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #

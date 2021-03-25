@@ -79,6 +79,24 @@ func _get_configuration_warning():
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
+# Godot Processing - _ready, _process, etc.
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+func _ready():
+    # If we have a navigation node...
+    if navigation_node:
+        # Get it! This may not have been resolved yet, since this node may have
+        # not been in the scene tree before now
+        nav_node = get_node(navigation_node)
+
+    # If we have an item parent node...
+    if item_parent_node:
+        # Get it! This may not have been resolved yet, since this node may have
+        # not been in the scene tree before now
+        item_node = get_node(item_parent_node)
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
 # Core functions
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
