@@ -6,10 +6,6 @@
 [ext_resource path="res://tests/AttackModelTest.gd" type="Script" id=4]
 [ext_resource path="res://tests/test_assets/KinematicPawn.tscn" type="PackedScene" id=5]
 
-
-
-
-
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 20, 1, 20 )
 

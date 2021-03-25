@@ -1,67 +1,80 @@
 class_name MasterItem
 extends RigidBody
 
-onready var visual_scene = preload("res://items/core/VisualItemShell.tscn")
+# Items in this game have two states:
+#   - physical, where they move about and collide as you would expect real
+#     objects to do
+#   - visual, where they don't collide with anything and also don't have physics
+# The enumeration will help us keep these different modes straight.
+enum {ITEM_PHYSICAL, ITEM_VISUAL}
+
+# The item's current state is tracked by this var. We start in the physical
+# mode. You can read this variable, but please don't touch it. Please!!!
+var _item_state = ITEM_PHYSICAL
+
+# Is the visual component of this item 3D - i.e. does it consist of a mesh or
+# some other such object? This enables special behaviors for how we handle this
+# visual instance.
+export(bool) var _is_3D = false
+# The initial positional offset (when in visual item mode) of this item IF this
+# item is 3D. This allows for appropriate shifting for items - for example, so
+# that a box doesn't clip into an NPC's head
+export(Vector3) var _visualized_offset_3D = Vector3.ZERO
+# The initial rotation (when in visual item mode) of this item IF this item is
+# 3D. Important for items that may have odd sizes. Angles are in degrees.
+export(Vector3) var _visualized_rotation_3D = Vector3(0, 45, 0)
+
+# When an item switches to the visual only mode, it loses any-and-all collision.
+# The collision layers and masks are saved in here until we become physical,
+# when they reassert themselves.
+var _layer_cache
+var _mask_cache
 
 # --------------------------------------------------------
 #
 # Utility Functions
 #
 # --------------------------------------------------------
-func initialize(new_visual, new_data):
-    # First, get our visual and data nodes
-    var visual = $VisualComponent
-    var data = $DataComponent
 
-    # If we have a visual component, remove and destroy it
-    if visual != null:
-        self.remove_child(visual)
-        visual.queue_free()
+func _to_visual_item():  
+    # If we're already a visual item, return our self
+    if _item_state == ITEM_VISUAL:
+        return self
     
-    # If we have a data component, remove and destroy it
-    if data != null:
-        self.remove_child(data)
-        data.queue_free()
-        
-    # Add in the data and visual components
-    self.add_child(new_visual)
-    self.add_child(new_data)
-    new_visual.set_owner(self)
-    new_data.set_owner(self)
+    # Become a static (no physics) body
+    self.mode = RigidBody.MODE_STATIC
+    
+    # Capture the collision layer and the collision mask
+    _layer_cache = self.collision_layer
+    _mask_cache = self.collision_mask
+    
+    # Clear the collision layer and mask
+    self.collision_layer = 0
+    self.collision_mask = 0
+    
+    # We have entered VISUAL MODE
+    _item_state = ITEM_VISUAL
+    
+    return self
 
-    # Assert the groups
-    new_data.assert_groups(self)
-    
-    # All done!
+func _to_physical_item():
 
-func _to_visual_item():
-    # First, get our visual and data nodes
-    var visual = $VisualComponent
-    var data = $DataComponent
+    # If we're already a physical item, return our self
+    if _item_state == ITEM_PHYSICAL:
+        return self
+
+    # Reassert the collision layer and mask
+    self.collision_layer = _layer_cache
+    self.collision_mask = _mask_cache
     
-    # If we don't have one of those, then something's off. Just return null so
-    # whatever called this function knows something messed up.
-    if visual == null or data == null:
-        return null
+    # Become a rigid (physics) body
+    self.mode = RigidBody.MODE_RIGID
     
-    # Save the groups
-    data._group_strings = self.get_groups()
-    
-    # Create a new visual instance
-    var visual_instance = visual_scene.instance()
-    
-    # Detach the visual and data components
-    self.remove_child(visual)
-    self.remove_child(data)
-    
-    # Initialize the visual instance
-    visual_instance.initialize(visual, data)
-    
-    # Free ourselves from our own parent
-    self.get_parent().remove_child(self)
-    
-    # Free the physical item
-    self.queue_free()
-    
-    # Return the visual instance
-    return visual_instance
+    # Chances are, while we were set to visual mode, we were sleeping. Need to
+    # assert that this is no longer true
+    self.sleeping = false
+
+    # We have entered PHYSICAL MODE
+    _item_state = ITEM_PHYSICAL
+
+    return self

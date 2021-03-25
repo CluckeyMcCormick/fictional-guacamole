@@ -1,8 +1,8 @@
 extends Position3D
 
-# When we grab an item, and it's not 3D, we rotate it. To what angles (in
-# degrees) do we rotate it?
-const DEFAULT_ROTATION_NO3D = Vector3(-90, 45, 0)
+# When we grab an item, we rotate it.
+# To what angles (in degrees) do we rotate 2D items?
+const DEFAULT_ROTATION_2D = Vector3(-90, 45, 0)
 
 # The current item we're holding on to.
 var current_item = null
@@ -37,36 +37,35 @@ func set_level_interface_core(new_level_interace_core):
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 func grab_item(node : MasterItem):
-    var visual_node
+    # If we have an item already, just bounce
+    if current_item != null:
+        return
     
     # If we're not dealing with an item, then back out.
     if not node is MasterItem:
         return
-        
-    # Turn it into a visual item
-    visual_node = node._to_visual_item()
     
-    # If we got null passed back to us...
-    if visual_node == null:
-        # Then something's up with the Item node. Could be that it's currently
-        # being dismantled (maybe). Either way, it means we can't grab it, so
-        # back out.
-        return
+    # Turn it into a visual item
+    current_item = node._to_visual_item()
         
-    # Otherwise, we've got a legit node on our hands. Hooray! Set it as the
-    # current item.
-    current_item = visual_node
+    # Remove the node fron it's own parent
+    current_item.get_parent().remove_child(current_item)
+    
     # COOL! Now, add the node as our child
     add_child(current_item)
-    # Okay, last thing - set this item manager as the owner of the node we just
-    # took in. The owner is apparently separate from the concept of a parent,
-    # though closely related.
-    current_item.set_owner(self)
     
-    # Now, we do have just a hint more work to do - if the current item is NOT
-    # 3D, then we're gonna rotate it a bit
-    if not current_item.is_3D():
-        current_item.rotation_degrees = DEFAULT_ROTATION_NO3D
+    # Now, we do have just a bit more work to do - if the current item is 3D...
+    if current_item._is_3D:
+        # Rotate this 3D item to the item's preferred 3D orientation
+        current_item.rotation_degrees = current_item._visualized_rotation_3D
+        # Local transform goes to the specified offset
+        current_item.translation = current_item._visualized_offset_3D
+    # Otherwise...
+    else:
+        # Rotate this 2D item to the standard 2D orientation
+        current_item.rotation_degrees = DEFAULT_ROTATION_2D
+        # Local transform goes to zero
+        current_item.translation = Vector3.ZERO
 
 func drop_item():
     # This is the node that we'll attach the item (if we have an item to drop)
@@ -87,14 +86,32 @@ func drop_item():
         # body in a scene, then our parent's parent is PROBABLY where the item
         # should go. It's TOO genius to NOT WORK!
         target_parent = get_parent().get_parent()
-        
-    # First, physicallize the node. This will separate it from ourselves.
-    # Turn it into a visual item
-    var physical_node = current_item._to_physical_item()
+      
+    # First, physicalize the node.
+    var phys_node = current_item._to_physical_item()
+
+    # Next, remove the current item from our children. This item is now detached
+    # from the scene tree and is "free floating". 
+    self.remove_child(current_item)
+    
+    # We don't want the physics item to flash back to the origin, so assert that
+    # the item's global position matches the global position of this item core.
+    phys_node.global_transform.origin = self.global_transform.origin
+    
+    # If the current item is a 3D item...
+    if phys_node._is_3D:
+        # We need to add in that 3D offset, since we're just at the item core's
+        # origin
+        phys_node.global_transform.origin += phys_node._visualized_offset_3D
+        # Rotate this 3D item to what it WAS rotated at
+        phys_node.rotation_degrees = phys_node._visualized_rotation_3D
+    # Otherwise...
+    else:
+        # Rotate this 2D item to what it WAS rotated at
+        phys_node.rotation_degrees = DEFAULT_ROTATION_2D
+    
     # Move the item out there
-    target_parent.add_child(physical_node)
-    # Assert ownership
-    target_parent.set_owner(physical_node)
+    target_parent.add_child(phys_node)
     
     # Clear our tracker - it's out of our hands now!
     current_item = null
