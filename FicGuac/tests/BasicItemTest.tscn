@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=2]
+[gd_scene load_steps=14 format=2]
 
 [ext_resource path="res://textures/terrain/material/mat_terrain_grass_textured.tres" type="Material" id=1]
 [ext_resource path="res://tests/test_assets/StandardizedEnvironment.tscn" type="PackedScene" id=2]
@@ -7,8 +7,9 @@
 [ext_resource path="res://tests/BasicItemTest.gd" type="Script" id=5]
 [ext_resource path="res://tests/test_assets/TaskingCowardPawn.tscn" type="PackedScene" id=6]
 [ext_resource path="res://items/weapons/ShortSword.tscn" type="PackedScene" id=7]
-
-
+[ext_resource path="res://items/food/Apple.tscn" type="PackedScene" id=8]
+[ext_resource path="res://items/food/Cheese.tscn" type="PackedScene" id=9]
+[ext_resource path="res://items/food/Bread.tscn" type="PackedScene" id=10]
 
 [sub_resource type="NavigationMesh" id=1]
 vertices = PoolVector3Array( -0.2, 0.4, -7.4, -7.4, 0.4, -7.4, -7.4, 0.4, -0.2, -0.2, 0.4, 7.3, 7.3, 0.4, 7.3, 7.3, 0.4, -0.2, -7.4, 0.4, -0.2, -7.4, 0.4, 7.3, -0.2, 0.4, 7.3, 7.3, 0.4, -0.2, 7.3, 0.4, -7.4, -0.2, 0.4, -7.4 )
@@ -23,9 +24,6 @@ size = Vector3( 16, 1, 16 )
 
 [sub_resource type="ConvexPolygonShape" id=3]
 points = PoolVector3Array( -8, 0.5, 8, 8, 0.5, -8, 8, 0.5, 8, -8, 0.5, -8, -8, -0.5, 8, 8, -0.5, -8, 8, -0.5, 8, -8, -0.5, -8, 8, 0.5, 8, -8, 0.5, -8, 8, 0.5, -8, -8, 0.5, 8, 8, -0.5, 8, -8, -0.5, -8, 8, -0.5, -8, -8, -0.5, 8, 8, 0.5, 8, -8, -0.5, 8, -8, 0.5, 8, 8, -0.5, 8, 8, 0.5, -8, -8, -0.5, -8, -8, 0.5, -8, 8, -0.5, -8 )
-
-[sub_resource type="CubeMesh" id=4]
-size = Vector3( 0.5, 0.5, 0.5 )
 
 [node name="BasicItemTest" type="Spatial"]
 script = ExtResource( 5 )
@@ -73,30 +71,37 @@ transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -
 ] instance=ExtResource( 7 )]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -5, 2.8, -5 )
 
+[node name="Apple" parent="ItemManager" groups=[
+"packing_goal",
+] instance=ExtResource( 8 )]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.7, 0 )
+
+[node name="Cheese" parent="ItemManager" groups=[
+"packing_goal",
+] instance=ExtResource( 9 )]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.4, 0.7, -0.4 )
+
+[node name="Bread" parent="ItemManager" groups=[
+"packing_goal",
+] instance=ExtResource( 10 )]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -0.4, 0.8, 0.5 )
+
 [node name="TaskingCowardPawn" parent="." instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 5 )
 navigation = NodePath("../Navigation")
 item_parent = NodePath("../ItemManager")
 
-[node name="East" type="MeshInstance" parent="."]
+[node name="East" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -5 )
-mesh = SubResource( 4 )
-material/0 = null
 
-[node name="North" type="MeshInstance" parent="."]
+[node name="North" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -5 )
-mesh = SubResource( 4 )
-material/0 = null
 
-[node name="West" type="MeshInstance" parent="."]
+[node name="West" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 5 )
-mesh = SubResource( 4 )
-material/0 = null
 
-[node name="South" type="MeshInstance" parent="."]
+[node name="South" type="Position3D" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 5 )
-mesh = SubResource( 4 )
-material/0 = null
 
 [node name="GUI" type="VBoxContainer" parent="."]
 margin_left = 10.0
