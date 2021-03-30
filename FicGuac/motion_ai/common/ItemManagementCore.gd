@@ -49,6 +49,12 @@ func _ready():
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+# Does this item management core have at least one item? While we could just
+# reach down and do this check manually, I wanted a function to do this so we
+# could be explicit about what we're doing without including a comment.
+func has_an_item():
+    return current_item != null
+
 func grab_item(node : MasterItem):
     # If we have an item already, just bounce
     if current_item != null:

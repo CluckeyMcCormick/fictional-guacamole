@@ -14,7 +14,8 @@ goal_groups = PoolStringArray( "packing_goal" )
 script = ExtResource( 3 )
 
 [node name="VisualSprite" parent="." index="7"]
-frame = 4
+animation = "idle_haul_west"
+frame = 0
 
 [node name="SensorySortCore" parent="." index="10"]
 fight_or_flight_area = NodePath("../../TaskingCowardPawn/FOFArea")

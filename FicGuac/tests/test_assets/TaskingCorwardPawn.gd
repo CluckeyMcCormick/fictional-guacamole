@@ -37,13 +37,20 @@ func sprite_update():
         "OnGround", "Idle":
             anim_str += "idle"
             
+            # If we have an item, then we need to haul
+            if $ItemManagementCore.has_an_item():
+                anim_str += "_haul" 
+            
         "Falling":
             anim_str += "fall"
             
         "Walk":
+            # If we have an item, then we're hauling. No matter what!
+            if $ItemManagementCore.has_an_item():
+                anim_str += "haul"
             # Special case - if our current goal key is flee, we have a special
             # "flee" animation we can use.
-            if $TaskingCowardMachine.goal_key == "Flee":
+            elif $TaskingCowardMachine.goal_key == "Flee":
                 anim_str += "flee"
             # Otherwise, just use the walk.
             else:
