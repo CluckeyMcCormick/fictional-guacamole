@@ -1,0 +1,36 @@
+// Game: FicGuac
+// Format: Standard
+// entity 0
+{
+"classname" "worldspawn"
+"_tb_textures" "textures/items"
+// brush 0
+{
+( -16 -12 8 ) ( -16 12 -8 ) ( -16 12 8 ) items/im_s01_barrel_planks 0 16 0 1 1
+( -12 8 -16 ) ( -16 -12 -8 ) ( -12 -8 -16 ) items/im_s01_barrel_planks 0 16 0 1 1
+( -12 8 16 ) ( -16 -12 8 ) ( -16 12 8 ) items/im_s01_barrel_planks 0 16 0 1 1
+( -12 -16 8 ) ( -16 -12 -8 ) ( -16 -12 8 ) items/im_s01_barrel_planks 0 16 0 1 1
+( -12 16 8 ) ( -16 12 -8 ) ( -12 16 -8 ) items/im_s01_barrel_planks 0 16 0 1 1
+( -8 -12 -16 ) ( -16 -12 -8 ) ( -12 -16 -8 ) items/im_s01_barrel_planks 0 50.5 135 1 0.75
+( -8 -12 16 ) ( -16 -12 8 ) ( -12 -8 16 ) items/im_s01_barrel_planks 0 45.5 -45 1 0.75
+( -8 12 -16 ) ( -16 12 -8 ) ( -12 8 -16 ) items/im_s01_barrel_planks 0 50.5 45 1 0.75
+( -8 12 16 ) ( -16 12 8 ) ( -12 16 8 ) items/im_s01_barrel_planks 0 45.5 -135 1 0.75
+( 12 -16 8 ) ( -12 -16 -8 ) ( -12 -16 8 ) items/im_s01_barrel_planks 0 16 0 1 1
+( 12 -16 -8 ) ( -8 -12 -16 ) ( -12 -16 -8 ) items/im_s01_barrel_planks 0 16 0 1 1
+( 12 -16 8 ) ( -8 -12 16 ) ( 8 -12 16 ) items/im_s01_barrel_planks 0 16 0 1 1
+( 12 8 -16 ) ( 8 -12 -16 ) ( 12 -8 -16 ) items/im_s01_box_planks 16 16 0 1 1
+( 12 8 16 ) ( -8 12 16 ) ( 8 12 16 ) items/im_s01_box_planks 16 16 0 1 1
+( 12 16 -8 ) ( -8 12 -16 ) ( 8 12 -16 ) items/im_s01_barrel_planks 0 16 0 1 1
+( 12 16 8 ) ( -8 12 16 ) ( -12 16 8 ) items/im_s01_barrel_planks 0 16 0 1 1
+( 12 16 8 ) ( -12 16 -8 ) ( 12 16 -8 ) items/im_s01_barrel_planks 0 16 0 1 1
+( 8 -12 -16 ) ( 16 -12 -8 ) ( 12 -8 -16 ) items/im_s01_barrel_planks 0 50.5 -135 1 0.75
+( 16 -12 8 ) ( 8 -12 16 ) ( 12 -8 16 ) items/im_s01_barrel_planks 0 45.5 45 1 0.75
+( 16 12 -8 ) ( 8 12 -16 ) ( 12 8 -16 ) items/im_s01_barrel_planks 0 50.5 -45 1 0.75
+( 8 12 16 ) ( 16 12 8 ) ( 12 8 16 ) items/im_s01_barrel_planks 0 45.5 135 1 0.75
+( 16 -12 8 ) ( 12 -16 -8 ) ( 12 -16 8 ) items/im_s01_barrel_planks 0 16 0 1 1
+( 16 12 8 ) ( 12 16 -8 ) ( 16 12 -8 ) items/im_s01_barrel_planks 0 16 0 1 1
+( 16 12 -8 ) ( 12 -8 -16 ) ( 16 -12 -8 ) items/im_s01_barrel_planks 0 16 0 1 1
+( 16 12 8 ) ( 12 -8 16 ) ( 12 8 16 ) items/im_s01_barrel_planks 0 16 0 1 1
+( 16 12 8 ) ( 16 -12 -8 ) ( 16 -12 8 ) items/im_s01_barrel_planks 0 16 0 1 1
+}
+}

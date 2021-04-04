@@ -1,0 +1,16 @@
+// Game: FicGuac
+// Format: Standard
+// entity 0
+{
+"classname" "worldspawn"
+"_tb_textures" "textures/items"
+// brush 0
+{
+( -16 16 16 ) ( -16 -16 16 ) ( -16 -16 -16 ) items/im_s01_box_planks 16 16 0 1 1
+( -16 -16 16 ) ( 16 -16 16 ) ( 16 -16 -16 ) items/im_s01_box_planks 16 16 0 1 1
+( 16 -16 -16 ) ( 16 16 -16 ) ( -16 16 -16 ) items/im_s01_box_planks 16 16 0 1 1
+( -16 16 16 ) ( 16 16 16 ) ( 16 -16 16 ) items/im_s01_box_planks 16 16 0 1 1
+( 16 16 -16 ) ( 16 16 16 ) ( -16 16 16 ) items/im_s01_box_planks 16 16 0 1 1
+( 16 -16 16 ) ( 16 16 16 ) ( 16 16 -16 ) items/im_s01_box_planks 16 16 0 1 1
+}
+}
