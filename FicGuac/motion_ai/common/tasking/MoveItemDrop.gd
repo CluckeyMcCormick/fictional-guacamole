@@ -32,22 +32,18 @@ func _on_DropItemCautionary_action_success():
     change_state("MoveToEntityPriorityArea")
 
 func _on_MoveToEntityPriorityArea_action_failure(failure_code):
-    print("PRIORITY FAILURE!")
     # Oh, we failed. Dang. Fail the task, I guess.
     emit_signal("task_failed")
 
 func _on_MoveToEntityPriorityArea_action_success():
-    print("IN PRIORITY AREA!")
     # We did it. Hooray! Let's grab the item.
     change_state("GrabItem")
 
 func _on_GrabItem_action_failure(failure_code):
-    print("NO GRAB!")
     # Oh, we failed. Dang. Fail the task, I guess.
     emit_signal("task_failed")
 
 func _on_GrabItem_action_success():
-    print("YES GRAB!")
     # Okay, now that we have the item, we need to move in to our specified
     # position.
     change_state("MoveToPosition")

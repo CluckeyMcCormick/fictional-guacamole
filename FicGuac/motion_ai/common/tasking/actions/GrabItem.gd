@@ -10,7 +10,7 @@ var _target_entity
 # F(ailure) C(ode) enumerator - used to tell our parent task why the action
 # failed
 enum {
-    FC_ALREADY_HAS_ITEM, # We can't grab an item because we already have an item
+    FC_CANT_GRAB_ITEM, # We can't grab an item, for some reason
     FC_NULL_ENTITY, # The target entity we're trying to grab was null!
 }
 
@@ -32,8 +32,8 @@ func _on_enter(var arg) -> void:
     PTR.clear_target_data()
     
     # If we don't have an item, we don't have anything to do. That's a failure!
-    if IMC.current_item != null:
-        emit_signal("action_failure", FC_ALREADY_HAS_ITEM)
+    if not IMC.can_grab_item(_target_entity):
+        emit_signal("action_failure", FC_CANT_GRAB_ITEM)
     elif target_wrap.get_ref() == null:
         emit_signal("action_failure", FC_NULL_ENTITY)
     # If we do have an item, then drop it. That's a success!

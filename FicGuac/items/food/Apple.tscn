@@ -7,7 +7,8 @@
 extents = Vector3( 0.1983, 0.231723, 0.025 )
 
 [node name="Apple" instance=ExtResource( 2 )]
-transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0 )
+name_key = "Apple"
+max_carry_stack = 16
 
 [node name="Sprite3D" type="Sprite3D" parent="." index="0"]
 pixel_size = 0.025

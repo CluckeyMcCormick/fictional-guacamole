@@ -12,6 +12,14 @@ enum {ITEM_PHYSICAL, ITEM_VISUAL}
 # mode. You can read this variable, but please don't touch it. Please!!!
 var _item_state = ITEM_PHYSICAL
 
+# The item's unique name key. Used to both display the item and identify items
+# of a consistent type. Please, for the love of god, do not change this at run
+# time. I guess you could but I'm asking very nicely that you DO NOT!
+export(String) var name_key
+
+# The max count of these items that may be stacked up for carrying purposes
+export(int) var max_carry_stack = 1
+
 # Is the visual component of this item 3D - i.e. does it consist of a mesh or
 # some other such object? This enables special behaviors for how we handle this
 # visual instance.
@@ -20,6 +28,9 @@ export(bool) var _is_3D = false
 # item is 3D. This allows for appropriate shifting for items - for example, so
 # that a box doesn't clip into an NPC's head
 export(Vector3) var _visualized_offset_3D = Vector3.ZERO
+# The space between individual items of this instance when they are stacked IF
+# this item is 3D.
+export(Vector3) var _stack_space_3D = Vector3.ZERO
 # The initial rotation (when in visual item mode) of this item IF this item is
 # 3D. Important for items that may have odd sizes. Angles are in degrees.
 export(Vector3) var _visualized_rotation_3D = Vector3(0, 45, 0)

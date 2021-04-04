@@ -7,6 +7,7 @@
 extents = Vector3( 0.514, 0.801, 0.025 )
 
 [node name="PawnCorpse" instance=ExtResource( 2 )]
+name_key = "Pawn Corpse"
 
 [node name="Sprite3D" type="Sprite3D" parent="." index="0"]
 pixel_size = 0.014

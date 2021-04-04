@@ -24,7 +24,7 @@ func _on_enter(var arg) -> void:
     PTR.clear_target_data()
     
     # If we don't have an item, we don't have anything to do. That's a failure!
-    if IMC.current_item == null:
+    if not IMC.has_an_item():
         emit_signal("action_failure", FC_NO_ITEM)
     # If we do have an item, then drop it. That's a success!
     else:
