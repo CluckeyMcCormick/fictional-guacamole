@@ -1,0 +1,242 @@
+[gd_scene load_steps=27 format=2]
+
+[ext_resource path="res://tests/test_assets/StandardizedEnvironment.tscn" type="PackedScene" id=2]
+[ext_resource path="res://scenes/CameraRig.tscn" type="PackedScene" id=3]
+[ext_resource path="res://items/corpses/PawnCorpse.tscn" type="PackedScene" id=4]
+[ext_resource path="res://tests/BasicItemTest.gd" type="Script" id=5]
+[ext_resource path="res://tests/test_assets/TaskingCowardPawn.tscn" type="PackedScene" id=6]
+[ext_resource path="res://items/weapons/ShortSword.tscn" type="PackedScene" id=7]
+[ext_resource path="res://items/food/Apple.tscn" type="PackedScene" id=8]
+[ext_resource path="res://items/food/Cheese.tscn" type="PackedScene" id=9]
+[ext_resource path="res://items/food/Bread.tscn" type="PackedScene" id=10]
+[ext_resource path="res://items/furniture/Box.tscn" type="PackedScene" id=11]
+[ext_resource path="res://items/furniture/Barrel.tscn" type="PackedScene" id=12]
+[ext_resource path="res://addons/qodot/game_definitions/fgd/qodot_fgd.tres" type="Resource" id=13]
+[ext_resource path="res://addons/qodot/src/nodes/qodot_map.gd" type="Script" id=14]
+[ext_resource path="res://textures/util/checkerboard_unitized01.png" type="Texture" id=15]
+[ext_resource path="res://textures/terrain/valve_grid_stone.png" type="Texture" id=16]
+
+[sub_resource type="NavigationMesh" id=1]
+vertices = PoolVector3Array( -6.4, 11.4, -12.4, -12.4, 11.4, -12.4, -12.4, 11.4, -6.4, -12.4, 11.4, 6.2, -12.4, 11.4, 12.5, -6.4, 11.4, 12.5, 12.5, 11.4, -6.4, 12.5, 11.4, -12.4, 6.2, 11.4, -12.4, 6.2, 11.4, 12.5, 12.5, 11.4, 12.5, 12.5, 11.4, 6.2, -0.0999994, 11.4, -12.4, -6.4, 11.4, -12.4, -12.4, 11.4, -6.4, -12.4, 11.4, -0.0999994, -12.4, 11.4, 6.2, -6.4, 11.4, 12.5, -0.0999994, 11.4, 12.5, 12.5, 11.4, -0.0999994, 12.5, 11.4, -6.4, 6.2, 11.4, -12.4, -0.0999994, 11.4, -12.4, -0.0999994, 11.4, 12.5, 6.2, 11.4, 12.5, 12.5, 11.4, 6.2, -12.4, 11.4, -0.0999994, -12.4, 11.4, 6.2, -0.0999994, 11.4, 12.5, 12.5, 11.4, 6.2, 12.5, 11.4, -0.0999994, -0.0999994, 11.4, -12.4, -0.0999994, 0.4, -11.2, -11.2, 0.4, -11.2, -11.2, 0.4, -0.0999994, -0.0999994, 0.4, 11.3, 11.3, 0.4, 11.3, 11.3, 0.4, -0.0999994, -11.2, 0.4, -0.0999994, -11.2, 0.4, 11.3, -0.0999994, 0.4, 11.3, 11.3, 0.4, -0.0999994, 11.3, 0.4, -11.2, -0.0999994, 0.4, -11.2 )
+polygons = [ PoolIntArray( 2, 1, 0 ), PoolIntArray( 5, 4, 3 ), PoolIntArray( 8, 7, 6 ), PoolIntArray( 11, 10, 9 ), PoolIntArray( 13, 12, 14 ), PoolIntArray( 14, 12, 15 ), PoolIntArray( 18, 17, 16 ), PoolIntArray( 20, 19, 21 ), PoolIntArray( 21, 19, 22 ), PoolIntArray( 25, 24, 23 ), PoolIntArray( 27, 26, 28 ), PoolIntArray( 28, 26, 29 ), PoolIntArray( 29, 26, 30 ), PoolIntArray( 30, 26, 31 ), PoolIntArray( 33, 32, 34 ), PoolIntArray( 34, 32, 37 ), PoolIntArray( 34, 37, 35 ), PoolIntArray( 35, 37, 36 ), PoolIntArray( 38, 40, 39 ), PoolIntArray( 43, 42, 41 ) ]
+geometry/parsed_geometry_type = 1
+geometry/collision_mask = 4293918721
+geometry/source_geometry_mode = 1
+geometry/source_group_name = "navmesh"
+
+[sub_resource type="SpatialMaterial" id=2]
+
+[sub_resource type="SpatialMaterial" id=3]
+albedo_texture = ExtResource( 16 )
+
+[sub_resource type="SpatialMaterial" id=4]
+albedo_texture = ExtResource( 15 )
+
+[sub_resource type="ArrayMesh" id=5]
+surfaces/0 = {
+"aabb": AABB( -12, -1, -12, 24, 1.00001, 24 ),
+"array_data": PoolByteArray( 0, 0, 64, 193, 0, 0, 0, 0, 0, 0, 64, 193, 0, 0, 129, 0, 127, 0, 0, 129, 0, 180, 0, 52, 0, 0, 64, 193, 0, 0, 128, 191, 0, 0, 64, 193, 0, 0, 129, 0, 127, 0, 0, 129, 0, 180, 0, 53, 0, 0, 64, 65, 0, 0, 128, 191, 0, 0, 64, 193, 0, 0, 129, 0, 127, 0, 0, 129, 0, 61, 0, 53, 0, 0, 64, 65, 0, 0, 0, 0, 0, 0, 64, 193, 0, 0, 129, 0, 127, 0, 0, 129, 0, 61, 0, 52, 0, 0, 64, 193, 0, 0, 0, 0, 0, 0, 64, 193, 129, 0, 0, 0, 0, 0, 127, 127, 0, 180, 0, 52, 0, 0, 64, 193, 0, 0, 0, 0, 0, 0, 64, 65, 129, 0, 0, 0, 0, 0, 127, 127, 0, 61, 0, 52, 0, 0, 64, 193, 0, 0, 128, 191, 0, 0, 64, 65, 129, 0, 0, 0, 0, 0, 127, 127, 0, 61, 0, 53, 0, 0, 64, 193, 0, 0, 128, 191, 0, 0, 64, 193, 129, 0, 0, 0, 0, 0, 127, 127, 0, 180, 0, 53, 0, 0, 64, 65, 0, 0, 128, 191, 0, 0, 64, 193, 0, 129, 0, 0, 0, 0, 127, 129, 0, 180, 0, 180, 0, 0, 64, 193, 0, 0, 128, 191, 0, 0, 64, 193, 0, 129, 0, 0, 0, 0, 127, 129, 0, 180, 0, 61, 0, 0, 64, 193, 0, 0, 128, 191, 0, 0, 64, 65, 0, 129, 0, 0, 0, 0, 127, 129, 0, 61, 0, 61, 0, 0, 64, 65, 0, 0, 128, 191, 0, 0, 64, 65, 0, 129, 0, 0, 0, 0, 127, 129, 0, 61, 0, 180, 0, 0, 64, 65, 0, 0, 0, 0, 0, 0, 64, 193, 0, 127, 0, 0, 0, 0, 127, 127, 0, 180, 0, 180, 0, 0, 64, 65, 0, 0, 0, 0, 0, 0, 64, 65, 0, 127, 0, 0, 0, 0, 127, 127, 0, 61, 0, 180, 0, 0, 64, 193, 0, 0, 0, 0, 0, 0, 64, 65, 0, 127, 0, 0, 0, 0, 127, 127, 0, 61, 0, 61, 0, 0, 64, 193, 0, 0, 0, 0, 0, 0, 64, 193, 0, 127, 0, 0, 0, 0, 127, 127, 0, 180, 0, 61, 0, 0, 64, 65, 0, 0, 0, 0, 0, 0, 64, 193, 127, 0, 0, 0, 0, 0, 127, 129, 0, 180, 0, 52, 0, 0, 64, 65, 0, 0, 128, 191, 0, 0, 64, 193, 127, 0, 0, 0, 0, 0, 127, 129, 0, 180, 0, 53, 0, 0, 64, 65, 0, 0, 128, 191, 0, 0, 64, 65, 127, 0, 0, 0, 0, 0, 127, 129, 0, 61, 0, 53, 0, 0, 64, 65, 0, 0, 0, 0, 0, 0, 64, 65, 127, 0, 0, 0, 0, 0, 127, 129, 0, 61, 0, 52, 0, 0, 64, 193, 0, 0, 0, 0, 0, 0, 64, 65, 0, 0, 127, 0, 127, 0, 0, 127, 0, 180, 0, 52, 0, 0, 64, 65, 0, 0, 0, 0, 0, 0, 64, 65, 0, 0, 127, 0, 127, 0, 0, 127, 0, 61, 0, 52, 0, 0, 64, 65, 0, 0, 128, 191, 0, 0, 64, 65, 0, 0, 127, 0, 127, 0, 0, 127, 0, 61, 0, 53, 0, 0, 64, 193, 0, 0, 128, 191, 0, 0, 64, 65, 0, 0, 127, 0, 127, 0, 0, 127, 0, 180, 0, 53 ),
+"array_index_data": PoolByteArray( 0, 0, 1, 0, 2, 0, 0, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 4, 0, 6, 0, 7, 0, 8, 0, 9, 0, 10, 0, 8, 0, 10, 0, 11, 0, 12, 0, 13, 0, 14, 0, 12, 0, 14, 0, 15, 0, 16, 0, 17, 0, 18, 0, 16, 0, 18, 0, 19, 0, 20, 0, 21, 0, 22, 0, 20, 0, 22, 0, 23, 0 ),
+"blend_shape_data": [  ],
+"format": 97559,
+"index_count": 36,
+"material": SubResource( 3 ),
+"primitive": 4,
+"skeleton_aabb": [  ],
+"vertex_count": 24
+}
+surfaces/1 = {
+"aabb": AABB( -12, -1, -12, 24, 11, 24 ),
+"array_data": PoolByteArray( 0, 0, 64, 193, 0, 0, 32, 65, 0, 0, 64, 193, 127, 0, 0, 0, 0, 0, 127, 129, 0, 198, 0, 197, 0, 0, 64, 193, 0, 0, 128, 191, 0, 0, 64, 193, 127, 0, 0, 0, 0, 0, 127, 129, 0, 198, 0, 56, 0, 0, 64, 193, 0, 0, 128, 191, 0, 0, 64, 65, 127, 0, 0, 0, 0, 0, 127, 129, 0, 70, 0, 56, 0, 0, 64, 193, 0, 0, 32, 65, 0, 0, 64, 65, 127, 0, 0, 0, 0, 0, 127, 129, 0, 70, 0, 197, 0, 0, 64, 193, 0, 0, 32, 65, 0, 0, 64, 193, 0, 0, 127, 0, 127, 0, 0, 127, 128, 198, 0, 197, 0, 0, 64, 65, 0, 0, 32, 65, 0, 0, 64, 193, 0, 0, 127, 0, 127, 0, 0, 127, 128, 69, 0, 197, 0, 0, 64, 65, 0, 0, 128, 191, 0, 0, 64, 193, 0, 0, 127, 0, 127, 0, 0, 127, 128, 69, 0, 56, 0, 0, 64, 193, 0, 0, 128, 191, 0, 0, 64, 193, 0, 0, 127, 0, 127, 0, 0, 127, 128, 198, 0, 56, 0, 0, 64, 65, 0, 0, 32, 65, 0, 0, 64, 193, 129, 0, 0, 0, 0, 0, 127, 127, 128, 198, 0, 197, 0, 0, 64, 65, 0, 0, 32, 65, 0, 0, 64, 65, 129, 0, 0, 0, 0, 0, 127, 127, 128, 69, 0, 197, 0, 0, 64, 65, 0, 0, 128, 191, 0, 0, 64, 65, 129, 0, 0, 0, 0, 0, 127, 127, 128, 69, 0, 56, 0, 0, 64, 65, 0, 0, 128, 191, 0, 0, 64, 193, 129, 0, 0, 0, 0, 0, 127, 127, 128, 198, 0, 56, 0, 0, 64, 193, 0, 0, 32, 65, 0, 0, 64, 65, 0, 0, 129, 0, 127, 0, 0, 129, 0, 198, 0, 197, 0, 0, 64, 193, 0, 0, 128, 191, 0, 0, 64, 65, 0, 0, 129, 0, 127, 0, 0, 129, 0, 198, 0, 56, 0, 0, 64, 65, 0, 0, 128, 191, 0, 0, 64, 65, 0, 0, 129, 0, 127, 0, 0, 129, 0, 70, 0, 56, 0, 0, 64, 65, 0, 0, 32, 65, 0, 0, 64, 65, 0, 0, 129, 0, 127, 0, 0, 129, 0, 70, 0, 197 ),
+"array_index_data": PoolByteArray( 0, 0, 1, 0, 2, 0, 0, 0, 2, 0, 3, 0, 4, 0, 5, 0, 6, 0, 4, 0, 6, 0, 7, 0, 8, 0, 9, 0, 10, 0, 8, 0, 10, 0, 11, 0, 12, 0, 13, 0, 14, 0, 12, 0, 14, 0, 15, 0 ),
+"blend_shape_data": [  ],
+"format": 97559,
+"index_count": 24,
+"material": SubResource( 4 ),
+"primitive": 4,
+"skeleton_aabb": [  ],
+"vertex_count": 16
+}
+
+[sub_resource type="ConvexPolygonShape" id=6]
+points = PoolVector3Array( -12, 0, -12, -12, -1, -12, 12, -1, -12, 12, 0, -12, -12, 0, 12, -12, -1, 12, 12, -1, 12, 12, 0, 12 )
+
+[sub_resource type="ConvexPolygonShape" id=7]
+points = PoolVector3Array( -13, 11, -13, -13, 10, -13, 13, 10, -13, 13, 11, -13, -13, 11, 13, -13, 10, 13, 13, 10, 13, 13, 11, 13 )
+
+[sub_resource type="ConvexPolygonShape" id=8]
+points = PoolVector3Array( -13, 10, -12, -13, -1, -12, -12, -1, -12, -12, 10, -12, -13, 10, 12, -13, -1, 12, -12, -1, 12, -12, 10, 12 )
+
+[sub_resource type="ConvexPolygonShape" id=9]
+points = PoolVector3Array( -12, 10, -13, -12, -1, -13, 12, -1, -13, 12, 10, -13, -12, 10, -12, -12, -1, -12, 12, -1, -12, 12, 10, -12 )
+
+[sub_resource type="ConvexPolygonShape" id=10]
+points = PoolVector3Array( 12, 10, -12, 12, -1, -12, 13, -1, -12, 13, 10, -12, 12, 10, 12, 12, -1, 12, 13, -1, 12, 13, 10, 12 )
+
+[sub_resource type="ConvexPolygonShape" id=11]
+points = PoolVector3Array( -12, 10, 12, -12, -1, 12, 12, -1, 12, 12, 10, 12, -12, 10, 13, -12, -1, 13, 12, -1, 13, 12, 10, 13 )
+
+[node name="AdvancedItemTest" type="Spatial"]
+script = ExtResource( 5 )
+
+[node name="Navigation" type="Navigation" parent="."]
+
+[node name="NavigationMeshInstance" type="NavigationMeshInstance" parent="Navigation"]
+navmesh = SubResource( 1 )
+
+[node name="QodotMap" type="Spatial" parent="." groups=[
+"navmesh",
+]]
+script = ExtResource( 14 )
+map_file = "/home/frick/godot/fictional-guacamole/FicGuac/tests/trenchbroom/ProvingGroundBoxed.map"
+inverse_scale_factor = 32.0
+entity_fgd = ExtResource( 13 )
+base_texture_dir = "res://textures"
+texture_file_extension = "png"
+worldspawn_layers = [  ]
+brush_clip_texture = "special/clip"
+face_skip_texture = "util/qodot_skip"
+texture_wads = [  ]
+material_file_extension = "tres"
+default_material = SubResource( 2 )
+uv_unwrap_texel_size = 1.0
+print_profiling_data = false
+use_trenchbroom_group_hierarchy = false
+tree_attach_batch_size = 16
+set_owner_batch_size = 16
+
+[node name="entity_0_worldspawn" type="StaticBody" parent="QodotMap"]
+
+[node name="entity_0_mesh_instance" type="MeshInstance" parent="QodotMap/entity_0_worldspawn"]
+use_in_baked_light = true
+mesh = SubResource( 5 )
+material/0 = null
+material/1 = null
+
+[node name="entity_0_brush_0_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
+shape = SubResource( 6 )
+
+[node name="entity_0_brush_1_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
+shape = SubResource( 7 )
+
+[node name="entity_0_brush_2_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
+shape = SubResource( 8 )
+
+[node name="entity_0_brush_3_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
+shape = SubResource( 9 )
+
+[node name="entity_0_brush_4_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
+shape = SubResource( 10 )
+
+[node name="entity_0_brush_5_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
+shape = SubResource( 11 )
+
+[node name="StandardizedEnvironment" parent="." instance=ExtResource( 2 )]
+transform = Transform( 0.396892, -0.474753, 0.785549, 0, 0.855843, 0.517236, -0.917866, -0.205286, 0.339677, 0, 5, 0 )
+
+[node name="CameraRig" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 64, 64, 64 )
+basic_move_rate = 50.0
+camera_size = 15
+max_camera_size = 15
+min_camera_size = 10
+zoom_step = 5
+move_enabled = true
+zoom_enabled = true
+move_clamping_extents = Vector2( 8, 8 )
+
+[node name="ItemManager" type="Spatial" parent="."]
+
+[node name="PawnCorpse" parent="ItemManager" groups=[
+"packing_goal",
+] instance=ExtResource( 4 )]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -5, 2.8, 5 )
+
+[node name="ShortSword" parent="ItemManager" groups=[
+"packing_goal",
+] instance=ExtResource( 7 )]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -5, 2.8, -5 )
+
+[node name="Apple" parent="ItemManager" groups=[
+"packing_goal",
+] instance=ExtResource( 8 )]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0.7, 0 )
+
+[node name="Cheese" parent="ItemManager" groups=[
+"packing_goal",
+] instance=ExtResource( 9 )]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0.4, 0.7, -0.4 )
+
+[node name="Bread" parent="ItemManager" groups=[
+"packing_goal",
+] instance=ExtResource( 10 )]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, -0.4, 0.8, 0.5 )
+
+[node name="Box" parent="ItemManager" groups=[
+"packing_goal",
+] instance=ExtResource( 11 )]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 5, 2.6, -5 )
+
+[node name="Barrel" parent="ItemManager" groups=[
+"packing_goal",
+] instance=ExtResource( 12 )]
+transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 4, 3.9, 4 )
+
+[node name="TaskingCowardPawn" parent="." instance=ExtResource( 6 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 5 )
+navigation = NodePath("../../AdvancedItemTest/Navigation")
+item_parent = NodePath("../../AdvancedItemTest/ItemManager")
+
+[node name="East" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, -5 )
+
+[node name="North" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, -5 )
+
+[node name="West" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -5, 0, 5 )
+
+[node name="South" type="Position3D" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 5, 0, 5 )
+
+[node name="GUI" type="VBoxContainer" parent="."]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 140.0
+margin_bottom = 157.0
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="ItemLabel" type="Label" parent="GUI"]
+margin_right = 130.0
+margin_bottom = 14.0
+text = "Target Item"
+align = 1
+
+[node name="ItemList" type="ItemList" parent="GUI"]
+margin_top = 18.0
+margin_right = 130.0
+margin_bottom = 27.0
+auto_height = true
+
+[node name="DestinationLabel" type="Label" parent="GUI"]
+margin_top = 31.0
+margin_right = 130.0
+margin_bottom = 45.0
+text = "Destination"
+align = 1
+
+[node name="DestinationList" type="ItemList" parent="GUI"]
+margin_top = 49.0
+margin_right = 130.0
+margin_bottom = 130.0
+items = [ "East", null, false, "North", null, false, "West", null, false, "South", null, false ]
+auto_height = true
+
+[node name="StartButton" type="Button" parent="GUI"]
+margin_top = 134.0
+margin_right = 130.0
+margin_bottom = 154.0
+text = "Start!"
+[connection signal="pressed" from="GUI/StartButton" to="." method="_on_StartButton_pressed"]

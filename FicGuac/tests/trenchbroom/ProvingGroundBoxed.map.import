@@ -1,0 +1,13 @@
+[remap]
+
+importer="qodot.map"
+type="Resource"
+path="res://.import/ProvingGroundBoxed.map-3887871708a801d28b5f22e5333de711.tres"
+
+[deps]
+
+source_file="res://tests/trenchbroom/ProvingGroundBoxed.map"
+dest_files=[ "res://.import/ProvingGroundBoxed.map-3887871708a801d28b5f22e5333de711.tres" ]
+
+[params]
+
