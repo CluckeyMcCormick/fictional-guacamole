@@ -22,6 +22,10 @@ fight_or_flight_area = NodePath("../../TaskingCowardPawn/FOFArea")
 interaction_range_area = NodePath("../../TaskingCowardPawn/InteractionArea")
 group_sort_matrix = SubResource( 1 )
 
+[node name="LevelInterfaceCore" parent="." index="11"]
+navigation_node = NodePath("")
+item_parent_node = NodePath("")
+
 [node name="TaskingCowardMachine" parent="." index="13" instance=ExtResource( 2 )]
 integrating_body = NodePath("..")
 kinematic_core = NodePath("../../TaskingCowardPawn/KinematicCore")
@@ -31,3 +35,4 @@ item_management_core = NodePath("../../TaskingCowardPawn/ItemManagementCore")
 idle_wait_time = 1.0
 wander_distance = 5
 flee_distance = 1.0
+[connection signal="task_complete_echo" from="TaskingCowardMachine" to="." method="_on_TaskingCowardMachine_task_complete_echo"]

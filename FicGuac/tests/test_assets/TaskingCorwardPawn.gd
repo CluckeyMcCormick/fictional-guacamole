@@ -1,5 +1,8 @@
 extends "res://motion_ai/pawn/BasePawn.gd"
 
+# This signal fires when a task fails or succeeds.
+signal task_complete()
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Godot Processing - _ready, _process, etc.
@@ -86,3 +89,11 @@ func sprite_update():
     if $VisualSprite.animation != anim_str or $WeaponSprite.animation != anim_str:
         $VisualSprite.animation = anim_str
         $WeaponSprite.animation = anim_str
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Signal Functions
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+func _on_TaskingCowardMachine_task_complete_echo():
+    emit_signal("task_complete")

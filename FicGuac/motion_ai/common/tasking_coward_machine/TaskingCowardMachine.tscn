@@ -22,14 +22,22 @@ animation_player = null
 
 [node name="Idle" type="Node" parent="GoalRegion"]
 script = ExtResource( 3 )
+disabled = false
+has_regions = false
+fsm_owner = null
+animation_player = null
 
 [node name="MoveTasked" type="Node" parent="GoalRegion"]
 script = ExtResource( 8 )
+disabled = false
+has_regions = false
 fsm_owner = null
 animation_player = null
 
 [node name="Flee" type="Node" parent="GoalRegion"]
 script = ExtResource( 1 )
+disabled = false
+has_regions = false
 fsm_owner = null
 animation_player = null
 
@@ -42,23 +50,34 @@ disabled = false
 has_regions = false
 fsm_owner = null
 animation_player = null
+history_size = 12
 
 [node name="OnGround" type="Node" parent="PhysicsTravelRegion"]
 script = ExtResource( 10 )
+disabled = false
+has_regions = false
 fsm_owner = null
 animation_player = null
 
 [node name="Idle" type="Node" parent="PhysicsTravelRegion/OnGround"]
 script = ExtResource( 9 )
+disabled = false
+has_regions = false
 fsm_owner = null
 animation_player = null
 
 [node name="Walk" type="Node" parent="PhysicsTravelRegion/OnGround"]
 script = ExtResource( 5 )
+disabled = false
+has_regions = false
 fsm_owner = null
 animation_player = null
 
 [node name="Falling" type="Node" parent="PhysicsTravelRegion"]
 script = ExtResource( 4 )
+disabled = false
+has_regions = false
 fsm_owner = null
 animation_player = null
+[connection signal="current_task_failed" from="TaskManagerRegion" to="." method="_on_TaskManagerRegion_current_task_failed"]
+[connection signal="current_task_succeeded" from="TaskManagerRegion" to="." method="_on_TaskManagerRegion_current_task_succeeded"]

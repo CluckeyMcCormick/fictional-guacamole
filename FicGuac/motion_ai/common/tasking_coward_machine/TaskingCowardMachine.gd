@@ -69,6 +69,11 @@ var _machine_configured = false
 # the regions sub-machines.
 signal move_task_assigned(item, final_pos)
 
+# This signal fires when a task fails or succeeds. This is also unique to the
+# TaskingCowardMachine, since a fully fledged instance a machine should handle
+# task completion internally.  
+signal task_complete_echo()
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Godot Processing - _ready, _process, etc.
@@ -118,3 +123,15 @@ func _force_configure():
 # Order the machine to move an item to a specified position
 func move_item(item, final_pos):
     emit_signal("move_task_assigned", item, final_pos)
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Signal Functions
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+func _on_TaskManagerRegion_current_task_failed(task):
+    emit_signal("task_complete_echo")
+
+func _on_TaskManagerRegion_current_task_succeeded(task):
+    emit_signal("task_complete_echo")
+

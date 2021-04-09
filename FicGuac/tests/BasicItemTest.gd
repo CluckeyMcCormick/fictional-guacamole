@@ -28,9 +28,8 @@ func _on_StartButton_pressed():
         print("Invalid Item or Destination!")
         return
     
-    # Otherwise, tell the Pawn to move it!
+    # Tell the Pawn to move it!
     $TaskingCowardPawn.move_item(
         chosen_item,
         chosen_destination.global_transform.origin
     )
-
