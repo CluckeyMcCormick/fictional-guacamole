@@ -3,7 +3,7 @@
 // entity 0
 {
 "classname" "worldspawn"
-"_tb_textures" "textures/terrain;textures/util"
+"_tb_textures" "textures/building;textures/terrain;textures/util"
 // brush 0
 {
 ( -384 384 0 ) ( -384 -384 0 ) ( -384 -384 -32 ) terrain/valve_grid_stone 256 128 0 1 1
@@ -58,4 +58,340 @@
 ( 416 384 -32 ) ( 416 384 320 ) ( 384 384 320 ) util/qodot_skip 0 0 0 1 1
 ( 416 -384 320 ) ( 416 384 320 ) ( 416 384 -32 ) util/qodot_skip 0 0 0 1 1
 }
+// brush 6
+{
+( 176 -384 0 ) ( 176 -383 0 ) ( 176 -384 1 ) terrain/basic_stone 0 0 0 1 1
+( 176 -384 0 ) ( 176 -384 1 ) ( 177 -384 0 ) terrain/basic_stone 0 0 0 1 1
+( 176 -384 0 ) ( 177 -384 0 ) ( 176 -383 0 ) terrain/basic_stone 0 0 0 1 1
+( 192 -320 16 ) ( 192 -319 16 ) ( 193 -320 16 ) building/bm_s00_cutaway_shadow 0 0 0 1 1
+( 192 -320 16 ) ( 193 -320 16 ) ( 192 -320 17 ) terrain/basic_stone 0 0 0 1 1
+( 192 -320 16 ) ( 192 -320 17 ) ( 192 -319 16 ) terrain/basic_stone 0 0 0 1 1
+}
+// brush 7
+{
+( 128 -336 0 ) ( 128 -335 0 ) ( 128 -336 1 ) terrain/basic_stone 0 0 0 1 1
+( 128 -336 0 ) ( 128 -336 1 ) ( 129 -336 0 ) terrain/basic_stone 0 0 0 1 1
+( 128 -336 0 ) ( 129 -336 0 ) ( 128 -335 0 ) terrain/basic_stone 0 0 0 1 1
+( 176 -320 16 ) ( 176 -319 16 ) ( 177 -320 16 ) building/bm_s00_cutaway_shadow 0 0 0 1 1
+( 176 -320 16 ) ( 177 -320 16 ) ( 176 -320 17 ) terrain/basic_stone 0 0 0 1 1
+( 176 -320 16 ) ( 176 -320 17 ) ( 176 -319 16 ) terrain/basic_stone 0 0 0 1 1
+}
+// brush 8
+{
+( 112 -384 0 ) ( 112 -383 0 ) ( 112 -384 1 ) terrain/basic_stone 0 0 0 1 1
+( 112 -384 0 ) ( 112 -384 1 ) ( 113 -384 0 ) terrain/basic_stone 0 0 0 1 1
+( 112 -384 0 ) ( 113 -384 0 ) ( 112 -383 0 ) terrain/basic_stone 0 0 0 1 1
+( 128 -320 16 ) ( 128 -319 16 ) ( 129 -320 16 ) building/bm_s00_cutaway_shadow 0 0 0 1 1
+( 128 -320 16 ) ( 129 -320 16 ) ( 128 -320 17 ) terrain/basic_stone 0 0 0 1 1
+( 128 -320 16 ) ( 128 -320 17 ) ( 128 -319 16 ) terrain/basic_stone 0 0 0 1 1
+}
+// brush 9
+{
+( 64 -384 0 ) ( 64 -383 0 ) ( 64 -384 1 ) terrain/basic_stone 0 0 0 1 1
+( 64 -384 0 ) ( 64 -384 1 ) ( 65 -384 0 ) terrain/basic_stone 0 0 0 1 1
+( 64 -384 0 ) ( 65 -384 0 ) ( 64 -383 0 ) terrain/basic_stone 0 0 0 1 1
+( 80 -304 16 ) ( 80 -303 16 ) ( 81 -304 16 ) building/bm_s00_cutaway_shadow 0 0 0 1 1
+( 80 -304 16 ) ( 81 -304 16 ) ( 80 -304 17 ) terrain/basic_stone 0 0 0 1 1
+( 80 -304 16 ) ( 80 -304 17 ) ( 80 -303 16 ) terrain/basic_stone 0 0 0 1 1
+}
+// brush 10
+{
+( -16 -320 0 ) ( -16 -319 0 ) ( -16 -320 1 ) terrain/basic_stone 0 0 0 1 1
+( -16 -320 0 ) ( -16 -320 1 ) ( -15 -320 0 ) terrain/basic_stone 0 0 0 1 1
+( -16 -320 0 ) ( -15 -320 0 ) ( -16 -319 0 ) terrain/basic_stone 0 0 0 1 1
+( 64 -304 16 ) ( 64 -303 16 ) ( 65 -304 16 ) building/bm_s00_cutaway_shadow 0 0 0 1 1
+( 64 -304 16 ) ( 65 -304 16 ) ( 64 -304 17 ) terrain/basic_stone 0 0 0 1 1
+( 64 -304 16 ) ( 64 -304 17 ) ( 64 -303 16 ) terrain/basic_stone 0 0 0 1 1
+}
+// brush 11
+{
+( -16 -384 0 ) ( -16 -383 0 ) ( -16 -384 1 ) terrain/basic_stone 0 0 0 1 1
+( -16 -384 0 ) ( -16 -384 1 ) ( -15 -384 0 ) terrain/basic_stone 0 0 0 1 1
+( -16 -384 0 ) ( -15 -384 0 ) ( -16 -383 0 ) terrain/basic_stone 0 0 0 1 1
+( 0 -320 16 ) ( 0 -319 16 ) ( 1 -320 16 ) building/bm_s00_cutaway_shadow 0 0 0 1 1
+( 0 -320 16 ) ( 1 -320 16 ) ( 0 -320 17 ) terrain/basic_stone 0 0 0 1 1
+( 0 -320 16 ) ( 0 -320 17 ) ( 0 -319 16 ) terrain/basic_stone 0 0 0 1 1
+}
+// brush 12
+{
+( -64 -384 0 ) ( -64 -383 0 ) ( -64 -384 1 ) terrain/basic_stone 0 0 0 1 1
+( -64 -384 0 ) ( -64 -384 1 ) ( -63 -384 0 ) terrain/basic_stone 0 0 0 1 1
+( -64 -384 0 ) ( -63 -384 0 ) ( -64 -383 0 ) terrain/basic_stone 0 0 0 1 1
+( -48 -288 16 ) ( -48 -287 16 ) ( -47 -288 16 ) building/bm_s00_cutaway_shadow 0 0 0 1 1
+( -48 -288 16 ) ( -47 -288 16 ) ( -48 -288 17 ) terrain/basic_stone 0 0 0 1 1
+( -48 -288 16 ) ( -48 -288 17 ) ( -48 -287 16 ) terrain/basic_stone 0 0 0 1 1
+}
+// brush 13
+{
+( -144 -304 0 ) ( -144 -303 0 ) ( -144 -304 1 ) terrain/basic_stone 0 0 0 1 1
+( -144 -304 0 ) ( -144 -304 1 ) ( -143 -304 0 ) terrain/basic_stone 0 0 0 1 1
+( -144 -304 0 ) ( -143 -304 0 ) ( -144 -303 0 ) terrain/basic_stone 0 0 0 1 1
+( -64 -288 16 ) ( -64 -287 16 ) ( -63 -288 16 ) building/bm_s00_cutaway_shadow 0 0 0 1 1
+( -64 -288 16 ) ( -63 -288 16 ) ( -64 -288 17 ) terrain/basic_stone 0 0 0 1 1
+( -64 -288 16 ) ( -64 -288 17 ) ( -64 -287 16 ) terrain/basic_stone 0 0 0 1 1
+}
+// brush 14
+{
+( -160 -384 0 ) ( -160 -383 0 ) ( -160 -384 1 ) terrain/basic_stone 0 0 0 1 1
+( -160 -384 0 ) ( -160 -384 1 ) ( -159 -384 0 ) terrain/basic_stone 0 0 0 1 1
+( -160 -384 0 ) ( -159 -384 0 ) ( -160 -383 0 ) terrain/basic_stone 0 0 0 1 1
+( -144 -288 16 ) ( -144 -287 16 ) ( -143 -288 16 ) building/bm_s00_cutaway_shadow 0 0 0 1 1
+( -144 -288 16 ) ( -143 -288 16 ) ( -144 -288 17 ) terrain/basic_stone 0 0 0 1 1
+( -144 -288 16 ) ( -144 -288 17 ) ( -144 -287 16 ) terrain/basic_stone 0 0 0 1 1
+}
+// brush 15
+{
+( 176 -320 48 ) ( 176 -384 48 ) ( 176 -384 16 ) util/qodot_clip 0 0 0 1 1
+( 176 -384 48 ) ( 192 -384 48 ) ( 192 -384 16 ) util/qodot_clip 0 0 0 1 1
+( 192 -384 16 ) ( 192 -320 16 ) ( 176 -320 16 ) util/qodot_clip 0 0 0 1 1
+( 176 -320 48 ) ( 192 -320 48 ) ( 192 -384 48 ) util/qodot_clip 0 0 0 1 1
+( 192 -320 16 ) ( 192 -320 48 ) ( 176 -320 48 ) util/qodot_clip 0 0 0 1 1
+( 192 -384 48 ) ( 192 -320 48 ) ( 192 -320 16 ) util/qodot_clip 0 0 0 1 1
+}
+// brush 16
+{
+( 112 -320 48 ) ( 112 -384 48 ) ( 112 -384 16 ) util/qodot_clip 0 0 0 1 1
+( 112 -384 48 ) ( 128 -384 48 ) ( 128 -384 16 ) util/qodot_clip 0 0 0 1 1
+( 128 -384 16 ) ( 128 -320 16 ) ( 112 -320 16 ) util/qodot_clip 0 0 0 1 1
+( 112 -320 48 ) ( 128 -320 48 ) ( 128 -384 48 ) util/qodot_clip 0 0 0 1 1
+( 128 -320 16 ) ( 128 -320 48 ) ( 112 -320 48 ) util/qodot_clip 0 0 0 1 1
+( 128 -384 48 ) ( 128 -320 48 ) ( 128 -320 16 ) util/qodot_clip 0 0 0 1 1
+}
+// brush 17
+{
+( 128 -320 48 ) ( 128 -336 48 ) ( 128 -336 16 ) util/qodot_clip 0 0 0 1 1
+( 128 -336 48 ) ( 176 -336 48 ) ( 176 -336 16 ) util/qodot_clip 0 0 0 1 1
+( 176 -336 16 ) ( 176 -320 16 ) ( 128 -320 16 ) util/qodot_clip 0 0 0 1 1
+( 128 -320 48 ) ( 176 -320 48 ) ( 176 -336 48 ) util/qodot_clip 0 0 0 1 1
+( 176 -320 16 ) ( 176 -320 48 ) ( 128 -320 48 ) util/qodot_clip 0 0 0 1 1
+( 176 -336 48 ) ( 176 -320 48 ) ( 176 -320 16 ) util/qodot_clip 0 0 0 1 1
+}
+// brush 18
+{
+( 112 -384 48 ) ( 112 -383 48 ) ( 112 -384 49 ) util/qodot_clip 0 0 0 1 1
+( 112 -384 48 ) ( 112 -384 49 ) ( 113 -384 48 ) util/qodot_clip 0 0 0 1 1
+( 112 -384 48 ) ( 113 -384 48 ) ( 112 -383 48 ) util/qodot_clip 0 0 0 1 1
+( 192 -320 64 ) ( 192 -319 64 ) ( 193 -320 64 ) util/qodot_clip 0 0 0 1 1
+( 192 -320 64 ) ( 193 -320 64 ) ( 192 -320 65 ) util/qodot_clip 0 0 0 1 1
+( 192 -320 64 ) ( 192 -320 65 ) ( 192 -319 64 ) util/qodot_clip 0 0 0 1 1
+}
+// brush 19
+{
+( 64 -304 64 ) ( 64 -384 64 ) ( 64 -384 16 ) util/qodot_clip 0 0 0 1 1
+( 64 -384 64 ) ( 80 -384 64 ) ( 80 -384 16 ) util/qodot_clip 0 0 0 1 1
+( 80 -384 16 ) ( 80 -304 16 ) ( 64 -304 16 ) util/qodot_clip 0 0 0 1 1
+( 64 -304 64 ) ( 80 -304 64 ) ( 80 -384 64 ) util/qodot_clip 0 0 0 1 1
+( 80 -304 16 ) ( 80 -304 64 ) ( 64 -304 64 ) util/qodot_clip 0 0 0 1 1
+( 80 -384 64 ) ( 80 -304 64 ) ( 80 -304 16 ) util/qodot_clip 0 0 0 1 1
+}
+// brush 20
+{
+( -16 -304 64 ) ( -16 -384 64 ) ( -16 -384 16 ) util/qodot_clip 0 0 0 1 1
+( -16 -384 64 ) ( 0 -384 64 ) ( 0 -384 16 ) util/qodot_clip 0 0 0 1 1
+( 0 -384 16 ) ( 0 -304 16 ) ( -16 -304 16 ) util/qodot_clip 0 0 0 1 1
+( -16 -304 64 ) ( 0 -304 64 ) ( 0 -384 64 ) util/qodot_clip 0 0 0 1 1
+( 0 -304 16 ) ( 0 -304 64 ) ( -16 -304 64 ) util/qodot_clip 0 0 0 1 1
+( 0 -384 64 ) ( 0 -304 64 ) ( 0 -304 16 ) util/qodot_clip 0 0 0 1 1
+}
+// brush 21
+{
+( 0 -304 64 ) ( 0 -320 64 ) ( 0 -320 16 ) util/qodot_clip 0 0 0 1 1
+( 0 -320 64 ) ( 64 -320 64 ) ( 64 -320 16 ) util/qodot_clip 0 0 0 1 1
+( 64 -320 16 ) ( 64 -304 16 ) ( 0 -304 16 ) util/qodot_clip 0 0 0 1 1
+( 0 -304 64 ) ( 64 -304 64 ) ( 64 -320 64 ) util/qodot_clip 0 0 0 1 1
+( 64 -304 16 ) ( 64 -304 64 ) ( 0 -304 64 ) util/qodot_clip 0 0 0 1 1
+( 64 -320 64 ) ( 64 -304 64 ) ( 64 -304 16 ) util/qodot_clip 0 0 0 1 1
+}
+// brush 22
+{
+( -16 -384 64 ) ( -16 -383 64 ) ( -16 -384 65 ) util/qodot_clip 0 0 0 1 1
+( -16 -384 64 ) ( -16 -384 65 ) ( -15 -384 64 ) util/qodot_clip 0 0 0 1 1
+( -16 -384 64 ) ( -15 -384 64 ) ( -16 -383 64 ) util/qodot_clip 0 0 0 1 1
+( 80 -304 80 ) ( 80 -303 80 ) ( 81 -304 80 ) util/qodot_clip 0 0 0 1 1
+( 80 -304 80 ) ( 81 -304 80 ) ( 80 -304 81 ) util/qodot_clip 0 0 0 1 1
+( 80 -304 80 ) ( 80 -304 81 ) ( 80 -303 80 ) util/qodot_clip 0 0 0 1 1
+}
+// brush 23
+{
+( -64 -288 80 ) ( -64 -384 80 ) ( -64 -384 16 ) util/qodot_clip 0 0 0 1 1
+( -64 -384 80 ) ( -48 -384 80 ) ( -48 -384 16 ) util/qodot_clip 0 0 0 1 1
+( -48 -384 16 ) ( -48 -288 16 ) ( -64 -288 16 ) util/qodot_clip 0 0 0 1 1
+( -64 -288 80 ) ( -48 -288 80 ) ( -48 -384 80 ) util/qodot_clip 0 0 0 1 1
+( -48 -288 16 ) ( -48 -288 80 ) ( -64 -288 80 ) util/qodot_clip 0 0 0 1 1
+( -48 -384 80 ) ( -48 -288 80 ) ( -48 -288 16 ) util/qodot_clip 0 0 0 1 1
+}
+// brush 24
+{
+( -160 -288 80 ) ( -160 -384 80 ) ( -160 -384 16 ) util/qodot_clip 0 0 0 1 1
+( -160 -384 80 ) ( -144 -384 80 ) ( -144 -384 16 ) util/qodot_clip 0 0 0 1 1
+( -144 -384 16 ) ( -144 -288 16 ) ( -160 -288 16 ) util/qodot_clip 0 0 0 1 1
+( -160 -288 80 ) ( -144 -288 80 ) ( -144 -384 80 ) util/qodot_clip 0 0 0 1 1
+( -144 -288 16 ) ( -144 -288 80 ) ( -160 -288 80 ) util/qodot_clip 0 0 0 1 1
+( -144 -384 80 ) ( -144 -288 80 ) ( -144 -288 16 ) util/qodot_clip 0 0 0 1 1
+}
+// brush 25
+{
+( -144 -288 80 ) ( -144 -304 80 ) ( -144 -304 16 ) util/qodot_clip 0 0 0 1 1
+( -144 -304 80 ) ( -64 -304 80 ) ( -64 -304 16 ) util/qodot_clip 0 0 0 1 1
+( -64 -304 16 ) ( -64 -288 16 ) ( -144 -288 16 ) util/qodot_clip 0 0 0 1 1
+( -144 -288 80 ) ( -64 -288 80 ) ( -64 -304 80 ) util/qodot_clip 0 0 0 1 1
+( -64 -288 16 ) ( -64 -288 80 ) ( -144 -288 80 ) util/qodot_clip 0 0 0 1 1
+( -64 -304 80 ) ( -64 -288 80 ) ( -64 -288 16 ) util/qodot_clip 0 0 0 1 1
+}
+// brush 26
+{
+( -160 -384 80 ) ( -160 -383 80 ) ( -160 -384 81 ) util/qodot_clip 0 0 0 1 1
+( -160 -384 80 ) ( -160 -384 81 ) ( -159 -384 80 ) util/qodot_clip 0 0 0 1 1
+( -160 -384 80 ) ( -159 -384 80 ) ( -160 -383 80 ) util/qodot_clip 0 0 0 1 1
+( -48 -288 96 ) ( -48 -287 96 ) ( -47 -288 96 ) util/qodot_clip 0 0 0 1 1
+( -48 -288 96 ) ( -47 -288 96 ) ( -48 -288 97 ) util/qodot_clip 0 0 0 1 1
+( -48 -288 96 ) ( -48 -288 97 ) ( -48 -287 96 ) util/qodot_clip 0 0 0 1 1
+}
+// brush 27
+{
+( 64 320 32 ) ( 64 256 32 ) ( 64 256 0 ) terrain/basic_stone 0 0 0 1 1
+( 64 256 32 ) ( 80 256 32 ) ( 80 256 0 ) terrain/basic_stone 0 0 0 1 1
+( 80 256 0 ) ( 80 320 0 ) ( 64 320 0 ) terrain/basic_stone 0 0 0 1 1
+( 64 320 32 ) ( 80 320 32 ) ( 80 256 32 ) building/bm_s00_cutaway_shadow 0 0 0 1 1
+( 80 320 0 ) ( 80 320 32 ) ( 64 320 32 ) terrain/basic_stone 0 0 0 1 1
+( 80 256 32 ) ( 80 320 32 ) ( 80 320 0 ) terrain/basic_stone 0 0 0 1 1
+}
+// brush 28
+{
+( -64 384 32 ) ( -64 256 32 ) ( -64 256 0 ) terrain/basic_stone 0 0 0 1 1
+( -64 256 32 ) ( -48 256 32 ) ( -48 256 0 ) terrain/basic_stone 0 0 0 1 1
+( -48 256 0 ) ( -48 384 0 ) ( -64 384 0 ) terrain/basic_stone 0 0 0 1 1
+( -64 384 32 ) ( -48 384 32 ) ( -48 256 32 ) building/bm_s00_cutaway_shadow 0 0 0 1 1
+( -48 384 0 ) ( -48 384 32 ) ( -64 384 32 ) terrain/basic_stone 0 0 0 1 1
+( -48 256 32 ) ( -48 384 32 ) ( -48 384 0 ) terrain/basic_stone 0 0 0 1 1
+}
+// brush 29
+{
+( -64 256 32 ) ( -64 240 32 ) ( -64 240 0 ) terrain/basic_stone 0 0 0 1 1
+( -64 240 32 ) ( 80 240 32 ) ( 80 240 0 ) terrain/basic_stone 0 0 0 1 1
+( 80 240 0 ) ( 80 256 0 ) ( -64 256 0 ) terrain/basic_stone 0 0 0 1 1
+( -64 256 32 ) ( 80 256 32 ) ( 80 240 32 ) building/bm_s00_cutaway_shadow 0 0 0 1 1
+( 80 256 0 ) ( 80 256 32 ) ( -64 256 32 ) terrain/basic_stone 0 0 0 1 1
+( 80 240 32 ) ( 80 256 32 ) ( 80 256 0 ) terrain/basic_stone 0 0 0 1 1
+}
+// brush 30
+{
+( 64 320 96 ) ( 64 256 96 ) ( 64 256 32 ) util/qodot_clip 0 0 0 1 1
+( 64 256 96 ) ( 80 256 96 ) ( 80 256 32 ) util/qodot_clip 0 0 0 1 1
+( 80 256 32 ) ( 80 320 32 ) ( 64 320 32 ) util/qodot_clip 0 0 0 1 1
+( 64 320 96 ) ( 80 320 96 ) ( 80 256 96 ) util/qodot_clip 0 0 0 1 1
+( 80 320 32 ) ( 80 320 96 ) ( 64 320 96 ) util/qodot_clip 0 0 0 1 1
+( 80 256 96 ) ( 80 320 96 ) ( 80 320 32 ) util/qodot_clip 0 0 0 1 1
+}
+// brush 31
+{
+( -64 384 96 ) ( -64 256 96 ) ( -64 256 32 ) util/qodot_clip 0 0 0 1 1
+( -64 256 96 ) ( -48 256 96 ) ( -48 256 32 ) util/qodot_clip 0 0 0 1 1
+( -48 256 32 ) ( -48 384 32 ) ( -64 384 32 ) util/qodot_clip 0 0 0 1 1
+( -64 384 96 ) ( -48 384 96 ) ( -48 256 96 ) util/qodot_clip 0 0 0 1 1
+( -48 384 32 ) ( -48 384 96 ) ( -64 384 96 ) util/qodot_clip 0 0 0 1 1
+( -48 256 96 ) ( -48 384 96 ) ( -48 384 32 ) util/qodot_clip 0 0 0 1 1
+}
+// brush 32
+{
+( -64 256 96 ) ( -64 240 96 ) ( -64 240 32 ) util/qodot_clip 0 0 0 1 1
+( -64 240 96 ) ( 80 240 96 ) ( 80 240 32 ) util/qodot_clip 0 0 0 1 1
+( 80 240 32 ) ( 80 256 32 ) ( -64 256 32 ) util/qodot_clip 0 0 0 1 1
+( -64 256 96 ) ( 80 256 96 ) ( 80 240 96 ) util/qodot_clip 0 0 0 1 1
+( 80 256 32 ) ( 80 256 96 ) ( -64 256 96 ) util/qodot_clip 0 0 0 1 1
+( 80 240 96 ) ( 80 256 96 ) ( 80 256 32 ) util/qodot_clip 0 0 0 1 1
+}
+// brush 33
+{
+( -64 384 112 ) ( -64 240 112 ) ( -64 240 96 ) util/qodot_clip 0 0 0 1 1
+( -64 240 112 ) ( 80 240 112 ) ( 80 240 96 ) util/qodot_clip 0 0 0 1 1
+( 80 240 96 ) ( 80 384 96 ) ( -64 384 96 ) util/qodot_clip 0 0 0 1 1
+( -64 384 112 ) ( 80 384 112 ) ( 80 240 112 ) util/qodot_clip 0 0 0 1 1
+( 80 384 96 ) ( 80 384 112 ) ( -64 384 112 ) util/qodot_clip 0 0 0 1 1
+( 80 240 112 ) ( 80 384 112 ) ( 80 384 96 ) util/qodot_clip 0 0 0 1 1
+}
+}
+// entity 1
+{
+"classname" "ai_breadcrumb"
+"origin" "256 256 8"
+"group_name" "point_cardinal"
+}
+// entity 2
+{
+"classname" "ai_breadcrumb"
+"origin" "256 -256 8"
+"group_name" "point_cardinal"
+}
+// entity 3
+{
+"classname" "ai_breadcrumb"
+"origin" "-256 -256 8"
+"group_name" "point_cardinal"
+}
+// entity 4
+{
+"classname" "ai_breadcrumb"
+"origin" "-256 256 8"
+"group_name" "point_cardinal"
+}
+// entity 5
+{
+"classname" "ai_breadcrumb"
+"origin" "152 -360 8"
+"group_name" "cage_spawn"
+}
+// entity 6
+{
+"classname" "ai_breadcrumb"
+"origin" "32 -352 8"
+"group_name" "cage_spawn"
+}
+// entity 7
+{
+"classname" "ai_breadcrumb"
+"origin" "-104 -344 8"
+"group_name" "cage_spawn"
+}
+// entity 8
+{
+"classname" "ai_breadcrumb"
+"origin" "-40 264 8"
+"group_name" "suggest_spawn"
+}
+// entity 9
+{
+"classname" "ai_breadcrumb"
+"origin" "264 72 8"
+"group_name" "suggest_spawn"
+}
+// entity 10
+{
+"classname" "ai_breadcrumb"
+"origin" "-8 -88 8"
+"group_name" "suggest_spawn"
+}
+// entity 11
+{
+"classname" "ai_breadcrumb"
+"origin" "-88 40 8"
+"group_name" "suggest_spawn"
+}
+// entity 12
+{
+"classname" "ai_breadcrumb"
+"origin" "-296 -72 8"
+"group_name" "suggest_spawn"
+}
+// entity 13
+{
+"classname" "ai_breadcrumb"
+"origin" "216 -104 8"
+"group_name" "suggest_spawn"
+}
+// entity 14
+{
+"classname" "ai_breadcrumb"
+"origin" "-248 104 8"
+"group_name" "suggest_spawn"
 }

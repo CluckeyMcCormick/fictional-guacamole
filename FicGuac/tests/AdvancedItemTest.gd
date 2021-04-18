@@ -12,18 +12,24 @@ var scene_dictionary = {
     "Swords" : preload("res://items/weapons/ShortSword.tscn"),
 }
 
-# How many items doe we spawn in a test round?
-const ITEMS_PER_ROUND = 5
-
 func _ready():
     for key in scene_dictionary.keys():
         print(key)
         $GUI/ItemList.add_item(key)
 
 func _on_StartButton_pressed():
+    # An array containing all the items
     var item_array = []
+    # The item archetpye we've chosen
     var chosen_item 
+    # The new item we've spawned
     var new_item
+    # The different locations where we will spawn items. Each spawn point will
+    # get one item.
+    var spawn_points = []
+    # The different locations where we can haul items to. We'll scramble this
+    # array and then pick a single item to serve as the destination.
+    var end_points = []
     
     # First, DELETE ALL OF THE ITEM MANAGER'S CHILDREN BWAHAHAHAHAHAHAHA
     for node in $ItemManager.get_children():
@@ -44,18 +50,32 @@ func _on_StartButton_pressed():
     # Disable the Start Button
     $GUI/StartButton.disabled = true
     
+    # Get our spawn points
+    spawn_points = get_tree().get_nodes_in_group("suggest_spawn")
+    
+    # Get the cage spawns in there, too
+    for node in get_tree().get_nodes_in_group("cage_spawn"):
+        spawn_points.append(node)
+    
     # Spawn the items, stick them in an array
-    for i in range(ITEMS_PER_ROUND):
+    for location in spawn_points:
         new_item = chosen_item.instance()
         $ItemManager.add_child(new_item)
-        new_item.global_transform.origin = $West.global_transform.origin
+        new_item.global_transform.origin = location.global_transform.origin
         new_item.add_to_group("packing_goal")
         item_array.append(new_item)
+
+    # Now get the possible end points
+    end_points = get_tree().get_nodes_in_group("point_cardinal")
+
+    # Now shuffle it so we go somewhere different for sure
+    randomize()
+    end_points.shuffle()
 
     # Now, assign the pawn to move ALL those items
     $TaskingCowardPawn.move_items(
         item_array,
-        $East.global_transform.origin
+        end_points[0].global_transform.origin
     )
 
 func _on_TaskingCowardPawn_task_complete():
