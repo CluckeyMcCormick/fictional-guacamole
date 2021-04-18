@@ -21,6 +21,7 @@ func _ready():
         $GUI/ItemList.add_item(key)
 
 func _on_StartButton_pressed():
+    var item_array = []
     var chosen_item 
     var new_item
     
@@ -43,15 +44,17 @@ func _on_StartButton_pressed():
     # Disable the Start Button
     $GUI/StartButton.disabled = true
     
+    # Spawn the items, stick them in an array
     for i in range(ITEMS_PER_ROUND):
         new_item = chosen_item.instance()
         $ItemManager.add_child(new_item)
         new_item.global_transform.origin = $West.global_transform.origin
         new_item.add_to_group("packing_goal")
+        item_array.append(new_item)
 
     # Now, assign the pawn to move ALL those items
-    $TaskingCowardPawn.move_item(
-        new_item,
+    $TaskingCowardPawn.move_items(
+        item_array,
         $East.global_transform.origin
     )
 

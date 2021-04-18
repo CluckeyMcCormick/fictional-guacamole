@@ -143,9 +143,9 @@ func _on_tmr_current_task_failed(task):
     # into the task manager
     self.add_timer(IDLE_TIMER_NAME, MR.idle_wait_time)
 
-func _on_move_task_assigned(item, final_pos):
+func _on_move_task_assigned(items, final_pos):
     # Set the item
-    get_node("../MoveTasked").item = item
+    get_node("../MoveTasked").items = items
     # Set the final position
     get_node("../MoveTasked").final_pos = final_pos
     # Change to the tasking state

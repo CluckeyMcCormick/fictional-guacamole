@@ -1,4 +1,4 @@
-extends "res://motion_ai/common/tasking/actions/ActionTemplate.gd"
+extends "res://motion_ai/common/tasking/actions/core/ActionTemplate.gd"
 
 # The MR and PTR variables are declared in the ActionTemplate scene that exists
 # above/is inherited by this scene 
@@ -32,10 +32,11 @@ func _on_enter(var arg) -> void:
     PTR.clear_target_data()
     
     # If we don't have an item, we don't have anything to do. That's a failure!
-    if not IMC.can_grab_item(_target_entity):
-        emit_signal("action_failure", FC_CANT_GRAB_ITEM)
-    elif target_wrap.get_ref() == null:
+    if target_wrap.get_ref() == null:
         emit_signal("action_failure", FC_NULL_ENTITY)
+    # If we can't grab it for whatever reason, that's a failure!
+    elif not IMC.can_grab_specific_item(_target_entity):
+        emit_signal("action_failure", FC_CANT_GRAB_ITEM)
     # If we do have an item, then drop it. That's a success!
     else:
         IMC.grab_item(_target_entity)

@@ -17,8 +17,8 @@ func _process(delta):
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Order the machine to move an item to a specified position
-func move_item(item, final_pos):
-    $TaskingCowardMachine.move_item(item, final_pos)
+func move_items(items, final_pos):
+    $TaskingCowardMachine.move_items(items, final_pos)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #

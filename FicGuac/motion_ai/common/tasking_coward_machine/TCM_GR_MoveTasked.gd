@@ -13,10 +13,10 @@ onready var PTR = get_node("../../PhysicsTravelRegion")
 onready var TMR = get_node("../../TaskManagerRegion")
 
 # Preload our item moving task so we can instance it on demand
-var MOVE_ITEM_TASK_PRELOAD = preload("res://motion_ai/common/tasking/MoveItemDrop.tscn")
+var MOVE_ITEMS_TASK_PRELOAD = preload("res://motion_ai/common/tasking/MoveItemDropMulti.tscn")
 
-# The item we're trying to pick up
-var item
+# The items we're trying to pick up
+var items
 # The position we're trying to move to
 var final_pos
 
@@ -46,9 +46,9 @@ func _on_enter(var arg) -> void:
     TMR.connect("current_task_failed", self, "_on_tmr_current_task_failed")
     
     # Instance out a new wander task.
-    var new_move_item = MOVE_ITEM_TASK_PRELOAD.instance()
+    var new_move_item = MOVE_ITEMS_TASK_PRELOAD.instance()
     # Initialize!
-    new_move_item.initialize(MR, PTR, MR.integrating_body_node, item, final_pos)
+    new_move_item.initialize(MR, PTR, MR.integrating_body_node, items, final_pos)
     # Add the task to the task manager
     TMR.set_new_task(new_move_item)
 
@@ -64,8 +64,8 @@ func _on_exit(var arg) -> void:
     TMR.disconnect("current_task_succeeded", self, "_on_tmr_current_task_succeeded")
     TMR.disconnect("current_task_failed", self, "_on_tmr_current_task_failed")
   
-    # Clear the target item
-    item = null
+    # Clear the target items
+    items = null
     
     # Clear the final position
     final_pos = null

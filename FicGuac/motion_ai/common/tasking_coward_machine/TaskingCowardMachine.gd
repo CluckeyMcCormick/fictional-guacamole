@@ -121,8 +121,8 @@ func _force_configure():
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Order the machine to move an item to a specified position
-func move_item(item, final_pos):
-    emit_signal("move_task_assigned", item, final_pos)
+func move_items(items, final_pos):
+    emit_signal("move_task_assigned", items, final_pos)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #

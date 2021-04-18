@@ -29,10 +29,6 @@ animation_player = null
 
 [node name="MoveTasked" type="Node" parent="GoalRegion"]
 script = ExtResource( 8 )
-disabled = false
-has_regions = false
-fsm_owner = null
-animation_player = null
 
 [node name="Flee" type="Node" parent="GoalRegion"]
 script = ExtResource( 1 )

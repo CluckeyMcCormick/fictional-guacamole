@@ -1,4 +1,4 @@
-extends "res://motion_ai/common/tasking/TaskTemplate.gd"
+extends "res://motion_ai/common/tasking/core/TaskTemplate.gd"
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #

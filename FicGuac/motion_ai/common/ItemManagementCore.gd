@@ -59,15 +59,30 @@ func _ready():
 func has_an_item():
     return not _item_stack.empty()
 
-# Can this item management core grab the item in question?
-func can_grab_item(node : MasterItem):
+# Can this item management core grab an item?
+func can_grab_item():
     
     # If we don't have any items, then we can surely grab an item.
     if not has_an_item():
         return true
     # Otherwise, If we are at max capacity for our current item stack, return
     # false.
-    elif node.max_carry_stack >= _item_stack[0].max_carry_stack:
+    elif _item_stack.size() >= _item_stack[0].max_carry_stack:
+        return false
+    # Okay, so we're below max capacity and can grab another item. In that case,
+    # we can grab any item 
+    else:
+        return true
+        
+# Can this item management core grab the specific item in question?
+func can_grab_specific_item(node : MasterItem):
+    
+    # If we don't have any items, then we can surely grab an item.
+    if not has_an_item():
+        return true
+    # Otherwise, If we are at max capacity for our current item stack, return
+    # false.
+    elif _item_stack.size() >= _item_stack[0].max_carry_stack:
         return false
     # Okay, so we're below max capacity and can grab another item. In that case,
     # we can grab the item so long as the name keys match up with each other.
@@ -82,8 +97,8 @@ func grab_item(node : MasterItem):
     # calculate it in this variable
     var new_trans
     
-    # If we have an item already, just bounce
-    if not can_grab_item(node):
+    # If we can't grab this item, just bounce
+    if not can_grab_specific_item(node):
         return
     
     # If we're not dealing with an item, then back out.

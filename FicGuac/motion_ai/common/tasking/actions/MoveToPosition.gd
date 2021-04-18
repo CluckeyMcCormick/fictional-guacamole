@@ -1,4 +1,4 @@
-extends "res://motion_ai/common/tasking/actions/ActionTemplate.gd"
+extends "res://motion_ai/common/tasking/actions/core/ActionTemplate.gd"
 
 # The MR and PTR variables are declared in the ActionTemplate scene that exists
 # above/is inherited by this scene 

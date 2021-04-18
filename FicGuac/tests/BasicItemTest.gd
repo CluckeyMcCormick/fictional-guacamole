@@ -29,7 +29,7 @@ func _on_StartButton_pressed():
         return
     
     # Tell the Pawn to move it!
-    $TaskingCowardPawn.move_item(
-        chosen_item,
+    $TaskingCowardPawn.move_items(
+        [chosen_item],
         chosen_destination.global_transform.origin
     )
