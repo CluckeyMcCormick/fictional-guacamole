@@ -6,6 +6,11 @@ While we prefer to keep textures with the scenes that use them, the *Qodot* addo
 ## Building
 Textures for our different buildings. These textures have been sorted into a series of "building materials". Each series is numbered, like `bm_s00` or `bm_s01`. This was done to group assets by their license. You should be aware, then, that not all assets in this directory exist under the project's license. So more restrictive licensing may be present - look out for `.license` files.
 
+## Items
+Textures for different 3D items - although it was mostly designed for world/level geometry, *TrenchBroom* is also pretty useful for modeling low-poly items. I've really struggled with other tools, especially *Blender*, so *TrenchBroom* is a welcome tool.
+
+Like the building textures, these textures have been sorted into a series of "item materials". Each series is numbered, like `im_s00` or `im_s01`. This was done to group assets by their license. You should be aware, then, that not all assets in this directory exist under the project's license. So more restrictive licensing may be present - look out for `.license` files.
+
 ## Qodot
 *Qodot* came with it's own set of sample textures, some of which seemed pretty useful to me. I decided to keep them around just in case I decided to use them.
 

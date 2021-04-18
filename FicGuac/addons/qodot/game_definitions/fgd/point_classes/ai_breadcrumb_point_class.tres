@@ -2,7 +2,7 @@
 
 [ext_resource path="res://addons/qodot/src/resources/game-definitions/fgd/qodot_fgd_point_class.gd" type="Script" id=1]
 
-[sub_resource type="GDScript" id=12]
+[sub_resource type="GDScript" id=1]
 script/source = "class_name PatrolBreadcrumb
 extends Spatial
 tool
@@ -49,4 +49,4 @@ node_class = "Spatial"
 transient_node = false
 scene = "----------------------------------------------------------------"
 scripting = "----------------------------------------------------------------"
-script_class = SubResource( 12 )
+script_class = SubResource( 1 )
