@@ -209,11 +209,9 @@ func _on_MoveToPosition_action_success():
 # I don't think the "Drop All" function can technically fail. However, we keep
 # it here as a precaution.
 func _on_DropAllItem_action_failure(failure_code):
-    print("Drop ALL F")
     # Defer to the handler function
     collect_item_next_handler()
 
 func _on_DropAllItem_action_success():
-    print("Drop ALL S")
     # Defer to the handler function
     collect_item_next_handler()

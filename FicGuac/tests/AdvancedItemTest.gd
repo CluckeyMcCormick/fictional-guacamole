@@ -14,7 +14,6 @@ var scene_dictionary = {
 
 func _ready():
     for key in scene_dictionary.keys():
-        print(key)
         $GUI/ItemList.add_item(key)
 
 func _on_StartButton_pressed():
