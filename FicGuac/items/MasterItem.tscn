@@ -2,7 +2,6 @@
 
 [ext_resource path="res://items/MasterItem.gd" type="Script" id=1]
 
-
 [node name="MasterItem" type="RigidBody"]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0 )
 collision_layer = 2048

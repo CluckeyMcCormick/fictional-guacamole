@@ -171,6 +171,11 @@ This is differentiated from `Terrain` in that it is artificial, rather than natu
 ### GUI
 To ensure consistency across scenes, we build common GUI elements and store them here - like pause menus or loading screens. This allows us to do weird stuff, like rendering the loading screen over the pause screen. That doesn't sound that weird but trust me, that's a big thing in Godot.
 
+### Items
+The different items in the game. *Items* are physics objects that can be picked up and put down - possibly even equipped, stored, consumed, or installed.
+
+So that's things like food, corpses, weapons, or even projectiles. It also currently includes furniture, which is a sort of weird edge case of item.
+
 ### Motion AI
 Does it move? Does it think? In that case, it's a *Motion AI*. This is the directory where we keep our NPC/AI scenes and assets - *Motion AI* was just the best name I could come up with. I guess *Actors* would be a good alternate name but, honestly, I like the clarity of *Motion AI*.
 

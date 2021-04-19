@@ -18,7 +18,7 @@ var _item_state = ITEM_PHYSICAL
 export(String) var name_key
 
 # The max count of these items that may be stacked up for carrying purposes
-export(int) var max_carry_stack = 1
+export(int, 1, 1024) var max_carry_stack = 1
 
 # Is the visual component of this item 3D - i.e. does it consist of a mesh or
 # some other such object? This enables special behaviors for how we handle this
