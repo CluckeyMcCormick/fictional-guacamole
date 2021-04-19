@@ -11,8 +11,20 @@ The item always starts in *Physical* mode.
 
 One other item of note - the closest thing *Godot* has to some sort of data tags or tagging system is the *group* system. Because of this, what an actor is able to do with an item is determined by it's relationships with the item's different groups. This is currently being fleshed out and will likely be subject to change.
 
+### Corpses
+Contains different corpses for different creatures in the game.
+
+### Food
+Contains different food items. Contains sprites with different licenses, so be wary.
+
+### Furniture
+Different furniture items. Furniture needs to be crafted, transported, and installed. I also like the imagery of chairs being sent flying as a building explodes, which is the primary reason their counted as items - but I believe they'll eventually need to be moved into their own sort of category.
+
+### Weapons
+Contains different weapon items. 
+
 ## MasterItem
-The *MasterItem* class defines the basic attributes and interface for all items in this project. The *MasterItem* is effectively just a shell. All items should be derived from this scene. This is critical for the game to function correctly - we confirm if an item is actually an item by checking if it is a *MasterItem*.
+The *MasterItem* class-scene defines the basic attributes and interface for all items in this project. The *MasterItem* is effectively just a shell. All items should be derived from this scene. This is critical for the game to function correctly - we confirm if an item is actually an item by checking if it is a *MasterItem*.
 
 Any deriving scenes will need to add nodes for the visuals and collision model, as the *MasterItem* is literally just a shell.
 
@@ -62,15 +74,3 @@ Converts this item from *Physical* mode to *Visual* mode. Has no effect if the i
 Converts this item from *Visual* mode to *Physical* mode. Has no effect if the item was already in *Physical* mode. Returns the item.
 
 Note that this doesn't remove the item from whatever circumstances it was in - i.e. whether it was held, or stacked, or contained, etc.
-
-## Corpses
-Contains different corpses for different creatures in the game.
-
-## Food
-Contains different food items. Contains sprites with different licenses, so be wary.
-
-## Furniture
-Different furniture items. Furniture needs to be crafted, transported, and installed. I also like the imagery of chairs being sent flying as a building explodes, which is the primary reason their counted as items - but I believe they'll eventually need to be moved into their own sort of category.
-
-## Weapons
-Contains different weapon items. 

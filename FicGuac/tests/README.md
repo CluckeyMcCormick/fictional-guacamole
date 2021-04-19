@@ -41,3 +41,9 @@ This test also sports a force-cancel button and a time-dilation slider for extra
 
 ## Rat Emulation Test
 This test is meant to test out the `RatPawn`, which is an intermediate step in developing our AI. It also serves as an early test of how we can use *Qodot* and *TrenchBroom* classes. 
+
+## Basic Item Test
+This test tries out some very basic item pick-up, moving, and dropping. It only moves one item at a time and has a tendency to accidentally punt some items off the edge.
+
+## Advanced Item Test
+An improved version of the Basic Item Test. Features an actual item testing arena - with walls. Spawns the items on demand and moves them to a random location. Some items are purposefully spawned out of reach, to test failure state resolution. Also ensures we don't try to grab items through walls.
