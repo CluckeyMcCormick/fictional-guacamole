@@ -15,6 +15,9 @@ We require a `KinematicCore` node to define the movement profile for this machin
 ##### Sensory Sort Core
 We require a `SensorySortCore` in order to detect the world around us and react appropriately.
 
+##### Level Interface Core
+We require a `LevelInterfaceCore` in order to interact with the level at large. This includes checking positions and pathing to given destinations.
+
 ##### Idle Wait Time
 When in the *Idle* state, the machine waits for a certain amount of seconds before transitioning to the *Wander* state. This configurable controls the duration of that time period.
 
@@ -87,11 +90,11 @@ Note that the *OnGround* state contains the *Idle* and *Walk* states.
 
 The manipulation and flow of data in tightly controlled to try and keep things clean. Here "data flow" refers to either observing and reacting to changes in data (i.e. signals), **or** directly manipulating variables.
 
-The *REM* data flow is represented here, where blue is data manipulation and red is a signal reaction:
+The *TCM* data flow is represented here, where blue is data manipulation and red is a signal reaction. Data flow from the *Sensory Sort Core* is dashed to help make the graph more legible:
 
 ![Image](./doc_images/REM.flow.data.png "REM Data Flow Control Tree")
 
-What's important to not here is that, while the *Goal Region* does react to signals emitted by the *Physics Travel Region*, there is no direct manipulation from the *Physics Travel Region* to the *Goal Region*. Since signals are open-ended (anyone who wants to listen can feel free) they don't count as direct manipulation.
+What's important to not here is that, while the *Goal Region* does react to signals emitted by the *Physics Travel Region* and *Sensory Sort Core*, there is no direct manipulation from the *Physics Travel Region* to the *Goal Region*. Since signals are open-ended (anyone who wants to listen can feel free) they don't count as direct manipulation.
 
 So, despite being sibling regions, the *Physics Travel Region* is considered wholly subordinate to the *Goal Region*. Of course, it does help that the *Goal Region* doesn't have any variables to manipulate or signals to listen to.
 

@@ -1,0 +1,36 @@
+// TCM - the Tasking Coward Machine
+// State Control Flow - Goal Region - Graphviz Dot
+// Directed Graph
+digraph G {
+    rankdir=LR; // Left to Right, instead of Top to Bottom
+    nodesep=.55; // Ensure nodes are separated by at least .55... units?
+    overlap=false; // Nodes are not allowed to overlap.
+    compound=true; // Allow edges between clusters
+
+    // Declare our nodes ahead of time
+    GR_IDLE [label = "Idle"];
+    GR_TASKED [label = "MoveTasked"];
+    GR_FLEE [label = "Flee"];
+
+    // Idle to Wander Edge
+    edge [label = "Idle Timeout"];
+    GR_IDLE -> GR_TASKED;
+    // Wander to Idle Edge
+    edge [label = "Task Complete"];
+    GR_TASKED -> GR_IDLE;
+    // to Flee Edges
+    edge [label = "Threat Detected"];
+    GR_IDLE -> GR_FLEE;
+    GR_TASKED -> GR_FLEE;
+    // Flee to Idle
+    edge [label = "Threat Lost"];
+    GR_FLEE -> GR_IDLE;
+    
+    // Clear the edge label
+    edge [label = ""];
+    
+    // We start at start!
+    Start [shape=Mdiamond];
+    // Start goes idle!
+    Start -> GR_IDLE;
+}

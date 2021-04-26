@@ -30,5 +30,10 @@ These two scripts document the next AI development stage after the *Kinematic Dr
 
 This also has a hierarchy script. However, as the first machine to feature *regions*, this machine features multiple flow scripts - one that depicts the flow of control between the different states, and one that depicts the flow of data between the states.
 
+## TCM Hierarchy and Flows (State & Data)
+These four scripts document the *Tasking Coward Machine*, an further development of the *Rat Emulation Machine*.
+
+This machine has a hierarchy script. It also features separate flow diagrams for control and data flow. Since this machine is technically composed of two to three separate *XSM* machines, I decided to split the state control flow diagram into two separate diagrams - one covering the *Goal Region*, the other covering the *Physics Travel Region*.
+
 ## XSM Tutorial
 The Extended State Machine (*XSM*) concept can get pretty complicated pretty quickly, so I thought it would be prudent to generate some documentation for how they work. Of course, that required diagrams. A LOT of diagrams. Those are stored here.

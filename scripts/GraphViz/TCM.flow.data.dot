@@ -1,4 +1,4 @@
-// REM - the Rat Emulation Machine
+// TCM - the Tasking Coward Machine
 // Data Flow - Graphviz Dot
 // Directed Graph
 digraph G {
@@ -11,7 +11,7 @@ digraph G {
     node [shape=record];
     
     ROOT [label="
-        <name> Rat Emulation Machine Root |
+        <name> Tasking Coward Machine Root |
         <idle_wait> Variable\n\nidle_wait_time |
         <move_dist> Variable\n\nmove_distance | 
         <gr_key> Variable\n\ngoal_key |
@@ -28,6 +28,14 @@ digraph G {
         <states> \nSub-States
     "];
 
+    TMR [label="
+        <name> Task Manager Region |
+        <sgnl_complete> Signal\n\ncurrent_task_succeeded |
+        <sgnl_stuck> Signal\n\ncurrent_task_failed |
+        <task> Current Task |
+        <actions> \nActions (Sub-States)
+    "];
+    
     GR [label="
         <name> Goal Region |
         <states> \nSub-States
@@ -39,24 +47,25 @@ digraph G {
         <body_exited> Signal\n\nbody_exited
     "];
     
-    // Establish rank
-    //{rank = source; ROOT;}
-    //{rank = same; PTR; GR;}
-    
     // Sensory Sort Core Signal Edges
     edge [color="crimson", style="dashed"];
     SSC:body_entered:e -> GR:states:w;
     SSC:body_exited:e -> GR:states:w;
+    SSC:body_entered:e -> TMR:actions:w;
+    SSC:body_exited:e -> TMR:actions:w;
     
     // Signal Edges
     edge [style="solid"];
-    PTR:sgnl_complete -> GR:states;
-    PTR:sgnl_stuck -> GR:states;
+    PTR:sgnl_complete -> TMR:actions;
+    PTR:sgnl_stuck -> TMR:actions;
+    TMR:sgnl_complete -> GR:states;
+    TMR:sgnl_stuck -> GR:states;
     
     // Data Manipulation Edges
     edge [color="dodgerblue"];
-    GR:states:s -> PTR:targ_pos;
-    GR:states:s -> PTR:targ_path;
+    TMR:actions:s -> PTR:targ_pos;
+    TMR:actions:s -> PTR:targ_path;
+    GR:states:s -> TMR:task:e;
     GR:states:s -> ROOT:gr_key;
     PTR:states -> ROOT:ptr_key;
     PTR:states -> ROOT:curr_orient;

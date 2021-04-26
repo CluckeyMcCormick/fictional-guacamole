@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/REM.hierarchy.png-479f786c91365b51758406c975b315a6.stex"
+path="res://.import/TCM.flow.state.PTR.png-a0f0cf45702a3d51ad1550e49c00c270.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://motion_ai/common/tasking_coward_machine/doc_images/REM.hierarchy.png"
-dest_files=[ "res://.import/REM.hierarchy.png-479f786c91365b51758406c975b315a6.stex" ]
+source_file="res://motion_ai/common/tasking_coward_machine/doc_images/TCM.flow.state.PTR.png"
+dest_files=[ "res://.import/TCM.flow.state.PTR.png-a0f0cf45702a3d51ad1550e49c00c270.stex" ]
 
 [params]
 

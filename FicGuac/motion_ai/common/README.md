@@ -9,6 +9,23 @@ Where some amount of coding is required as part of the plugging, we typically re
 
 The *Machines* are somewhat unique in that they represent different phases of AI development, each preserved as separate machines. We maintain older machines for testing purposes, and as proofs-of-concept.
 
+### Falling Body Machine
+The most basic machine. Developed as a debugging tool to so we can see how sprites sit on a surface, given certain collision models. All it does is fall/move downward.
+
+### Kinematic Driver Machine
+A step up from the *Falling Body Machine*. This machine accepts either a single point, or an array-path of points. It moves towards it's current target, and works through the current `Array` path of points. Currently only used for testing movement and environment interaction.
+
+### Rat Emulation Machine
+This machine builds from the *Kinematic Driver Machine* - the path following has been internalized and the machine now generates its own paths. The machine features several states that control the pawn's pathing and movement, independent of the states that *actually perform* the movement. It can wait, it can wander around, and it can flee from danger. It's a big step forward for the AI.
+
+### Tasking Coward Machine
+This machine is an evolution from the *Rat Emulation Machine* - that rat machine was good, but it wasn't easily extensible. If we wanted the machine to do something specific, we had to program in a specific goal state just to deal with it. This didn't seem sustainable to me, so I revised how the machine was constructed.
+
+The machine now operates by issuing itself tasks, which handle the lower level moment-to-moment processing. This creates different levels that allow us to effectively handle high and low level AI processing (and everything in between).
+
+### Tasking
+A key component of our main series of AI is the use of tasks - little machines that can be inserted into certain larger machines and perform moment-to-moment decisions. Each task has a common interface but implementation is largely up to the individual tasks themselves.
+
 ## GroupSortMatrix
 We identify different spatial elements in this game - hazards, items, projectiles, Motion AI, etc - using Godot's `Node` *Groups*. They're the closest things Godot has to some sort meta-tagging system. In order to build a robust motion AI system, we can't just use global tags (that'd be a bit painful managing global strings like that, anyhow). No, instead we need a way to group tags into universal categories, and leave it up to an integrating body to decide which groups fall into which category.
 
@@ -155,12 +172,3 @@ Emitted when a body enters the *Primary Sensor Area*. Emits the detected body wi
 
 ##### `body_exited`
 Emitted when a body exits the *Primary Sensor Area*. Emits the detected body with it. Basically a wrapper for the same signal from the *Primary Sensor Area*.
-
-## Falling Body Machine
-The most basic machine. Developed as a debugging tool to so we can see how sprites sit on a surface, given certain collision models. All it does is fall/move downward.
-
-## Kinematic Driver Machine
-A step up from the *Falling Body Machine*. This machine accepts either a single point, or an array-path of points. It moves towards it's current target, and works through the current `Array` path of points. Currently only used for testing movement and environment interaction.
-
-## Rat Emulation Machine
-This machine builds from the *Kinematic Driver Machine* - the path following has been internalized and the machine now generates its own paths. The machine features several states that control the pawn's pathing and movement, independent of the states that *actually perform* the movement. It can wait, it can wander around, and it can flee from danger. It's a big step forward for the AI.

@@ -12,6 +12,9 @@ As with every machine, the *FSM Owner* is required to be a `KinematicBody` node.
 ##### Kinematic Core
 We require a `KinematicCore` node to define the movement profile for this machine.
 
+##### Level Interface Core
+We require a `LevelInterfaceCore` in order to interact with the level at large. This includes checking positions and pathing to given destinations.
+
 ### (Public) Variables
 ##### `target_position`
 The current target position. Set to a `Vector3`, and the Pawn will move towards the specified position. It's recommended that you use the `move_to_point` and `clear_pathing` functions instead of manipulating this value directly.

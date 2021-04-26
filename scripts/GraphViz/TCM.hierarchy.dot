@@ -1,21 +1,20 @@
-// REM - the Rat Emulation Machine
+// TCM - the Tasking Coward Machine
 // Hierarchy - Graphviz Dot
 // Directed Graph
 digraph G {
-    start [label="REM\nRoot",shape=Mdiamond];
     
-    GR_IDLE [label="Idle"];
     PTR_IDLE [label="Idle"];
-    
-    start -> PhysicsTravelRegion;
-    start -> GoalRegion;
     
     PhysicsTravelRegion -> Falling;
     PhysicsTravelRegion -> OnGround;
     OnGround -> Walk;
     OnGround -> PTR_IDLE;
     
+    "Current Task" -> "Varies by task";
+    
+    GR_IDLE [label="Idle"];
+    
     GoalRegion -> GR_IDLE;
-    GoalRegion -> Wander;
+    GoalRegion -> MoveTasked;
     GoalRegion -> Flee;
 }
