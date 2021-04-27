@@ -7,7 +7,9 @@ const FAIL_GRAB_LIMIT = 3
 var _item_node_list = []
 # Dictionary corresponding fail-to-grab event counts to the specific item.
 var _fail_dict = {}
-
+# Whether the task succeeds or not depends on whether or not we could grab all
+# the items that got handed down to us.
+var item_failed = false
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Task Functions
@@ -38,9 +40,11 @@ func preen_item_list():
     for item in _item_node_list:
         # If the item no longer exists, exclude it.
         if weakref(item).get_ref() == null:
+            item_failed = true
             continue
         # If the item has over-failed, exclude it. 
         if item in _fail_dict and _fail_dict[item] >= FAIL_GRAB_LIMIT:
+            item_failed = true
             continue
         # Okay, looks like we can add this to our working list
         working_list.append(item)
@@ -127,9 +131,15 @@ func collect_item_next_handler():
         # items - if we have them!
         if has_items:
             change_state("MoveToPosition")
-        # Otherwise, it seems like we succeeded. Emit!
+        # Otherwise, it seems like we succeeded...
         else:
-            emit_signal("task_succeeded")
+            # Okay - if we couldn't pick up at least one item, we'll call that a
+            # soft fail.
+            if item_failed:
+                emit_signal("task_failed")
+            # Otherwise, we got everything we wanted. Yay! Hard success!
+            else:
+                emit_signal("task_succeeded")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
