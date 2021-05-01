@@ -48,6 +48,19 @@ A `String`, indicating the current *Goal* state (i.e. Idle, Wander, Flee, etc.).
 
 > There is another variable, \_machine\_configured. This is an internal variable that forces the machine to reconfigure itself. Do not mess with it.
 
+### Functions
+
+##### `move_items`
+This function orders the machine to grab a set of items and drop them at a specified position. The first argument should be an `Array` of item nodes. The second argument should be the `Vector3` position to drop them at.
+
+### Signals
+
+##### `move_task_assigned`
+This is a signal unique to the *Tasking Coward Machine*, since it was designed to accept input directly via code. The signal indicates the machine was ordered to move an item to a specified location. Should only really be used by one of the region sub-machines.
+
+##### `task_complete_echo`
+This signal fires when a task fails or succeeds. This is also unique to the *Tasking Coward Machine*, since a fully fledged machine should handle task completion internally.  
+
 ### State Composition
 The Machine is composed of three separate XSM machines that feed in to one another. The first is the *Physics Travel Region*, which captures the earlier *Kinematic Driver Machine* in miniature. It has the following nodes:
 

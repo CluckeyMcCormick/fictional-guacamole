@@ -22,13 +22,17 @@ signal action_failure(failure_code)
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # This functions effectively resets this action by simulating a state exit and
-# enter. Note that the provided arguments here are null.
-func simulated_reset():
+# enter. You can provide arguments for each call as needed. Note that this isn't
+# done for children - for this reason, child states are not recommended for
+# actions.
+func simulated_reset(before_arg=null, exit_arg=null, enter_arg=null, after_arg=null):
     # If this action is not active, don't do the reset. That could mess things
     # up. 
     if not self.active:
         return
     # Simulate an exit
-    self._on_exit(null)
+    self._before_exit(before_arg)
+    self._on_exit(exit_arg)
     # Simulate an enter
-    self._on_enter(null)
+    self._on_enter(enter_arg)
+    self._after_enter(after_arg)
