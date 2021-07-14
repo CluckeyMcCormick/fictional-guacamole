@@ -42,7 +42,6 @@ class_property_descriptions = {
 "group_name": "Godot group name for this entity."
 }
 meta_properties = {
-
 }
 node_options = "----------------------------------------------------------------"
 node_class = "Spatial"

@@ -47,7 +47,7 @@ const MAX_TOLERANCE_ITERATIONS = 5
 const ERROR_DETECTION_PRECISION = .01
 
 # How fast does our drive node move, horizontally? Units/second
-export(float) var move_speed = 10
+export(float) var fallback_move_speed = 10
 # How fast does the drive node fall, when it does fall?
 export(float) var fall_speed = 9.8
 # What's our tolerance for meeting our goal?

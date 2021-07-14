@@ -51,6 +51,8 @@ func _on_update(delta) -> void:
     var LIC = MR.level_interface_core_node
     # Did we get a collision result from our most recent move attempt?
     var collision = null
+    # What is our move speed?
+    var move_speed = KC.fallback_move_speed
     
     # If we don't have a target position...
     if PTR._target_position == null:
@@ -80,7 +82,7 @@ func _on_update(delta) -> void:
     # Now for something a bit more wacky - we don't want to overshoot our
     # target, so we'll fine-tune our values.
     # First, let's calculate how far we'll move on x and z in total.
-    var projected_travel = normal_dist.length() * KC.move_speed * delta
+    var projected_travel = normal_dist.length() * move_speed * delta
     
     # If we're projected to move straight past the goal...
     if projected_travel > distance_to.length():
@@ -88,12 +90,12 @@ func _on_update(delta) -> void:
         # movement is always multiplied by (move_speed * delta), we can
         # calculate the exact values we'll need for normal_dist by dividing
         # out that factor from the remaining distance.
-        normal_dist.x = distance_to.x / (KC.move_speed * delta)
-        normal_dist.z = distance_to.z / (KC.move_speed * delta)
+        normal_dist.x = distance_to.x / (move_speed * delta)
+        normal_dist.z = distance_to.z / (move_speed * delta)
         
     # Finally, set our final x & z values
-    var x = normal_dist.x * KC.move_speed
-    var z = normal_dist.z * KC.move_speed
+    var x = normal_dist.x * move_speed
+    var z = normal_dist.z * move_speed
     
     # Do the move!
     collision = target.move_and_collide(Vector3(x, 0, z) * delta)

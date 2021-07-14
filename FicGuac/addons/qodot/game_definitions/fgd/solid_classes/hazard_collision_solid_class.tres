@@ -11,13 +11,10 @@ description = "Hazard Brush - i.e. for pathing and detection"
 qodot_internal = false
 base_classes = [  ]
 class_properties = {
-
 }
 class_property_descriptions = {
-
 }
 meta_properties = {
-
 }
 node_options = "----------------------------------------------------------------"
 node_class = "StaticBody"

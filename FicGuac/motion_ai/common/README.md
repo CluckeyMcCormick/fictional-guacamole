@@ -45,8 +45,8 @@ The *KinematicCore* is the core *motion* component of *Motion AI*. It governs th
 
 ### Configurables
 
-##### Move Speed & Fall Speed
-Pretty basic - the *move speed* is how quick the KinematicBody moves, in units-per-second. The *fall speed* is how quick the KinematicBody falls when not on the floor, in units-per-second. 9.8 units/second, which is the sort of bog-standard for gravity, is the recommended fall speed.
+##### Fallback Move Speed & Fall Speed
+Pretty basic - the *fallback move speed* is how quick the KinematicBody moves, in units-per-second. This is a fallback since more complex move speed (i.e. influenced by status effects) is supposed to be provided by the CharacterCore. The *fall speed* is how quick the KinematicBody falls when not on the floor, in units-per-second. 9.8 units/second, which is the sort of bog-standard for gravity, is the recommended fall speed.
 
 ##### Goal Tolerance
 There might be instances where we don't want to stop exactly on the goal position. This configurable allows the body to stop when within a certain distance of the target, rather than being precisely at the target.
