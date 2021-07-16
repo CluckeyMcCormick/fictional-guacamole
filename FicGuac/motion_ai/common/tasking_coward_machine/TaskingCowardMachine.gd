@@ -30,6 +30,11 @@ export(NodePath) var item_management_core
 # We resolve the node path into this variable.
 var item_management_core_node
 
+# This Character Stats Core will help us handle our items.
+export(NodePath) var character_stats_core
+# We resolve the node path into this variable.
+var character_stats_core_node
+
 # How long do we idle for before we transition to the wandering state?
 export(float, 0.0, 6.0) var idle_wait_time = 1.0
 
@@ -100,6 +105,7 @@ func _force_configure():
     sensory_sort_core_node = get_node(sensory_sort_core)
     level_interface_core_node = get_node(level_interface_core)
     item_management_core_node = get_node(item_management_core)
+    character_stats_core_node = get_node(character_stats_core)
 
     # The target has to be a KinematicBody
     assert(typeof(integrating_body_node) == typeof(KinematicBody), "Integrating Body must be a KinematicBody node!")
@@ -111,6 +117,8 @@ func _force_configure():
     assert(level_interface_core_node != null, "A LevelInterfaceCore node is required!")
     # The Item Management Core ALSO needs to be here
     assert(item_management_core_node != null, "An ItemManagementCore node is required!")
+    # We would be ABSOLUTELY NOWHERE without the Character Stats Core!
+    assert(character_stats_core_node != null, "A CharacterStatsCore node is required!")
     
     # Machine is configured!
     _machine_configured = true

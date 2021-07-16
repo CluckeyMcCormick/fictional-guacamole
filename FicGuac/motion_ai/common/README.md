@@ -46,7 +46,7 @@ The *KinematicCore* is the core *motion* component of *Motion AI*. It governs th
 ### Configurables
 
 ##### Fallback Move Speed & Fall Speed
-Pretty basic - the *fallback move speed* is how quick the KinematicBody moves, in units-per-second. This is a fallback since more complex move speed (i.e. influenced by status effects) is supposed to be provided by the CharacterCore. The *fall speed* is how quick the KinematicBody falls when not on the floor, in units-per-second. 9.8 units/second, which is the sort of bog-standard for gravity, is the recommended fall speed.
+Pretty basic - the *fallback move speed* is how quick the KinematicBody moves, in units-per-second. This is a fallback since more complex move speed (i.e. influenced by status effects) is supposed to be provided by the *CharacterStatsCore*. The *fall speed* is how quick the KinematicBody falls when not on the floor, in units-per-second. 9.8 units/second, which is the sort of bog-standard for gravity, is the recommended fall speed.
 
 ##### Goal Tolerance
 There might be instances where we don't want to stop exactly on the goal position. This configurable allows the body to stop when within a certain distance of the target, rather than being precisely at the target.
@@ -172,3 +172,23 @@ Emitted when a body enters the *Primary Sensor Area*. Emits the detected body wi
 
 ##### `body_exited`
 Emitted when a body exits the *Primary Sensor Area*. Emits the detected body with it. Basically a wrapper for the same signal from the *Primary Sensor Area*.
+
+## CharacterStatsCore
+The *CharacterStatsCore* is the core *stats and status* component of *Motion AI*. It is the singular reference point for stats (i.e. movement speed) and status (i.e. health points).
+
+This core divides the stats into "base" stats - what the stats should be initially - and the "current" or "effective" stats.
+
+### Configurables
+##### Base Move Speed
+The base move speed for the *Motion AI*, in world-units/second. This is the default for the effective move speed, unless there is some sort of active status effect.
+
+##### Base HP
+The base hitpoints for the *Motion AI*. This currently acts as both the default amount of health and a cap. Note that this is an `int` value!
+
+
+### (Public) Variables
+##### `eff_move_speed`
+The current/effective move speed for the *Motion AI*, in world-units/second. This is 'effective' in the sense that it is the move speed after buffs and debuffs have been applied. This is the value that should be referenced for the purpose of movement.
+
+##### `curr_hp`
+The current hitpoints for the *Motion AI*. This is not modified by buffs or debuffs; it is just a measure of health. This can be modified directly but there will likely be a specific function for modification.

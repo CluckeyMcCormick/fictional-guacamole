@@ -45,8 +45,8 @@ func _on_enter(var arg) -> void:
     MR.physics_travel_key = "Walk"
     
 func _on_update(delta) -> void:
-    # Get our KinematicCore
-    var KC = MR.kinematic_core_node
+    # Get our CharacterStatsCore
+    var CSC = MR.character_stats_core_node
     # Get our LevelInterfaceCore
     var LIC = MR.level_interface_core_node
     # Get our current integrating body
@@ -54,7 +54,7 @@ func _on_update(delta) -> void:
     # Did we get a collision result from our most recent move attempt?
     var collision = null
     # What is our move speed?
-    var move_speed = KC.fallback_move_speed
+    var move_speed = CSC.eff_move_speed
     
     # If we don't have a target position...
     if PTR._target_position == null:
