@@ -35,3 +35,14 @@ Signal issued when this pawn is stuck and our other error resolution methods did
 
 ## RatPawn
 This is a *BasePawn* with the *RatEmulationMachine* integrated in. This is largely a testbed for that machine. It's a bit bare bones at the moment.
+
+## TaskingCowardPawn
+This is a *BasePawn* with the *TaskingCowardMachine* integrated in. This allows the Pawn to serve as a test-bed for any and all tasks.
+
+### Functions
+##### `give_task`
+Gives the Pawn a specific task to perform. Basically a wrapper function for the *TaskingCowardMachine*'s `give_task` function. The task should already be initialized using the `specific_initialize` function. The `template_initialize` function will be called by the Pawn/machine.
+
+### Signals
+##### `task_complete`
+Emitted when the assigned task is completed - either succeeded or failed. Allows us to react during testing.

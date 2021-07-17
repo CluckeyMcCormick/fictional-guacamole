@@ -1,9 +1,6 @@
 tool
 extends Node
 
-# Preload our item moving task so we can instance it on demand
-const MOVE_ITEMS_TASK_PRELOAD = preload("res://motion_ai/common/tasking/MoveItemDropMulti.tscn")
-
 # Every AI machine has an integrating body - the body that will be moved to and
 # from with this machine.
 export(NodePath) var integrating_body
@@ -132,17 +129,8 @@ func _force_configure():
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Order the machine to move an item to a specified position
-func move_items(items, final_pos):
-    var move_task = MOVE_ITEMS_TASK_PRELOAD.instance()
-    var arg_dict = {}
-    
-    # Create the arg_dict
-    arg_dict[move_task.AK_ITEMS_LIST] = items
-    arg_dict[move_task.AK_DROP_POSITION] = final_pos
-    # Initialize!!!
-    move_task.specific_initialize(arg_dict)
-    
-    emit_signal("task_assigned", move_task)
+func give_task(task):
+    emit_signal("task_assigned", task)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #

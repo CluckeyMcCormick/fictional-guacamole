@@ -1,5 +1,8 @@
 extends Spatial
 
+# Preload our item moving task so we can instance it on demand
+const MOVE_ITEMS_TASK_PRELOAD = preload("res://motion_ai/common/tasking/MoveItemDropMulti.tscn")
+
 func _ready():
     for item in $ItemManager.get_children():
         $GUI/ItemList.add_item(item.name)
@@ -38,8 +41,15 @@ func _on_StartButton_pressed():
         print("Invalid Item or Destination!")
         return
     
+    # Create the move task
+    var move_task = MOVE_ITEMS_TASK_PRELOAD.instance()
+    var arg_dict = {}
+    
+    # Create the arg_dict
+    arg_dict[move_task.AK_ITEMS_LIST] = [chosen_item]
+    arg_dict[move_task.AK_DROP_POSITION] = chosen_destination.global_transform.origin
+    # Initialize!!!
+    move_task.specific_initialize(arg_dict)
+    
     # Tell the Pawn to move it!
-    $TaskingCowardPawn.move_items(
-        [chosen_item],
-        chosen_destination.global_transform.origin
-    )
+    $TaskingCowardPawn.give_task(move_task)

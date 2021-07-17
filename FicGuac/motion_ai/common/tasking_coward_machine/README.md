@@ -56,8 +56,8 @@ A `String`, indicating the current *Goal* state (i.e. Idle, Wander, Flee, etc.).
 
 ### Functions
 
-##### `move_items`
-This function orders the machine to grab a set of items and drop them at a specified position. The first argument should be an `Array` of item nodes. The second argument should be the `Vector3` position to drop them at.
+##### `give_task`
+Gives the machine a specific task to perform. The task should already be initialized using the `specific_initialize` function. The `template_initialize` function will be called by the machine.
 
 ### Signals
 

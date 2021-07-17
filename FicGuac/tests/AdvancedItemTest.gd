@@ -1,5 +1,8 @@
 extends Spatial
 
+# Preload our item moving task so we can instance it on demand
+const MOVE_ITEMS_TASK_PRELOAD = preload("res://motion_ai/common/tasking/MoveItemDropMulti.tscn")
+
 # We actively spawn objects in for this test - what is the proper name and scene
 # instance for each?
 var scene_dictionary = {
@@ -71,11 +74,18 @@ func _on_StartButton_pressed():
     randomize()
     end_points.shuffle()
 
+    # Create the move task
+    var move_task = MOVE_ITEMS_TASK_PRELOAD.instance()
+    var arg_dict = {}
+    
+    # Create the arg_dict
+    arg_dict[move_task.AK_ITEMS_LIST] = item_array
+    arg_dict[move_task.AK_DROP_POSITION] = end_points[0].global_transform.origin
+    # Initialize!!!
+    move_task.specific_initialize(arg_dict)
+
     # Now, assign the pawn to move ALL those items
-    $TaskingCowardPawn.move_items(
-        item_array,
-        end_points[0].global_transform.origin
-    )
+    $TaskingCowardPawn.give_task(move_task)
 
 func _on_TaskingCowardPawn_task_complete():
     # Enable the Start Button

@@ -21,19 +21,19 @@ geometry/source_group_name = "navmesh"
 
 [sub_resource type="SpatialMaterial" id=2]
 
-[sub_resource type="SpatialMaterial" id=13]
+[sub_resource type="SpatialMaterial" id=3]
 albedo_texture = ExtResource( 16 )
 
-[sub_resource type="SpatialMaterial" id=14]
+[sub_resource type="SpatialMaterial" id=4]
 albedo_texture = ExtResource( 15 )
 
-[sub_resource type="SpatialMaterial" id=15]
+[sub_resource type="SpatialMaterial" id=5]
 albedo_texture = ExtResource( 7 )
 
-[sub_resource type="SpatialMaterial" id=16]
+[sub_resource type="SpatialMaterial" id=6]
 albedo_texture = ExtResource( 5 )
 
-[sub_resource type="ArrayMesh" id=17]
+[sub_resource type="ArrayMesh" id=7]
 surfaces/0 = {
 "aabb": AABB( -12, -1, -12, 24, 1.00001, 24 ),
 "array_data": PoolByteArray( 0, 0, 64, 193, 0, 0, 0, 0, 0, 0, 64, 193, 0, 0, 129, 0, 127, 0, 0, 129, 0, 180, 0, 52, 0, 0, 64, 193, 0, 0, 128, 191, 0, 0, 64, 193, 0, 0, 129, 0, 127, 0, 0, 129, 0, 180, 0, 53, 0, 0, 64, 65, 0, 0, 128, 191, 0, 0, 64, 193, 0, 0, 129, 0, 127, 0, 0, 129, 0, 61, 0, 53, 0, 0, 64, 65, 0, 0, 0, 0, 0, 0, 64, 193, 0, 0, 129, 0, 127, 0, 0, 129, 0, 61, 0, 52, 0, 0, 64, 193, 0, 0, 0, 0, 0, 0, 64, 193, 129, 0, 0, 0, 0, 0, 127, 127, 0, 180, 0, 52, 0, 0, 64, 193, 0, 0, 0, 0, 0, 0, 64, 65, 129, 0, 0, 0, 0, 0, 127, 127, 0, 61, 0, 52, 0, 0, 64, 193, 0, 0, 128, 191, 0, 0, 64, 65, 129, 0, 0, 0, 0, 0, 127, 127, 0, 61, 0, 53, 0, 0, 64, 193, 0, 0, 128, 191, 0, 0, 64, 193, 129, 0, 0, 0, 0, 0, 127, 127, 0, 180, 0, 53, 0, 0, 64, 65, 0, 0, 128, 191, 0, 0, 64, 193, 0, 129, 0, 0, 0, 0, 127, 129, 0, 180, 0, 180, 0, 0, 64, 193, 0, 0, 128, 191, 0, 0, 64, 193, 0, 129, 0, 0, 0, 0, 127, 129, 0, 180, 0, 61, 0, 0, 64, 193, 0, 0, 128, 191, 0, 0, 64, 65, 0, 129, 0, 0, 0, 0, 127, 129, 0, 61, 0, 61, 0, 0, 64, 65, 0, 0, 128, 191, 0, 0, 64, 65, 0, 129, 0, 0, 0, 0, 127, 129, 0, 61, 0, 180, 0, 0, 64, 65, 0, 0, 0, 0, 0, 0, 64, 193, 0, 127, 0, 0, 0, 0, 127, 127, 0, 180, 0, 180, 0, 0, 64, 65, 0, 0, 0, 0, 0, 0, 64, 65, 0, 127, 0, 0, 0, 0, 127, 127, 0, 61, 0, 180, 0, 0, 64, 193, 0, 0, 0, 0, 0, 0, 64, 65, 0, 127, 0, 0, 0, 0, 127, 127, 0, 61, 0, 61, 0, 0, 64, 193, 0, 0, 0, 0, 0, 0, 64, 193, 0, 127, 0, 0, 0, 0, 127, 127, 0, 180, 0, 61, 0, 0, 64, 65, 0, 0, 0, 0, 0, 0, 64, 193, 127, 0, 0, 0, 0, 0, 127, 129, 0, 180, 0, 52, 0, 0, 64, 65, 0, 0, 128, 191, 0, 0, 64, 193, 127, 0, 0, 0, 0, 0, 127, 129, 0, 180, 0, 53, 0, 0, 64, 65, 0, 0, 128, 191, 0, 0, 64, 65, 127, 0, 0, 0, 0, 0, 127, 129, 0, 61, 0, 53, 0, 0, 64, 65, 0, 0, 0, 0, 0, 0, 64, 65, 127, 0, 0, 0, 0, 0, 127, 129, 0, 61, 0, 52, 0, 0, 64, 193, 0, 0, 0, 0, 0, 0, 64, 65, 0, 0, 127, 0, 127, 0, 0, 127, 0, 180, 0, 52, 0, 0, 64, 65, 0, 0, 0, 0, 0, 0, 64, 65, 0, 0, 127, 0, 127, 0, 0, 127, 0, 61, 0, 52, 0, 0, 64, 65, 0, 0, 128, 191, 0, 0, 64, 65, 0, 0, 127, 0, 127, 0, 0, 127, 0, 61, 0, 53, 0, 0, 64, 193, 0, 0, 128, 191, 0, 0, 64, 65, 0, 0, 127, 0, 127, 0, 0, 127, 0, 180, 0, 53 ),
@@ -41,7 +41,7 @@ surfaces/0 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 36,
-"material": SubResource( 13 ),
+"material": SubResource( 3 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 24
@@ -53,7 +53,7 @@ surfaces/1 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 24,
-"material": SubResource( 14 ),
+"material": SubResource( 4 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 16
@@ -65,7 +65,7 @@ surfaces/2 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 360,
-"material": SubResource( 15 ),
+"material": SubResource( 5 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 240
@@ -77,115 +77,115 @@ surfaces/3 = {
 "blend_shape_data": [  ],
 "format": 97559,
 "index_count": 72,
-"material": SubResource( 16 ),
+"material": SubResource( 6 ),
 "primitive": 4,
 "skeleton_aabb": [  ],
 "vertex_count": 48
 }
 
-[sub_resource type="ConvexPolygonShape" id=18]
+[sub_resource type="ConvexPolygonShape" id=8]
 points = PoolVector3Array( -12, 0, -12, -12, -1, -12, 12, -1, -12, 12, 0, -12, -12, 0, 12, -12, -1, 12, 12, -1, 12, 12, 0, 12 )
 
-[sub_resource type="ConvexPolygonShape" id=19]
+[sub_resource type="ConvexPolygonShape" id=9]
 points = PoolVector3Array( -13, 11, -13, -13, 10, -13, 13, 10, -13, 13, 11, -13, -13, 11, 13, -13, 10, 13, 13, 10, 13, 13, 11, 13 )
 
-[sub_resource type="ConvexPolygonShape" id=20]
+[sub_resource type="ConvexPolygonShape" id=10]
 points = PoolVector3Array( -13, 10, -12, -13, -1, -12, -12, -1, -12, -12, 10, -12, -13, 10, 12, -13, -1, 12, -12, -1, 12, -12, 10, 12 )
 
-[sub_resource type="ConvexPolygonShape" id=21]
+[sub_resource type="ConvexPolygonShape" id=11]
 points = PoolVector3Array( -12, 10, -13, -12, -1, -13, 12, -1, -13, 12, 10, -13, -12, 10, -12, -12, -1, -12, 12, -1, -12, 12, 10, -12 )
 
-[sub_resource type="ConvexPolygonShape" id=22]
+[sub_resource type="ConvexPolygonShape" id=12]
 points = PoolVector3Array( 12, 10, -12, 12, -1, -12, 13, -1, -12, 13, 10, -12, 12, 10, 12, 12, -1, 12, 13, -1, 12, 13, 10, 12 )
 
-[sub_resource type="ConvexPolygonShape" id=23]
+[sub_resource type="ConvexPolygonShape" id=13]
 points = PoolVector3Array( -12, 10, 12, -12, -1, 12, 12, -1, 12, 12, 10, 12, -12, 10, 13, -12, -1, 13, 12, -1, 13, 12, 10, 13 )
 
-[sub_resource type="ConvexPolygonShape" id=24]
+[sub_resource type="ConvexPolygonShape" id=14]
 points = PoolVector3Array( -12, 0.5, 5.5, -12, 0, 5.5, -10, 0, 5.5, -10, 0.5, 5.5, -12, 0.5, 6, -12, 0, 6, -10, 0, 6, -10, 0.5, 6 )
 
-[sub_resource type="ConvexPolygonShape" id=25]
+[sub_resource type="ConvexPolygonShape" id=15]
 points = PoolVector3Array( -10.5, 0.5, 4, -10.5, 0, 4, -10, 0, 4, -10, 0.5, 4, -10.5, 0.5, 5.5, -10.5, 0, 5.5, -10, 0, 5.5, -10, 0.5, 5.5 )
 
-[sub_resource type="ConvexPolygonShape" id=26]
+[sub_resource type="ConvexPolygonShape" id=16]
 points = PoolVector3Array( -12, 0.5, 3.5, -12, 0, 3.5, -10, 0, 3.5, -10, 0.5, 3.5, -12, 0.5, 4, -12, 0, 4, -10, 0, 4, -10, 0.5, 4 )
 
-[sub_resource type="ConvexPolygonShape" id=27]
+[sub_resource type="ConvexPolygonShape" id=17]
 points = PoolVector3Array( -12, 0.5, 2, -12, 0, 2, -9.5, 0, 2, -9.5, 0.5, 2, -12, 0.5, 2.5, -12, 0, 2.5, -9.5, 0, 2.5, -9.5, 0.5, 2.5 )
 
-[sub_resource type="ConvexPolygonShape" id=28]
+[sub_resource type="ConvexPolygonShape" id=18]
 points = PoolVector3Array( -10, 0.5, -0.5, -10, 0, -0.5, -9.5, 0, -0.5, -9.5, 0.5, -0.5, -10, 0.5, 2, -10, 0, 2, -9.5, 0, 2, -9.5, 0.5, 2 )
 
-[sub_resource type="ConvexPolygonShape" id=29]
+[sub_resource type="ConvexPolygonShape" id=19]
 points = PoolVector3Array( -12, 0.5, -0.5, -12, 0, -0.5, -10, 0, -0.5, -10, 0.5, -0.5, -12, 0.5, 0, -12, 0, 0, -10, 0, 0, -10, 0.5, 0 )
 
-[sub_resource type="ConvexPolygonShape" id=30]
+[sub_resource type="ConvexPolygonShape" id=20]
 points = PoolVector3Array( -12, 0.5, -2, -12, 0, -2, -9, 0, -2, -9, 0.5, -2, -12, 0.5, -1.5, -12, 0, -1.5, -9, 0, -1.5, -9, 0.5, -1.5 )
 
-[sub_resource type="ConvexPolygonShape" id=31]
+[sub_resource type="ConvexPolygonShape" id=21]
 points = PoolVector3Array( -9.5, 0.5, -4.5, -9.5, 0, -4.5, -9, 0, -4.5, -9, 0.5, -4.5, -9.5, 0.5, -2, -9.5, 0, -2, -9, 0, -2, -9, 0.5, -2 )
 
-[sub_resource type="ConvexPolygonShape" id=32]
+[sub_resource type="ConvexPolygonShape" id=22]
 points = PoolVector3Array( -12, 0.5, -5, -12, 0, -5, -9, 0, -5, -9, 0.5, -5, -12, 0.5, -4.5, -12, 0, -4.5, -9, 0, -4.5, -9, 0.5, -4.5 )
 
-[sub_resource type="ConvexPolygonShape" id=33]
+[sub_resource type="ConvexPolygonShape" id=23]
 points = PoolVector3Array( -12, 1.5, 5.5, -12, 0.5, 5.5, -10, 0.5, 5.5, -10, 1.5, 5.5, -12, 1.5, 6, -12, 0.5, 6, -10, 0.5, 6, -10, 1.5, 6 )
 
-[sub_resource type="ConvexPolygonShape" id=34]
+[sub_resource type="ConvexPolygonShape" id=24]
 points = PoolVector3Array( -12, 1.5, 3.5, -12, 0.5, 3.5, -10, 0.5, 3.5, -10, 1.5, 3.5, -12, 1.5, 4, -12, 0.5, 4, -10, 0.5, 4, -10, 1.5, 4 )
 
-[sub_resource type="ConvexPolygonShape" id=35]
+[sub_resource type="ConvexPolygonShape" id=25]
 points = PoolVector3Array( -10.5, 1.5, 4, -10.5, 0.5, 4, -10, 0.5, 4, -10, 1.5, 4, -10.5, 1.5, 5.5, -10.5, 0.5, 5.5, -10, 0.5, 5.5, -10, 1.5, 5.5 )
 
-[sub_resource type="ConvexPolygonShape" id=36]
+[sub_resource type="ConvexPolygonShape" id=26]
 points = PoolVector3Array( -12, 2, 3.5, -12, 1.5, 3.5, -10, 1.5, 3.5, -10, 2, 3.5, -12, 2, 6, -12, 1.5, 6, -10, 1.5, 6, -10, 2, 6 )
 
-[sub_resource type="ConvexPolygonShape" id=37]
+[sub_resource type="ConvexPolygonShape" id=27]
 points = PoolVector3Array( -12, 2, 2, -12, 0.5, 2, -9.5, 0.5, 2, -9.5, 2, 2, -12, 2, 2.5, -12, 0.5, 2.5, -9.5, 0.5, 2.5, -9.5, 2, 2.5 )
 
-[sub_resource type="ConvexPolygonShape" id=38]
+[sub_resource type="ConvexPolygonShape" id=28]
 points = PoolVector3Array( -12, 2, -0.5, -12, 0.5, -0.5, -9.5, 0.5, -0.5, -9.5, 2, -0.5, -12, 2, 0, -12, 0.5, 0, -9.5, 0.5, 0, -9.5, 2, 0 )
 
-[sub_resource type="ConvexPolygonShape" id=39]
+[sub_resource type="ConvexPolygonShape" id=29]
 points = PoolVector3Array( -10, 2, 0, -10, 0.5, 0, -9.5, 0.5, 0, -9.5, 2, 0, -10, 2, 2, -10, 0.5, 2, -9.5, 0.5, 2, -9.5, 2, 2 )
 
-[sub_resource type="ConvexPolygonShape" id=40]
+[sub_resource type="ConvexPolygonShape" id=30]
 points = PoolVector3Array( -12, 2.5, -0.5, -12, 2, -0.5, -9.5, 2, -0.5, -9.5, 2.5, -0.5, -12, 2.5, 2.5, -12, 2, 2.5, -9.5, 2, 2.5, -9.5, 2.5, 2.5 )
 
-[sub_resource type="ConvexPolygonShape" id=41]
+[sub_resource type="ConvexPolygonShape" id=31]
 points = PoolVector3Array( -12, 2.5, -2, -12, 0.5, -2, -9, 0.5, -2, -9, 2.5, -2, -12, 2.5, -1.5, -12, 0.5, -1.5, -9, 0.5, -1.5, -9, 2.5, -1.5 )
 
-[sub_resource type="ConvexPolygonShape" id=42]
+[sub_resource type="ConvexPolygonShape" id=32]
 points = PoolVector3Array( -12, 2.5, -5, -12, 0.5, -5, -9, 0.5, -5, -9, 2.5, -5, -12, 2.5, -4.5, -12, 0.5, -4.5, -9, 0.5, -4.5, -9, 2.5, -4.5 )
 
-[sub_resource type="ConvexPolygonShape" id=43]
+[sub_resource type="ConvexPolygonShape" id=33]
 points = PoolVector3Array( -9.5, 2.5, -4.5, -9.5, 0.5, -4.5, -9, 0.5, -4.5, -9, 2.5, -4.5, -9.5, 2.5, -2, -9.5, 0.5, -2, -9, 0.5, -2, -9, 2.5, -2 )
 
-[sub_resource type="ConvexPolygonShape" id=44]
+[sub_resource type="ConvexPolygonShape" id=34]
 points = PoolVector3Array( -12, 3, -5, -12, 2.5, -5, -9, 2.5, -5, -9, 3, -5, -12, 3, -1.5, -12, 2.5, -1.5, -9, 2.5, -1.5, -9, 3, -1.5 )
 
-[sub_resource type="ConvexPolygonShape" id=45]
+[sub_resource type="ConvexPolygonShape" id=35]
 points = PoolVector3Array( 8, 1, 2, 8, 0, 2, 10, 0, 2, 10, 1, 2, 8, 1, 2.5, 8, 0, 2.5, 10, 0, 2.5, 10, 1, 2.5 )
 
-[sub_resource type="ConvexPolygonShape" id=46]
+[sub_resource type="ConvexPolygonShape" id=36]
 points = PoolVector3Array( 8, 1, -2, 8, 0, -2, 12, 0, -2, 12, 1, -2, 8, 1, -1.5, 8, 0, -1.5, 12, 0, -1.5, 12, 1, -1.5 )
 
-[sub_resource type="ConvexPolygonShape" id=47]
+[sub_resource type="ConvexPolygonShape" id=37]
 points = PoolVector3Array( 7.5, 1, -2, 7.5, 0, -2, 8, 0, -2, 8, 1, -2, 7.5, 1, 2.5, 7.5, 0, 2.5, 8, 0, 2.5, 8, 1, 2.5 )
 
-[sub_resource type="ConvexPolygonShape" id=48]
+[sub_resource type="ConvexPolygonShape" id=38]
 points = PoolVector3Array( 8, 3, 2, 8, 1, 2, 10, 1, 2, 10, 3, 2, 8, 3, 2.5, 8, 1, 2.5, 10, 1, 2.5, 10, 3, 2.5 )
 
-[sub_resource type="ConvexPolygonShape" id=49]
+[sub_resource type="ConvexPolygonShape" id=39]
 points = PoolVector3Array( 8, 3, -2, 8, 1, -2, 12, 1, -2, 12, 3, -2, 8, 3, -1.5, 8, 1, -1.5, 12, 1, -1.5, 12, 3, -1.5 )
 
-[sub_resource type="ConvexPolygonShape" id=50]
+[sub_resource type="ConvexPolygonShape" id=40]
 points = PoolVector3Array( 7.5, 3, -2, 7.5, 1, -2, 8, 1, -2, 8, 3, -2, 7.5, 3, 2.5, 7.5, 1, 2.5, 8, 1, 2.5, 8, 3, 2.5 )
 
-[sub_resource type="ConvexPolygonShape" id=51]
+[sub_resource type="ConvexPolygonShape" id=41]
 points = PoolVector3Array( 7.5, 3.5, -2, 7.5, 3, -2, 12, 3, -2, 12, 3.5, -2, 7.5, 3.5, 2.5, 7.5, 3, 2.5, 12, 3, 2.5, 12, 3.5, 2.5 )
 
-[sub_resource type="GDScript" id=12]
+[sub_resource type="GDScript" id=42]
 script/source = "class_name PatrolBreadcrumb
 extends Spatial
 tool
@@ -244,119 +244,119 @@ set_owner_batch_size = 16
 
 [node name="entity_0_mesh_instance" type="MeshInstance" parent="QodotMap/entity_0_worldspawn"]
 use_in_baked_light = true
-mesh = SubResource( 17 )
+mesh = SubResource( 7 )
 material/0 = null
 material/1 = null
 material/2 = null
 material/3 = null
 
 [node name="entity_0_brush_0_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 18 )
+shape = SubResource( 8 )
 
 [node name="entity_0_brush_1_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 19 )
+shape = SubResource( 9 )
 
 [node name="entity_0_brush_2_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 20 )
+shape = SubResource( 10 )
 
 [node name="entity_0_brush_3_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 21 )
+shape = SubResource( 11 )
 
 [node name="entity_0_brush_4_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 22 )
+shape = SubResource( 12 )
 
 [node name="entity_0_brush_5_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 23 )
+shape = SubResource( 13 )
 
 [node name="entity_0_brush_6_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 24 )
+shape = SubResource( 14 )
 
 [node name="entity_0_brush_7_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 25 )
+shape = SubResource( 15 )
 
 [node name="entity_0_brush_8_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 26 )
+shape = SubResource( 16 )
 
 [node name="entity_0_brush_9_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 27 )
+shape = SubResource( 17 )
 
 [node name="entity_0_brush_10_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 28 )
+shape = SubResource( 18 )
 
 [node name="entity_0_brush_11_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 29 )
+shape = SubResource( 19 )
 
 [node name="entity_0_brush_12_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 30 )
+shape = SubResource( 20 )
 
 [node name="entity_0_brush_13_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 31 )
+shape = SubResource( 21 )
 
 [node name="entity_0_brush_14_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 32 )
+shape = SubResource( 22 )
 
 [node name="entity_0_brush_15_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 33 )
+shape = SubResource( 23 )
 
 [node name="entity_0_brush_16_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 34 )
+shape = SubResource( 24 )
 
 [node name="entity_0_brush_17_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 35 )
+shape = SubResource( 25 )
 
 [node name="entity_0_brush_18_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 36 )
+shape = SubResource( 26 )
 
 [node name="entity_0_brush_19_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 37 )
+shape = SubResource( 27 )
 
 [node name="entity_0_brush_20_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 38 )
+shape = SubResource( 28 )
 
 [node name="entity_0_brush_21_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 39 )
+shape = SubResource( 29 )
 
 [node name="entity_0_brush_22_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 40 )
+shape = SubResource( 30 )
 
 [node name="entity_0_brush_23_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 41 )
+shape = SubResource( 31 )
 
 [node name="entity_0_brush_24_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 42 )
+shape = SubResource( 32 )
 
 [node name="entity_0_brush_25_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 43 )
+shape = SubResource( 33 )
 
 [node name="entity_0_brush_26_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 44 )
+shape = SubResource( 34 )
 
 [node name="entity_0_brush_27_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 45 )
+shape = SubResource( 35 )
 
 [node name="entity_0_brush_28_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 46 )
+shape = SubResource( 36 )
 
 [node name="entity_0_brush_29_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 47 )
+shape = SubResource( 37 )
 
 [node name="entity_0_brush_30_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 48 )
+shape = SubResource( 38 )
 
 [node name="entity_0_brush_31_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 49 )
+shape = SubResource( 39 )
 
 [node name="entity_0_brush_32_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 50 )
+shape = SubResource( 40 )
 
 [node name="entity_0_brush_33_collision_shape" type="CollisionShape" parent="QodotMap/entity_0_worldspawn"]
-shape = SubResource( 51 )
+shape = SubResource( 41 )
 
 [node name="entity_1_ai_breadcrumb" type="Spatial" parent="QodotMap" groups=[
 "point_cardinal",
 ]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.25, 8 )
-script = SubResource( 12 )
+script = SubResource( 42 )
 properties = {
 "classname": "ai_breadcrumb",
 "group_name": "point_cardinal",
@@ -367,7 +367,7 @@ properties = {
 "point_cardinal",
 ]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0.25, 8 )
-script = SubResource( 12 )
+script = SubResource( 42 )
 properties = {
 "classname": "ai_breadcrumb",
 "group_name": "point_cardinal",
@@ -378,7 +378,7 @@ properties = {
 "point_cardinal",
 ]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -8, 0.25, -8 )
-script = SubResource( 12 )
+script = SubResource( 42 )
 properties = {
 "classname": "ai_breadcrumb",
 "group_name": "point_cardinal",
@@ -389,7 +389,7 @@ properties = {
 "point_cardinal",
 ]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8, 0.25, -8 )
-script = SubResource( 12 )
+script = SubResource( 42 )
 properties = {
 "classname": "ai_breadcrumb",
 "group_name": "point_cardinal",
@@ -400,7 +400,7 @@ properties = {
 "cage_spawn",
 ]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11.25, 0.25, 4.75 )
-script = SubResource( 12 )
+script = SubResource( 42 )
 properties = {
 "classname": "ai_breadcrumb",
 "group_name": "cage_spawn",
@@ -411,7 +411,7 @@ properties = {
 "cage_spawn",
 ]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -11, 0.25, 1 )
-script = SubResource( 12 )
+script = SubResource( 42 )
 properties = {
 "classname": "ai_breadcrumb",
 "group_name": "cage_spawn",
@@ -422,7 +422,7 @@ properties = {
 "cage_spawn",
 ]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -10.75, 0.25, -3.25 )
-script = SubResource( 12 )
+script = SubResource( 42 )
 properties = {
 "classname": "ai_breadcrumb",
 "group_name": "cage_spawn",
@@ -433,7 +433,7 @@ properties = {
 "suggest_spawn",
 ]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 8.25, 0.25, -1.25 )
-script = SubResource( 12 )
+script = SubResource( 42 )
 properties = {
 "classname": "ai_breadcrumb",
 "group_name": "suggest_spawn",
@@ -444,7 +444,7 @@ properties = {
 "suggest_spawn",
 ]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2.25, 0.25, 8.25 )
-script = SubResource( 12 )
+script = SubResource( 42 )
 properties = {
 "classname": "ai_breadcrumb",
 "group_name": "suggest_spawn",
@@ -455,7 +455,7 @@ properties = {
 "suggest_spawn",
 ]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.75, 0.25, -0.25 )
-script = SubResource( 12 )
+script = SubResource( 42 )
 properties = {
 "classname": "ai_breadcrumb",
 "group_name": "suggest_spawn",
@@ -466,7 +466,7 @@ properties = {
 "suggest_spawn",
 ]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.25, 0.25, -2.75 )
-script = SubResource( 12 )
+script = SubResource( 42 )
 properties = {
 "classname": "ai_breadcrumb",
 "group_name": "suggest_spawn",
@@ -477,7 +477,7 @@ properties = {
 "suggest_spawn",
 ]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.25, 0.25, -9.25 )
-script = SubResource( 12 )
+script = SubResource( 42 )
 properties = {
 "classname": "ai_breadcrumb",
 "group_name": "suggest_spawn",
@@ -488,7 +488,7 @@ properties = {
 "suggest_spawn",
 ]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -3.25, 0.25, 6.75 )
-script = SubResource( 12 )
+script = SubResource( 42 )
 properties = {
 "classname": "ai_breadcrumb",
 "group_name": "suggest_spawn",
@@ -499,7 +499,7 @@ properties = {
 "suggest_spawn",
 ]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 3.25, 0.25, -7.75 )
-script = SubResource( 12 )
+script = SubResource( 42 )
 properties = {
 "classname": "ai_breadcrumb",
 "group_name": "suggest_spawn",
@@ -516,8 +516,6 @@ camera_size = 15
 max_camera_size = 15
 min_camera_size = 10
 zoom_step = 5
-move_enabled = true
-zoom_enabled = true
 move_clamping_extents = Vector2( 8, 8 )
 
 [node name="ItemManager" type="Spatial" parent="."]
@@ -559,5 +557,6 @@ margin_top = 31.0
 margin_right = 130.0
 margin_bottom = 51.0
 text = "Start!"
+
 [connection signal="task_complete" from="TaskingCowardPawn" to="." method="_on_TaskingCowardPawn_task_complete"]
 [connection signal="pressed" from="GUI/StartButton" to="." method="_on_StartButton_pressed"]
