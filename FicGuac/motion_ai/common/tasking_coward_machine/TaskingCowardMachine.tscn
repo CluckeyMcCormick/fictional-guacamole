@@ -7,7 +7,7 @@
 [ext_resource path="res://motion_ai/common/tasking_coward_machine/TCM_PTR_Walk.gd" type="Script" id=5]
 [ext_resource path="res://motion_ai/common/tasking_coward_machine/TaskingCowardMachine.gd" type="Script" id=6]
 [ext_resource path="res://motion_ai/common/tasking_coward_machine/TCM_PhysicsTravelRegion.gd" type="Script" id=7]
-[ext_resource path="res://motion_ai/common/tasking_coward_machine/TCM_GR_MoveTasked.gd" type="Script" id=8]
+[ext_resource path="res://motion_ai/common/tasking_coward_machine/TCM_GR_GenericTasked.gd" type="Script" id=8]
 [ext_resource path="res://motion_ai/common/tasking_coward_machine/TCM_PTR_Idle.gd" type="Script" id=9]
 [ext_resource path="res://motion_ai/common/tasking_coward_machine/TCM_PTR_OnGround.gd" type="Script" id=10]
 [ext_resource path="res://motion_ai/common/tasking_coward_machine/TCM_TaskManagerRegion.gd" type="Script" id=11]
@@ -25,7 +25,7 @@ script = ExtResource( 3 )
 fsm_owner = null
 animation_player = null
 
-[node name="MoveTasked" type="Node" parent="GoalRegion"]
+[node name="GenericTasked" type="Node" parent="GoalRegion"]
 script = ExtResource( 8 )
 fsm_owner = null
 animation_player = null

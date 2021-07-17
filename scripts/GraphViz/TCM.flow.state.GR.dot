@@ -9,7 +9,7 @@ digraph G {
 
     // Declare our nodes ahead of time
     GR_IDLE [label = "Idle"];
-    GR_TASKED [label = "MoveTasked"];
+    GR_TASKED [label = "GenericTasked"];
     GR_FLEE [label = "Flee"];
 
     // Idle to Wander Edge

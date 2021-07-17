@@ -12,14 +12,6 @@ onready var PTR = get_node("../../PhysicsTravelRegion")
 # We also need to communicate with the Task Manager Region
 onready var TMR = get_node("../../TaskManagerRegion")
 
-# Preload our item moving task so we can instance it on demand
-var MOVE_ITEMS_TASK_PRELOAD = preload("res://motion_ai/common/tasking/MoveItemDropMulti.tscn")
-
-# The items we're trying to pick up
-var items
-# The position we're trying to move to
-var final_pos
-
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Extended State Machine Functions
@@ -31,7 +23,7 @@ func _on_enter(var arg) -> void:
     if not MR._machine_configured:
         MR._force_configure()
     
-# Get our SensorySortCore
+    # Get our SensorySortCore
     var SSC = MR.sensory_sort_core_node
     
     # Set the goal key
@@ -45,12 +37,11 @@ func _on_enter(var arg) -> void:
     TMR.connect("current_task_succeeded", self, "_on_tmr_current_task_succeeded")
     TMR.connect("current_task_failed", self, "_on_tmr_current_task_failed")
     
-    # Instance out a new wander task.
-    var new_move_item = MOVE_ITEMS_TASK_PRELOAD.instance()
-    # Initialize!
-    new_move_item.initialize(MR, PTR, MR.integrating_body_node, items, final_pos)
+    # Our argument is a task that has already been specifically initialized; it
+    # now just needs to be task initialized. DO SO!
+    arg.template_initialize(MR, PTR, MR.integrating_body_node)
     # Add the task to the task manager
-    TMR.set_new_task(new_move_item)
+    TMR.set_new_task(arg)
 
 func _on_exit(var arg) -> void:
     # Get our SensorySortCore
@@ -63,12 +54,6 @@ func _on_exit(var arg) -> void:
     # Disconnect the TaskManagerRegion functions
     TMR.disconnect("current_task_succeeded", self, "_on_tmr_current_task_succeeded")
     TMR.disconnect("current_task_failed", self, "_on_tmr_current_task_failed")
-  
-    # Clear the target items
-    items = null
-    
-    # Clear the final position
-    final_pos = null
 
     # Remove the current task - just in case!
     TMR.remove_current_task()
@@ -109,13 +94,13 @@ func _on_sensory_sort_core_body_exited(body, priority_area, group_category):
 
 # If the current task succeeds...
 func _on_tmr_current_task_succeeded(task):
-    print("Move task SUCCEEDED!")
+    print("Task SUCCEEDED!")
     # We succeeded! Hooray! Back to idle.
     change_state("Idle")
     
 # If the current task fails...
 func _on_tmr_current_task_failed(task):
-    print("Move task FAILED!")
+    print("Task FAILED!")
     # We failed? Oh well. Back to idle.
     change_state("Idle")
 

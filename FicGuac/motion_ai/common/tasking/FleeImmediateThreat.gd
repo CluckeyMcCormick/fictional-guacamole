@@ -1,16 +1,17 @@
 extends "res://motion_ai/common/tasking/core/TaskTemplate.gd"
 
+# ArgKey - The distance we'll attempt to move in one direction before
+# reevaluating. Float or int acceptable.
+const AK_FLEE_DISTANCE = "flee_distance"
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Utility Functions
+# Task Functions
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-func initialize(machine_root, physics_travel_region, target_body, flee_distance):
-    # Initialize the template's variables
-    _template_initialize(machine_root, physics_travel_region, target_body)
-    
+func specific_initialize(arg_dict):
     # Pass down the flee_distance
-    $FleeAllBody.flee_distance = flee_distance
+    $FleeAllBody.flee_distance = arg_dict[AK_FLEE_DISTANCE]
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #

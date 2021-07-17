@@ -1,6 +1,9 @@
 tool
 extends Node
 
+# Preload our item moving task so we can instance it on demand
+const MOVE_ITEMS_TASK_PRELOAD = preload("res://motion_ai/common/tasking/MoveItemDropMulti.tscn")
+
 # Every AI machine has an integrating body - the body that will be moved to and
 # from with this machine.
 export(NodePath) var integrating_body
@@ -69,10 +72,10 @@ var goal_key = ""
 var _machine_configured = false
 
 # This is a signal unique to the TaskingCowardMachine, since it was designed to
-# accept input directly via code. The signal indicates the machine was ordered
-# to move an item to a specified location. Should only really be used by one of
-# the regions sub-machines.
-signal move_task_assigned(item, final_pos)
+# accept input directly via code. The signal indicates the machine has been
+# given a specific task to perform. Should only really be used (received) by one
+# of the region's sub-machines.
+signal task_assigned(task)
 
 # This signal fires when a task fails or succeeds. This is also unique to the
 # TaskingCowardMachine, since a fully fledged instance a machine should handle
@@ -130,7 +133,16 @@ func _force_configure():
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 # Order the machine to move an item to a specified position
 func move_items(items, final_pos):
-    emit_signal("move_task_assigned", items, final_pos)
+    var move_task = MOVE_ITEMS_TASK_PRELOAD.instance()
+    var arg_dict = {}
+    
+    # Create the arg_dict
+    arg_dict[move_task.AK_ITEMS_LIST] = items
+    arg_dict[move_task.AK_DROP_POSITION] = final_pos
+    # Initialize!!!
+    move_task.specific_initialize(arg_dict)
+    
+    emit_signal("task_assigned", move_task)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #

@@ -47,12 +47,16 @@ func _on_enter(var arg) -> void:
     TMR.connect("current_task_failed", self, "_on_tmr_current_task_failed")
     
     # Connect to the Machine Root's "Task Assigned" function
-    MR.connect("move_task_assigned", self, "_on_move_task_assigned")
+    MR.connect("task_assigned", self, "_on_task_assigned")
     
     # Instance out a new wander task.
     var new_wander = WANDER_TASK_PRELOAD.instance()
+    # Create the argument dict
+    var argdict = {
+        new_wander.AK_WANDER_DISTANCE: MR.wander_distance
+    }
     # Initialize!
-    new_wander.initialize(MR, PTR, MR.integrating_body_node, MR.wander_distance)
+    new_wander.initialize(MR, PTR, MR.integrating_body_node, argdict)
     # Add the task to the task manager
     TMR.set_new_task(new_wander)
 
@@ -62,8 +66,12 @@ func _on_timeout(name) -> void:
         IDLE_TIMER_NAME:
             # Instance out a new wander task.
             var new_wander = WANDER_TASK_PRELOAD.instance()
+            # Create the argument dict
+            var argdict = {
+                new_wander.AK_WANDER_DISTANCE: MR.wander_distance
+            }
             # Initialize!
-            new_wander.initialize(MR, PTR, MR.integrating_body_node, MR.wander_distance)
+            new_wander.initialize(MR, PTR, MR.integrating_body_node, argdict)
             # Add the task to the task manager
             TMR.set_new_task(new_wander)
 
@@ -80,7 +88,7 @@ func _on_exit(var arg) -> void:
     TMR.disconnect("current_task_failed", self, "_on_tmr_current_task_failed")
   
     # Disconnect to the Machine Root's "Task Assigned" function
-    MR.disconnect("move_task_assigned", self, "_on_move_task_assigned")
+    MR.disconnect("task_assigned", self, "_on_task_assigned")
 
     # Remove the current task - just in case!
     TMR.remove_current_task()
@@ -143,10 +151,6 @@ func _on_tmr_current_task_failed(task):
     # into the task manager
     self.add_timer(IDLE_TIMER_NAME, MR.idle_wait_time)
 
-func _on_move_task_assigned(items, final_pos):
-    # Set the item
-    get_node("../MoveTasked").items = items
-    # Set the final position
-    get_node("../MoveTasked").final_pos = final_pos
+func _on_task_assigned(task):
     # Change to the tasking state
-    change_state("MoveTasked")
+    change_state("GenericTasked", task)

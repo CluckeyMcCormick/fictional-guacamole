@@ -1,15 +1,15 @@
 extends "res://motion_ai/common/tasking/core/TaskTemplate.gd"
 
+# ArgKey - The distance we'll attempt to move in one direction before
+# reevaluating. Float or int acceptable.
+const AK_WANDER_DISTANCE = "wander_distance"
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Utility Functions
+# Task Functions
 #
-# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~0
-
-func initialize(machine_root, physics_travel_region, target_body, wander_distance):
-    # Initialize the template's variables
-    _template_initialize(machine_root, physics_travel_region, target_body)
-    
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+func specific_initialize(arg_dict):
     # Start with a vector of fixed length
     var point = Vector3(1, 0, 0)
     
@@ -18,7 +18,7 @@ func initialize(machine_root, physics_travel_region, target_body, wander_distanc
 
     # Now, normalize it and then scale the normalization by our move distance
     # configurable
-    point = point.normalized() * wander_distance
+    point = point.normalized() * arg_dict[AK_WANDER_DISTANCE]
     
     # Add it on to the integrating body's current position
     point += target.global_transform.origin

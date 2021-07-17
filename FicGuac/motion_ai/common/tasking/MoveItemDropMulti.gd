@@ -1,5 +1,11 @@
 extends "res://motion_ai/common/tasking/core/TaskTemplate.gd"
 
+# ArgKey - the list/Array of items we're trying to pick up
+const AK_ITEMS_LIST = "items_list"
+# ArgKey - the Vector3 position we'll attempt to move to before dropping the
+# item(s) we're holding.
+const AK_DROP_POSITION = "drop_position"
+
 # How many times can we fail to grab something before we just give up?
 const FAIL_GRAB_LIMIT = 3
 # The list of item nodes we're going to try and grab. This list is actively used
@@ -10,21 +16,18 @@ var _fail_dict = {}
 # Whether the task succeeds or not depends on whether or not we could grab all
 # the items that got handed down to us.
 var item_failed = false
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Task Functions
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-func initialize(machine_root, physics_travel_region, target_body, items, position):
-    # Initialize the template's variables
-    _template_initialize(machine_root, physics_travel_region, target_body)
-    
+func specific_initialize(arg_dict):
     # Pass the item list down to the states that need it.
-    _item_node_list = items
+    _item_node_list = arg_dict[AK_ITEMS_LIST]
     
     # Pass the position down to the states that need it.
-    $MoveToPosition._target_position = position
+    $MoveToPosition._target_position = arg_dict[AK_DROP_POSITION]
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #

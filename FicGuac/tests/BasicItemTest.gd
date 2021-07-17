@@ -7,6 +7,11 @@ func _ready():
 func _on_StartButton_pressed():
     # First, unpack the item that was selected by getting all the selected items
     var chosen_item = $GUI/ItemList.get_selected_items()
+    # Back out if we don't have anything.
+    if len(chosen_item) <= 0:
+        print("No Item Chosen")
+        return
+    
     # We're configured to only allow one selection at a time, so get the first
     # entry index
     chosen_item = chosen_item[0]
@@ -18,6 +23,11 @@ func _on_StartButton_pressed():
 
     # Now, do the same for the destination
     var chosen_destination = $GUI/DestinationList.get_selected_items()
+    # Back out if we don't have anything.
+    if len(chosen_destination) <= 0:
+        print("No Destination Chosen")
+        return
+    
     chosen_destination = chosen_destination[0]
     chosen_destination = $GUI/DestinationList.get_item_text(chosen_destination)
     chosen_destination = get_node(chosen_destination)

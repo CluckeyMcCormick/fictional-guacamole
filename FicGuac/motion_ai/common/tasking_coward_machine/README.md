@@ -7,7 +7,7 @@ At the middle level, we have the *Task Manager*. The task manager handles the di
 
 At the lowest level, we have the *Physics Travel Region*. This region handles movement and collision, allowing the higher levels to simply deal with whether or not the task was successful (instead of intense semantics such as resolving collisions against collisions or testing for being stuck).
 
-This machine operates in three modes - in *Idle* mode, the machine occasionally wanders in a random direction. In *Flee* mode, the machine moves *away* from whatever the perceived *Threats* are. When so ordered (via the `move_items` function), the machine will move into the *Move Tasked* state, moving the appropriate items. Note that the machine will enter *Flee* mode from either *Idle* or the *Move Tasked* state. See *State Control Flow* below.
+This machine operates in three modes - in *Idle* mode, the machine occasionally wanders in a random direction. In *Flee* mode, the machine moves *away* from whatever the perceived *Threats* are. When so ordered (via a function), the machine will move into the *Generic Tasked* state, performing a specific task. In that way, this machine acts as our testbed for tasks in general. Note that the machine will enter *Flee* mode from either *Idle* or the *Move Tasked* state. See *State Control Flow* below.
 
 ### Configurables
 In order to handle tasks, it was necessary to implement the tripartite architecture using three separate XSM structures. This means the machine doesn't have the typical XSM configurables. These configurables hew as close as possible to the standard configurables of other machines.
@@ -23,6 +23,12 @@ We require a `SensorySortCore` in order to detect the world around us and react 
 
 ##### Level Interface Core
 We require a `LevelInterfaceCore` in order to interact with the level at large. This includes checking positions and pathing to given destinations.
+
+##### Item Management Core
+We require a `ItemManagementCore` in order to interact items - specifically picking up and dropping items.
+
+##### Character Stats Core
+We require a `CharacterStatsCore` in order to keep track of the machine's current status - including health and current speed.
 
 ##### Idle Wait Time
 When in the *Idle* state, the machine waits for a certain amount of seconds before transitioning to the *Wander* state. This configurable controls the duration of that time period.
@@ -55,8 +61,8 @@ This function orders the machine to grab a set of items and drop them at a speci
 
 ### Signals
 
-##### `move_task_assigned`
-This is a signal unique to the *Tasking Coward Machine*, since it was designed to accept input directly via code. The signal indicates the machine was ordered to move an item to a specified location. Should only really be used by one of the region sub-machines.
+##### `task_assigned`
+This is a signal unique to the *Tasking Coward Machine*, since it was designed to accept input directly via code. The signal indicates the machine was given a specific task to perform. Should only really be used by one of the region sub-machines.
 
 ##### `task_complete_echo`
 This signal fires when a task fails or succeeds. This is also unique to the *Tasking Coward Machine*, since a fully fledged machine should handle task completion internally.  
@@ -76,7 +82,7 @@ The second machine is whatever task the machine is currently performing. This is
 The final region is the *GoalRegion*, which assigns different tasks. It is, in effect, the actual "thinking" ethos component. It has the following nodes:
 
 1. *Idle*
-1. *Move Tasked*
+1. *Generic Tasked*
 1. *Flee*
 
 The Tree Structure can be observed below. Note that these are separate because they are no longer part of a contiguous XSM:
@@ -88,11 +94,11 @@ The Tree Structure can be observed below. Note that these are separate because t
 As we have two regions, we have effectively have two sub-machines:
 
 ##### Goal Region
-Our default state is the *Idle* state. If, at any point, we detect a *Threat* body intruding in our *Fight or Flight* sensory area, we transition to the *Flee* state. We return from the *Flee* state to the *Idle* state.
+Our default state is the *Idle* state. If, at any point, we detect a *Threat* body intruding in our *Fight or Flight* sensory area, we transition to the *Flee* state. We return from the *Flee* state to the *Idle* state once we are safe.
 
-In the *Idle* state, we wait for the amount of time specified by the *Idle Wait Time* configurable before issuing ourselves a *Wander* task. Once that task completes, we again wait for the configured time before assigning another *Wander* task - so on and so forth.
+In the *Idle* state, we wait for the amount of time specified by the *Idle Wait Time* configurable before issuing ourselves a *Wander* task. Once that task completes, we again wait for the configured time before assigning another *Wander* task - so on and so forth. If a task gets ordered, we move to the *Generic Tasked* state.
 
-In the *Wander* state, we move in a random direction. Once we've completed that particular path, we move back to the *Idle* state.
+In the *Generic Tasked* state, we perform the assigned task. If we complete the task - success or failure - we move back to the *Idle* state. If we encounter a threat, we drop the task and move to the *Flee* state.
 
 The *Goal Region* process can be observed in this image:
 

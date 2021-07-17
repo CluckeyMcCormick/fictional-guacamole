@@ -38,8 +38,12 @@ func _on_enter(var arg) -> void:
 
     # Instance out a new flee task.
     var new_flee = FLEE_TASK_PRELOAD.instance()
+    # Create the argument dict
+    var argdict = {
+        new_flee.AK_FLEE_DISTANCE: MR.wander_distance
+    }
     # Initialize!
-    new_flee.initialize(MR, PTR, MR.integrating_body_node, MR.wander_distance)
+    new_flee.initialize(MR, PTR, MR.integrating_body_node, argdict)
     # Add the task to the task manager. This will clear out any existing tasks.
     TMR.set_new_task(new_flee)
 
@@ -65,8 +69,12 @@ func _on_tmr_current_task_failed(task):
     # We failed? Oh well.... THAT'S SOMETHING THAT DOING THE EXACT SAME THING
     # AGAIN WOULD DEFINITELY FIX! Instance out a new flee task!
     var new_flee = FLEE_TASK_PRELOAD.instance()
+    # Create the argument dict
+    var argdict = {
+        new_flee.AK_FLEE_DISTANCE: MR.wander_distance
+    }
     # Initialize!
-    new_flee.initialize(MR, PTR, MR.integrating_body_node, MR.wander_distance)
+    new_flee.initialize(MR, PTR, MR.integrating_body_node, argdict)
     # Add the task to the task manager
     TMR.set_new_task(new_flee)
 

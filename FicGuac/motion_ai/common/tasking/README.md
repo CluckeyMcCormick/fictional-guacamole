@@ -15,7 +15,7 @@ A couple of quick notes about the current design philosophy of tasks:
 2. *Tasks should generally accept plural inputs.*
 	- For example, say we need to pick up an item. It may be tempting to have two tasks, where one targets just one item and the other only targets multiple items. This is a waste of effort - the multiple item task (which takes *plural input*) will naturally be more robust and can easily be overloaded to only work with a single item.
 3. *Tasks should not repeat infinitely. They must succeed or they must fail.*
-	- It is the responsibility of the *Goal Region* to assess whether repeating a task or doing a different task is appropriate. The task should not 
+	- It is the responsibility of the *Goal Region* to assess whether repeating a task or doing a different task is appropriate. The task should not repeat infinitely.
 	- The only issue with this design element is that, since XSM states operate in Godot's `_physics_process` loop, frequently repeating a task by recreating it and restarting it can sometimes result in milliseconds of downtime for an AI. That's not a problem when picking up an item, but it's definitely a problem when an AI is attempting to flee a pursuing danger. Because of that, some tasks have the potential to repeat forever (though it probably wouldn't happen).
 4. *Tasks should be robust enough to deal with changing game state.*
 	- What I'm really trying to say is to not fail a task immediately if there's potential to recover. For example, an AI may not be able to act on a particular entity but could try other entities in it's list.
@@ -33,11 +33,16 @@ This task flees all *Threat* bodies in a machine's *Fight-or-Flight* area. If ne
 
 If the integrating body escapes the *Threat* bodies, it succeeds. If the integrating body gets stuck, it fails.
 
-### Functions
-##### `initialize`
-Initializes the task so that it can actually run. In addition to the standard task initialization arguments - the parent machine root, the physics travel region, and the target body - this task accepts an additional argument:
+### Constants
+##### `AK_FLEE_DISTANCE`
+Constant argument-key for the flee distance. See `specific_initialize` for more.
 
-- `flee_distance`: The flee distance, in game units. Every time the task flees it moves this distance before reassessing the best path (or it at least ATTEMPTS to). If this value is too small this may result in the integrating body rapidly stuttering and losing ground to whatever it is fleeing.
+### Functions
+##### `specific_initialize`
+Initializes the task's specific/unique variables.
+
+- `arg_dict`: The dictionary of arguments specific to this task. Should contain the following key/values:
+ - `AK_FLEE_DISTANCE`: The flee distance, in game units. Every time the task flees it 	moves this distance before reassessing the best path (or it at least ATTEMPTS to). 			If this value is too small this may result in the integrating body rapidly 					stuttering and losing ground to whatever it is fleeing.
 
 ### Signals
 This task has the standard `task_succeeded` and `task_failed` signals, as defined by the *Task Template*.
@@ -47,14 +52,21 @@ This task moves a provided set of items to a provided point. It expects the give
 
 The task will prioritize closest items first, and will stack as many items as possible. It will make as many trips as necessary.
 
-If it successfully grabs and moves all items, the task will succeed. Otherwise, it will fail, regardless of how items it managed to move
+If it successfully grabs and moves all items, the task will succeed. Otherwise, it will fail, regardless of how many items it managed to move.
+
+### Constants
+##### `AK_ITEMS_LIST`
+Constant argument-key for the list/Array of items we're trying to pick up. See `specific_initialize` for more.
+##### `AK_DROP_POSITION`
+Constant argument-key for where we'll drop the items. See `specific_initialize` for more.
 
 ### Functions
 ##### `initialize`
-Initializes the task so that it can actually run. In addition to the standard task initialization arguments - the parent machine root, the physics travel region, and the target body - this task accepts two additional arguments:
+Initializes the task's specific/unique variables.
 
-- `items`: A Godot `Array` of item nodes. Any nodes that do not match the game's defined item type will be ignored.
-- `position`: A Godot `Vector3`. This is the position in global space that we'll move the items to.
+- `arg_dict`: The dictionary of arguments specific to this task. Should contain the following key/values:
+ - `AK_ITEMS_LIST`: A Godot `Array` of item nodes. Any nodes that do not match the game's defined item type will be ignored.
+ - `AK_DROP_POSITION`: A Godot `Vector3`. This is the position in global space that we'll move the items to.
 
 ### Signals
 This task has the standard `task_succeeded` and `task_failed` signals, as defined by the *Task Template*.
@@ -64,11 +76,16 @@ This task moves in a random direction. One time. Just once, not repeating or any
 
 If the integrating body moves correctly, it succeeds. If the integrating body gets stuck, it fails.
 
+### Constants
+##### `AK_WANDER_DISTANCE`
+Constant argument-key for the distance we'll wander in one direction. See `specific_initialize` for more.
+
 ### Functions
 ##### `initialize`
-Initializes the task so that it can actually run. In addition to the standard task initialization arguments - the parent machine root, the physics travel region, and the target body - this task accepts an additional argument:
+Initializes the task's specific/unique variables.
 
-- `wander_distance`: The wander distance, in game units. The task will attempt to move this far as part of the wander action.
+- `arg_dict`: The dictionary of arguments specific to this task. Should contain the following key/values:
+ - `AK_WANDER_DISTANCE`: The wander distance, in game units. The task will attempt to move this far as part of the wander action.
 
 ### Signals
 This task has the standard `task_succeeded` and `task_failed` signals, as defined by the *Task Template*.

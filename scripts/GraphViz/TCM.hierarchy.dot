@@ -15,6 +15,6 @@ digraph G {
     GR_IDLE [label="Idle"];
     
     GoalRegion -> GR_IDLE;
-    GoalRegion -> MoveTasked;
+    GoalRegion -> GenericTasked;
     GoalRegion -> Flee;
 }
