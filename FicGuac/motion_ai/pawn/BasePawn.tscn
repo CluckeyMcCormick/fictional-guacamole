@@ -93,7 +93,7 @@ pixel_size = 0.014
 shaded = true
 alpha_cut = 2
 frames = ExtResource( 1 )
-frame = 2
+frame = 6
 playing = true
 
 [node name="WeaponSprite" type="AnimatedSprite3D" parent="."]

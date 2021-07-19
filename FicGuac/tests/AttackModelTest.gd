@@ -1,5 +1,8 @@
 extends Spatial
 
+# Preload our melee task (single target) so we can instance it on demand
+const MELEE_SINGLE_TASK_PRELOAD = preload("res://motion_ai/common/tasking/MeleeAttackTarget.tscn")
+
 # The thickness of the torus - in other words, the difference between the inner
 # radius and the outer radius.
 const TORUS_THICKNESS = .2
@@ -89,3 +92,19 @@ func _on_RadiusSlider_value_changed(value):
     # Set the inner and outer radius values appropriately
     $CSGTorus.inner_radius = value - (TORUS_THICKNESS / 2)
     $CSGTorus.outer_radius = value + (TORUS_THICKNESS / 2)
+
+func _on_AttackGoButton_pressed():
+    match $ControlGUI/AttackOptionButton.selected:
+        0:
+            var task = MELEE_SINGLE_TASK_PRELOAD.instance()
+            var arg_dict = {}
+            
+            # Create the arg_dict
+            arg_dict[task.AK_ATTACK_TARGET] = $TargetPawn
+            # Initialize!!!
+            task.specific_initialize(arg_dict)
+
+            # Now, assign the pawn to move ALL those items
+            $AttackPawn.give_task(task)
+        _:
+            pass

@@ -18,8 +18,6 @@ animation = "idle_haul_west"
 frame = 0
 
 [node name="SensorySortCore" parent="." index="10"]
-fight_or_flight_area = NodePath("../../TaskingCowardPawn/FOFArea")
-interaction_range_area = NodePath("../../TaskingCowardPawn/InteractionArea")
 group_sort_matrix = SubResource( 1 )
 
 [node name="CharacterStatsCore" parent="." index="13"]

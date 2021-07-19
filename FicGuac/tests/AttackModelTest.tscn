@@ -1,10 +1,11 @@
-[gd_scene load_steps=10 format=2]
+[gd_scene load_steps=11 format=2]
 
 [ext_resource path="res://scenes/CameraRig.tscn" type="PackedScene" id=1]
 [ext_resource path="res://textures/terrain/material/mat_terrain_water_grid.tres" type="Material" id=2]
 [ext_resource path="res://scenes/SceneDefaultEnvironment.tres" type="Environment" id=3]
 [ext_resource path="res://tests/AttackModelTest.gd" type="Script" id=4]
 [ext_resource path="res://tests/test_assets/KinematicPawn.tscn" type="PackedScene" id=5]
+[ext_resource path="res://tests/test_assets/TaskingCowardPawn.tscn" type="PackedScene" id=6]
 
 [sub_resource type="BoxShape" id=1]
 extents = Vector3( 20, 1, 20 )
@@ -39,8 +40,6 @@ camera_size = 18
 max_camera_size = 20
 min_camera_size = 12
 zoom_step = 2
-move_enabled = true
-zoom_enabled = true
 move_clamping_extents = Vector2( 15, 15 )
 
 [node name="CoreCamera" parent="CameraRig" index="2"]
@@ -93,14 +92,14 @@ __meta__ = {
 }
 
 [node name="RadiusLabel" type="Label" parent="ControlGUI"]
-margin_right = 160.0
+margin_right = 202.0
 margin_bottom = 14.0
 text = "Test Radius"
 align = 1
 
 [node name="RadiusSlider" type="HSlider" parent="ControlGUI"]
 margin_top = 18.0
-margin_right = 160.0
+margin_right = 202.0
 margin_bottom = 34.0
 rect_min_size = Vector2( 160, 0 )
 min_value = 2.0
@@ -110,13 +109,13 @@ value = 2.0
 
 [node name="Spacer" type="ReferenceRect" parent="ControlGUI"]
 margin_top = 38.0
-margin_right = 160.0
+margin_right = 202.0
 margin_bottom = 48.0
 rect_min_size = Vector2( 0, 10 )
 
 [node name="BehaviorLabel" type="Label" parent="ControlGUI"]
 margin_top = 52.0
-margin_right = 160.0
+margin_right = 202.0
 margin_bottom = 66.0
 text = "Target Behavior"
 align = 1
@@ -126,20 +125,79 @@ __meta__ = {
 
 [node name="BehaviorOptions" type="OptionButton" parent="ControlGUI"]
 margin_top = 70.0
-margin_right = 160.0
+margin_right = 202.0
 margin_bottom = 90.0
 text = "Outside Radius"
 align = 1
 items = [ "Outside Radius", null, false, 0, null, "Radial Dipping", null, false, 1, null, "Inside Radius", null, false, 2, null ]
 selected = 0
 
-[node name="AttackPawn" parent="." instance=ExtResource( 5 )]
+[node name="Spacer2" type="ReferenceRect" parent="ControlGUI"]
+margin_top = 94.0
+margin_right = 202.0
+margin_bottom = 104.0
+rect_min_size = Vector2( 0, 10 )
+
+[node name="HSeparator" type="HSeparator" parent="ControlGUI"]
+margin_top = 108.0
+margin_right = 202.0
+margin_bottom = 112.0
+
+[node name="Spacer3" type="ReferenceRect" parent="ControlGUI"]
+margin_top = 116.0
+margin_right = 202.0
+margin_bottom = 126.0
+rect_min_size = Vector2( 0, 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AttackLabel" type="Label" parent="ControlGUI"]
+margin_top = 130.0
+margin_right = 202.0
+margin_bottom = 144.0
+text = "Attack Task"
+align = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AttackOptionButton" type="OptionButton" parent="ControlGUI"]
+margin_top = 148.0
+margin_right = 202.0
+margin_bottom = 168.0
+text = "Melee Attack, Single Target"
+items = [ "Melee Attack, Single Target", null, false, 0, null ]
+selected = 0
+
+[node name="Spacer4" type="ReferenceRect" parent="ControlGUI"]
+margin_top = 172.0
+margin_right = 202.0
+margin_bottom = 182.0
+rect_min_size = Vector2( 0, 10 )
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AttackGoButton" type="Button" parent="ControlGUI"]
+margin_top = 186.0
+margin_right = 202.0
+margin_bottom = 206.0
+text = "Attack!"
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="AttackPawn" parent="." instance=ExtResource( 6 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1.3, 0 )
+navigation = NodePath("../Navigation")
 
 [node name="TargetPawn" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.3, 0 )
 navigation = NodePath("../Navigation")
+
 [connection signal="value_changed" from="ControlGUI/RadiusSlider" to="." method="_on_RadiusSlider_value_changed"]
+[connection signal="pressed" from="ControlGUI/AttackGoButton" to="." method="_on_AttackGoButton_pressed"]
 [connection signal="path_complete" from="TargetPawn" to="." method="_on_TargetPawn_path_complete"]
 
 [editable path="CameraRig"]
