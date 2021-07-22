@@ -153,5 +153,13 @@ func path_between(from : Vector3, to : Vector3):
     else:
         path = []
         push_warning("LIC couldn't generate path because of invalid/null nav_node.")
-        
+    
+    # If we have more than one node along the path...
+    if len(path) > 1:
+        # Then remove the first one, since this seems to always be our start -
+        # in other words, where we already were. If we left that in, it would
+        # mean at least one cycle of no movement. Might not seem that bad, but
+        # it could stack up VERY quickly.
+        path.pop_front()
+    
     return path
