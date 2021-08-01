@@ -29,6 +29,9 @@ func _on_enter(var arg) -> void:
     # Set the goal key
     MR.goal_key = "Idle"
     
+    # We don't set the attitude hint here; we'll just inherit it from wherever
+    # we came from.
+    
     # Connect the SensorySortCore functions
     SSC.connect("body_entered", self, "_on_sensory_sort_core_body_entered")
     SSC.connect("body_exited", self, "_on_sensory_sort_core_body_entered")

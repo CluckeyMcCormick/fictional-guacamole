@@ -24,6 +24,9 @@ func _on_enter(var arg) -> void:
     # Set the physics travel key
     MR.physics_travel_key = "Falling"
 
+    # Set the movement hint
+    MR.movement_hint = "fall"
+
 func _on_update(delta) -> void:
     # Get our KinematicCore
     var KC = MR.kinematic_core_node

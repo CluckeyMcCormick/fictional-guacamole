@@ -29,6 +29,9 @@ func _on_enter(var arg) -> void:
     # Set the goal key
     MR.goal_key = "Flee"
     
+    # Set the the attitude hint
+    MR.attitude_hint = "scared"
+    
     # Since the Flee task doesn't succeed UNTIL the threat has left our specific
     # priority area, there's no need to connect up to the SensorySortCore. 
 

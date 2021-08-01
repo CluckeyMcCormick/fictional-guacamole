@@ -44,6 +44,9 @@ func _on_enter(var arg) -> void:
     # Set the physics travel key
     MR.physics_travel_key = "Walk"
     
+    # Set the movement hint
+    MR.movement_hint = "move"
+    
 func _on_update(delta) -> void:
     # Get our CharacterStatsCore
     var CSC = MR.character_stats_core_node

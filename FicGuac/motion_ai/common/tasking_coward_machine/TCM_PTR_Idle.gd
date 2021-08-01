@@ -24,6 +24,9 @@ func _on_enter(var arg) -> void:
     # Set the physics travel key
     MR.physics_travel_key = "Idle"
 
+    # Set the movement hint
+    MR.movement_hint = "idle"
+
 func _on_update(delta) -> void:
     # If we have a target position, then switch to our "Walk" mode
     if PTR._target_position or PTR._target_path:

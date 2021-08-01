@@ -50,13 +50,23 @@ export(float, .1, 10) var flee_distance = 1.0
 # visual appearance.
 var _curr_orient = Vector3.ZERO
 
-# String for our current physics travel state. Used for animation purposes, but
-# also used for debugging.
+# String for our current physics travel state. Used for debugging.
 var physics_travel_key = ""
 
-# String for our current goal state. Used for debugging, but also occassionally
-# utilized for animation purposes.
+# String for our current goal state. Used for debugging.
 var goal_key = ""
+
+# The "movement" hint that is also used for determining our current animation -
+# i.e. "moving", "falling", "charging", etc. This hint is typically used to
+# choose the right kind of passive/repeating animation.
+var movement_hint = "idle"
+# The "attitude" hint that is used for determining our current animation - i.e.
+# is the machine "angry", "neutral", "scared", etc.? The attitude is typically
+# used to flavor an animation instead of driving it.
+var attitude_hint = "neutral"
+# The demand animation key, used when we specifically demand that an animation
+# be played.
+var demand_key = ""
 
 # Okay, so the machine can get stuck in a chicken-and-egg situation with regards
 # to configuration. The children states require access to several
@@ -78,6 +88,11 @@ signal task_assigned(task)
 # TaskingCowardMachine, since a fully fledged instance a machine should handle
 # task completion internally.  
 signal task_complete_echo()
+
+# This signal fires when the machine needs a specific animation to be played.
+signal demand_animation(animation_key, target, use_direction)
+# This signal fires when the machine's specific animation is finished.
+signal demand_complete(animation_key)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -131,6 +146,9 @@ func _force_configure():
 # Order the machine to move an item to a specified position
 func give_task(task):
     emit_signal("task_assigned", task)
+
+func complete_demand(animation_key):
+    emit_signal("demand_complete", animation_key)
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #

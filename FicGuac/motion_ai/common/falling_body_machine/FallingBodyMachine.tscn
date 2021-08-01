@@ -11,6 +11,8 @@ animation_player = null
 
 [node name="OnGround" type="Node" parent="."]
 script = ExtResource( 2 )
+fsm_owner = null
+animation_player = null
 
 [node name="Falling" type="Node" parent="."]
 script = ExtResource( 3 )

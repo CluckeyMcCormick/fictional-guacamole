@@ -34,6 +34,15 @@ func _on_TimeWaitWindup_action_failure(failure_code):
     
 func _on_TimeWaitWindup_action_success():
     # Wind-up is done, for right now, go straight to recovery.
+    change_state("DemandAnimation")
+
+func _on_DemandAnimation_action_failure(failure_code):
+    # If the demand animation failed then we're in a sort of fuzzy state, best
+    # to call that a failure
+    change_state("task_failed")
+
+func _on_DemandAnimation_action_success():
+    # Attack successful! Move to the cooldown phase.
     change_state("TimeWaitRecovery")
 
 func _on_TimeWaitRecovery_action_failure(failure_code):

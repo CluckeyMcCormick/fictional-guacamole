@@ -98,7 +98,10 @@ func assert_equipment(new_equip):
     $WeaponSprite.animation = $VisualSprite.animation
     $WeaponSprite.frame = $VisualSprite.frame
 
-func update_orient_enum(orient_vec : Vector3):
+# Calculates the appropriate orientation enumeration given a vector.
+func calculate_orient_enum(orient_vec : Vector3):
+    # Return value goes here
+    var ret_val
     # Move the X and Z fields into a Vector2 so we can easily calculate the
     # sprite's current angular direction. Note that the Z is actually
     # inverted; This makes our angles operate on a CCW turn (like a unit
@@ -123,20 +126,27 @@ func update_orient_enum(orient_vec : Vector3):
     # periphery of the zone extends +- 45/2, or 22.5. Ergo, our zone checks
     # are values coming from 22.5 + (45 * i)
     if orient_angle < 22.5:
-        _orient_enum = EAST
+        ret_val = EAST
     elif orient_angle < 67.5:
-        _orient_enum = NOR_EAST
+        ret_val = NOR_EAST
     elif orient_angle < 112.5:
-        _orient_enum = NORTH
+        ret_val = NORTH
     elif orient_angle < 157.5:
-        _orient_enum = NOR_WEST
+        ret_val = NOR_WEST
     elif orient_angle < 202.5:
-        _orient_enum = WEST
+        ret_val = WEST
     elif orient_angle < 247.5:
-        _orient_enum = SOU_WEST
+        ret_val = SOU_WEST
     elif orient_angle < 292.5:
-        _orient_enum = SOUTH
+        ret_val = SOUTH
     elif orient_angle < 337.5:
-        _orient_enum = SOU_EAST
+        ret_val = SOU_EAST
     else:
-        _orient_enum = EAST
+        ret_val = EAST
+    
+    return ret_val
+
+# Wrapper function for the above that sets the orientation enumeration, given a
+# vector.
+func update_orient_enum(orient_vec : Vector3):
+    _orient_enum = calculate_orient_enum(orient_vec)
