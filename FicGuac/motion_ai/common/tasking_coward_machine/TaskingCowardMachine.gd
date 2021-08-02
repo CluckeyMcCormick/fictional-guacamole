@@ -45,6 +45,11 @@ export(int, 1, 10) var wander_distance = 5
 # position)?
 export(float, .1, 10) var flee_distance = 1.0
 
+# Does this machine wander around when idle?
+export(bool) var idle_wander = true
+# Does this machine flee in the face of danger?
+export(bool) var flee_behavior = true
+
 # The current orientation vector. It is purely for expressing which way the pawn
 # is looking/moving. Mostly inteded to help set the appropriate animation and/or
 # visual appearance.

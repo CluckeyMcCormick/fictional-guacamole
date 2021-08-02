@@ -76,6 +76,9 @@ func _on_sensory_sort_core_body_entered(body, priority_area, group_category):
     # Switch based on the priority area
     match priority_area:
         SSC.PRI_AREA.FOF:
+            # If we're not fleeing then we're all done here. Back out!
+            if not MR.flee_behavior:
+                return
             # If there's a threat in the fight-or-flight area, FLEE!
             if SSC.has_bodies(SSC.PRI_AREA.FOF, SSC.GROUP_CAT.THREAT):
                 change_state("Flee")
@@ -89,6 +92,9 @@ func _on_sensory_sort_core_body_exited(body, priority_area, group_category):
     # Switch based on the priority area
     match priority_area:
         SSC.PRI_AREA.FOF:
+            # If we're not fleeing then we're all done here. Back out!
+            if not MR.flee_behavior:
+                return
             # If there's a threat in the fight-or-flight area, FLEE!
             if SSC.has_bodies(SSC.PRI_AREA.FOF, SSC.GROUP_CAT.THREAT):
                 change_state("Flee")

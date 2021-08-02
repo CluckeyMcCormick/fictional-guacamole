@@ -52,6 +52,10 @@ func _on_enter(var arg) -> void:
     # Connect to the Machine Root's "Task Assigned" function
     MR.connect("task_assigned", self, "_on_task_assigned")
     
+    # If we're not wandering then we're all done here. Back out!
+    if not MR.idle_wander:
+        return
+        
     # Instance out a new wander task.
     var new_wander = WANDER_TASK_PRELOAD.instance()
     # Create the argument dict
@@ -67,6 +71,9 @@ func _on_timeout(name) -> void:
     # If the timer ends, then it's time to start wandering!
     match name:
         IDLE_TIMER_NAME:
+            # If we're not wandering then we're all done here. Back out!
+            if not MR.idle_wander:
+                return
             # Instance out a new wander task.
             var new_wander = WANDER_TASK_PRELOAD.instance()
             # Create the argument dict
@@ -114,6 +121,9 @@ func _on_sensory_sort_core_body_entered(body, priority_area, group_category):
     # Switch based on the priority area
     match priority_area:
         SSC.PRI_AREA.FOF:
+            # If we're not fleeing then we're all done here. Back out!
+            if not MR.flee_behavior:
+                return
             # If there's a threat in the fight-or-flight area, FLEE!
             if SSC.has_bodies(SSC.PRI_AREA.FOF, SSC.GROUP_CAT.THREAT):
                 change_state("Flee")
@@ -127,6 +137,9 @@ func _on_sensory_sort_core_body_exited(body, priority_area, group_category):
     # Switch based on the priority area
     match priority_area:
         SSC.PRI_AREA.FOF:
+            # If we're not fleeing then we're all done here. Back out!
+            if not MR.flee_behavior:
+                return
             # If there's a threat in the fight-or-flight area, FLEE!
             if SSC.has_bodies(SSC.PRI_AREA.FOF, SSC.GROUP_CAT.THREAT):
                 change_state("Flee")
