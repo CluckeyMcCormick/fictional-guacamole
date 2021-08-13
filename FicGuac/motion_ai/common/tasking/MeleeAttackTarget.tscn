@@ -4,7 +4,7 @@
 [ext_resource path="res://motion_ai/common/tasking/actions/MoveToEntityDistance.tscn" type="PackedScene" id=2]
 [ext_resource path="res://motion_ai/common/tasking/MeleeAttackTarget.gd" type="Script" id=3]
 [ext_resource path="res://motion_ai/common/tasking/actions/TimeWait.tscn" type="PackedScene" id=4]
-[ext_resource path="res://motion_ai/common/tasking/actions/DemandAnimation.tscn" type="PackedScene" id=5]
+[ext_resource path="res://motion_ai/common/tasking/actions/MeleeAttack.tscn" type="PackedScene" id=5]
 
 [node name="MeleeAttackTarget" instance=ExtResource( 1 )]
 script = ExtResource( 3 )
@@ -13,10 +13,11 @@ script = ExtResource( 3 )
 target_distance = 0.5
 
 [node name="TimeWaitWindup" parent="." index="1" instance=ExtResource( 4 )]
-wait_time = 0.1
 
-[node name="DemandAnimation" parent="." index="2" instance=ExtResource( 5 )]
-animation_key = "da_chop"
+[node name="MeleeAttack" parent="." index="2" instance=ExtResource( 5 )]
+lead_in_animation_key = "da_stab"
+lead_out_animation_key = "da_chop"
+direct_verify_distance = 0.75
 
 [node name="TimeWaitRecovery" parent="." index="3" instance=ExtResource( 4 )]
 wait_time = 0.5
@@ -25,7 +26,7 @@ wait_time = 0.5
 [connection signal="action_success" from="MoveToEntityDistance" to="." method="_on_MoveToEntityDistance_action_success"]
 [connection signal="action_failure" from="TimeWaitWindup" to="." method="_on_TimeWaitWindup_action_failure"]
 [connection signal="action_success" from="TimeWaitWindup" to="." method="_on_TimeWaitWindup_action_success"]
-[connection signal="action_failure" from="DemandAnimation" to="." method="_on_DemandAnimation_action_failure"]
-[connection signal="action_success" from="DemandAnimation" to="." method="_on_DemandAnimation_action_success"]
+[connection signal="action_failure" from="MeleeAttack" to="." method="_on_MeleeAttack_action_failure"]
+[connection signal="action_success" from="MeleeAttack" to="." method="_on_MeleeAttack_action_success"]
 [connection signal="action_failure" from="TimeWaitRecovery" to="." method="_on_TimeWaitRecovery_action_failure"]
 [connection signal="action_success" from="TimeWaitRecovery" to="." method="_on_TimeWaitRecovery_action_success"]

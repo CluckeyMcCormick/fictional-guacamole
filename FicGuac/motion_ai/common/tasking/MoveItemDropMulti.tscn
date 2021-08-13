@@ -20,6 +20,7 @@ target_area = 2
 [node name="MoveToPosition" parent="." index="3" instance=ExtResource( 1 )]
 
 [node name="DropAllItem" parent="." index="4" instance=ExtResource( 3 )]
+
 [connection signal="action_failure" from="PreDropAllItem" to="." method="_on_PreDropAllItem_action_failure"]
 [connection signal="action_success" from="PreDropAllItem" to="." method="_on_PreDropAllItem_action_success"]
 [connection signal="action_failure" from="MoveToEntityPriorityArea" to="." method="_on_MoveToEntityPriorityArea_action_failure"]

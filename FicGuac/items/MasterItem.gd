@@ -89,3 +89,6 @@ func _to_physical_item():
     _item_state = ITEM_PHYSICAL
 
     return self
+
+func take_damage(amount):
+    print("Took Damage: ", amount)

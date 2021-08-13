@@ -150,3 +150,6 @@ func calculate_orient_enum(orient_vec : Vector3):
 # vector.
 func update_orient_enum(orient_vec : Vector3):
     _orient_enum = calculate_orient_enum(orient_vec)
+
+func take_damage(amount):
+    print("Took Damage: ", amount)
