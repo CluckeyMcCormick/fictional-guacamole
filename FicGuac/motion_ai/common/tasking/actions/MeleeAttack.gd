@@ -34,8 +34,6 @@ func _on_enter(var arg) -> void:
     # finished
     MR.connect("demand_complete", self, "_on_demand_complete")
     
-    print("Entered Attack")
-    
     # If we have a lead-in animation, play that and back out
     if lead_in_animation_key != "":
         MR.emit_signal(
@@ -117,7 +115,13 @@ func do_attack():
     
     # If we got a result...
     if result:
-        print("HIT! Hit is: ", result.collider_id)
+        var collide_instance = instance_from_id(result.collider_id)
+        print("HIT!")
+        
+        # If this object has a method for taking damage...
+        if collide_instance.has_method("take_damage"):
+            collide_instance.take_damage(25)
+        
     else:
         print("No hit!")
     
