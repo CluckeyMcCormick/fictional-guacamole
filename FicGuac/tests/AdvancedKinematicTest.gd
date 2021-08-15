@@ -11,7 +11,7 @@ extends Spatial
 
 # Step Test Nodes
 onready var step_node = $DetourNavigation/DetourNavigationMesh/DynamicStep/
-onready var step_label = $DetourNavigation/DetourNavigationMesh/DynamicStep/QuadLabel
+onready var step_label = $DetourNavigation/DetourNavigationMesh/DynamicStep/Label
 onready var step_target = $DetourNavigation/DetourNavigationMesh/DynamicStep/Target
 
 # Step Test Nodes
@@ -72,7 +72,7 @@ func _on_UpdateTimer_timeout():
 # accordingly.
 func _on_StepSlider_value_changed(value):
     # Update the step label with our string
-    step_label.label_text = "%0.3f" % [value]
+    step_label.display_string = "%0.3f" % [value]
     # Move our dynamic step downwards
     step_node.global_transform.origin.y = -1.0 + value
     
@@ -100,7 +100,7 @@ func _on_SlopeSlider_value_changed(value):
     slope_shape.rotation_degrees.z = -value
     
     # Set the label
-    slope_label.label_text = "%d DEG" % value
+    slope_label.display_string = "%d DEG" % value
     
     # If we're about to do an update...
     if not $UpdateTimer.is_stopped():

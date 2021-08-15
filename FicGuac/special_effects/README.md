@@ -4,6 +4,9 @@ The *Special Effects* directory is for any assets (shaders in particular) and sc
 ## Viewport Shader Templates
 We have a special class of shaders, known as the *Viewport Shaders*, that use `Viewport` nodes to create various effects. There are currently a lot of variations on these shaders, and their use of `ViewportTexture` textures means that they have behavior unique amongst other shaders. 
 
+## Text Spritesheets
+This directory stores our text spritesheets - we use these for non-gui text elements. Stuff that exists out in the world.
+
 ## Hiding Mesh
 The *Hiding Mesh* is a mesh that shows and hides itself depending on whether it can be "seen" by the camera. Rather than using a `VisibilityNotifier` node to track this, the *Hiding Mesh* uses physics raycasts to a dedicated camera node. This is a bit messy since it meshes visual and physical components but it's the best way to track occlusion (as opposed to whatever heuristic `VisibilityNotifier` uses).
 
@@ -31,3 +34,23 @@ As stated multiple times, we need to use physics raycasts to determine occlusion
 
 ##### Animation Length
 This configurable controls the length of the grow-and-shrink animation of the *Hiding Mesh*. If this value is less than or equal to 0, there will be no animation (this is the default). Instead, the visibility of the *Hiding Mesh* will be toggled appropriately.
+
+## Dynamic Sprite Text
+Text in Godot is entirely constrained to the 2D side of the engine. You can make a label in 3D but it uses a hacky workaround that is painful to set up. We needed a solution to display dynamic text in the 3D space - that's what this scene does.
+
+Give it some text and set the font, and the scene will update appropriately. The text will be centered vertically as a whole, and centered horizontally per each line.
+
+New font choices need to be programmed into the script, and in a very particular format. They should all be monospaced. Look at the *Text Spritesheets* directory for examples.
+
+### Configurables
+
+##### Display Text
+The text we'll display. Supports multiple lines.
+
+##### Font Choice
+The font that we'll use for the text. They come in different sizes depending on the font.
+
+### Constants
+
+##### `FontChoices` (`Enum`)
+Enumerates the different choices we have for fonts. Corresponds with the *Font Choice* configurable.

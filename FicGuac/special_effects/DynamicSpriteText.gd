@@ -1,9 +1,10 @@
+tool
 extends Spatial
 
 # We preload all of the font-textures that we'll need
-const mono6x10_black = preload("res://special_effects/sign_sheets/6x10mono_95char.png")
-const mono6x10_transparent = preload("res://special_effects/sign_sheets/6x10mono_95char_transparent.png")
-const mono6x11_debug = preload("res://special_effects/sign_sheets/6x11mono_debug_95char.png")
+const mono6x10_black = preload("res://special_effects/text_spritesheets/6x10mono_95char.png")
+const mono6x10_transparent = preload("res://special_effects/text_spritesheets/6x10mono_95char_transparent.png")
+const mono6x11_debug = preload("res://special_effects/text_spritesheets/6x11mono_debug_95char.png")
 
 # The constants control various aspects of our Sprite3D nodes we spawn. We do
 # this to help ensure consistency.
@@ -55,9 +56,9 @@ const char95_dictionary = {
 }
 
 # What value are we trying to display?
-export(String, MULTILINE) var display_string
+export(String, MULTILINE) var display_string setget set_display_string
 # What font are we using?
-export(FontChoices) var font_choice
+export(FontChoices) var font_choice setget set_font_choice
 
 # These variables track different value used to space out characters
 # appropriately for each font.
@@ -99,8 +100,8 @@ func update_display_string():
     
     # Next, remove all the children from the ChildManager node. This ensures we
     # get rid of all the characters that were floating around
-    for child in $ChildManager.get_children():
-        $ChildManager.remove_child(child)
+    for child in self.get_children():
+        self.remove_child(child)
         child.queue_free()
     
     # We build the lines from the "upper-left", working our way down. These
@@ -128,8 +129,8 @@ func update_display_string():
         initial_x = -len(line) * space_x * PIXEL_SIZE
         # Now divide it in half
         initial_x /= 2
-        # Now shift it down by half of one character, since our sprites are centered
-        initial_x -= (space_x * PIXEL_SIZE) / 2
+        # Now shift it up by half of one character, since our sprites are centered
+        initial_x += (space_x * PIXEL_SIZE) / 2
         
         # Now, set the value in our base vector
         base_pos.x = initial_x
@@ -139,7 +140,7 @@ func update_display_string():
             var new_sprite = Sprite3D.new()
             
             # Stick it in the scene
-            $ChildManager.add_child(new_sprite)
+            self.add_child(new_sprite)
             
             # Set the new sprite's texture to our font texture
             new_sprite.texture = font_texture
@@ -160,3 +161,11 @@ func update_display_string():
         # Go down by one line
         base_pos -= Vector3(0, space_y * PIXEL_SIZE, 0)
     # All done!
+
+func set_display_string(new_string):
+    display_string = new_string
+    update_display_string()
+
+func set_font_choice(new_font):
+    font_choice = new_font
+    update_display_string()
