@@ -54,3 +54,18 @@ The font that we'll use for the text. They come in different sizes depending on 
 
 ##### `FontChoices` (`Enum`)
 Enumerates the different choices we have for fonts. Corresponds with the *Font Choice* configurable.
+
+## Float Away Text
+A variation on the *Dynamic Sprite Text* scene. When spawned, this text automatically floats upward, persisting for a fixed amount of time before disappearing. This is perfect for temporary text or notifications, such as damage counters.
+
+### Configurables
+In addition to the constants in the *Dynamic Sprite Text* scene, the *Float Away Text* has some additional configurables.
+
+##### Float Velocity
+As soon as the *Float Away Text* enters the scene, it begins to move on the y-axis. The *Float Velocity* controls how quickly it moves, in units/second.
+
+##### Life Timer
+The *Life Timer* controls how long, in seconds, the *Float Away Text* persists before beginning to fade out. Keep in mind this only constitutes part of the total time on screen. 
+
+##### Fade Away Timer
+The *Fade Away Timer* controls how long, in seconds, the *Float Away Text* takes to fade out. Keep in mind this only constitutes part of the total time on screen. 

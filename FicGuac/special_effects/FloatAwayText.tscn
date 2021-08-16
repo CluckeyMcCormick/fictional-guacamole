@@ -1,0 +1,20 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://special_effects/FloatAwayText.gd" type="Script" id=1]
+[ext_resource path="res://special_effects/DynamicSpriteText.tscn" type="PackedScene" id=2]
+
+[node name="FloatAwayText" instance=ExtResource( 2 )]
+transform = Transform( 3.53553, 0, 3.53553, 0, 5, 0, -3.53553, 0, 3.53553, 0, 0, 0 )
+script = ExtResource( 1 )
+font_choice = 1
+float_velocity = 0.5
+life_timer = 1.25
+fade_away_timer = 0.25
+
+[node name="LifeTimer" type="Timer" parent="." index="10"]
+
+[node name="FadeAwayTween" type="Tween" parent="." index="11"]
+playback_process_mode = 0
+
+[connection signal="timeout" from="LifeTimer" to="." method="_on_LifeTimer_timeout"]
+[connection signal="tween_all_completed" from="FadeAwayTween" to="." method="_on_FadeAwayTween_tween_all_completed"]

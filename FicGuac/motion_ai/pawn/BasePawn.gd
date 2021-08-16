@@ -29,6 +29,9 @@ var item_parent_node
 # the fly.
 const short_sword_frames = preload("res://motion_ai/pawn/weapon_sprites/pawn_short_sword_frames.tres")
 
+# This scene allows us to spawn little messages in the world, as needed.
+const float_away_text = preload("res://special_effects/FloatAwayText.tscn")
+
 # To allow for easy configuration of the equipped weapon, we have this enum.
 # Dropdown configuration - easy!
 enum Equipment {
@@ -153,3 +156,8 @@ func update_orient_enum(orient_vec : Vector3):
 
 func take_damage(amount):
     print("Took Damage: ", amount)
+    
+    var damage_text = float_away_text.instance()
+    damage_text.display_string = str(amount)
+    self.get_parent().add_child(damage_text)
+    damage_text.global_transform.origin = self.global_transform.origin

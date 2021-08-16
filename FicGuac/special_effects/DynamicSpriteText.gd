@@ -98,9 +98,13 @@ func update_display_string():
     # First, ensure our variables are correct by asserting the font.
     assert_font()
     
-    # Next, remove all the children from the ChildManager node. This ensures we
-    # get rid of all the characters that were floating around
+    # Next, remove all of the Sprite3D children from the ChildManager node. This
+    # ensures we get rid of all the characters that were floating around
     for child in self.get_children():
+        # If this child isn't a sprite 3D, skip it
+        if not child is Sprite3D:
+            continue
+        # Otherwise, it must be a Sprite3D. DESTROY IT!
         self.remove_child(child)
         child.queue_free()
     
