@@ -2,9 +2,19 @@ extends KinematicBody
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
-# Variable Declarations
+# Constant Declarations
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+# We'll preload all the weapon frames we need since we'll have to change them on
+# the fly.
+const short_sword_frames = preload("res://motion_ai/pawn/weapon_sprites/pawn_short_sword_frames.tres")
+
+# This scene allows us to spawn little messages in the world, as needed.
+const float_away_text = preload("res://special_effects/FloatAwayText.tscn")
+
+# We need the scene for the pawn's corpse so we can spawn it when we die.
+const corpse_scene = preload("res://items/corpses/PawnCorpse.tscn")
 
 # UnitPawns make use of directions. A LOT. So, here's an enum that we can use to
 # easily refer to cardinal directions.
@@ -15,6 +25,19 @@ enum {
     NOR_EAST = 1, NOR_WEST = 3, SOU_WEST = 5, SOU_EAST = 7
 }
 
+# To allow for easy configuration of the equipped weapon, we have this enum.
+# Dropdown configuration - easy!
+enum Equipment {
+    NONE, # No Weapon
+    SHORT_SWORD, # Short Sword
+}
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Variable Declarations
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
 # What will the Pawn use to check it's current position and generate paths?
 export(NodePath) var navigation
 # We resolve the node path into this variable.
@@ -24,20 +47,6 @@ var navigation_node
 export(NodePath) var item_parent
 # We resolve the node path into this variable.
 var item_parent_node
-
-# We'll preload all the weapon frames we need since we'll have to change them on
-# the fly.
-const short_sword_frames = preload("res://motion_ai/pawn/weapon_sprites/pawn_short_sword_frames.tres")
-
-# This scene allows us to spawn little messages in the world, as needed.
-const float_away_text = preload("res://special_effects/FloatAwayText.tscn")
-
-# To allow for easy configuration of the equipped weapon, we have this enum.
-# Dropdown configuration - easy!
-enum Equipment {
-    NONE, # No Weapon
-    SHORT_SWORD, # Short Sword
-}
 
 # Which of the above position algorithms will we use? Note that Navigation and
 # Detour will be broken unless the appropriate navigation node is provided.
@@ -155,9 +164,34 @@ func update_orient_enum(orient_vec : Vector3):
     _orient_enum = calculate_orient_enum(orient_vec)
 
 func take_damage(amount):
-    print("Took Damage: ", amount)
+    $CharacterStatsCore.take_damage(amount)
     
+    """
     var damage_text = float_away_text.instance()
     damage_text.display_string = str(amount)
     self.get_parent().add_child(damage_text)
     damage_text.global_transform.origin = self.global_transform.origin
+    """
+
+func _on_CharacterStatsCore_character_dead(damage_type):
+    print("Died")
+    var corpse = corpse_scene.instance()
+    corpse.global_transform.origin = self.global_transform.origin
+    corpse.rotation_degrees = Vector3(0, 45, 0)
+    
+    # If the level interface core actually has an item node...
+    if $LevelInterfaceCore.item_node != null:
+        # Stick the corpse under that
+        $LevelInterfaceCore.item_node.add_child(corpse)
+    # Otherwise...
+    else:
+        # Make the corpse a sibling of this node
+        get_parent().add_child(corpse)
+    
+    # Wake up the corpse so it falls over
+    corpse.sleeping = false
+    
+    # Now, remove ourselves from the scene
+    get_parent().remove_child(self)
+    # Set ourselves up to be deleted
+    queue_free()
