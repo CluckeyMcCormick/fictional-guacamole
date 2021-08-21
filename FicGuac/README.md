@@ -168,6 +168,9 @@ The buildings in this game are fairly complex - most are glued together using as
 
 This is differentiated from `Terrain` in that it is artificial, rather than natural. It's a very slim distinction. 
 
+### Common Mix
+This directory is for things that are common across scenes and scripts across multiple categories but didn't cleanly fit into their own category - it is a mix of common things, hence "Common Mix".
+
 ### GUI
 To ensure consistency across scenes, we build common GUI elements and store them here - like pause menus or loading screens. This allows us to do weird stuff, like rendering the loading screen over the pause screen. That doesn't sound that weird but trust me, that's a big thing in Godot.
 
@@ -192,7 +195,7 @@ Anything the characters will climb over, on, under, and through is considered te
 Games are complicated, and this project is no exception. To help test the game, we've developed individual scenes to put particular game concepts to the test. Those tests reside here.
 
 ### Textures
-This is where *most* of the textures sit - not all of them, but most of them. This directory is mandatory for the *Qodot* addon and the *Trenchbroom*. Any texture that would be used by them, such as terrain textures or building component textures, needs to go in this directory.
+This is where *most* of the textures sit - not all of them, but most of them. This directory is mandatory for the *Qodot* addon and the *Trenchbroom* level editor. Any texture that would be used by them, such as terrain textures or building component textures, needs to go in this directory.
 
 ### Util
 The contents of this directory are meant for debugging or otherwise enhancing other scenes. It's best to see this as a toolbox that other scenes draw from.

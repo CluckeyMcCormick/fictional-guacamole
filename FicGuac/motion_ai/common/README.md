@@ -178,17 +178,12 @@ The *CharacterStatsCore* is the core *stats and status* component of *Motion AI*
 
 This core divides the stats into "base" stats - what the stats should be initially - and the "current" or "effective" stats.
 
+This is a *Motion AI*-specific version of the `CommonStatsCore`, found in the godot project's `common_mix` directory. It inherits configurables, variables and functions from that scene - hence, it's recommended that you look at that scene for further reference.
+
 ### Configurables
 ##### Base Move Speed
 The base move speed for the *Motion AI*, in world-units/second. This is the default for the effective move speed, unless there is some sort of active status effect.
 
-##### Base HP
-The base hitpoints for the *Motion AI*. This currently acts as both the default amount of health and a cap. Note that this is an `int` value!
-
-
 ### (Public) Variables
 ##### `eff_move_speed`
 The current/effective move speed for the *Motion AI*, in world-units/second. This is 'effective' in the sense that it is the move speed after buffs and debuffs have been applied. This is the value that should be referenced for the purpose of movement.
-
-##### `curr_hp`
-The current hitpoints for the *Motion AI*. This is not modified by buffs or debuffs; it is just a measure of health. This can be modified directly but there will likely be a specific function for modification.

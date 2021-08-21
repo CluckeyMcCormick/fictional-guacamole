@@ -42,11 +42,13 @@ collision_layer = 1024
 script = ExtResource( 4 )
 
 [node name="IdealCollision" type="CollisionShape" parent="."]
+visible = false
 shape = SubResource( 1 )
 disabled = true
 
 [node name="MeasuredCollision" type="CollisionShape" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.2, 0 )
+visible = false
 shape = SubResource( 2 )
 disabled = true
 
@@ -93,7 +95,7 @@ pixel_size = 0.014
 shaded = true
 alpha_cut = 2
 frames = ExtResource( 1 )
-frame = 2
+frame = 5
 playing = true
 
 [node name="WeaponSprite" type="AnimatedSprite3D" parent="."]
@@ -125,4 +127,4 @@ level_interace_core = NodePath("../LevelInterfaceCore")
 
 [node name="CharacterStatsCore" parent="." instance=ExtResource( 8 )]
 
-[connection signal="character_dead" from="CharacterStatsCore" to="." method="_on_CharacterStatsCore_character_dead"]
+[connection signal="object_died" from="CharacterStatsCore" to="." method="_on_CharacterStatsCore_object_died"]

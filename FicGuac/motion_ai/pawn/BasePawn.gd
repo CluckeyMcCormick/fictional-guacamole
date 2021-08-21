@@ -10,9 +10,6 @@ extends KinematicBody
 # the fly.
 const short_sword_frames = preload("res://motion_ai/pawn/weapon_sprites/pawn_short_sword_frames.tres")
 
-# This scene allows us to spawn little messages in the world, as needed.
-const float_away_text = preload("res://special_effects/FloatAwayText.tscn")
-
 # We need the scene for the pawn's corpse so we can spawn it when we die.
 const corpse_scene = preload("res://items/corpses/PawnCorpse.tscn")
 
@@ -163,17 +160,10 @@ func calculate_orient_enum(orient_vec : Vector3):
 func update_orient_enum(orient_vec : Vector3):
     _orient_enum = calculate_orient_enum(orient_vec)
 
-func take_damage(amount):
-    $CharacterStatsCore.take_damage(amount)
-    
-    """
-    var damage_text = float_away_text.instance()
-    damage_text.display_string = str(amount)
-    self.get_parent().add_child(damage_text)
-    damage_text.global_transform.origin = self.global_transform.origin
-    """
+func take_damage(amount, type=null):
+    $CharacterStatsCore.take_damage(amount, type)
 
-func _on_CharacterStatsCore_character_dead(damage_type):
+func _on_CharacterStatsCore_object_died(final_damage_type):
     print("Died")
     var corpse = corpse_scene.instance()
     corpse.global_transform.origin = self.global_transform.origin

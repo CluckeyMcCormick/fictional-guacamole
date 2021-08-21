@@ -90,5 +90,12 @@ func _to_physical_item():
 
     return self
 
-func take_damage(amount):
-    print("Took Damage: ", amount)
+func take_damage(amount, type=null):
+    $CommonStatsCore.take_damage(amount)
+
+func _on_CommonStatsCore_object_died(final_damage_type):
+    # Remove ourselves from the scene
+    get_parent().remove_child(self)
+    # Set ourselves up to be deleted
+    queue_free()
+

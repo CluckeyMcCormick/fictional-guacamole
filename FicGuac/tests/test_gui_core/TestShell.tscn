@@ -36,8 +36,9 @@ script = ExtResource( 9 )
 script = ExtResource( 6 )
 
 [node name="TestMenu" parent="." instance=ExtResource( 4 )]
+margin_top = 1.25995
 margin_right = 1024.0
-margin_bottom = 600.0
+margin_bottom = 601.26
 
 [node name="PauseLayer" type="CanvasLayer" parent="."]
 layer = 2
