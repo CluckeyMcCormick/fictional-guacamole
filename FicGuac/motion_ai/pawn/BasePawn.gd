@@ -6,6 +6,13 @@ extends KinematicBody
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
+# When we die, the pawn turns into a corpse. To ensure the corpse falls over, we
+# apply a spin in a random direction. What are the minimum and maximum angular
+# velocity, in radians/sec? Note that this is applied separately on each axis,
+# and will either be positive or negative.
+const DEATH_SPIN_MINIMUM = PI / 6
+const DEATH_SPIN_MAXIMUM = 2 * PI
+
 # We'll preload all the weapon frames we need since we'll have to change them on
 # the fly.
 const short_sword_frames = preload("res://motion_ai/pawn/weapon_sprites/pawn_short_sword_frames.tres")
@@ -164,10 +171,16 @@ func take_damage(amount, type=null):
     $CharacterStatsCore.take_damage(amount, type)
 
 func _on_CharacterStatsCore_object_died(final_damage_type):
-    print("Died")
+    
+    var spin_base = DEATH_SPIN_MAXIMUM - DEATH_SPIN_MINIMUM
+    var spin_add = DEATH_SPIN_MINIMUM
+    
     var corpse = corpse_scene.instance()
     corpse.global_transform.origin = self.global_transform.origin
     corpse.rotation_degrees = Vector3(0, 45, 0)
+    corpse.angular_velocity.x = ((randf() * spin_base) + spin_add)
+    corpse.angular_velocity.y = ((randf() * spin_base) + spin_add)
+    corpse.angular_velocity.z = ((randf() * spin_base) + spin_add)
     
     # If the level interface core actually has an item node...
     if $LevelInterfaceCore.item_node != null:
