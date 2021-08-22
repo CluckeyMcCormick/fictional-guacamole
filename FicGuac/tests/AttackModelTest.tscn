@@ -199,5 +199,6 @@ navigation = NodePath("../Navigation")
 [connection signal="value_changed" from="ControlGUI/RadiusSlider" to="." method="_on_RadiusSlider_value_changed"]
 [connection signal="pressed" from="ControlGUI/AttackGoButton" to="." method="_on_AttackGoButton_pressed"]
 [connection signal="path_complete" from="TargetPawn" to="." method="_on_TargetPawn_path_complete"]
+[connection signal="pawn_died" from="TargetPawn" to="." method="_on_TargetPawn_pawn_died"]
 
 [editable path="CameraRig"]

@@ -36,6 +36,9 @@ enum Equipment {
     SHORT_SWORD, # Short Sword
 }
 
+# This signal indicates that the pawn died. Mostly used for debuggery and tests
+signal pawn_died()
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Variable Declarations
@@ -196,5 +199,9 @@ func _on_CharacterStatsCore_object_died(final_damage_type):
     
     # Now, remove ourselves from the scene
     get_parent().remove_child(self)
+    
+    # Now that we're not in the scene, tell everyone we died
+    self.emit_signal("pawn_died")
+    
     # Set ourselves up to be deleted
     queue_free()

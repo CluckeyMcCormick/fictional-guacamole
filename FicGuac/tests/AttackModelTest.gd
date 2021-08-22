@@ -1,5 +1,7 @@
 extends Spatial
 
+# Preload the kinematic pawn so we can instance it on demand
+const KPAWN_PRELOAD = preload("res://tests/test_assets/KinematicPawn.tscn")
 # Preload our melee task (single target) so we can instance it on demand
 const MELEE_SINGLE_TASK_PRELOAD = preload("res://motion_ai/common/tasking/MeleeAttackTarget.tscn")
 
@@ -28,11 +30,19 @@ var current_angle = 0
 # actually matters
 var last_iteration_outside = false
 
+# Since our target pawn has a habit of dying in this mode, we need a variable to
+# refer to the pawn node - using the NodePath operator would be too unreliable.
+var target_pawn
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
+    
+    # Get our first pawn.
+    target_pawn = $TargetPawn
+    
     # Make the Pawn path to itself. This should trigger the path_complete
     # signal, kicking off our processing loop.
-    $TargetPawn.move_to_point($TargetPawn.global_transform.origin)
+    target_pawn.move_to_point($TargetPawn.global_transform.origin)
     
 func _on_TargetPawn_path_complete(pawn, position):
     # Nab the currently configured radius, since we'll be using that
@@ -86,7 +96,7 @@ func _on_TargetPawn_path_complete(pawn, position):
             last_iteration_outside = false
     
     # Pass it to the target pawn
-    $TargetPawn.move_to_point( new_target )
+    target_pawn.move_to_point( new_target )
 
 func _on_RadiusSlider_value_changed(value):
     # Set the inner and outer radius values appropriately
@@ -100,7 +110,7 @@ func _on_AttackGoButton_pressed():
             var arg_dict = {}
             
             # Create the arg_dict
-            arg_dict[task.AK_ATTACK_TARGET] = $TargetPawn
+            arg_dict[task.AK_ATTACK_TARGET] = target_pawn
             # Initialize!!!
             task.specific_initialize(arg_dict)
 
@@ -108,3 +118,19 @@ func _on_AttackGoButton_pressed():
             $AttackPawn.give_task(task)
         _:
             pass
+
+func _on_TargetPawn_pawn_died():
+    # Spawn in a new target pawn
+    target_pawn = KPAWN_PRELOAD.instance()
+    
+    # Connect ourselves to it's inner workings
+    target_pawn.connect("path_complete", self, "_on_TargetPawn_path_complete")
+    target_pawn.connect("pawn_died", self, "_on_TargetPawn_pawn_died")
+    # Pass it the navigation node-path
+    target_pawn.navigation = $AttackPawn.get_path_to($Navigation)
+    # Add it to the scene. This will call all the _ready functions and stuff
+    self.add_child(target_pawn)
+    
+    # Make the Pawn path to itself. This should trigger the path_complete
+    # signal, kicking off our processing loop.
+    target_pawn.move_to_point(target_pawn.global_transform.origin)
