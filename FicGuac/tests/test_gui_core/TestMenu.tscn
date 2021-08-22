@@ -54,4 +54,5 @@ margin_top = 297.0
 margin_right = 250.0
 margin_bottom = 317.0
 text = "Launch"
+
 [connection signal="pressed" from="VBoxContainer/Button" to="." method="_on_Button_pressed"]
