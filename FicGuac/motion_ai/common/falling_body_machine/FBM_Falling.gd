@@ -53,6 +53,9 @@ func _after_update(delta) -> void:
              # actually move at all!
     )
     
+    # Let's assume we're moving downward. Add that to the projected movement.
+    MR._projected_movement += Vector3(0, -KC.fall_speed, 0)
+    
     # Now that we've queried the world, we have several possibilities we need
     # to check out. First, what if we didn't get a collision at all?
     if not collision:
@@ -62,5 +65,8 @@ func _after_update(delta) -> void:
     # Alternatively, we actually managed to find the floor. If it's in the right
     # range for our floating...
     elif collision.travel.length() <= KC.MINIMUM_FALL_HEIGHT + KC.float_height:
-        # Then we're not falling anymore. Transition to the OnGround State.
+        # Then we're not falling anymore, extract out the projected movement we
+        # just added.
+        MR._projected_movement -= Vector3(0, -KC.fall_speed, 0)
+        # Transition to the OnGround State.
         change_state("OnGround")

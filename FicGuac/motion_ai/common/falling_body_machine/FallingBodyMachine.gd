@@ -16,6 +16,11 @@ var _curr_orient = Vector3.ZERO
 # animation purposes, but also used for debugging.
 var state_key = ""
 
+# The projected movement is how far we THINK we'll go in a strictly defined
+# period of time. This helps us prefrome move-to-intercept actions on any
+# implementing body much easier.
+var _projected_movement = Vector3.ZERO
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Godot Processing - _ready, _process, etc.
@@ -38,9 +43,12 @@ func _ready():
     # Also, we need a KinematicCore
     assert(kinematic_core_node != null, "A KinematicCore node is required!")
 
-    # Change the default state to "Idle"
-    change_state("OnGround")
-    
-    # Force call the idle state's _on_enter since that doesn't seem to work for
-    # default states.
-    $OnGround._on_enter(null)
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Extended State Machine Functions
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+func _on_update(_delta) -> void:
+    # Default the projected movement to nothing. The child states will modify
+    # this one. It'll be the same for one cycle, then it will be reset. Neat!!!
+    _projected_movement = Vector3.ZERO
