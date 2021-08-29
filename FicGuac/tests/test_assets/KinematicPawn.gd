@@ -14,6 +14,9 @@ signal path_complete(pawn, position)
 # didn't work.
 signal error_goal_stuck(pawn, target_position)
 
+# Do we want to draw a line showing our projected movement vector?
+export(bool) var draw_projected_movement = false
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Godot Processing - _ready, _process, etc.
@@ -21,6 +24,15 @@ signal error_goal_stuck(pawn, target_position)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 func _process(delta):
     sprite_update()
+    
+    # If we're drawing the projected movement...
+    if draw_projected_movement:
+        var debug_draw = get_node("/root/DebugDraw")
+        debug_draw.draw_ray_3d(
+            self.global_transform.origin,
+            $KinematicDriverMachine._projected_movement, 1,
+            Color.crimson
+        )
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #

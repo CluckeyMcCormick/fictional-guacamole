@@ -8,6 +8,8 @@
 
 [node name="KinematicDriverMachine" type="Node"]
 script = ExtResource( 5 )
+fsm_owner = null
+animation_player = null
 
 [node name="OnGround" type="Node" parent="."]
 script = ExtResource( 2 )
@@ -21,10 +23,10 @@ animation_player = null
 
 [node name="Walk" type="Node" parent="OnGround"]
 script = ExtResource( 1 )
+fsm_owner = null
+animation_player = null
 
 [node name="Falling" type="Node" parent="."]
 script = ExtResource( 4 )
-disabled = false
-has_regions = false
 fsm_owner = null
 animation_player = null

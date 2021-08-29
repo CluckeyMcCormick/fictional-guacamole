@@ -195,6 +195,7 @@ navigation = NodePath("../Navigation")
 [node name="TargetPawn" parent="." instance=ExtResource( 5 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 2, 1.3, 0 )
 navigation = NodePath("../Navigation")
+draw_projected_movement = true
 
 [connection signal="value_changed" from="ControlGUI/RadiusSlider" to="." method="_on_RadiusSlider_value_changed"]
 [connection signal="pressed" from="ControlGUI/AttackGoButton" to="." method="_on_AttackGoButton_pressed"]

@@ -18,6 +18,7 @@ func _process(delta):
     if animation_demanded != "":
         return
     sprite_update()
+    
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #

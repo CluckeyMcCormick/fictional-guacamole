@@ -51,6 +51,11 @@ var target_path = []
 # animation purposes, but also used for debugging.
 var state_key = ""
 
+# The projected movement is how far we THINK we'll go in a strictly defined
+# period of time. This helps us prefrome move-to-intercept actions on any
+# implementing body much easier.
+var _projected_movement = Vector3.ZERO
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Godot Processing - _ready, _process, etc.
@@ -94,3 +99,13 @@ func move_to_point(to_point : Vector3):
 func clear_pathing():
     self.target_path = []
     self.target_position = null
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+#
+# Extended State Machine Functions
+#
+# ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+func _on_update(_delta) -> void:
+    # Default the projected movement to nothing. The child states will modify
+    # this one. It'll be the same for one cycle, then it will be reset. Neat!!!
+    _projected_movement = Vector3.ZERO
