@@ -204,6 +204,10 @@ config/name="FicGuac"
 run/main_scene="res://tests/test_gui_core/TestShell.tscn"
 config/icon="res://icon.png"
 
+[autoload]
+
+DebugDraw="*res://addons/zylann.debug_draw/debug_draw.gd"
+
 [debug]
 
 settings/stdout/print_fps=true
