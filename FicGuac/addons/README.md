@@ -17,6 +17,14 @@ I used to use the *Valve Hammer Editor* (generally just called *Hammer*) to make
 
 A quick note - in order to build the `QodotMap` nodes, you need to specify the FULL file path in each scene. So you'll need to change that if you're trying to rebuild scenes or something.
 
+## Todot
+We were using a text file to keep track of our to do list but this suffered from SEVERE disconnects with what we were actually doing in the project. Plus, I kept losing track of what my current micro-task was.
+
+This addon, by **GarysTrousers**, adds a to-do list widget into the Godot editor. It's feature-rich enough and helps keep us on-task.
+
+## Debug Draw
+Sometimes, we just need to display some sort of visual information. A label on the screen, or a box, or a line. This Debug Draw script by **Marc Gilleron** allows to do just that. It's a bit limited in scope - it can only do text, boxes, or lines. Other than that it works well enough.
+
 ## XSM Extended State Machine
 This library, created by **Etienne Blanc**, provides us with a solid foundation for making a state machine in Godot. It provides a pretty solid basis and, better yet, it's written entirely in GDScript - that means it should be compatible with all platforms and with Godot 4.0.
 
