@@ -162,7 +162,7 @@ func _after_update(delta) -> void:
             # signal could change the variable out from under us.
             MR.emit_signal("path_complete", pos_save)
     # OTHERWISE...
-    else:
+    elif MR.target_position != null:
         # Let's predict how far we WILL move. First, get the move speed.
         var move_speed = KC.fallback_move_speed
         # How far are we from our target position?

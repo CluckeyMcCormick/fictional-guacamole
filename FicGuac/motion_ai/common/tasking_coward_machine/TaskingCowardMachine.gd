@@ -73,6 +73,11 @@ var attitude_hint = "neutral"
 # be played.
 var demand_key = ""
 
+# The projected movement is how far we THINK we'll go in a strictly defined
+# period of time. This helps us prefrome move-to-intercept actions on any
+# implementing body much easier.
+var _projected_movement = Vector3.ZERO
+
 # Okay, so the machine can get stuck in a chicken-and-egg situation with regards
 # to configuration. The children states require access to several
 # variables/nodes that SHOULD be setup in the _ready function of this script.

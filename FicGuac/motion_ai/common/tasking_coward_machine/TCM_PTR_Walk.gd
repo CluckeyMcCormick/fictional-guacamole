@@ -192,3 +192,17 @@ func _after_update(delta) -> void:
             # It's important we do it this way, since anything receiving the
             # signal could change the variable out from under us.
             PTR.emit_signal("path_complete", pos_save)
+    
+    # OTHERWISE...
+    elif PTR._target_position != null:
+        # Let's predict how far we WILL move. First, get the move speed.
+        var move_speed = KC.fallback_move_speed
+        # How far are we from our target position?
+        var distance_to = PTR._target_position - LIC.get_adjusted_position(itgr_body)
+        # Normally we'd remove the y vector-value, but we're going to keep it
+        # juust in case it leads to more accurate pathing.
+        
+        # Normalizing the distnace vector boils it down to a direction, which we
+        # then multiply by the move speed. We can then add this in to the
+        # projected move speed.
+        MR._projected_movement += distance_to.normalized() * move_speed

@@ -12,6 +12,9 @@ const FALL_TIMER_NAME = "FallDelay"
 # Is that fall timer currently active?
 var fall_timer_active = false
 
+# Is the integrating body currently considered to be on the floor?
+var _on_floor
+
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
 # Extended State Machine Functions
@@ -36,9 +39,8 @@ func _on_update(delta) -> void:
     # Did we get a collision result from our most recent move attempt?
     var collision = null
     
-    # Are we on the floor? If not, we're gonna have to do some processing at the
-    # end of this.
-    var on_floor = false
+    # We're just going to assume we're not on the floor.
+    _on_floor = false
     
     # Do a fake move downward just to determine if we're on the ground. How we
     # do that changes depending on whether or not we have a floor raycast
@@ -55,15 +57,15 @@ func _on_update(delta) -> void:
     # Now that we've queried the world, we have several possibilities we need
     # to check out. First, what if we didn't get a collision at all?
     if not collision:
-        on_floor = false
+        _on_floor = false
     # Alternatively, we actually managed to find the floor - but what if it's
     # outside our minimum fall height (and our floating offset)?
     elif collision.travel.length() >= KC.MINIMUM_FALL_HEIGHT + KC.float_height:
-        on_floor = false
+        _on_floor = false
     # Otherwise
     else:
         # Okay, so we're definitely on what we would consider the floor now.
-        on_floor = true
+        _on_floor = true
         # Calculate the normal angle of whatever we hit - effectively, what's
         # the angle of the slope we just collided with? Credit to Jeremy Bullock
         # on YouTube for this monster (he seems to have deleted his channel)
@@ -72,7 +74,7 @@ func _on_update(delta) -> void:
         # climb, then we're on slippery slope and should be sliding down!
         if normal_angle > KC.max_slope_degrees:
             # Ergo, we ain't on the floor at all!
-            on_floor = false
+            _on_floor = false
         # Otherwise, we're on stable grounf. So, what if we're lower than the
         # height we're supposed to be floating at?
         elif collision.travel.length() < KC.float_height:
@@ -82,7 +84,7 @@ func _on_update(delta) -> void:
             )
     
     # If we're on the floor
-    if on_floor:
+    if _on_floor:
         # ... oh! Huh. Guess we don't need that fall timer. Remove it if we have
         # it.
         if fall_timer_active:
@@ -111,6 +113,15 @@ func _on_update(delta) -> void:
         if not fall_timer_active:
             self.add_timer(FALL_TIMER_NAME, KC.fall_state_delay_time)
             fall_timer_active = true
+
+func _after_update(_delta) -> void:
+    # Get our KinematicCore
+    var KC = MR.kinematic_core_node
+    # If we're NOT on the floor...
+    if not _on_floor:
+        # Then let's assume we're moving downward. Add that to the projected
+        # movement.
+        MR._projected_movement += Vector3(0, -KC.fall_speed, 0)
 
 func _on_timeout(name) -> void:
     # If the timer ends, then items time to start falling!
