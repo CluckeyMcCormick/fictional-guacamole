@@ -22,7 +22,8 @@ export(bool) var damage_floats = true
 # The object's current hitpoints, after damage and the like.
 var curr_hp = base_hp
 # Have our hitpoints dipped below zero? Are we dead? Yes, we even consider items
-# and structures to be "dead".
+# and structures to be "dead". Dead is, generally, considered and unrecoverable
+# state.
 var dead = false
 
 # This signal indicates that we've lost all our hitpoints 
