@@ -7,6 +7,9 @@ We have a special class of shaders, known as the *Viewport Shaders*, that use `V
 ## Text Spritesheets
 This directory stores our text spritesheets - we use these for non-gui text elements. Stuff that exists out in the world.
 
+## Particles
+This directory contains the different `ParticlesMaterial` assets, and other assets relating to those Materials - particle sprite textures, and the like.
+
 ## Hiding Mesh
 The *Hiding Mesh* is a mesh that shows and hides itself depending on whether it can be "seen" by the camera. Rather than using a `VisibilityNotifier` node to track this, the *Hiding Mesh* uses physics raycasts to a dedicated camera node. This is a bit messy since it meshes visual and physical components but it's the best way to track occlusion (as opposed to whatever heuristic `VisibilityNotifier` uses).
 

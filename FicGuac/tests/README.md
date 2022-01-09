@@ -47,3 +47,6 @@ This test tries out some very basic item pick-up, moving, and dropping. It only 
 
 ## Advanced Item Test
 An improved version of the Basic Item Test. Features an actual item testing arena - with walls. Spawns the items on demand and moves them to a random location. Some items are purposefully spawned out of reach, to test failure state resolution. Also ensures we don't try to grab items through walls.
+
+## Particle Zoo Test
+Particle effects are an efficient way of rendering certain phenomenon - even if they can hurt performance. The purposes of this test is two-fold: to test the performance impact of having many particle effects on screen at once, and to observe how the particle effects behave/appear when in motion.

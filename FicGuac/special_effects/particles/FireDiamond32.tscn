@@ -1,0 +1,54 @@
+[gd_scene load_steps=9 format=2]
+
+[ext_resource path="res://special_effects/particles/diamond32.png" type="Texture" id=1]
+
+[sub_resource type="SpatialMaterial" id=6]
+flags_transparent = true
+flags_unshaded = true
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_texture = ExtResource( 1 )
+
+[sub_resource type="Gradient" id=7]
+offsets = PoolRealArray( 0, 0.25, 0.5, 0.75, 1 )
+colors = PoolColorArray( 0.976471, 0.760784, 0.168627, 1, 0.968627, 0.588235, 0.0901961, 1, 0.984314, 0.419608, 0.113725, 1, 0.909804, 0.231373, 0.231373, 1, 0.909804, 0.231373, 0.231373, 1 )
+
+[sub_resource type="GradientTexture" id=8]
+gradient = SubResource( 7 )
+
+[sub_resource type="Curve" id=4]
+_data = [ Vector2( 0, 1 ), 0.0, -0.0248847, 0, 0, Vector2( 1, 0 ), -3.28593, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=5]
+curve = SubResource( 4 )
+
+[sub_resource type="ParticlesMaterial" id=3]
+lifetime_randomness = 1.0
+emission_shape = 2
+emission_box_extents = Vector3( 1, 1, 1 )
+direction = Vector3( 0, 1, 0 )
+spread = 0.0
+gravity = Vector3( 0, 9.8, 0 )
+initial_velocity = 0.01
+initial_velocity_random = 1.0
+scale_random = 1.0
+scale_curve = SubResource( 5 )
+color_ramp = SubResource( 8 )
+
+[sub_resource type="QuadMesh" id=2]
+size = Vector2( 0.25, 0.25 )
+
+[node name="FireDiamond32" type="Particles"]
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0.367, 0 )
+layers = 16
+material_override = SubResource( 6 )
+amount = 100
+lifetime = 0.72
+visibility_aabb = AABB( -1.24985, -1.85, -1.24988, 2.49982, 9.38271, 2.49982 )
+local_coords = false
+process_material = SubResource( 3 )
+draw_pass_1 = SubResource( 2 )

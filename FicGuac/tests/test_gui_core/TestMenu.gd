@@ -9,7 +9,8 @@ var scene_paths = {
     "Rat Emulation Test" : "res://tests/RatEmulationTest.tscn",
     "Basic Item Test" : "res://tests/BasicItemTest.tscn",
     "Advanced Item Test" : "res://tests/AdvancedItemTest.tscn",
-    "Attack Model Test" : "res://tests/AttackModelTest.tscn"
+    "Attack Model Test" : "res://tests/AttackModelTest.tscn",
+    "Particle Zoo Test" : "res://tests/ParticleZooTest.tscn",
 }
 
 # Signal emitted whenever this menu chooses a scene. Provides the resource path
