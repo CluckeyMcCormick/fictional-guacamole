@@ -163,6 +163,7 @@ Wherever possible, scenes are stored together with their assets. This is *Godot'
 ### Addons
 Any *Godot* addons - other people's code and assets distributed through the *Godot Asset Library* - go here.
 
+
 ### Buildings
 The buildings in this game are fairly complex - most are glued together using assets that are procedurally generated at runtime. In recognition of this complexity, they've been given their own directory.
 
@@ -199,3 +200,15 @@ This is where *most* of the textures sit - not all of them, but most of them. Th
 
 ### Util
 The contents of this directory are meant for debugging or otherwise enhancing other scenes. It's best to see this as a toolbox that other scenes draw from.
+
+
+## `Manifest.gd`
+For certain reasons, we may need global lists - say, a list of all the different NPCs in the game, or a list of all the currently available scenarios. These may need to be modified by incoming mods. To improve modability, we keep this manifest - this list of lists - that is globally available. That way, a change in one of the lists here will propagate throughout the entire game.
+
+### (Public) Variables
+
+##### `TEST_SCENES`
+A dictionary of all the different test scenes, with "proper" (human-readable) names for keys.
+
+##### `PARTICLE_MATERIALS`
+A dictionary of all the different particle materials, with "proper" (human-readable) names for keys.

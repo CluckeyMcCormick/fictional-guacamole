@@ -207,6 +207,7 @@ config/icon="res://icon.png"
 [autoload]
 
 DebugDraw="*res://addons/zylann.debug_draw/debug_draw.gd"
+Manifest="*res://Manifest.gd"
 
 [debug]
 

@@ -1,17 +1,7 @@
 extends Control
 
-var scene_paths = {
-    "Pawn Standing Test" : "res://tests/PawnStandingTest.tscn",
-    "Cubit Driver Test" : "res://tests/CubitDriverTest.tscn",
-    "Viewport Shader Test" : "res://tests/ViewportShaderTest.tscn",
-    "Dynamic Navigation Mesh Test" : "res://tests/DynamicNavMeshTest.tscn",
-    "Advanced Kinematics Test" : "res://tests/AdvancedKinematicTest.tscn",
-    "Rat Emulation Test" : "res://tests/RatEmulationTest.tscn",
-    "Basic Item Test" : "res://tests/BasicItemTest.tscn",
-    "Advanced Item Test" : "res://tests/AdvancedItemTest.tscn",
-    "Attack Model Test" : "res://tests/AttackModelTest.tscn",
-    "Particle Zoo Test" : "res://tests/ParticleZooTest.tscn",
-}
+# Our global manifest node that holds all of the tests paths in a dictionary.
+onready var MANIFEST = get_node("/root/Manifest")
 
 # Signal emitted whenever this menu chooses a scene. Provides the resource path
 # and the formatted human-readable name
@@ -23,7 +13,7 @@ var disabled = true setget set_disabled
 
 func _ready():
     # We need to update the Item List using our scene paths above
-    for test_name in scene_paths.keys():
+    for test_name in MANIFEST.TEST_SCENES.keys():
         $VBoxContainer/ItemList.add_item(test_name)
 
 func _on_Button_pressed():
@@ -44,7 +34,7 @@ func _on_Button_pressed():
     
     # Now that we have a key, we can translate that into a resource path. Nab
     # that and emit it.
-    emit_signal("scene_chosen", scene_paths[selected], selected)
+    emit_signal("scene_chosen", MANIFEST.TEST_SCENES[selected], selected)
 
 # Set the disabled status for this scene.
 func set_disabled(new_bool):
