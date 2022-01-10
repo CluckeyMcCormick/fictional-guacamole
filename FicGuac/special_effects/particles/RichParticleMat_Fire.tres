@@ -1,4 +1,7 @@
-[gd_resource type="ParticlesMaterial" load_steps=5 format=2]
+[gd_resource type="ParticlesMaterial" load_steps=9 format=2]
+
+[ext_resource path="res://special_effects/particles/RichParticleMaterial.gd" type="Script" id=1]
+[ext_resource path="res://special_effects/particles/diamond32.png" type="Texture" id=2]
 
 [sub_resource type="Gradient" id=7]
 offsets = PoolRealArray( 0, 0.25, 0.5, 0.75, 1 )
@@ -6,6 +9,20 @@ colors = PoolColorArray( 0.976471, 0.760784, 0.168627, 1, 0.968627, 0.588235, 0.
 
 [sub_resource type="GradientTexture" id=8]
 gradient = SubResource( 7 )
+
+[sub_resource type="QuadMesh" id=9]
+size = Vector2( 0.35, 0.35 )
+
+[sub_resource type="SpatialMaterial" id=6]
+flags_transparent = true
+flags_unshaded = true
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_texture = ExtResource( 2 )
 
 [sub_resource type="Curve" id=4]
 _data = [ Vector2( 0, 1 ), 0.0, -0.0248847, 0, 0, Vector2( 1, 0 ), -3.28593, 0.0, 0, 0 ]
@@ -25,3 +42,8 @@ initial_velocity_random = 1.0
 scale_random = 1.0
 scale_curve = SubResource( 5 )
 color_ramp = SubResource( 8 )
+script = ExtResource( 1 )
+particle_density = 60.0
+recommended_lifetime = 0.7
+override_material = SubResource( 6 )
+mesh_passes = [ SubResource( 9 ) ]

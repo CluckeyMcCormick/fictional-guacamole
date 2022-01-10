@@ -24,6 +24,6 @@ var TEST_SCENES = {
 
 # Different particle materials
 var PARTICLE_MATERIALS = {
-    "Fire, Diamond32" : "res://special_effects/particles/FireDiamond32_mat.tres",
-    "Poison, Bubble32" : "res://special_effects/particles/PoisonBubble32_mat.tres",
+    "Fire, Diamond32" : "res://special_effects/particles/RichParticleMat_Fire.tres",
+    "Poison, Bubble32" : "res://special_effects/particles/RichParticleMat_Poison.tres",
 }

@@ -1,7 +1,7 @@
 [gd_scene load_steps=5 format=2]
 
 [ext_resource path="res://special_effects/particles/diamond32.png" type="Texture" id=1]
-[ext_resource path="res://special_effects/particles/FireDiamond32_mat.tres" type="Material" id=2]
+[ext_resource path="res://special_effects/particles/RichParticleMat_Fire.tres" type="Material" id=2]
 
 [sub_resource type="SpatialMaterial" id=6]
 flags_transparent = true
@@ -18,7 +18,7 @@ albedo_texture = ExtResource( 1 )
 size = Vector2( 0.35, 0.35 )
 
 [node name="FireDiamond32" type="Particles"]
-transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0.367, 0 )
+transform = Transform( 0.25, 0, 0, 0, 0.25, 0, 0, 0, 0.25, 0, 0, 0 )
 layers = 16
 material_override = SubResource( 6 )
 amount = 60
