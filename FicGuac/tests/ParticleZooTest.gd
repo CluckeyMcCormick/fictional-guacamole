@@ -16,12 +16,10 @@ var z = START_VALUE
 # Called when the node enters the scene tree for the first time.
 func _ready():
     $RPE1.set_rich_material(FIRE_DIAMOND)
-    $RPE1.scale_emitter(Vector3(2, 1, 2))
+    $RPE1.scale_emitter(Vector3(2, .25, 2))
 
     $RPE2.set_rich_material(FIRE_DIAMOND)
-    $RPE2.scale_emitter(Vector3(.25, 1, .25))
-    pass # Replace with function body.
-
+    $RPE2.scale_emitter(Vector3(1.5, 1, 1.5))
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 #func _process(delta):
@@ -70,3 +68,17 @@ func _on_Tween_tween_completed(object, key):
         _:
             print("Bad +-> ", str(key))
     $Tween.start()
+
+func _on_CameraSwitchTimer_timeout():
+    if $IsoCamera.current:
+        $IsoCamera.current = false
+        $ZCamera.current = true
+        $XCamera.current = false
+    elif $ZCamera.current:
+        $IsoCamera.current = false
+        $ZCamera.current = false
+        $XCamera.current = true
+    elif $XCamera.current:
+        $IsoCamera.current = true
+        $ZCamera.current = false
+        $XCamera.current = false

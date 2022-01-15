@@ -9,15 +9,30 @@ const MINI_Y_ANGLE_DEG = 270
 func _process(delta):
     var dd = get_node("/root/DebugDraw")
     dd.draw_box(
-        self.global_transform.origin - (self.visibility_aabb.size / 2),
-        self.visibility_aabb.size,
+        self.global_transform.origin - ((self.visibility_aabb.size * self.scale) / 2),
+        self.visibility_aabb.size * self.scale,
         Color.dodgerblue
+    )
+    dd.draw_box(
+        self.global_transform.origin - (self.process_material.emission_box_extents / 2),
+        self.process_material.emission_box_extents,
+        Color.springgreen
+    )
+    dd.draw_box(
+        self.global_transform.origin - ((self.process_material.emission_box_extents * self.scale) / 2),
+        self.process_material.emission_box_extents * self.scale,
+        Color.crimson
     )
 
 func set_rich_material(new_rich_mat : ParticlesMaterial):
     # Used to count the number of passes (drawn meshes). Saves us from having to
     # manually set the pass count.
     var pass_count = 0
+    # Used to verify each draw pass
+    var draws = [
+        new_rich_mat.pass_1, new_rich_mat.pass_2,
+        new_rich_mat.pass_3, new_rich_mat.pass_4
+    ]
     
     # Ensure this material is a Rich Particle Material
     if new_rich_mat.get("particle_density") == null:
@@ -36,10 +51,24 @@ func set_rich_material(new_rich_mat : ParticlesMaterial):
             printerr("Invalid Rich Particles EmissionShape: ", new_rich_mat.emission_shape)
             return
     
+    for d in draws:
+        if d == null:
+            continue
+        if d is QuadMesh:
+            continue
+        elif d is CubeMesh:
+            continue
+        else:
+            printerr("Only QuadMesh and CubeMesh are supported draw types")
+            return
+    
     # Alright, set the basic stuff.
     self.process_material = new_rich_mat
     self.lifetime = new_rich_mat.recommended_lifetime
     self.material_override = new_rich_mat.override_material
+    
+    # Default the number of draw passes
+    self.draw_passes = 4
     
     # Now we need to set the passes. First, we'll just move over all of the
     # passes.
@@ -59,7 +88,7 @@ func set_rich_material(new_rich_mat : ParticlesMaterial):
     if self.draw_pass_4 != null:
         pass_count += 1
     
-    # Set that pass count
+    # Set the ACTUAL pass count
     self.draw_passes = pass_count
     
     # Okay, the particle count and AABB need to be set with the scale, so we're
@@ -73,6 +102,22 @@ func scale_emitter(new_scale : Vector3):
     if self.process_material.get("particle_density") == null:
         printerr("Current process material is not a Rich Particle Material!!!")
         return
+    # Used to verify each draw pass
+    var draws = [
+        self.process_material.pass_1, self.process_material.pass_2,
+        self.process_material.pass_3, self.process_material.pass_4
+    ]
+
+    for d in draws:
+        if d == null:
+            continue
+        if d is QuadMesh:
+            continue
+        elif d is CubeMesh:
+            continue
+        else:
+            printerr("Only QuadMesh and CubeMesh are supported draw types")
+            return
     
     # First, we need to determine the maximum possible length required for the
     # spawn box. 
@@ -95,8 +140,6 @@ func scale_emitter(new_scale : Vector3):
     var xz = Vector2.ZERO
     var zy = Vector2.ZERO
 
-    var particle_scale = max( max(new_scale.x, new_scale.z), 1)
-
     # Temp variable - we'll need this.
     var temp
     
@@ -116,33 +159,54 @@ func scale_emitter(new_scale : Vector3):
             spawn_len_x = 0
             spawn_len_y = 0
             spawn_len_z = 0
+            self.amount = self.process_material.particle_density
         # If we're emitting in a sphere-shape, then the length for each is the
         # diameter of the sphere.
         ParticlesMaterial.EMISSION_SHAPE_SPHERE:
-            spawn_len_x = self.process_material.emission_sphere_radius * 2
-            spawn_len_y = self.process_material.emission_sphere_radius * 2
-            spawn_len_z = self.process_material.emission_sphere_radius * 2
+            # Grab the radius
+            temp = self.process_material.emission_sphere_radius
+            # Set the spawn lengths
+            spawn_len_x = self.temp
+            spawn_len_y = self.temp
+            spawn_len_z = self.temp
+            # Now, apply the new scale-factor to each length
+            spawn_len_x *= new_scale.x
+            spawn_len_y *= new_scale.y
+            spawn_len_z *= new_scale.z
+            # Now, calculate the volume
+            temp = (4/3) * PI * spawn_len_x * spawn_len_y * spawn_len_z
+            # The amount of particles to spawn is the density times the volume
+            self.amount = int(temp * self.process_material.particle_density)
+            # Finally, double the spawn lengths (since we want the diameters)
+            spawn_len_x *= 2
+            spawn_len_y *= 2
+            spawn_len_z *= 2
         # If we're emitting in a box-shape, then grab the length for each side
         # of the box.
         ParticlesMaterial.EMISSION_SHAPE_BOX:
-            spawn_len_x = self.process_material.emission_box_extents.x
-            spawn_len_y = self.process_material.emission_box_extents.y
-            spawn_len_z = self.process_material.emission_box_extents.z
+            # Set the spawn lengths - * 2 because these are EXTENTS, not sizes
+            spawn_len_x = self.process_material.emission_box_extents.x * 2
+            spawn_len_y = self.process_material.emission_box_extents.y * 2
+            spawn_len_z = self.process_material.emission_box_extents.z * 2
+            # Now, apply the new scale-factor to each length
+            spawn_len_x *= new_scale.x
+            spawn_len_y *= new_scale.y
+            spawn_len_z *= new_scale.z
+            # Calculate the volume
+            temp = spawn_len_x * spawn_len_y * spawn_len_z
+            # The amount of particles to spawn is the density times the volume
+            self.amount = int(temp * self.process_material.particle_density)
+            
         _:
             printerr("Invalid Rich Particles EmissionShape: ", self.process_material.emission_shape)
             return
     
-    # Now, apply the new scale-factor to each length
-    spawn_len_x *= new_scale.x
-    spawn_len_y *= new_scale.y
-    spawn_len_z *= new_scale.z
-    
     # Now, technically, the max we can over-extend on a side is by half of the
     # size hint. However, since we'd do that at both sides, that adds up to the
     # whole of the size hint. Ergo, we just add in the size hint. Easy!
-    spawn_len_x += self.process_material.particle_size_hint.x * particle_scale
-    spawn_len_y += self.process_material.particle_size_hint.y * particle_scale
-    spawn_len_z += self.process_material.particle_size_hint.z * particle_scale
+    spawn_len_x += self.process_material.particle_size_hint.x / new_scale.x
+    spawn_len_y += self.process_material.particle_size_hint.y / new_scale.y
+    spawn_len_z += self.process_material.particle_size_hint.z / new_scale.z
     
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     #
@@ -246,6 +310,67 @@ func scale_emitter(new_scale : Vector3):
     self.visibility_aabb.end.y = max_y
     self.visibility_aabb.end.z = max_z
     
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    #
+    # Step 5: DrawPass Mesh Adjustments
+    #
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    if self.process_material.pass_1 != null:
+        if self.process_material.pass_1 is QuadMesh:
+            self.draw_pass_1 = QuadMesh.new()
+            draw_pass_1.size.x = process_material.pass_1.size.x / new_scale.x
+            draw_pass_1.size.y = draw_pass_1.size.x
+        elif self.process_material.pass_1 is CubeMesh:
+            self.draw_pass_1 = CubeMesh.new()
+            draw_pass_1.size.x = process_material.pass_1.size.x / new_scale.x
+            draw_pass_1.size.y = process_material.pass_1.size.y / new_scale.y
+            draw_pass_1.size.z = process_material.pass_1.size.z / new_scale.z
+        else:
+            printerr("Only QuadMesh and CubeMesh are supported draw types")
+            return
+
+    if self.process_material.pass_2 != null:
+        if self.process_material.pass_2 is QuadMesh:
+            self.draw_pass_2 = QuadMesh.new()
+            draw_pass_2.size.x = process_material.pass_2.size.x / new_scale.x
+            draw_pass_2.size.y = draw_pass_2.size.x
+        elif self.process_material.pass_2 is CubeMesh:
+            self.draw_pass_2 = CubeMesh.new()
+            draw_pass_2.size.x = process_material.pass_2.size.x / new_scale.x
+            draw_pass_2.size.y = process_material.pass_2.size.y / new_scale.y
+            draw_pass_2.size.z = process_material.pass_2.size.z / new_scale.z
+        else:
+            printerr("Only QuadMesh and CubeMesh are supported draw types")
+            return
+
+    if self.process_material.pass_3 != null:
+        if self.process_material.pass_3 is QuadMesh:
+            self.draw_pass_3 = QuadMesh.new()
+            draw_pass_3.size.x = process_material.pass_3.size.x / new_scale.x
+            draw_pass_3.size.y = draw_pass_3.size.x
+        elif self.process_material.pass_3 is CubeMesh:
+            self.draw_pass_3 = CubeMesh.new()
+            draw_pass_3.size.x = process_material.pass_3.size.x / new_scale.x
+            draw_pass_3.size.y = process_material.pass_3.size.y / new_scale.y
+            draw_pass_3.size.z = process_material.pass_3.size.z / new_scale.z
+        else:
+            printerr("Only QuadMesh and CubeMesh are supported draw types")
+            return
+            
+    if self.process_material.pass_4 != null:
+        if self.process_material.pass_4 is QuadMesh:
+            self.draw_pass_4 = QuadMesh.new()
+            draw_pass_4.size.x = process_material.pass_4.size.x / new_scale.x
+            draw_pass_4.size.y = draw_pass_4.size.x
+        elif self.process_material.pass_4 is CubeMesh:
+            self.draw_pass_4 = CubeMesh.new()
+            draw_pass_4.size.x = process_material.pass_4.size.x / new_scale.x
+            draw_pass_4.size.y = process_material.pass_4.size.y / new_scale.y
+            draw_pass_4.size.z = process_material.pass_4.size.z / new_scale.z
+        else:
+            printerr("Only QuadMesh and CubeMesh are supported draw types")
+            return
+
     self.scale = new_scale
 
 func displacement(unit_weight : float, scale : float, gravity : float):
