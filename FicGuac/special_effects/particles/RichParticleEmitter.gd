@@ -1,0 +1,423 @@
+extends Particles
+
+const MAXI_X_ANGLE_DEG = 0
+const MINI_X_ANGLE_DEG = 180
+const MAXI_Y_ANGLE_DEG = 90
+const MINI_Y_ANGLE_DEG = 270
+
+# Called every frame. 'delta' is the elapsed time since the previous frame.
+func _process(delta):
+    var dd = get_node("/root/DebugDraw")
+    dd.draw_box(
+        self.global_transform.origin - (self.visibility_aabb.size / 2),
+        self.visibility_aabb.size,
+        Color.dodgerblue
+    )
+
+func set_rich_material(new_rich_mat : ParticlesMaterial):
+    # Used to count the number of passes (drawn meshes). Saves us from having to
+    # manually set the pass count.
+    var pass_count = 0
+    
+    # Ensure this material is a Rich Particle Material
+    if new_rich_mat.get("particle_density") == null:
+        printerr("Provided material is not a Rich Particle Material!!!")
+        return
+    
+    # Ensure this rich particle material is one of our "valid" shapes
+    match new_rich_mat.emission_shape:
+        ParticlesMaterial.EMISSION_SHAPE_POINT:
+            pass
+        ParticlesMaterial.EMISSION_SHAPE_SPHERE:
+            pass
+        ParticlesMaterial.EMISSION_SHAPE_BOX:
+            pass
+        _:
+            printerr("Invalid Rich Particles EmissionShape: ", new_rich_mat.emission_shape)
+            return
+    
+    # Alright, set the basic stuff.
+    self.process_material = new_rich_mat
+    self.lifetime = new_rich_mat.recommended_lifetime
+    self.material_override = new_rich_mat.override_material
+    
+    # Now we need to set the passes. First, we'll just move over all of the
+    # passes.
+    self.draw_pass_1 = new_rich_mat.pass_1
+    self.draw_pass_2 = new_rich_mat.pass_2
+    self.draw_pass_3 = new_rich_mat.pass_3
+    self.draw_pass_4 = new_rich_mat.pass_4
+    
+    # Now we'll count out how many of those AREN'T null and, thus, our pass
+    # count!
+    if self.draw_pass_1 != null:
+        pass_count += 1
+    if self.draw_pass_2 != null:
+        pass_count += 1
+    if self.draw_pass_3 != null:
+        pass_count += 1
+    if self.draw_pass_4 != null:
+        pass_count += 1
+    
+    # Set that pass count
+    self.draw_passes = pass_count
+    
+    # Okay, the particle count and AABB need to be set with the scale, so we're
+    # all done here.
+    
+func scale_emitter(new_scale : Vector3):
+    # Verification
+    if self.process_material == null:
+        printerr("No process material to scale with!!!")
+        return
+    if self.process_material.get("particle_density") == null:
+        printerr("Current process material is not a Rich Particle Material!!!")
+        return
+    
+    # First, we need to determine the maximum possible length required for the
+    # spawn box. 
+    var spawn_len_x
+    var spawn_len_y
+    var spawn_len_z
+
+    # Then we'll need to determine how far the particles can make it once
+    # they've started spawning. We need to do this for each axis on each
+    # direction - hence "max" is positive and "min" is negative.
+    var max_x
+    var min_x
+    var max_y
+    var min_y
+    var max_z
+    var min_z
+
+    # We'll use these to calculate emission ranges on a given axis.
+    var xy = Vector2.ZERO
+    var xz = Vector2.ZERO
+    var zy = Vector2.ZERO
+
+    var particle_scale = max( max(new_scale.x, new_scale.z), 1)
+
+    # Temp variable - we'll need this.
+    var temp
+    
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    #
+    # Step 1: Calculate spawn box
+    #
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    # Okay, first we're gonna start with the spawn stuff, which is actually
+    # pretty easy. All we need to do is take the right value, depending on our
+    # emission shape.
+    match self.process_material.emission_shape:
+        # If we're emitting from a single point, then there's nothing we need to
+        # do here.
+        ParticlesMaterial.EMISSION_SHAPE_POINT:
+            spawn_len_x = 0
+            spawn_len_y = 0
+            spawn_len_z = 0
+        # If we're emitting in a sphere-shape, then the length for each is the
+        # diameter of the sphere.
+        ParticlesMaterial.EMISSION_SHAPE_SPHERE:
+            spawn_len_x = self.process_material.emission_sphere_radius * 2
+            spawn_len_y = self.process_material.emission_sphere_radius * 2
+            spawn_len_z = self.process_material.emission_sphere_radius * 2
+        # If we're emitting in a box-shape, then grab the length for each side
+        # of the box.
+        ParticlesMaterial.EMISSION_SHAPE_BOX:
+            spawn_len_x = self.process_material.emission_box_extents.x
+            spawn_len_y = self.process_material.emission_box_extents.y
+            spawn_len_z = self.process_material.emission_box_extents.z
+        _:
+            printerr("Invalid Rich Particles EmissionShape: ", self.process_material.emission_shape)
+            return
+    
+    # Now, apply the new scale-factor to each length
+    spawn_len_x *= new_scale.x
+    spawn_len_y *= new_scale.y
+    spawn_len_z *= new_scale.z
+    
+    # Now, technically, the max we can over-extend on a side is by half of the
+    # size hint. However, since we'd do that at both sides, that adds up to the
+    # whole of the size hint. Ergo, we just add in the size hint. Easy!
+    spawn_len_x += self.process_material.particle_size_hint.x * particle_scale
+    spawn_len_y += self.process_material.particle_size_hint.y * particle_scale
+    spawn_len_z += self.process_material.particle_size_hint.z * particle_scale
+    
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    #
+    # Step 2: Calculate possible unit movement, per-axis per-direction
+    #
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # Right, get ready for some real trigonometric BS. We need to calculate how
+    # far a particle could possibly move on a given axis in either direction.
+    # Now, the easiest thing to assume is that a particle has full movement on
+    # an axis - think of a series of particles being shot out along each in each
+    # direction at maximum possible velocity and acceleration. However, that's
+    # not how things work - with the particle material's SPREAD value and
+    # DIRECTION vector, this gets tricky.
+    #
+    # See, the particles are "shot" in a given direction as specified by the
+    # DIRECTION unit vector. The SPREAD value specifies, in degrees, the
+    # plus-or-minus angle variance FROM THE DIRECTION. So, in order to calculate
+    # maximum or minimum possible distances on each axis, we need to calculate
+    # unit distances on each axis, in each direction.
+    # So, first, devolve the direction Vector3 in 3 Vector2 pairings.
+    xy.x = self.process_material.direction.x
+    xy.y = self.process_material.direction.y
+    xz.x = self.process_material.direction.x
+    xz.y = self.process_material.direction.z
+    zy.x = self.process_material.direction.z
+    zy.y = self.process_material.direction.y
+    
+    # Next, we'll calculate the maximum and minimum angles (the angles that get
+    # us the highest or lowest possible values from cos and sin) for each axis
+    # using the calculate_maxi_angles & calculate_mini_angles functions. We'll
+    # then take the output and "unitize" it by feeding it through either cosine
+    # or sine. Since each axis gets to go twice for both
+    # First up, X-Y
+    temp = calculate_maxi_angles(xy)
+    max_x = cos( deg2rad(temp.x) )
+    max_y = sin( deg2rad(temp.y) )
+    temp = calculate_mini_angles(xy)
+    min_x = cos( deg2rad(temp.x) )
+    min_y = sin( deg2rad(temp.y) )
+    # Next, X-Z
+    temp = calculate_maxi_angles(xz)
+    max_x = max( cos( deg2rad(temp.x) ), max_x)
+    max_z = sin( deg2rad(temp.y) )
+    temp = calculate_mini_angles(xz)
+    min_x = min( cos( deg2rad(temp.x) ), min_x)
+    min_z = sin( deg2rad(temp.y) )
+    # Finally, Z-Y
+    temp = calculate_maxi_angles(zy)
+    max_z = max( cos( deg2rad(temp.x) ), max_z)
+    max_y = max( sin( deg2rad(temp.y) ), max_y)
+    temp = calculate_mini_angles(zy)
+    min_z = min( cos( deg2rad(temp.x) ), min_z)
+    min_y = min( sin( deg2rad(temp.y) ), min_y)
+    
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    #
+    # Step 3: Calculate the maximum displacement in each direction on each
+    #         axis, given the calculated unit_weight, scale, and gravity.
+    #
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    # X
+    max_x = displacement(max_x, new_scale.x, self.process_material.gravity.x)
+    min_x = displacement(min_x, new_scale.x, self.process_material.gravity.x)
+    # Y
+    max_y = displacement(max_y, new_scale.y, self.process_material.gravity.y)
+    min_y = displacement(min_y, new_scale.y, self.process_material.gravity.y)
+    # Z
+    max_z = displacement(max_z, new_scale.z, self.process_material.gravity.z)
+    min_z = displacement(min_z, new_scale.z, self.process_material.gravity.z)
+    
+    # Now, the MAX values need to be the MAX possible, and the MIN values need
+    # to be the MIN possible - so we'll ensure that all MAX >= 0 & all MIN <= 0.
+    # X
+    max_x = max(max_x, 0)
+    min_x = min(min_x, 0)
+    # Y
+    max_y = max(max_y, 0)
+    max_y = min(max_y, 0)
+    # Z
+    max_z = max(max_z, 0)
+    min_z = min(min_z, 0)
+
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~
+    #
+    # Step 4: AABB Construction
+    #
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~
+    
+    # Add in the spawn lengths
+    max_x += spawn_len_x / 2
+    min_x -= spawn_len_x / 2
+    max_y += spawn_len_y / 2
+    min_y -= spawn_len_y / 2
+    max_z += spawn_len_z / 2
+    min_z -= spawn_len_z / 2
+    
+    self.visibility_aabb.position.x = min_x
+    self.visibility_aabb.position.y = min_y
+    self.visibility_aabb.position.z = min_z
+    self.visibility_aabb.end.x = max_x
+    self.visibility_aabb.end.y = max_y
+    self.visibility_aabb.end.z = max_z
+    
+    self.scale = new_scale
+
+func displacement(unit_weight : float, scale : float, gravity : float):
+    # Now we need to calculate how far a particle moves in a given time period.
+    # To do that, we'll need the displacement formula:
+    #
+    # s = (u * t) + (0.5 * a * (t^2))
+    #
+    # Where s = displacement, u = initial velocity, a = acceleration, & t = time
+    
+    # Of course, that's a whole lot messier with our unit vector and how scale
+    # interferes with velocity and and acceleration in Godot particles. Also
+    # damping should be here somewhere but I honestly can't crunch the math for
+    # that. Maybe sometime in the future.
+    
+    # Time is going to remain constant, so we need to calculate the acceleration
+    # and base velocity.
+    var acceleration
+    var base_velocity
+    var result = 0
+    
+    # First up - acceleration. Acceleration is equivalent to acceleration,
+    # scaled appropriately
+    acceleration = self.process_material.linear_accel
+    # So to it goes for the velocity too.
+    base_velocity = self.process_material.initial_velocity
+    
+    # First, start with the velocity
+    result = base_velocity * self.lifetime
+    # Next, add in the acceleration
+    result += 0.5 * acceleration * (pow(self.lifetime, 2))
+    # Apply the unit_weight
+    result *= unit_weight
+    
+    # Now, apply the gravity. Gravity ignores the weighting.
+    result += 0.5 * gravity * (pow(self.lifetime, 2))
+    
+    # Scale the result and return!
+    return result * scale
+
+func calculate_maxi_angles(unit : Vector2):
+    # First, we calculate the base angle. We want it to be between 0 & 360, so
+    # we add 360 and then modulus out that same 360.
+    var base_angle = fmod( rad2deg( unit.angle() ) + 360, 360 )
+    
+    # The spread is a plus-or-minus value, so add in and remove the spread from
+    # the base angle to calculate our angular extents
+    var spread_minus = base_angle - self.process_material.spread
+    var spread_plus = base_angle + self.process_material.spread
+    
+    # The smallest distance from the spread_minus & spread_plus angles to our
+    # target MAXI angles.
+    var minus_distance
+    var plus_distance
+    
+    # The return value; we'll pack in the ideal angles, in degrees, into the x
+    # and y.
+    var maxi_angles = Vector2.ZERO
+    
+    # First, we'll start with X. If MAXI_X_ANGLE_DEG degrees, our peak, is
+    # contained in our spread...
+    if (spread_minus <= MAXI_X_ANGLE_DEG) and (MAXI_X_ANGLE_DEG <= spread_plus):
+        # Then the answer is easy - it's MAXI_X_ANGLE_DEG degrees!
+        maxi_angles.x = MAXI_X_ANGLE_DEG
+    else:
+        # So if we didn't pass over MAXI_X_ANGLE_DEG degrees, then that means
+        # that one of our spread points must be the CLOSEST WE CAN POSSIBLY GET
+        # TO MAXI_X_ANGLE_DEG, since the two spread values represent our maximum
+        # extent. So, get the distance from each spread to MAXI_X_ANGLE_DEG.
+        # Pick the smallest value, going either direction.
+        minus_distance = min(
+            abs(spread_minus - MAXI_X_ANGLE_DEG),
+            abs((MAXI_X_ANGLE_DEG + 360) - spread_minus)
+        )
+        plus_distance = min(
+            abs(spread_plus - MAXI_X_ANGLE_DEG),
+            abs((MAXI_X_ANGLE_DEG + 360) - spread_plus)
+        )
+        
+        # If the MINUS is closer to MAXI_X_ANGLE_DEG then the PLUS, use the
+        # minus angle.
+        if minus_distance <= plus_distance:
+            maxi_angles.x = spread_minus
+        # Otherwise, use the plus angle.
+        else:
+            maxi_angles.x = spread_plus
+            
+    # Now we'll do Y.
+    if (spread_minus <= MAXI_Y_ANGLE_DEG) and (MAXI_Y_ANGLE_DEG <= spread_plus):
+        maxi_angles.y = MAXI_Y_ANGLE_DEG
+    else:
+        minus_distance = min(
+            abs(spread_minus - MAXI_Y_ANGLE_DEG),
+            abs((MAXI_Y_ANGLE_DEG + 360) - spread_minus)
+        )
+        plus_distance = min(
+            abs(spread_plus - MAXI_Y_ANGLE_DEG),
+            abs((MAXI_Y_ANGLE_DEG + 360) - spread_plus)
+        )
+        
+        if minus_distance <= plus_distance:
+            maxi_angles.y = spread_minus
+        else:
+            maxi_angles.y = spread_plus
+    
+    # All done! Return the maximum angles.
+    return maxi_angles
+
+func calculate_mini_angles(unit : Vector2):
+    # First, we calculate the base angle. We want it to be between 0 & 360, so
+    # we add 360 and then modulus out that same 360.
+    var base_angle = fmod( rad2deg( unit.angle() ) + 360, 360 )
+    
+    # The spread is a plus-or-minus value, so add in and remove the spread from
+    # the base angle to calculate our angular extents
+    var spread_minus = base_angle - self.process_material.spread
+    var spread_plus = base_angle + self.process_material.spread
+    
+    # The smallest distance from the spread_minus & spread_plus angles to our
+    # target MAXI angles.
+    var minus_distance
+    var plus_distance
+    
+    # The return value; we'll pack in the ideal angles, in degrees, into the x
+    # and y.
+    var mini_angles = Vector2.ZERO
+    
+    # First, we'll start with X. If MINI_X_ANGLE_DEG degrees, our peak, is
+    # contained in our spread...
+    if (spread_minus <= MINI_X_ANGLE_DEG) and (MINI_X_ANGLE_DEG <= spread_plus):
+        # Then the answer is easy - it's MINI_X_ANGLE_DEG degrees!
+        mini_angles.x = MINI_X_ANGLE_DEG
+    else:
+        # So if we didn't pass over MINI_X_ANGLE_DEG degrees, then that means
+        # that one of our spread points must be the CLOSEST WE CAN POSSIBLY GET
+        # TO MINI_X_ANGLE_DEG, since the two spread values represent our maximum
+        # extent. So, get the distance from each spread to MINI_X_ANGLE_DEG.
+        # Pick the smallest value, going either direction.
+        minus_distance = min(
+            abs(spread_minus - MINI_X_ANGLE_DEG),
+            abs((MINI_X_ANGLE_DEG + 360) - spread_minus)
+        )
+        plus_distance = min(
+            abs(spread_plus - MINI_X_ANGLE_DEG),
+            abs((MINI_X_ANGLE_DEG + 360) - spread_plus)
+        )
+        
+        # If the MINUS is closer to MINI_X_ANGLE_DEG then the PLUS, use the
+        # minus angle.
+        if minus_distance <= plus_distance:
+            mini_angles.x = spread_minus
+        # Otherwise, use the plus angle.
+        else:
+            mini_angles.x = spread_plus
+            
+    # Now we'll do Y.
+    if (spread_minus <= MINI_Y_ANGLE_DEG) and (MINI_Y_ANGLE_DEG <= spread_plus):
+        mini_angles.y = MINI_Y_ANGLE_DEG
+    else:
+        minus_distance = min(
+            abs(spread_minus - MINI_Y_ANGLE_DEG),
+            abs((MINI_Y_ANGLE_DEG + 360) - spread_minus)
+        )
+        plus_distance = min(
+            abs(spread_plus - MINI_Y_ANGLE_DEG),
+            abs((MINI_Y_ANGLE_DEG + 360) - spread_plus)
+        )
+        
+        if minus_distance <= plus_distance:
+            mini_angles.y = spread_minus
+        else:
+            mini_angles.y = spread_plus
+    
+    # All done! Return the minimum angles.
+    return mini_angles

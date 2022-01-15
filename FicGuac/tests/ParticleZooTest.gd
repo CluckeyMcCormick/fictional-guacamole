@@ -1,6 +1,6 @@
 extends Spatial
 
-const FIRE_DIAMOND = preload("res://special_effects/particles/FireDiamond32.tscn")
+const FIRE_DIAMOND = preload("res://special_effects/particles/RichParticleMat_Fire.tres")
 
 const START_VALUE = -3.5
 const END_VALUE = 4
@@ -15,6 +15,11 @@ var z = START_VALUE
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+    $RPE1.set_rich_material(FIRE_DIAMOND)
+    $RPE1.scale_emitter(Vector3(2, 1, 2))
+
+    $RPE2.set_rich_material(FIRE_DIAMOND)
+    $RPE2.scale_emitter(Vector3(.25, 1, .25))
     pass # Replace with function body.
 
 

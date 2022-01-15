@@ -1,7 +1,8 @@
-[gd_scene load_steps=6 format=2]
+[gd_scene load_steps=7 format=2]
 
 [ext_resource path="res://scenes/SceneDefaultEnvironment.tres" type="Environment" id=1]
 [ext_resource path="res://textures/util/checkerboard_large.png" type="Texture" id=2]
+[ext_resource path="res://special_effects/particles/RichParticleEmitter.tscn" type="PackedScene" id=3]
 [ext_resource path="res://tests/ParticleZooTest.gd" type="Script" id=4]
 
 [sub_resource type="SpatialMaterial" id=2]
@@ -21,6 +22,13 @@ projection = 1
 size = 10.0
 far = 130.0
 
+[node name="Camera2" type="Camera" parent="."]
+transform = Transform( 1, 0, 0, 0, 0.999999, 0, 0, 0, 1, 0, 4, 16 )
+projection = 1
+current = true
+size = 10.0
+far = 130.0
+
 [node name="MeshInstance" type="MeshInstance" parent="."]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
 mesh = SubResource( 1 )
@@ -37,9 +45,16 @@ transform = Transform( 0.188992, -0.694364, 0.694364, 0, 0.707107, 0.707107, -0.
 
 [node name="Timer" type="Timer" parent="."]
 wait_time = 0.075
-autostart = true
 
 [node name="Tween" type="Tween" parent="."]
+
+[node name="RPE1" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 1.5, -1.5 )
+visibility_aabb = AABB( -1.34561, -1.34907, -1.34353, 2.69301, 7.49542, 2.69234 )
+
+[node name="RPE2" parent="." instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 1.5, 1.5 )
+visibility_aabb = AABB( -1.34561, -1.34907, -1.34353, 2.69301, 7.49542, 2.69234 )
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]
