@@ -6,20 +6,41 @@ const MAXI_Y_ANGLE_DEG = 90
 const MINI_Y_ANGLE_DEG = 270
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
+    # Skip all of this debug nonsense, for now.
+    return
+    
+    # Start DEBUG nonsense
     var dd = get_node("/root/DebugDraw")
-    dd.draw_box(
-        self.global_transform.origin - ((self.visibility_aabb.size * self.scale) / 2),
-        self.visibility_aabb.size * self.scale,
-        Color.dodgerblue
+    
+    var d_origin = self.global_transform.origin
+    var d_end = self.visibility_aabb.end
+    var d_position = self.visibility_aabb.position
+    
+    # Scaled Z
+    dd.draw_line_3d(
+        d_origin + (d_position * self.scale),
+        d_origin + (d_end * self.scale),
+        Color.white
     )
+    dd.draw_line_3d(
+        d_origin + (d_position * self.scale),
+        d_origin + (Vector3(d_end.x, d_position.y, d_end.z) * self.scale),
+        Color.white
+    )
+    dd.draw_line_3d(
+        d_origin + (d_end * self.scale),
+        d_origin + (Vector3(d_position.x, d_end.y, d_position.z) * self.scale),
+        Color.white
+    )
+    
     dd.draw_box(
-        self.global_transform.origin - (self.process_material.emission_box_extents / 2),
+        d_origin - (self.process_material.emission_box_extents / 2),
         self.process_material.emission_box_extents,
         Color.springgreen
     )
     dd.draw_box(
-        self.global_transform.origin - ((self.process_material.emission_box_extents * self.scale) / 2),
+        d_origin - ((self.process_material.emission_box_extents * self.scale) / 2),
         self.process_material.emission_box_extents * self.scale,
         Color.crimson
     )
@@ -169,10 +190,6 @@ func scale_emitter(new_scale : Vector3):
             spawn_len_x = self.temp
             spawn_len_y = self.temp
             spawn_len_z = self.temp
-            # Now, apply the new scale-factor to each length
-            spawn_len_x *= new_scale.x
-            spawn_len_y *= new_scale.y
-            spawn_len_z *= new_scale.z
             # Now, calculate the volume
             temp = (4/3) * PI * spawn_len_x * spawn_len_y * spawn_len_z
             # The amount of particles to spawn is the density times the volume
@@ -188,10 +205,6 @@ func scale_emitter(new_scale : Vector3):
             spawn_len_x = self.process_material.emission_box_extents.x * 2
             spawn_len_y = self.process_material.emission_box_extents.y * 2
             spawn_len_z = self.process_material.emission_box_extents.z * 2
-            # Now, apply the new scale-factor to each length
-            spawn_len_x *= new_scale.x
-            spawn_len_y *= new_scale.y
-            spawn_len_z *= new_scale.z
             # Calculate the volume
             temp = spawn_len_x * spawn_len_y * spawn_len_z
             # The amount of particles to spawn is the density times the volume
@@ -203,10 +216,11 @@ func scale_emitter(new_scale : Vector3):
     
     # Now, technically, the max we can over-extend on a side is by half of the
     # size hint. However, since we'd do that at both sides, that adds up to the
-    # whole of the size hint. Ergo, we just add in the size hint. Easy!
-    spawn_len_x += self.process_material.particle_size_hint.x / new_scale.x
-    spawn_len_y += self.process_material.particle_size_hint.y / new_scale.y
-    spawn_len_z += self.process_material.particle_size_hint.z / new_scale.z
+    # whole of the size hint. Ergo, we just add in the size hint, scaled up.
+    # Easy!
+    spawn_len_x += self.process_material.particle_size_hint.x
+    spawn_len_y += self.process_material.particle_size_hint.y
+    spawn_len_z += self.process_material.particle_size_hint.z
     
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     #
@@ -284,10 +298,14 @@ func scale_emitter(new_scale : Vector3):
     min_x = min(min_x, 0)
     # Y
     max_y = max(max_y, 0)
-    max_y = min(max_y, 0)
+    min_y = min(min_y, 0)
     # Z
     max_z = max(max_z, 0)
     min_z = min(min_z, 0)
+
+    #print("Spawn Lengths: ", spawn_len_x, " ", spawn_len_y, " ", spawn_len_z)
+    #print("    Maxi ", max_x, " ", max_y, " ", max_z)
+    #print("    Mini ", min_x, " ", min_y, " ", min_z)
 
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~
     #

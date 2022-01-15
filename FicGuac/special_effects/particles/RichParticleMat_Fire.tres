@@ -47,4 +47,4 @@ particle_density = 100.0
 recommended_lifetime = 0.7
 override_material = SubResource( 6 )
 pass_1 = SubResource( 9 )
-particle_size_hint = Vector3( 0.38, 0.38, 0.38 )
+particle_size_hint = Vector3( 0.38, 0.75, 0.38 )
