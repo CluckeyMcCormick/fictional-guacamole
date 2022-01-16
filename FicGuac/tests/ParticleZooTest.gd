@@ -1,7 +1,9 @@
 extends Spatial
 
-const FIRE_DIAMOND = preload("res://special_effects/particles/RichParticleMat_Fire.tres")
-const BLAST = preload("res://special_effects/particles/RichParticleMat_Blaster.tres")
+const RPE = preload("res://special_effects/particles/RichParticleEmitter.tscn")
+
+# Our global manifest node that holds all of the tests paths in a dictionary.
+onready var MANIFEST = get_node("/root/Manifest")
 
 const START_VALUE = -3.5
 const END_VALUE = 4
@@ -9,42 +11,83 @@ const INCREMENT = 1
 
 const SPIN_TIME = 30
 
-# 
+# Our current position for placing particle effects
 var x = START_VALUE
 var y = 0.5
 var z = START_VALUE
 
+var material_list = []
+var material_index = 0
+var scale_vector = Vector3.ZERO
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    $RPE1.set_rich_material(FIRE_DIAMOND)
-    $RPE1.scale_emitter(Vector3(2, .25, 2))
+    # We need to update the Item List using our particle material paths
+    for mat_name in MANIFEST.PARTICLE_MATERIALS.keys():
+        $GUI/ItemList.add_item(mat_name)
 
-    $RPE2.set_rich_material(BLAST)
-    $RPE2.scale_emitter(Vector3(.5, 1, .5))
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-#func _process(delta):
-#    pass
-
+func _on_Go_pressed():
+    var selected
+    var scalar
+    var temp
+    
+    material_list = []
+    
+    x = START_VALUE
+    y = 0.5
+    z = START_VALUE
+    
+    selected = $GUI/ItemList.get_selected_items()
+    if selected.empty():
+        print("Nothing selected!")
+        return
+    
+    scalar = Vector3(
+        float($GUI/Scale/X.text),
+        float($GUI/Scale/Y.text), 
+        float($GUI/Scale/Z.text)
+    )
+    
+    if scalar == Vector3.ZERO:
+        print("Invalid scale vector: ", scalar)
+        return
+    
+    scale_vector = scalar
+    for index in selected:
+        temp = $GUI/ItemList.get_item_text(index)
+        material_list.append(load(MANIFEST.PARTICLE_MATERIALS[temp]))
+    
+    material_index = 0
+    
+    $GUI/Controls/Go.disabled = true
+    $GUI/Controls/Stop.disabled = false
+    
+    $Timer.start()
 
 func _on_Timer_timeout():
-    var new_fire = FIRE_DIAMOND.instance()
+    var new_rpe = RPE.instance()
     
-    $MeshInstance/FireMount.add_child(new_fire)
-    new_fire.translation = Vector3(x, y, z)
+    $MeshInstance/ParticleMount.add_child(new_rpe)
+    new_rpe.translation = Vector3(x, y, z)
+    
+    new_rpe.set_rich_material(material_list[material_index])
+    new_rpe.scale_emitter(scale_vector)
     
     x += INCREMENT
+    
+    material_index = (material_index + 1) % len(material_list)
     
     if x > END_VALUE:
         x = START_VALUE
         z += INCREMENT
+        
     
     if z > END_VALUE:
         $Timer.stop()
         _on_Tween_tween_completed(null, ":translation:x")
 
 func _on_Tween_tween_completed(object, key):
-    print(object, "|<-->|", str(key))
+    #print(object, "|<-->|", str(key))
     
     # Clean all the tweens
     $Tween.remove_all()
@@ -69,3 +112,19 @@ func _on_Tween_tween_completed(object, key):
         _:
             print("Bad +-> ", str(key))
     $Tween.start()
+
+func _on_Stop_pressed():
+    $Timer.stop()
+    $Tween.stop_all()
+    $Tween.remove_all()
+    
+    # Reset the platform
+    $MeshInstance.translation = Vector3(0, -1, 0)
+    $MeshInstance.rotation_degrees = Vector3.ZERO
+    
+    # Remove the particle effects
+    for particle in $MeshInstance/ParticleMount.get_children():
+        $MeshInstance/ParticleMount.remove_child(particle)
+
+    $GUI/Controls/Go.disabled = false
+    $GUI/Controls/Stop.disabled = true

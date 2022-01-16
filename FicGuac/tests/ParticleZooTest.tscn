@@ -1,8 +1,7 @@
-[gd_scene load_steps=7 format=2]
+[gd_scene load_steps=6 format=2]
 
 [ext_resource path="res://scenes/SceneDefaultEnvironment.tres" type="Environment" id=1]
 [ext_resource path="res://textures/util/checkerboard_large.png" type="Texture" id=2]
-[ext_resource path="res://special_effects/particles/RichParticleEmitter.tscn" type="PackedScene" id=3]
 [ext_resource path="res://tests/ParticleZooTest.gd" type="Script" id=4]
 
 [sub_resource type="SpatialMaterial" id=2]
@@ -17,21 +16,9 @@ size = Vector3( 8, 2, 8 )
 script = ExtResource( 4 )
 
 [node name="IsoCamera" type="Camera" parent="."]
-transform = Transform( 0.707107, 0.408244, -0.577353, 0, 0.8165, 0.577345, 0.707107, -0.408244, 0.577353, -64, 64, 64 )
+transform = Transform( 0.707107, -0.408244, 0.577353, 0, 0.8165, 0.577345, -0.707107, -0.408244, 0.577353, 64, 64, 64 )
 projection = 1
 current = true
-size = 10.0
-far = 130.0
-
-[node name="ZCamera" type="Camera" parent="."]
-transform = Transform( 1, 0, 0, 0, 0.999999, 0, 0, 0, 1, 0, 4, 16 )
-projection = 1
-size = 10.0
-far = 130.0
-
-[node name="XCamera" type="Camera" parent="."]
-transform = Transform( -4.37114e-08, 0, -1, 0, 0.999999, 0, 1, 0, -4.37114e-08, -16, 4, 0 )
-projection = 1
 size = 10.0
 far = 130.0
 
@@ -40,7 +27,19 @@ transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
 mesh = SubResource( 1 )
 material/0 = null
 
-[node name="FireMount" type="Spatial" parent="MeshInstance"]
+[node name="XCamera" type="Camera" parent="MeshInstance"]
+transform = Transform( -4.37114e-08, 0, -1, 0, 1, 0, 1, 0, -4.37114e-08, -16, 5, 0 )
+projection = 1
+size = 10.0
+far = 130.0
+
+[node name="ZCamera" type="Camera" parent="MeshInstance"]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 5, 16 )
+projection = 1
+size = 10.0
+far = 130.0
+
+[node name="ParticleMount" type="Spatial" parent="MeshInstance"]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0 )
 
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
@@ -54,13 +53,77 @@ wait_time = 0.075
 
 [node name="Tween" type="Tween" parent="."]
 
-[node name="RPE1" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 1.5, 1.5, -1.5 )
-visibility_aabb = AABB( -1.34561, -1.34907, -1.34353, 2.69301, 7.49542, 2.69234 )
+[node name="GUI" type="VBoxContainer" parent="."]
+margin_left = 10.0
+margin_top = 10.0
+margin_right = 40.0
+margin_bottom = 40.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
 
-[node name="RPE2" parent="." instance=ExtResource( 3 )]
-transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -1.5, 1.5, 1.5 )
-visibility_aabb = AABB( -1.34561, -1.34907, -1.34353, 2.69301, 7.49542, 2.69234 )
+[node name="ItemList" type="ItemList" parent="GUI"]
+margin_right = 223.0
+margin_bottom = 100.0
+rect_min_size = Vector2( 160, 100 )
+select_mode = 1
+allow_reselect = true
+allow_rmb_select = true
+
+[node name="Scale" type="HBoxContainer" parent="GUI"]
+margin_top = 104.0
+margin_right = 223.0
+margin_bottom = 128.0
+alignment = 1
+__meta__ = {
+"_edit_use_anchors_": false
+}
+
+[node name="Label" type="Label" parent="GUI/Scale"]
+margin_top = 5.0
+margin_right = 37.0
+margin_bottom = 19.0
+text = "Scale:"
+
+[node name="X" type="LineEdit" parent="GUI/Scale"]
+margin_left = 41.0
+margin_right = 99.0
+margin_bottom = 24.0
+text = "1"
+
+[node name="Y" type="LineEdit" parent="GUI/Scale"]
+margin_left = 103.0
+margin_right = 161.0
+margin_bottom = 24.0
+text = "1"
+
+[node name="Z" type="LineEdit" parent="GUI/Scale"]
+margin_left = 165.0
+margin_right = 223.0
+margin_bottom = 24.0
+text = "1"
+
+[node name="Controls" type="HBoxContainer" parent="GUI"]
+margin_top = 132.0
+margin_right = 223.0
+margin_bottom = 152.0
+alignment = 1
+
+[node name="Go" type="Button" parent="GUI/Controls"]
+margin_left = 74.0
+margin_right = 104.0
+margin_bottom = 20.0
+text = "Go"
+
+[node name="Stop" type="Button" parent="GUI/Controls"]
+margin_left = 108.0
+margin_right = 148.0
+margin_bottom = 20.0
+disabled = true
+text = "Stop"
 
 [connection signal="timeout" from="Timer" to="." method="_on_Timer_timeout"]
 [connection signal="tween_completed" from="Tween" to="." method="_on_Tween_tween_completed"]
+[connection signal="pressed" from="GUI/Controls/Go" to="." method="_on_Go_pressed"]
+[connection signal="pressed" from="GUI/Controls/Stop" to="." method="_on_Stop_pressed"]
