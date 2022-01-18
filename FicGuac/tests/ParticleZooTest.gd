@@ -20,6 +20,9 @@ var material_list = []
 var material_index = 0
 var scale_vector = Vector3.ZERO
 
+var particle_count = 0
+var systems_count = 0
+
 # Called when the node enters the scene tree for the first time.
 func _ready():
     # We need to update the Item List using our particle material paths
@@ -30,6 +33,9 @@ func _on_Go_pressed():
     var selected
     var scalar
     var temp
+    
+    particle_count = 0
+    systems_count = 0
     
     material_list = []
     
@@ -73,6 +79,12 @@ func _on_Timer_timeout():
     new_rpe.set_rich_material(material_list[material_index])
     new_rpe.scale_emitter(scale_vector)
     
+    particle_count += new_rpe.amount
+    systems_count += 1
+    $GUI/Stats/ParticleCount.text = str(particle_count)
+    $GUI/Stats/SystemsCount.text = str(systems_count)
+    $GUI/Stats/ParticleAverage.text = str(float(particle_count) / float(systems_count))
+    
     x += INCREMENT
     
     material_index = (material_index + 1) % len(material_list)
@@ -81,7 +93,6 @@ func _on_Timer_timeout():
         x = START_VALUE
         z += INCREMENT
         
-    
     if z > END_VALUE:
         $Timer.stop()
         _on_Tween_tween_completed(null, ":translation:x")
@@ -125,6 +136,14 @@ func _on_Stop_pressed():
     # Remove the particle effects
     for particle in $MeshInstance/ParticleMount.get_children():
         $MeshInstance/ParticleMount.remove_child(particle)
+
+    # Reset the stats
+    particle_count = 0
+    systems_count = 0
+    
+    $GUI/Stats/ParticleCount.text = str(particle_count)
+    $GUI/Stats/SystemsCount.text = str(systems_count)
+    $GUI/Stats/ParticleAverage.text = str(0)
 
     $GUI/Controls/Go.disabled = false
     $GUI/Controls/Stop.disabled = true

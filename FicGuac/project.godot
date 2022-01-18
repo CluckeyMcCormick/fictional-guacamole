@@ -29,6 +29,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/todot/model/Model.gd"
 }, {
+"base": "RigidBody",
+"class": "PhysicsEntity",
+"language": "GDScript",
+"path": "res://addons/qodot/game_definitions/fgd/solid_classes/physics.gd"
+}, {
 "base": "Reference",
 "class": "QodotDependencies",
 "language": "GDScript",
@@ -64,6 +69,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/qodot/src/resources/game-definitions/fgd/qodot_fgd_solid_class.gd"
 }, {
+"base": "QodotEntity",
+"class": "QodotLight",
+"language": "GDScript",
+"path": "res://addons/qodot/game_definitions/fgd/point_classes/light.gd"
+}, {
 "base": "QodotSpatial",
 "class": "QodotMap",
 "language": "GDScript",
@@ -73,6 +83,11 @@ _global_script_classes=[ {
 "class": "QodotPlugin",
 "language": "GDScript",
 "path": "res://addons/qodot/src/qodot_plugin.gd"
+}, {
+"base": "KinematicBody",
+"class": "QodotRotateEntity",
+"language": "GDScript",
+"path": "res://addons/qodot/game_definitions/fgd/solid_classes/rotate.gd"
 }, {
 "base": "Spatial",
 "class": "QodotSpatial",
@@ -169,6 +184,7 @@ _global_script_class_icons={
 "List": "",
 "MasterItem": "",
 "Model": "",
+"PhysicsEntity": "",
 "QodotDependencies": "",
 "QodotEntity": "",
 "QodotFGDBaseClass": "",
@@ -176,8 +192,10 @@ _global_script_class_icons={
 "QodotFGDFile": "",
 "QodotFGDPointClass": "",
 "QodotFGDSolidClass": "",
+"QodotLight": "",
 "QodotMap": "",
 "QodotPlugin": "",
+"QodotRotateEntity": "",
 "QodotSpatial": "res://addons/qodot/icons/icon_qodot_spatial.svg",
 "QodotTextureLoader": "",
 "QodotUtil": "",

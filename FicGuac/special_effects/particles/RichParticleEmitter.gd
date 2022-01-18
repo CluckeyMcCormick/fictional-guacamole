@@ -180,7 +180,7 @@ func scale_emitter(new_scale : Vector3):
             spawn_len_x = 0
             spawn_len_y = 0
             spawn_len_z = 0
-            self.amount = self.process_material.particle_density
+            self.amount = self.process_material.base_particle_count
         # If we're emitting in a sphere-shape, then the length for each is the
         # diameter of the sphere.
         ParticlesMaterial.EMISSION_SHAPE_SPHERE:
@@ -191,9 +191,14 @@ func scale_emitter(new_scale : Vector3):
             spawn_len_y = self.temp
             spawn_len_z = self.temp
             # Now, calculate the volume
-            temp = (4/3) * PI * spawn_len_x * spawn_len_y * spawn_len_z
-            # The amount of particles to spawn is the density times the volume
-            self.amount = int(temp * self.process_material.particle_density)
+            temp = (4/3) * PI \
+                * (spawn_len_x * new_scale.x) \
+                * (spawn_len_y * new_scale.y) \
+                * (spawn_len_z * new_scale.z)
+            # The amount of particles to spawn is our base...
+            self.amount = self.process_material.base_particle_count
+            # ... PLUS the density * the volume.
+            self.amount += int(temp * self.process_material.particle_density)
             # Finally, double the spawn lengths (since we want the diameters)
             spawn_len_x *= 2
             spawn_len_y *= 2
@@ -205,10 +210,14 @@ func scale_emitter(new_scale : Vector3):
             spawn_len_x = self.process_material.emission_box_extents.x * 2
             spawn_len_y = self.process_material.emission_box_extents.y * 2
             spawn_len_z = self.process_material.emission_box_extents.z * 2
-            # Calculate the volume
-            temp = spawn_len_x * spawn_len_y * spawn_len_z
-            # The amount of particles to spawn is the density times the volume
-            self.amount = int(temp * self.process_material.particle_density)
+            # Calculate the volume, using the scale
+            temp = (spawn_len_x * new_scale.x) \
+                 * (spawn_len_y * new_scale.y) \
+                 * (spawn_len_z * new_scale.z)
+            # The amount of particles to spawn is is our base...
+            self.amount = self.process_material.base_particle_count
+            # ... PLUS the density * the volume.
+            self.amount += int(temp * self.process_material.particle_density)
             
         _:
             printerr("Invalid Rich Particles EmissionShape: ", self.process_material.emission_shape)

@@ -1,4 +1,4 @@
-[gd_resource type="ParticlesMaterial" load_steps=9 format=2]
+[gd_resource type="ParticlesMaterial" load_steps=11 format=2]
 
 [ext_resource path="res://special_effects/particles/RichParticleMaterial.gd" type="Script" id=1]
 [ext_resource path="res://special_effects/particles/diamond32.png" type="Texture" id=2]
@@ -20,6 +20,12 @@ particles_anim_h_frames = 1
 particles_anim_v_frames = 1
 particles_anim_loop = false
 albedo_texture = ExtResource( 2 )
+
+[sub_resource type="Curve" id=10]
+_data = [ Vector2( 0, 0.1 ), 0.0, 0.0, 0, 0, Vector2( 0.5, 0.854545 ), 0.0, 0.0, 0, 0, Vector2( 1, 1 ), 0.0, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=11]
+curve = SubResource( 10 )
 
 [sub_resource type="QuadMesh" id=9]
 size = Vector2( 0.35, 0.35 )
@@ -43,7 +49,11 @@ scale_random = 1.0
 scale_curve = SubResource( 5 )
 color_ramp = SubResource( 8 )
 script = ExtResource( 1 )
-particle_density = 100.0
+base_particle_count = 60
+particle_density = 6.5
+particle_density_curve = SubResource( 11 )
+final_system_volume = 125.0
+final_system_particles = 500.0
 recommended_lifetime = 0.7
 override_material = SubResource( 6 )
 pass_1 = SubResource( 9 )

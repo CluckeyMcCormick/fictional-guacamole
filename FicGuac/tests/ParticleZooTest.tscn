@@ -104,10 +104,56 @@ margin_right = 223.0
 margin_bottom = 24.0
 text = "1"
 
-[node name="Controls" type="HBoxContainer" parent="GUI"]
+[node name="Stats" type="GridContainer" parent="GUI"]
 margin_top = 132.0
 margin_right = 223.0
-margin_bottom = 152.0
+margin_bottom = 182.0
+columns = 2
+
+[node name="Label" type="Label" parent="GUI/Stats"]
+margin_right = 110.0
+margin_bottom = 14.0
+text = "Particle Count: "
+
+[node name="ParticleCount" type="Label" parent="GUI/Stats"]
+margin_left = 114.0
+margin_right = 122.0
+margin_bottom = 14.0
+text = "0"
+align = 1
+
+[node name="Label3" type="Label" parent="GUI/Stats"]
+margin_top = 18.0
+margin_right = 110.0
+margin_bottom = 32.0
+text = "Particle Systems:"
+
+[node name="SystemsCount" type="Label" parent="GUI/Stats"]
+margin_left = 114.0
+margin_top = 18.0
+margin_right = 122.0
+margin_bottom = 32.0
+text = "0"
+align = 1
+
+[node name="Label5" type="Label" parent="GUI/Stats"]
+margin_top = 36.0
+margin_right = 110.0
+margin_bottom = 50.0
+text = "Average:"
+
+[node name="ParticleAverage" type="Label" parent="GUI/Stats"]
+margin_left = 114.0
+margin_top = 36.0
+margin_right = 122.0
+margin_bottom = 50.0
+text = "0"
+align = 1
+
+[node name="Controls" type="HBoxContainer" parent="GUI"]
+margin_top = 186.0
+margin_right = 223.0
+margin_bottom = 206.0
 alignment = 1
 
 [node name="Go" type="Button" parent="GUI/Controls"]

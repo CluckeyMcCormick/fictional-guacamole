@@ -16,7 +16,7 @@ var map_file := "" setget set_map_file
 var inverse_scale_factor := 16.0
 var entity_fgd := preload("res://addons/qodot/game_definitions/fgd/qodot_fgd.tres")
 var base_texture_dir := "res://textures"
-var texture_file_extension := "png"
+var texture_file_extensions := PoolStringArray(["png"])
 
 var worldspawn_layers := [] setget set_worldspawn_layers
 
@@ -98,7 +98,7 @@ func _get_property_list() -> Array:
 		QodotUtil.property_dict('entity_fgd', TYPE_OBJECT, PROPERTY_HINT_RESOURCE_TYPE, 'Resource'),
 		QodotUtil.category_dict('Textures'),
 		QodotUtil.property_dict('base_texture_dir', TYPE_STRING, PROPERTY_HINT_DIR),
-		QodotUtil.property_dict('texture_file_extension', TYPE_STRING),
+		QodotUtil.property_dict('texture_file_extensions', TYPE_STRING_ARRAY),
 		QodotUtil.property_dict('worldspawn_layers', TYPE_ARRAY),
 		QodotUtil.property_dict('brush_clip_texture', TYPE_STRING),
 		QodotUtil.property_dict('face_skip_texture', TYPE_STRING),
@@ -340,7 +340,7 @@ func fetch_texture_list() -> Array:
 func init_texture_loader() -> QodotTextureLoader:
 	return QodotTextureLoader.new(
 		base_texture_dir,
-		texture_file_extension,
+		texture_file_extensions,
 		texture_wads
 	)
 
@@ -429,7 +429,10 @@ func build_entity_nodes() -> Array:
 						node = ClassDB.instance(entity_definition.node_class)
 				elif entity_definition is QodotFGDPointClass:
 					if entity_definition.scene_file:
-						node = entity_definition.scene_file.instance(PackedScene.GEN_EDIT_STATE_INSTANCE)
+						var flag = PackedScene.GEN_EDIT_STATE_DISABLED
+						if Engine.is_editor_hint():
+							flag = PackedScene.GEN_EDIT_STATE_INSTANCE
+						node = entity_definition.scene_file.instance(flag)
 
 				if entity_definition.script_class:
 					node.set_script(entity_definition.script_class)
