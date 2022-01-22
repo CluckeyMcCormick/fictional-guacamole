@@ -5,10 +5,7 @@ extends ParticlesMaterial
 # manually check for one of these fields.
 
 export(int) var base_particle_count = 60
-export(float) var particle_density = 1
-export(CurveTexture) var particle_density_curve
-export(float) var final_system_volume = 125
-export(float) var final_system_particles = 500
+export(float) var root_particle_slope = 10
 export(float) var recommended_lifetime = 1
 export(Material) var override_material = null
 export(Mesh) var pass_1 = null

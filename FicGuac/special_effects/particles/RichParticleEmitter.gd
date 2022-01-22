@@ -56,7 +56,7 @@ func set_rich_material(new_rich_mat : ParticlesMaterial):
     ]
     
     # Ensure this material is a Rich Particle Material
-    if new_rich_mat.get("particle_density") == null:
+    if new_rich_mat.get("root_particle_slope") == null:
         printerr("Provided material is not a Rich Particle Material!!!")
         return
     
@@ -120,7 +120,7 @@ func scale_emitter(new_scale : Vector3):
     if self.process_material == null:
         printerr("No process material to scale with!!!")
         return
-    if self.process_material.get("particle_density") == null:
+    if self.process_material.get("root_particle_slope") == null:
         printerr("Current process material is not a Rich Particle Material!!!")
         return
     # Used to verify each draw pass
@@ -197,8 +197,9 @@ func scale_emitter(new_scale : Vector3):
                 * (spawn_len_z * new_scale.z)
             # The amount of particles to spawn is our base...
             self.amount = self.process_material.base_particle_count
-            # ... PLUS the density * the volume.
-            self.amount += int(temp * self.process_material.particle_density)
+            # ... PLUS the cubic root of the volume * the density.
+            self.amount += int(pow(temp, 1.0/3.0) * self.process_material.root_particle_slope)
+            
             # Finally, double the spawn lengths (since we want the diameters)
             spawn_len_x *= 2
             spawn_len_y *= 2
@@ -216,9 +217,8 @@ func scale_emitter(new_scale : Vector3):
                  * (spawn_len_z * new_scale.z)
             # The amount of particles to spawn is is our base...
             self.amount = self.process_material.base_particle_count
-            # ... PLUS the density * the volume.
-            self.amount += int(temp * self.process_material.particle_density)
-            
+            # ... PLUS the cubic root of the volume * the density.
+            self.amount += int(pow(temp, 1.0/3.0) * self.process_material.root_particle_slope)
         _:
             printerr("Invalid Rich Particles EmissionShape: ", self.process_material.emission_shape)
             return
