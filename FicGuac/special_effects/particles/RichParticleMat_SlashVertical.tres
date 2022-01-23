@@ -1,0 +1,53 @@
+[gd_resource type="ParticlesMaterial" load_steps=9 format=2]
+
+[ext_resource path="res://special_effects/particles/RichParticleMaterial.gd" type="Script" id=1]
+[ext_resource path="res://special_effects/particles/slashVertical64.png" type="Texture" id=2]
+
+[sub_resource type="Gradient" id=8]
+offsets = PoolRealArray( 0.769231, 1 )
+colors = PoolColorArray( 1, 0, 0, 0.752941, 1, 1, 1, 0 )
+
+[sub_resource type="GradientTexture" id=9]
+gradient = SubResource( 8 )
+
+[sub_resource type="SpatialMaterial" id=6]
+flags_transparent = true
+flags_unshaded = true
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_texture = ExtResource( 2 )
+
+[sub_resource type="QuadMesh" id=12]
+size = Vector2( 0.5, 0.5 )
+
+[sub_resource type="Curve" id=14]
+_data = [ Vector2( 0.496622, 1 ), 0.0, -0.0917359, 0, 0, Vector2( 1, 0 ), 0.0129377, 0.0, 0, 0 ]
+
+[sub_resource type="CurveTexture" id=13]
+curve = SubResource( 14 )
+
+[resource]
+lifetime_randomness = 0.25
+direction = Vector3( 0, 0, 0 )
+spread = 0.0
+gravity = Vector3( 0, 0, 0 )
+scale_curve = SubResource( 13 )
+color_ramp = SubResource( 9 )
+script = ExtResource( 1 )
+base_particle_count = 1
+root_particle_slope = 0.0
+override_material = SubResource( 6 )
+pass_1 = SubResource( 12 )
+particle_size_hint = Vector3( 1, 1, 1 )
+rcmnd_lifetime = 0.25
+rcmnd_one_shot = true
+rcmnd_preprocess = 0.0
+rcmnd_speed_scale = 1.0
+rcmnd_explosiveness = 0.0
+rcmnd_randomness = 0.0
+rcmnd_fixed_fps = 0
+rcmnd_fract_delta = true

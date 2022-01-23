@@ -26,5 +26,10 @@ var TEST_SCENES = {
 var PARTICLE_MATERIALS = {
     "Fire, Diamond32" : "res://special_effects/particles/RichParticleMat_Fire.tres",
     "Poison, Bubble32" : "res://special_effects/particles/RichParticleMat_Poison.tres",
+    "Cross Slash 64" : "res://special_effects/particles/RichParticleMat_SlashCross.tres",
+    "Diagonal Slash A 64" : "res://special_effects/particles/RichParticleMat_SlashDiagA.tres",
+    "Diagonal Slash B 64" : "res://special_effects/particles/RichParticleMat_SlashDiagB.tres",
+    "Horizontal Slash 64" : "res://special_effects/particles/RichParticleMat_SlashHorizontal.tres",
+    "Vertical Slash 64" : "res://special_effects/particles/RichParticleMat_SlashVertical.tres",
     "Blaster Test" : "res://special_effects/particles/RichParticleMat_Blaster.tres"
 }
