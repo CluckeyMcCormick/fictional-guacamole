@@ -78,6 +78,8 @@ func _on_Timer_timeout():
     
     new_rpe.set_rich_material(material_list[material_index])
     new_rpe.scale_emitter(scale_vector)
+    # Just for this test, we ignore "one shot" particle materials.
+    new_rpe.one_shot = false
     
     particle_count += new_rpe.amount
     systems_count += 1

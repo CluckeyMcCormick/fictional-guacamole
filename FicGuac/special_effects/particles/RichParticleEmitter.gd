@@ -85,7 +85,6 @@ func set_rich_material(new_rich_mat : ParticlesMaterial):
     
     # Alright, set the basic stuff.
     self.process_material = new_rich_mat
-    self.lifetime = new_rich_mat.recommended_lifetime
     self.material_override = new_rich_mat.override_material
     
     # Default the number of draw passes
@@ -111,6 +110,16 @@ func set_rich_material(new_rich_mat : ParticlesMaterial):
     
     # Set the ACTUAL pass count
     self.draw_passes = pass_count
+    
+    # Now move over all of the "recommended" variables
+    self.lifetime = new_rich_mat.rcmnd_lifetime
+    self.one_shot = new_rich_mat.rcmnd_one_shot
+    self.preprocess = new_rich_mat.rcmnd_preprocess
+    self.speed_scale = new_rich_mat.rcmnd_speed_scale
+    self.explosiveness = new_rich_mat.rcmnd_explosiveness
+    self.randomness = new_rich_mat.rcmnd_randomness
+    self.fixed_fps = new_rich_mat.rcmnd_fixed_fps
+    self.fract_delta = new_rich_mat.rcmnd_fract_delta
     
     # Okay, the particle count and AABB need to be set with the scale, so we're
     # all done here.
