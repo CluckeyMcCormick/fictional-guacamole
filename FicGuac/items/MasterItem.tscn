@@ -1,7 +1,7 @@
 [gd_scene load_steps=3 format=2]
 
 [ext_resource path="res://items/MasterItem.gd" type="Script" id=1]
-[ext_resource path="res://common_mix/CommonStatsCore.tscn" type="PackedScene" id=2]
+[ext_resource path="res://status/CommonStatsCore.tscn" type="PackedScene" id=2]
 
 [node name="MasterItem" type="RigidBody"]
 transform = Transform( 0.707107, 0, 0.707107, 0, 1, 0, -0.707107, 0, 0.707107, 0, 0, 0 )

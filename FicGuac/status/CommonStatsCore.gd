@@ -1,4 +1,4 @@
-extends Node
+extends Position3D
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -8,6 +8,8 @@ extends Node
 # This scene allows us to spawn little messages in the world, as needed. We'll
 # use this to show damage values.
 const float_away_text = preload("res://special_effects/FloatAwayText.tscn")
+# Preload the rich particle emitter so we know where it's at
+const RPE = preload("res://special_effects/particles/RichParticleEmitter.tscn")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -22,9 +24,13 @@ export(bool) var damage_floats = true
 # The object's current hitpoints, after damage and the like.
 var curr_hp = base_hp
 # Have our hitpoints dipped below zero? Are we dead? Yes, we even consider items
-# and structures to be "dead". Dead is, generally, considered and unrecoverable
+# and structures to be "dead". Dead is, generally, considered an unrecoverable
 # state.
 var dead = false
+
+# Our different, ongoing status effects; the keys are each ongoing status
+# condition's keyname, while the values are the effect nodes themselves.
+var active_effects = {}
 
 # This signal indicates that we've lost all our hitpoints 
 signal object_died(final_damage_type)
@@ -34,6 +40,56 @@ signal object_died(final_damage_type)
 # Utility Functions
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+func add_status_effect(sfx):
+    # Each status effect comes with two array's worth of processing we need to
+    # perform
+    var modifiers
+    var particles
+    
+    var target_value
+    var add_value
+    
+    # If we already have this status effect, skip it!
+    if sfx.keyname in active_effects:
+        return
+    
+    # Okay, first we're gonna add in the status effect.
+    active_effects[sfx.keyname] = sfx
+    
+    # Attach it as a child of this Stats Core node
+    self.add_child(sfx)
+    
+    # Now we need to apply the modifiers.
+    modifiers = sfx.get_modifiers()
+    for mod_arr in modifiers:
+        match mod_arr[sfx.MFI_OP]:
+            sfx.StatOp.FLAT_MOD:
+                target_value = self.get( mod_arr[sfx.MFI_TARGET] )
+                add_value = mod_arr[sfx.MFI_MODI]
+                self.set( mod_arr[sfx.MFI_TARGET], target_value + add_value )
+            sfx.StatOp.ADD_SCALE_MOD:
+                target_value = self.get( mod_arr[sfx.MFI_TARGET] )
+                add_value = self.get( mod_arr[sfx.MFI_SOURCE] )
+                add_value = add_value * mod_arr[sfx.MFI_MODI]
+                self.set( mod_arr[sfx.MFI_TARGET], target_value + add_value )
+            _:
+                printerr("Invalid OP code: ", mod_arr[sfx.MFI_OP])
+
+    # Now we need to add the status effects.
+    particles = sfx.get_particles()
+    for particle_item in particles:
+        var new_rpe = RPE.instance()
+        
+        sfx.add_child(new_rpe)
+        
+        new_rpe.set_rich_material( particle_item )
+        new_rpe.scale_emitter( Vector3(1, 1, 1) )
+    
+func remove_status_effect(status_effect):
+    if not status_effect.keyname in status_effect:
+        return
+    pass
+
 func take_damage(damage, damage_type=null):
     # If we're dead, we don't take damage. No coming back from that one.
     if dead:

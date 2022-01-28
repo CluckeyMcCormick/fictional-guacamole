@@ -1,4 +1,4 @@
-extends "res://common_mix/CommonStatsCore.gd"
+extends "res://status/CommonStatsCore.gd"
 
 # How fast does our drive node move, horizontally? Units/second. This is the
 # base measure that buffs/debuffs are applied to.

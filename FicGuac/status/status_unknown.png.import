@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/status_unknown.png-6c58698db0e092ef4c4300f95c8bd3cf.stex"
+path="res://.import/status_unknown.png-98601055bf696dc10dcb6ed049142390.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://common_mix/status_unknown.png"
-dest_files=[ "res://.import/status_unknown.png-6c58698db0e092ef4c4300f95c8bd3cf.stex" ]
+source_file="res://status/status_unknown.png"
+dest_files=[ "res://.import/status_unknown.png-98601055bf696dc10dcb6ed049142390.stex" ]
 
 [params]
 

@@ -1,18 +1,23 @@
-extends Node
+extends Spatial
 
 # Each status condition has any number of modifiers, each of which behave in a
 # different way. The modifiers are described as arrays/lists, where each element
 # is a different value. These Modifier Field Indicies (MFIs) are the indicies to
 # access those different values.
-# The target field is the string name of the field we're targeting. Using a
+# The target field is the string name of the field we're targeting. In other
+# words, it's the actual field that is BEING dynamically modified. Using a
 # string allows us to dynamically apply the modifiers.
 const MFI_TARGET = 0
+# The source field is the string name of the field we're deriving our
+# calculation from - this is the field that gets used by ADD_SCALE_MOD type
+# operations. It is effectively ignored for FLAT_MOD type operations.
+const MFI_SOURCE = 1
 # The operation field determines what kind of operation we're performing with
 # the modifier. Check the StatOp enum for more.
-const MFI_OP = 1
+const MFI_OP = 2
 # The modifier field is the actual modifying value. This should be an int or a
 # float of some sort.
-const MFI_MODI = 2
+const MFI_MODI = 3
 
 # This enum defines the different types of stat operations that each
 # modification can do. That way, we know how to modify the stats in question.
@@ -24,10 +29,19 @@ enum StatOp {
     ADD_SCALE_MOD
 }
 
-# The modifiers for this status condition. This is a series of arrays where the
-# indicies correspond to the MOD_FIELD index constants above. Since this is the
-# base, it goes blank.
-var modifiers = []
+# This function returns the modifiers for this status condition, as an array.
+# Each entry should also be an array/list, with the appropriate indices
+# (MFI_TARGET, MFI_OP, etc.) corresponding to the appropriate entries in those
+# sub arrays. Since this is the base, it goes blank.
+func get_modifiers():
+    pass
+
+# This function returns the particles for this status condition, as an array. It
+# should be overloaded by any deriving status conditions. Each status condition
+# can have many, or absolutely zero, particle systems. These can either be
+# preconstructed particle systems or Rich Particle Materials.
+func get_particles():
+    pass
 
 # How long does this status effect last for? <= 0 means never-ending. Note that
 # this doesn't mean the status effect can't be reversed by other means, just
@@ -43,3 +57,10 @@ export(int) var dot_interval = -1
 # What's the icon we use to represent this status effect?
 export(Texture) var icon
 
+# What's the keyname for this status effect - the "code side" unique identifier
+# we use to differentiate this status effect from all other status effects? 
+export(String) var keyname
+
+# What's the name we actually display to users; i.e. what's the PROPER name for
+# this status effect?
+export(String) var human_name

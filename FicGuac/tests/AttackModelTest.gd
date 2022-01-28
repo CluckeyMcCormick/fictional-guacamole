@@ -5,6 +5,8 @@ const KPAWN_PRELOAD = preload("res://tests/test_assets/KinematicPawn.tscn")
 # Preload our melee task (single target) so we can instance it on demand
 const MELEE_SINGLE_TASK_PRELOAD = preload("res://motion_ai/common/tasking/MeleeAttackTarget.tscn")
 
+const adrenaline = preload("res://status/conditions/Adrenaline.tscn")
+
 # The thickness of the torus - in other words, the difference between the inner
 # radius and the outer radius.
 const TORUS_THICKNESS = .2
@@ -39,6 +41,8 @@ func _ready():
     
     # Get our first pawn.
     target_pawn = $TargetPawn
+    
+    $AttackPawn/CharacterStatsCore.add_status_effect(adrenaline.instance())
     
     # Make the Pawn path to itself. This should trigger the path_complete
     # signal, kicking off our processing loop.

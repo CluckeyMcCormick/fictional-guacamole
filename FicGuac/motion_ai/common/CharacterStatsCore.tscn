@@ -2,5 +2,5 @@
 
 [ext_resource path="res://motion_ai/common/CharacterStatsCore.gd" type="Script" id=1]
 
-[node name="CharacterStatsCore" type="Node"]
+[node name="CharacterStatsCore" type="Position3D"]
 script = ExtResource( 1 )

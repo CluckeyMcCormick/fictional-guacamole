@@ -56,9 +56,7 @@ size = 18.0
 [node name="WorldEnvironment" type="WorldEnvironment" parent="."]
 environment = ExtResource( 3 )
 
-[node name="Floor" type="StaticBody" parent="." groups=[
-"terrain",
-]]
+[node name="Floor" type="StaticBody" parent="." groups=["terrain"]]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -1, 0 )
 
 [node name="CollisionShape" type="CollisionShape" parent="Floor"]
