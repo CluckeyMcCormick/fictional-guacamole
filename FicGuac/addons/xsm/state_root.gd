@@ -47,8 +47,10 @@ func _ready() -> void:
 	if fsm_owner == null and get_parent() != null:
 		target = get_parent()
 	init_state_map()
+	status = ACTIVE
+	_on_enter(null)
 	init_children_states(self, true)
-	set_active(true)
+	_after_enter(null)
 
 
 func _get_configuration_warning() -> String:
@@ -71,10 +73,10 @@ func init_state_map() -> void:
 #
 # PROCESS
 #
-func _physics_process(delta: float) -> void:
+func _physics_process(_delta: float) -> void:
 	if Engine.is_editor_hint():
 		return
-	if not disabled:
+	if not disabled and status == ACTIVE:
 		reset_done_this_frame(false)
 		add_to_active_states_history(active_states.duplicate())
 		while pending_states.size() > 0:
@@ -89,8 +91,7 @@ func _physics_process(delta: float) -> void:
 					arg1, arg2, arg3, arg4)
 			emit_signal("pending_state_changed", new_state_node)
 			state_in_update = false
-#			pending_states.clear()
-		update_active_states(delta)
+		update_active_states(_delta)
 
 
 #
@@ -117,15 +118,21 @@ func in_active_states(state_name: String) -> bool:
 	return active_states.has(state_name)
 
 
+# index 0 is the most recent history
 func get_previous_active_states(history_id: int = 0) -> Dictionary:
-	if active_states_history.size() <= history_id:
+	if active_states_history.empty():
 		return Dictionary()
+	if active_states_history.size() <= history_id:
+		return active_states_history[0]
 	return active_states_history[history_id]
 
 
 # CAREFUL IF YOU HAVE TWO STATES WITH THE SAME NAME, THE "state_name"
 # SHOULD BE OF THE FORM "ParentName/ChildName"
 func was_state_active(state_name: String, history_id: int = 0) -> bool:
+	var prev = get_previous_active_states(history_id)
+	if not prev:
+		return false
 	return get_previous_active_states(history_id).has(state_name)
 
 
