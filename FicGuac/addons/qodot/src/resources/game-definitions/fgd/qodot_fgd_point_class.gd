@@ -3,7 +3,7 @@ extends QodotFGDClass
 tool
 
 func _init() -> void:
-	prefix = "@PointClass"
+    prefix = "@PointClass"
 
 export(String) var scene : String = QodotUtil.CATEGORY_STRING
 

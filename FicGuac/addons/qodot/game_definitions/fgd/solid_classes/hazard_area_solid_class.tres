@@ -11,13 +11,10 @@ description = "Hazard Area Brush - i.e. a Godot area representing a hazard"
 qodot_internal = false
 base_classes = [  ]
 class_properties = {
-
 }
 class_property_descriptions = {
-
 }
 meta_properties = {
-
 }
 node_options = "----------------------------------------------------------------"
 node_class = "Area"

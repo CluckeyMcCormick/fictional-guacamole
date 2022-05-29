@@ -3,4 +3,4 @@ extends QodotFGDClass
 tool
 
 func _init() -> void:
-	prefix = "@BaseClass"
+    prefix = "@BaseClass"
