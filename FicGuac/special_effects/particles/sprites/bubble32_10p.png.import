@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/slashDiagA64.png-a19514e18b6b9e65c8d4dc6ec049d6ba.stex"
+path="res://.import/bubble32_10p.png-0a7148166bd16cef48707a6a95d61498.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://special_effects/particles/slashDiagA64.png"
-dest_files=[ "res://.import/slashDiagA64.png-a19514e18b6b9e65c8d4dc6ec049d6ba.stex" ]
+source_file="res://special_effects/particles/sprites/bubble32_10p.png"
+dest_files=[ "res://.import/bubble32_10p.png-0a7148166bd16cef48707a6a95d61498.stex" ]
 
 [params]
 
@@ -19,7 +19,7 @@ compress/lossy_quality=0.7
 compress/hdr_mode=0
 compress/bptc_ldr=0
 compress/normal_map=0
-flags/repeat=0
+flags/repeat=true
 flags/filter=false
 flags/mipmaps=true
 flags/anisotropic=false

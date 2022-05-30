@@ -9,7 +9,7 @@ extends Position3D
 # use this to show damage values.
 const float_away_text = preload("res://special_effects/FloatAwayText.tscn")
 # Preload the rich particle emitter so we know where it's at
-const RPE = preload("res://special_effects/particles/RichParticleEmitter.tscn")
+const SPE = preload("res://special_effects/particles/ScalableParticleEmitter.tscn")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -78,12 +78,12 @@ func add_status_effect(sfx):
     # Now we need to add the status effects.
     particles = sfx.get_particles()
     for particle_item in particles:
-        var new_rpe = RPE.instance()
+        var new_spe = SPE.instance()
         
-        sfx.add_child(new_rpe)
+        sfx.add_child(new_spe)
         
-        new_rpe.set_rich_material( particle_item )
-        new_rpe.scale_emitter( Vector3(1, 1, 1) )
+        new_spe.set_blueprint( particle_item )
+        new_spe.scale_emitter( Vector3(1, 1, 1) )
     
 func remove_status_effect(status_effect):
     if not status_effect.keyname in status_effect:

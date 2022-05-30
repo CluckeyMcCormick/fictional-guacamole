@@ -2,15 +2,15 @@
 
 importer="texture"
 type="StreamTexture"
-path="res://.import/bubble32_10p.png-c1687618e7b7dd3943f3efca8c5419f4.stex"
+path="res://.import/bubble32_50p.png-004061ad5cd94fc073b232e19a163bb2.stex"
 metadata={
 "vram_texture": false
 }
 
 [deps]
 
-source_file="res://special_effects/particles/bubble32_10p.png"
-dest_files=[ "res://.import/bubble32_10p.png-c1687618e7b7dd3943f3efca8c5419f4.stex" ]
+source_file="res://special_effects/particles/sprites/bubble32_50p.png"
+dest_files=[ "res://.import/bubble32_50p.png-004061ad5cd94fc073b232e19a163bb2.stex" ]
 
 [params]
 

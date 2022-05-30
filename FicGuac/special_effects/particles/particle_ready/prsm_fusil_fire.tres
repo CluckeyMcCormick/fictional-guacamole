@@ -1,0 +1,21 @@
+[gd_resource type="SpatialMaterial" load_steps=4 format=2]
+
+[ext_resource path="res://special_effects/particles/ParticleReadySpatialMaterial.gd" type="Script" id=1]
+[ext_resource path="res://special_effects/particles/sprites/fusil32.png" type="Texture" id=2]
+
+[sub_resource type="QuadMesh" id=1]
+size = Vector2( 0.35, 0.35 )
+
+[resource]
+flags_transparent = true
+flags_unshaded = true
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_texture = ExtResource( 2 )
+script = ExtResource( 1 )
+pass_1 = SubResource( 1 )
+particle_size_hint = Vector3( 0.38, 0.75, 0.38 )

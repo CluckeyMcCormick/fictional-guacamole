@@ -1,6 +1,6 @@
 extends Spatial
 
-const RPE = preload("res://special_effects/particles/RichParticleEmitter.tscn")
+const SPE = preload("res://special_effects/particles/ScalableParticleEmitter.tscn")
 
 # Our global manifest node that holds all of the tests paths in a dictionary.
 onready var MANIFEST = get_node("/root/Manifest")
@@ -26,7 +26,7 @@ var systems_count = 0
 # Called when the node enters the scene tree for the first time.
 func _ready():
     # We need to update the Item List using our particle material paths
-    for mat_name in MANIFEST.PARTICLE_MATERIALS.keys():
+    for mat_name in MANIFEST.PARTICLE_BLUEPRINTS.keys():
         $GUI/ItemList.add_item(mat_name)
 
 func _on_Go_pressed():
@@ -61,7 +61,7 @@ func _on_Go_pressed():
     scale_vector = scalar
     for index in selected:
         temp = $GUI/ItemList.get_item_text(index)
-        material_list.append(load(MANIFEST.PARTICLE_MATERIALS[temp]))
+        material_list.append(load(MANIFEST.PARTICLE_BLUEPRINTS[temp]))
     
     material_index = 0
     
@@ -71,17 +71,17 @@ func _on_Go_pressed():
     $Timer.start()
 
 func _on_Timer_timeout():
-    var new_rpe = RPE.instance()
+    var new_spe = SPE.instance()
     
-    $MeshInstance/ParticleMount.add_child(new_rpe)
-    new_rpe.translation = Vector3(x, y, z)
+    $MeshInstance/ParticleMount.add_child(new_spe)
+    new_spe.translation = Vector3(x, y, z)
     
-    new_rpe.set_rich_material(material_list[material_index])
-    new_rpe.scale_emitter(scale_vector)
+    new_spe.set_blueprint(material_list[material_index])
+    new_spe.scale_emitter(scale_vector)
     # Just for this test, we ignore "one shot" particle materials.
-    new_rpe.one_shot = false
+    new_spe.one_shot = false
     
-    particle_count += new_rpe.amount
+    particle_count += new_spe.amount
     systems_count += 1
     $GUI/Stats/ParticleCount.text = str(particle_count)
     $GUI/Stats/SystemsCount.text = str(systems_count)

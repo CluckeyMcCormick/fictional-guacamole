@@ -22,14 +22,17 @@ var TEST_SCENES = {
     "Particle Zoo Test" : "res://tests/ParticleZooTest.tscn",
 }
 
-# Different particle materials
-var PARTICLE_MATERIALS = {
-    "Fire, Diamond32" : "res://special_effects/particles/RichParticleMat_Fire.tres",
-    "Poison, Bubble32" : "res://special_effects/particles/RichParticleMat_Poison.tres",
-    "Cross Slash 64" : "res://special_effects/particles/RichParticleMat_SlashCross.tres",
-    "Diagonal Slash A 64" : "res://special_effects/particles/RichParticleMat_SlashDiagA.tres",
-    "Diagonal Slash B 64" : "res://special_effects/particles/RichParticleMat_SlashDiagB.tres",
-    "Horizontal Slash 64" : "res://special_effects/particles/RichParticleMat_SlashHorizontal.tres",
-    "Vertical Slash 64" : "res://special_effects/particles/RichParticleMat_SlashVertical.tres",
-    "Blaster Test" : "res://special_effects/particles/RichParticleMat_Blaster.tres"
+# Scalable Particle Blueprint (SPB) manifest - these are meant to be used with
+# dynamically created ScalableParticleEmitter nodes
+var PARTICLE_BLUEPRINTS = {
+    "SPB Fire, Fusil32" : "res://special_effects/particles/scalable_blueprints/spb_fire.tres",
+    "SPB Poison, Bubble32" : "res://special_effects/particles/scalable_blueprints/spb_poison_bubbles.tres",
+    "SPB Red Hit, Cross64" : "res://special_effects/particles/scalable_blueprints/spb_hit_cross.tres",
+    "SPB Red Hit, DiagonalA64" : "res://special_effects/particles/scalable_blueprints/spb_hit_diag_a.tres",
+    "SPB Red Hit, DiagonalB64" : "res://special_effects/particles/scalable_blueprints/spb_hit_diag_b.tres",
+    "SPB Red Hit, Horizontal64" : "res://special_effects/particles/scalable_blueprints/spb_hit_horizontal.tres",
+    "SPB Red Hit, Vertical64" : "res://special_effects/particles/scalable_blueprints/spb_hit_vertical.tres",
 }
+
+# Prebuilt particle scenes
+var PARTICLE_SCENES = {}

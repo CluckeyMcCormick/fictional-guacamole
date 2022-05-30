@@ -5,6 +5,10 @@ const MINI_X_ANGLE_DEG = 180
 const MAXI_Y_ANGLE_DEG = 90
 const MINI_Y_ANGLE_DEG = 270
 
+# What's the ParticleReadySpatialMaterial that we'll use as the override
+# material for this system?
+export(Resource) var blueprint = null setget set_blueprint
+
 # Called every frame. 'delta' is the elapsed time since the previous frame.
 func _process(_delta):
     # Skip all of this debug nonsense, for now.
@@ -45,23 +49,37 @@ func _process(_delta):
         Color.crimson
     )
 
-func set_rich_material(new_rich_mat : ParticlesMaterial):
+func set_blueprint(new_blueprint : ScalableParticleBlueprint):
     # Used to count the number of passes (drawn meshes). Saves us from having to
     # manually set the pass count.
     var pass_count = 0
+
     # Used to verify each draw pass
-    var draws = [
-        new_rich_mat.pass_1, new_rich_mat.pass_2,
-        new_rich_mat.pass_3, new_rich_mat.pass_4
-    ]
+    var draws = []
     
-    # Ensure this material is a Rich Particle Material
-    if new_rich_mat.get("root_particle_slope") == null:
-        printerr("Provided material is not a Rich Particle Material!!!")
+    # First off, if the object we got handed is not a Scalable Particle
+    # Blueprint, we can't really do much of anything can we? Inform the user and
+    # back out.
+    if not new_blueprint is ScalableParticleBlueprint:
+        printerr("Attempted to give non-SPB resource to scalable emitter.")
+        printerr("Please use a ScalableParticleBlueprint.")
         return
-    
-    # Ensure this rich particle material is one of our "valid" shapes
-    match new_rich_mat.emission_shape:
+
+    # Now we can check the prsm field to verify that it is a
+    # ParticleReadySpatialMaterial.
+    if not new_blueprint.prsm is ParticleReadySpatialMaterial:
+        printerr("Scaleable emitter's blueprint had a non-PSRM override material!")
+        printerr("Please use a ParticleReadySpatialMaterial.")
+        return
+
+    # Also verify that it has an appropriate particle material
+    if not new_blueprint.particle_material is ParticlesMaterial:
+        printerr("Error with scaleable emitter's blueprint particle material!")
+        printerr("Either the material is absent or it isn't a ParticlesMaterial.")
+        return
+
+    # Ensure the blueprint's particle material is one of our "valid" shapes
+    match new_blueprint.particle_material.emission_shape:
         ParticlesMaterial.EMISSION_SHAPE_POINT:
             pass
         ParticlesMaterial.EMISSION_SHAPE_SPHERE:
@@ -69,9 +87,21 @@ func set_rich_material(new_rich_mat : ParticlesMaterial):
         ParticlesMaterial.EMISSION_SHAPE_BOX:
             pass
         _:
-            printerr("Invalid Rich Particles EmissionShape: ", new_rich_mat.emission_shape)
+            printerr(
+                "Invalid Scalable Particles EmissionShape: ",
+                new_blueprint.particle_material.emission_shape
+            )
             return
     
+    # Okay, now we need to verify that the draw passes found in the blueprint's
+    # prsm (ParticleReadySpatialMaterial) are supported. So, pack the draw
+    # passes into an array for ease-of-iteration.
+    draws = [
+        new_blueprint.prsm.pass_1, new_blueprint.prsm.pass_2,
+        new_blueprint.prsm.pass_3, new_blueprint.prsm.pass_4
+    ]   
+    
+    # For each draw pass, verify that it's valid.
     for d in draws:
         if d == null:
             continue
@@ -82,20 +112,23 @@ func set_rich_material(new_rich_mat : ParticlesMaterial):
         else:
             printerr("Only QuadMesh and CubeMesh are supported draw types")
             return
-    
-    # Alright, set the basic stuff.
-    self.process_material = new_rich_mat
-    self.material_override = new_rich_mat.override_material
-    
+
+    # If we're here, then... everything looks good, I guess! Set the blueprint,
+    # then set the process material and override material given by the
+    # blueprint.
+    blueprint = new_blueprint
+    self.process_material = blueprint.particle_material
+    self.material_override = blueprint.prsm
+
     # Default the number of draw passes
     self.draw_passes = 4
     
     # Now we need to set the passes. First, we'll just move over all of the
     # passes.
-    self.draw_pass_1 = new_rich_mat.pass_1
-    self.draw_pass_2 = new_rich_mat.pass_2
-    self.draw_pass_3 = new_rich_mat.pass_3
-    self.draw_pass_4 = new_rich_mat.pass_4
+    self.draw_pass_1 = material_override.pass_1
+    self.draw_pass_2 = material_override.pass_2
+    self.draw_pass_3 = material_override.pass_3
+    self.draw_pass_4 = material_override.pass_4
     
     # Now we'll count out how many of those AREN'T null and, thus, our pass
     # count!
@@ -112,30 +145,28 @@ func set_rich_material(new_rich_mat : ParticlesMaterial):
     self.draw_passes = pass_count
     
     # Now move over all of the "recommended" variables
-    self.lifetime = new_rich_mat.rcmnd_lifetime
-    self.one_shot = new_rich_mat.rcmnd_one_shot
-    self.preprocess = new_rich_mat.rcmnd_preprocess
-    self.speed_scale = new_rich_mat.rcmnd_speed_scale
-    self.explosiveness = new_rich_mat.rcmnd_explosiveness
-    self.randomness = new_rich_mat.rcmnd_randomness
-    self.fixed_fps = new_rich_mat.rcmnd_fixed_fps
-    self.fract_delta = new_rich_mat.rcmnd_fract_delta
-    
-    # Okay, the particle count and AABB need to be set with the scale, so we're
-    # all done here.
+    self.lifetime = blueprint.rcmnd_lifetime
+    self.one_shot = blueprint.rcmnd_one_shot
+    self.preprocess = blueprint.rcmnd_preprocess
+    self.speed_scale = blueprint.rcmnd_speed_scale
+    self.explosiveness = blueprint.rcmnd_explosiveness
+    self.randomness = blueprint.rcmnd_randomness
+    self.fixed_fps = blueprint.rcmnd_fixed_fps
+    self.fract_delta = blueprint.rcmnd_fract_delta
     
 func scale_emitter(new_scale : Vector3):
     # Verification
     if self.process_material == null:
         printerr("No process material to scale with!!!")
         return
-    if self.process_material.get("root_particle_slope") == null:
-        printerr("Current process material is not a Rich Particle Material!!!")
+    if not self.material_override is ParticleReadySpatialMaterial:
+        printerr("Current override material is not a Partical Ready Material!!!")
         return
+    
     # Used to verify each draw pass
     var draws = [
-        self.process_material.pass_1, self.process_material.pass_2,
-        self.process_material.pass_3, self.process_material.pass_4
+        self.material_override.pass_1, self.material_override.pass_2,
+        self.material_override.pass_3, self.material_override.pass_4
     ]
 
     for d in draws:
@@ -189,7 +220,7 @@ func scale_emitter(new_scale : Vector3):
             spawn_len_x = 0
             spawn_len_y = 0
             spawn_len_z = 0
-            self.amount = self.process_material.base_particle_count
+            self.amount = self.blueprint.base_particle_count
         # If we're emitting in a sphere-shape, then the length for each is the
         # diameter of the sphere.
         ParticlesMaterial.EMISSION_SHAPE_SPHERE:
@@ -205,9 +236,9 @@ func scale_emitter(new_scale : Vector3):
                 * (spawn_len_y * new_scale.y) \
                 * (spawn_len_z * new_scale.z)
             # The amount of particles to spawn is our base...
-            self.amount = self.process_material.base_particle_count
+            self.amount = self.blueprint.base_particle_count
             # ... PLUS the cubic root of the volume * the density.
-            self.amount += int(pow(temp, 1.0/3.0) * self.process_material.root_particle_slope)
+            self.amount += int(pow(temp, 1.0/3.0) * self.blueprint.root_particle_slope)
             
             # Finally, double the spawn lengths (since we want the diameters)
             spawn_len_x *= 2
@@ -225,20 +256,19 @@ func scale_emitter(new_scale : Vector3):
                  * (spawn_len_y * new_scale.y) \
                  * (spawn_len_z * new_scale.z)
             # The amount of particles to spawn is is our base...
-            self.amount = self.process_material.base_particle_count
+            self.amount = self.blueprint.base_particle_count
             # ... PLUS the cubic root of the volume * the density.
-            self.amount += int(pow(temp, 1.0/3.0) * self.process_material.root_particle_slope)
+            self.amount += int(pow(temp, 1.0/3.0) * self.blueprint.root_particle_slope)
         _:
             printerr("Invalid Rich Particles EmissionShape: ", self.process_material.emission_shape)
             return
     
     # Now, technically, the max we can over-extend on a side is by half of the
     # size hint. However, since we'd do that at both sides, that adds up to the
-    # whole of the size hint. Ergo, we just add in the size hint, scaled up.
-    # Easy!
-    spawn_len_x += self.process_material.particle_size_hint.x
-    spawn_len_y += self.process_material.particle_size_hint.y
-    spawn_len_z += self.process_material.particle_size_hint.z
+    # whole of the size hint. Ergo, we just add in the size hint Easy!
+    spawn_len_x += self.material_override.particle_size_hint.x
+    spawn_len_y += self.material_override.particle_size_hint.y
+    spawn_len_z += self.material_override.particle_size_hint.z
     
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
     #
@@ -351,58 +381,58 @@ func scale_emitter(new_scale : Vector3):
     # Step 5: DrawPass Mesh Adjustments
     #
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    if self.process_material.pass_1 != null:
-        if self.process_material.pass_1 is QuadMesh:
+    if self.material_override.pass_1 != null:
+        if self.material_override.pass_1 is QuadMesh:
             self.draw_pass_1 = QuadMesh.new()
-            draw_pass_1.size.x = process_material.pass_1.size.x / new_scale.x
+            draw_pass_1.size.x = material_override.pass_1.size.x / new_scale.x
             draw_pass_1.size.y = draw_pass_1.size.x
-        elif self.process_material.pass_1 is CubeMesh:
+        elif self.material_override.pass_1 is CubeMesh:
             self.draw_pass_1 = CubeMesh.new()
-            draw_pass_1.size.x = process_material.pass_1.size.x / new_scale.x
-            draw_pass_1.size.y = process_material.pass_1.size.y / new_scale.y
-            draw_pass_1.size.z = process_material.pass_1.size.z / new_scale.z
+            draw_pass_1.size.x = material_override.pass_1.size.x / new_scale.x
+            draw_pass_1.size.y = material_override.pass_1.size.y / new_scale.y
+            draw_pass_1.size.z = material_override.pass_1.size.z / new_scale.z
         else:
             printerr("Only QuadMesh and CubeMesh are supported draw types")
             return
 
-    if self.process_material.pass_2 != null:
-        if self.process_material.pass_2 is QuadMesh:
+    if self.material_override.pass_2 != null:
+        if self.material_override.pass_2 is QuadMesh:
             self.draw_pass_2 = QuadMesh.new()
-            draw_pass_2.size.x = process_material.pass_2.size.x / new_scale.x
+            draw_pass_2.size.x = material_override.pass_2.size.x / new_scale.x
             draw_pass_2.size.y = draw_pass_2.size.x
-        elif self.process_material.pass_2 is CubeMesh:
+        elif self.material_override.pass_2 is CubeMesh:
             self.draw_pass_2 = CubeMesh.new()
-            draw_pass_2.size.x = process_material.pass_2.size.x / new_scale.x
-            draw_pass_2.size.y = process_material.pass_2.size.y / new_scale.y
-            draw_pass_2.size.z = process_material.pass_2.size.z / new_scale.z
+            draw_pass_2.size.x = material_override.pass_2.size.x / new_scale.x
+            draw_pass_2.size.y = material_override.pass_2.size.y / new_scale.y
+            draw_pass_2.size.z = material_override.pass_2.size.z / new_scale.z
         else:
             printerr("Only QuadMesh and CubeMesh are supported draw types")
             return
 
-    if self.process_material.pass_3 != null:
-        if self.process_material.pass_3 is QuadMesh:
+    if self.material_override.pass_3 != null:
+        if self.material_override.pass_3 is QuadMesh:
             self.draw_pass_3 = QuadMesh.new()
-            draw_pass_3.size.x = process_material.pass_3.size.x / new_scale.x
+            draw_pass_3.size.x = material_override.pass_3.size.x / new_scale.x
             draw_pass_3.size.y = draw_pass_3.size.x
-        elif self.process_material.pass_3 is CubeMesh:
+        elif self.material_override.pass_3 is CubeMesh:
             self.draw_pass_3 = CubeMesh.new()
-            draw_pass_3.size.x = process_material.pass_3.size.x / new_scale.x
-            draw_pass_3.size.y = process_material.pass_3.size.y / new_scale.y
-            draw_pass_3.size.z = process_material.pass_3.size.z / new_scale.z
+            draw_pass_3.size.x = material_override.pass_3.size.x / new_scale.x
+            draw_pass_3.size.y = material_override.pass_3.size.y / new_scale.y
+            draw_pass_3.size.z = material_override.pass_3.size.z / new_scale.z
         else:
             printerr("Only QuadMesh and CubeMesh are supported draw types")
             return
             
-    if self.process_material.pass_4 != null:
-        if self.process_material.pass_4 is QuadMesh:
+    if self.material_override.pass_4 != null:
+        if self.material_override.pass_4 is QuadMesh:
             self.draw_pass_4 = QuadMesh.new()
-            draw_pass_4.size.x = process_material.pass_4.size.x / new_scale.x
+            draw_pass_4.size.x = material_override.pass_4.size.x / new_scale.x
             draw_pass_4.size.y = draw_pass_4.size.x
-        elif self.process_material.pass_4 is CubeMesh:
+        elif self.material_override.pass_4 is CubeMesh:
             self.draw_pass_4 = CubeMesh.new()
-            draw_pass_4.size.x = process_material.pass_4.size.x / new_scale.x
-            draw_pass_4.size.y = process_material.pass_4.size.y / new_scale.y
-            draw_pass_4.size.z = process_material.pass_4.size.z / new_scale.z
+            draw_pass_4.size.x = material_override.pass_4.size.x / new_scale.x
+            draw_pass_4.size.y = material_override.pass_4.size.y / new_scale.y
+            draw_pass_4.size.z = material_override.pass_4.size.z / new_scale.z
         else:
             printerr("Only QuadMesh and CubeMesh are supported draw types")
             return

@@ -1,0 +1,21 @@
+[gd_resource type="SpatialMaterial" load_steps=4 format=2]
+
+[ext_resource path="res://special_effects/particles/sprites/bubble32_50p.png" type="Texture" id=1]
+[ext_resource path="res://special_effects/particles/ParticleReadySpatialMaterial.gd" type="Script" id=2]
+
+[sub_resource type="QuadMesh" id=1]
+size = Vector2( 0.1, 0.1 )
+
+[resource]
+flags_transparent = true
+flags_unshaded = true
+vertex_color_use_as_albedo = true
+vertex_color_is_srgb = true
+params_billboard_mode = 3
+particles_anim_h_frames = 1
+particles_anim_v_frames = 1
+particles_anim_loop = false
+albedo_texture = ExtResource( 1 )
+script = ExtResource( 2 )
+pass_1 = SubResource( 1 )
+particle_size_hint = Vector3( 0.1, 0.1, 0.1 )
