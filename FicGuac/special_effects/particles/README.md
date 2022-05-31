@@ -7,13 +7,13 @@ This gets tricky - for example, the size of the emitting area is set in the part
 
 While this divide is actually structurally sound and very good from an engineering perspective, it does make our job somewhat thornier. While I *could* just make several different particle materials with different emitter sizes and behaviors, I'm betting that reusing particle materials will allow for better overall performance. Less materials to render per-scene will improve frame rate and decrease the strain on lower-end systems. As an added advantage, reusing materials in this way will help us make our particles aesthetically consistent.
 
-To maximize the reusage of `ParticleMaterial` and `SpatialMaterial` resources, we have a few custom resources and a scene.
+To maximize the reusage of material resources, we have a few custom resources and a scene.
 
 First, we have `ParticleReadySpatialMaterial`, which is a `SpatialMaterial` extended with extra fields. These extra fields allow us to group the visual information - the pass meshes and particle size hints - with the visual information in the `SpatialMaterial` resource.
 
-Next, we need to bind the `ParticleReadySpatialMaterial` together with a behavior-describing `ParticleMaterial`. For that, we have the `ScalableParticleBlueprint`. It also includes some extra fields that control both overall particle system visuals and behavior.
+Next, we need to bind the `ParticleReadySpatialMaterial` together with a behavior-describing `ParticleMaterial` or `ShaderMaterial`. For that, we have the `ScalableParticleBlueprint`. It also includes some extra fields that control both overall particle system visuals and behavior.
 
-Finally, the `ScalableParticleBlueprint` is used to instantiate a `ScalableParticleEmitter`. This particle emitter can be scaled to emit particles over a given area - I believe, by default, we assume particles are emitted in a 1x1x1 box.
+Finally, the `ScalableParticleBlueprint` is used to instantiate a `ScalableParticleEmitter`. This particle emitter can then be scaled to emit particles over a given area.
 
 ## Directories
 
@@ -49,7 +49,7 @@ When calculating the *AABB* for a given system, we need to factor in the particl
 size. To avoid actually having to do that manually, we'll instead use this size hint to approximate the particle size, and assume it's a box. This is technically over-generous (and imprecise) but that ensures that the particle systems LOOK right.
 
 ## Scalable Particle Blueprint
-This custom resource ties together a `ParticleReadySpatialMaterial` with a `ParticleMaterial` and some extra instructions for instantiating a *Scalable Particle Emitter* - hence the *blueprint* designation.
+This custom resource ties together a `ParticleReadySpatialMaterial` with a `ParticleMaterial` (or `ShaderMaterial`) and some extra instructions for instantiating a *Scalable Particle Emitter* - hence the *blueprint* designation.
 
 ### Configurables
 
@@ -60,8 +60,9 @@ The  `ParticleReadySpatialMaterial` for this blueprint. I had to make the variab
 
 A couple of things to note:
 
-- The `ParticleMaterial` should always have an emission area of roughly 1x1x1. The emission area can be larger or smaller but the 1x1x1 size is baked into our math calculations.
-- The only `ParticleMaterial` *emission shapes* currently supported by the corresponding *Scalable Particle Emitter* are:
+- Both `ParticleMaterial` and `ShaderMaterial` are accepted. However, the behavior if you use a non-particle `ShaderMaterial` is untested and undefined.
+- If using a `ShaderMaterial`, the particles should be constrained to a 1x1x1 space. Since there is no emitter shape to scale from, we assume the particles occupy a 1x1x1 volume for the purposes of scaling the visibility.
+- If using a `ParticleMaterial`, the only *emission shapes* currently supported by the corresponding *Scalable Particle Emitter* are:
  - Point
  - Sphere
  - Box
@@ -78,11 +79,8 @@ Okay, now for the actual math - we start by calculating the volume of a given em
 
 This works because taking the cubic root of the volume turns the value from a *cubic, exponential* system into a *linear* one, thus allowing us to scale the particle count at a normal rate. At least I think so. This idea was kind of a wake-up-in-a-cold-sweat-after-midnight idea so who knows, maybe it was just given to me by some sort wretched math goblin (though is there truthfully any sort of math goblin that isn't wretched?).
 
-#### Override Material
-The *Override Material* is the material used in the emitter's *Material Override* field - this can be seen under the *Geometry* sub-menu. This is the material that particles will actually spawn with, and will be manipulated by the particle material.
-
 #### Recommended (RCMND) Values
-We also have a series of variables that are passed one-to-one to an emitter. These are appended with a *rcmnd* (recommended) prefix. They are:
+We also have a series of variables that are passed one-to-one to an emitter. These are prepended with a *rcmnd* (recommended) prefix. They are:
 
 - RCMND Lifetime
 - RCMND One Shot
@@ -93,14 +91,15 @@ We also have a series of variables that are passed one-to-one to an emitter. The
 - RCMND Fixed FPS
 - RCMND Fract Delta
 
-## Rich Particle Emitter
+## Scalable Particle Emitter
 This scene is a single-node scene; it's just a regular `ParticleEmitter` node that's been amped up with a few functions to take advantage of the *Scalable Particle Blueprint*.
 
-This node was intended to be instantiated from code and then manually fed *Scalable Particle Blueprints*. Ergo, if you tried to use it in editor it probably wouldn't work how you expected. If you updated the blueprint it wouldn't refresh, and the nodes "scale" property is not necessarily what we're scaling to. Still, with a little work, it could be doable. Just, that's outside of what we need this thing for.
+This node was intended to be instantiated from code and then manually fed *Scalable Particle Blueprints*. Ergo, if you tried to use it in editor it probably wouldn't work how you expected. If you updated the blueprint it wouldn't refresh, and the nodes "scale" property is not necessarily what we're scaling to. Still, with a little work, it could be doable. Just, that's outside of what we need this thing for so I'm not doing it.
 
 ### Configurables
 
-#### PRSM
+#### Blueprint
+The `ScalableParticleEmitter`'s current `ScalableParticleBlueprint`.
 
 ### Functions
 
@@ -114,8 +113,8 @@ For this function to work:
 - The `new_blueprint` must be a `ScalableParticleBlueprint`.
 - The new blueprint's `prsm` variable must be a `ParticleReadySpatialMaterial`.
 - The new blueprint's `prsm` draw passes must either be `QuadMesh` or `CubeMesh`.
-- The new blueprint's `particle_material` variable must be a `ParticlesMaterial`.
-- The new blueprint's `particle_material` *emission shape* must be a Point, Sphere, or Box.
+- The new blueprint's `particle_material` variable must be either a `ParticlesMaterial` or a `ShaderMaterial`.
+- If the new blueprint's `particle_material` is a `ParticlesMaterial`, the *emission shape* must be a Point, Sphere, or Box.
 - The `prsm`'s draw passes must all either be a `QuadMesh` or `CubeMesh`.
 
 #### `scale_emitter`
@@ -125,6 +124,6 @@ For this function to work:
 
 - The `blueprint` must not be null.
 - The `particle_material` must not be null.
-- The `material_override` must be a `ParticleReadySpatialMaterial`.
-- The `process_material`'s *emission shape* must be a Point, Sphere, or Box.
+- The `material_override` must be a `ParticleReadySpatialMaterial` or a `ShaderMaterial`.
+- If the `process_material` is a `ParticlesMaterial`, the *emission shape* must be a Point, Sphere, or Box.
 - The `material_override`'s particle-ready draw passes must all either be `QuadMesh` or `CubeMesh`.

@@ -5,7 +5,7 @@ class_name ScalableParticleBlueprint
 # material for this system?
 export(SpatialMaterial) var prsm = null setget set_prsm
 # What's the particle material for this system?
-export(ParticlesMaterial) var particle_material = null
+export(Material) var particle_material = null setget set_particle_material
 
 # What's our base particle count - i.e. if this material is in a zero-volume
 # emitter, how many particles do we have?
@@ -30,3 +30,10 @@ func set_prsm(new_material):
     else:
         push_warning("Attempted to give non-PRSM resource to scalable blueprint.")
         push_warning("Please use a ParticleReadySpatialMaterial.")
+
+func set_particle_material(new_material):
+    if (new_material is ParticlesMaterial) or (new_material is ShaderMaterial):
+        particle_material = new_material
+    else:
+        push_warning("Incompatible particle material for blueprint.")
+        push_warning("Please use a ParticlesMaterial or a ShaderMaterial.")

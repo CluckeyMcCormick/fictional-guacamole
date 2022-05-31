@@ -73,25 +73,30 @@ func set_blueprint(new_blueprint : ScalableParticleBlueprint):
         return
 
     # Also verify that it has an appropriate particle material
-    if not new_blueprint.particle_material is ParticlesMaterial:
+    if (not new_blueprint.particle_material is ParticlesMaterial) and \
+        (not new_blueprint.particle_material is ShaderMaterial):
         printerr("Error with scaleable emitter's blueprint particle material!")
-        printerr("Either the material is absent or it isn't a ParticlesMaterial.")
+        printerr("The material is absent or not a ParticlesMaterial or ShaderMaterial.")
         return
 
-    # Ensure the blueprint's particle material is one of our "valid" shapes
-    match new_blueprint.particle_material.emission_shape:
-        ParticlesMaterial.EMISSION_SHAPE_POINT:
-            pass
-        ParticlesMaterial.EMISSION_SHAPE_SPHERE:
-            pass
-        ParticlesMaterial.EMISSION_SHAPE_BOX:
-            pass
-        _:
-            printerr(
-                "Invalid Scalable Particles EmissionShape: ",
-                new_blueprint.particle_material.emission_shape
-            )
-            return
+    # If the particle material is a proper ParticlesMaterial...
+    if new_blueprint.particle_material is ParticlesMaterial:
+        # Ensure the blueprint's particle material is one of our "valid" shapes
+        match new_blueprint.particle_material.emission_shape:
+            ParticlesMaterial.EMISSION_SHAPE_POINT:
+                pass
+            ParticlesMaterial.EMISSION_SHAPE_SPHERE:
+                pass
+            ParticlesMaterial.EMISSION_SHAPE_BOX:
+                pass
+            _:
+                printerr(
+                    "Invalid Scalable Particles EmissionShape: ",
+                    new_blueprint.particle_material.emission_shape
+                )
+                return
+    # Otherwise, this must be a ShaderMaterial, which doesn't actually have an
+    # emission shape. We'll just have to assume it's a 1x1x1 box.
     
     # Okay, now we need to verify that the draw passes found in the blueprint's
     # prsm (ParticleReadySpatialMaterial) are supported. So, pack the draw
@@ -155,9 +160,18 @@ func set_blueprint(new_blueprint : ScalableParticleBlueprint):
     self.fract_delta = blueprint.rcmnd_fract_delta
     
 func scale_emitter(new_scale : Vector3):
-    # Verification
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    #
+    # Step 0: Verification
+    #
+    # ~~~~~~~~~~~~~~~~~~~~~~~~~~~
     if self.process_material == null:
         printerr("No process material to scale with!!!")
+        return
+    if (not process_material is ParticlesMaterial) and \
+        (not process_material is ShaderMaterial):
+        printerr("Error with scaleable emitter's particle material!")
+        printerr("The material is neither a ParticlesMaterial nor a ShaderMaterial.")
         return
     if not self.material_override is ParticleReadySpatialMaterial:
         printerr("Current override material is not a Partical Ready Material!!!")
@@ -212,56 +226,75 @@ func scale_emitter(new_scale : Vector3):
     
     # Okay, first we're gonna start with the spawn stuff, which is actually
     # pretty easy. All we need to do is take the right value, depending on our
-    # emission shape.
-    match self.process_material.emission_shape:
-        # If we're emitting from a single point, then there's nothing we need to
-        # do here.
-        ParticlesMaterial.EMISSION_SHAPE_POINT:
-            spawn_len_x = 0
-            spawn_len_y = 0
-            spawn_len_z = 0
-            self.amount = self.blueprint.base_particle_count
-        # If we're emitting in a sphere-shape, then the length for each is the
-        # diameter of the sphere.
-        ParticlesMaterial.EMISSION_SHAPE_SPHERE:
-            # Grab the radius
-            temp = self.process_material.emission_sphere_radius
-            # Set the spawn lengths
-            spawn_len_x = self.temp
-            spawn_len_y = self.temp
-            spawn_len_z = self.temp
-            # Now, calculate the volume
-            temp = (4/3) * PI \
-                * (spawn_len_x * new_scale.x) \
-                * (spawn_len_y * new_scale.y) \
-                * (spawn_len_z * new_scale.z)
-            # The amount of particles to spawn is our base...
-            self.amount = self.blueprint.base_particle_count
-            # ... PLUS the cubic root of the volume * the density.
-            self.amount += int(pow(temp, 1.0/3.0) * self.blueprint.root_particle_slope)
-            
-            # Finally, double the spawn lengths (since we want the diameters)
-            spawn_len_x *= 2
-            spawn_len_y *= 2
-            spawn_len_z *= 2
-        # If we're emitting in a box-shape, then grab the length for each side
-        # of the box.
-        ParticlesMaterial.EMISSION_SHAPE_BOX:
-            # Set the spawn lengths - * 2 because these are EXTENTS, not sizes
-            spawn_len_x = self.process_material.emission_box_extents.x * 2
-            spawn_len_y = self.process_material.emission_box_extents.y * 2
-            spawn_len_z = self.process_material.emission_box_extents.z * 2
-            # Calculate the volume, using the scale
-            temp = (spawn_len_x * new_scale.x) \
-                 * (spawn_len_y * new_scale.y) \
-                 * (spawn_len_z * new_scale.z)
-            # The amount of particles to spawn is is our base...
-            self.amount = self.blueprint.base_particle_count
-            # ... PLUS the cubic root of the volume * the density.
-            self.amount += int(pow(temp, 1.0/3.0) * self.blueprint.root_particle_slope)
-        _:
-            printerr("Invalid Rich Particles EmissionShape: ", self.process_material.emission_shape)
-            return
+    # emission shape. If this is a ParticlesMaterial...
+    if process_material is ParticlesMaterial:
+        match self.process_material.emission_shape:
+            # If we're emitting from a single point, then there's nothing we
+            # need to do here.
+            ParticlesMaterial.EMISSION_SHAPE_POINT:
+                spawn_len_x = 0
+                spawn_len_y = 0
+                spawn_len_z = 0
+                self.amount = self.blueprint.base_particle_count
+            # If we're emitting in a sphere-shape, then the length for each is
+            # the diameter of the sphere.
+            ParticlesMaterial.EMISSION_SHAPE_SPHERE:
+                # Grab the radius
+                temp = self.process_material.emission_sphere_radius
+                # Set the spawn lengths
+                spawn_len_x = self.temp
+                spawn_len_y = self.temp
+                spawn_len_z = self.temp
+                # Now, calculate the volume
+                temp = (4/3) * PI \
+                    * (spawn_len_x * new_scale.x) \
+                    * (spawn_len_y * new_scale.y) \
+                    * (spawn_len_z * new_scale.z)
+                # The amount of particles to spawn is our base...
+                self.amount = self.blueprint.base_particle_count
+                # ... PLUS the cubic root of the volume * the density.
+                self.amount += int(
+                    pow(temp, 1.0/3.0) * self.blueprint.root_particle_slope
+                )
+                # Finally, double the spawn lengths (since we want the
+                # diameters)
+                spawn_len_x *= 2
+                spawn_len_y *= 2
+                spawn_len_z *= 2
+                
+            # If we're emitting in a box-shape, then grab the length for each
+            # side of the box.
+            ParticlesMaterial.EMISSION_SHAPE_BOX:
+                # Set the spawn lengths - * 2 because these are EXTENTS, not
+                # sizes
+                spawn_len_x = self.process_material.emission_box_extents.x * 2
+                spawn_len_y = self.process_material.emission_box_extents.y * 2
+                spawn_len_z = self.process_material.emission_box_extents.z * 2
+                # Calculate the volume, using the scale
+                temp = (spawn_len_x * new_scale.x) \
+                    * (spawn_len_y * new_scale.y) \
+                    * (spawn_len_z * new_scale.z)
+                # The amount of particles to spawn is is our base...
+                self.amount = self.blueprint.base_particle_count
+                # ... PLUS the cubic root of the volume * the density.
+                self.amount += int(
+                    pow(temp, 1.0/3.0) * self.blueprint.root_particle_slope
+                )
+            _:
+                printerr(
+                    "Invalid Particle Material EmissionShape: ", 
+                    self.process_material.emission_shape
+                )
+                return
+    # Otherwise, this MUST be a ShaderMaterial, hopefully set to Particles mode.
+    # So...
+    else:
+        # We're just going to charitably assume that the ShaderMaterial is
+        # emitting in a 1x1x1 box. Ergo, we can just carry over the scale
+        # straight.
+        spawn_len_x = new_scale.x
+        spawn_len_y = new_scale.y
+        spawn_len_z = new_scale.z
     
     # Now, technically, the max we can over-extend on a side is by half of the
     # size hint. However, since we'd do that at both sides, that adds up to the
@@ -288,13 +321,22 @@ func scale_emitter(new_scale : Vector3):
     # plus-or-minus angle variance FROM THE DIRECTION. So, in order to calculate
     # maximum or minimum possible distances on each axis, we need to calculate
     # unit distances on each axis, in each direction.
-    # So, first, devolve the direction Vector3 in 3 Vector2 pairings.
-    xy.x = self.process_material.direction.x
-    xy.y = self.process_material.direction.y
-    xz.x = self.process_material.direction.x
-    xz.y = self.process_material.direction.z
-    zy.x = self.process_material.direction.z
-    zy.y = self.process_material.direction.y
+    # So, first, if this is a ParticlesMaterial...
+    if process_material is ParticlesMaterial:
+        # Then devolve the direction Vector3 in 3 Vector2 pairings.
+        xy.x = self.process_material.direction.x
+        xy.y = self.process_material.direction.y
+        xz.x = self.process_material.direction.x
+        xz.y = self.process_material.direction.z
+        zy.x = self.process_material.direction.z
+        zy.y = self.process_material.direction.y
+    # Otherwise, this MUST be a ShaderMaterial. So...
+    else:
+        # Then there's not REALLY a direction for us to work with - let's just
+        # set everything to zero.
+        xy = Vector2.ZERO
+        xz = Vector2.ZERO
+        zy = Vector2.ZERO
     
     # Next, we'll calculate the maximum and minimum angles (the angles that get
     # us the highest or lowest possible values from cos and sin) for each axis
@@ -329,15 +371,31 @@ func scale_emitter(new_scale : Vector3):
     #         axis, given the calculated unit_weight, scale, and gravity.
     #
     # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    # X
-    max_x = displacement(max_x, new_scale.x, self.process_material.gravity.x)
-    min_x = displacement(min_x, new_scale.x, self.process_material.gravity.x)
-    # Y
-    max_y = displacement(max_y, new_scale.y, self.process_material.gravity.y)
-    min_y = displacement(min_y, new_scale.y, self.process_material.gravity.y)
-    # Z
-    max_z = displacement(max_z, new_scale.z, self.process_material.gravity.z)
-    min_z = displacement(min_z, new_scale.z, self.process_material.gravity.z)
+    # If this is a ParticlesMaterial...
+    if process_material is ParticlesMaterial:
+        # Then we can calculate the displacement using the particle material's
+        # gravity.
+        # X
+        max_x = displacement(
+            max_x, new_scale.x, self.process_material.gravity.x
+        )
+        min_x = displacement(
+            min_x, new_scale.x, self.process_material.gravity.x
+        )
+        # Y
+        max_y = displacement(
+            max_y, new_scale.y, self.process_material.gravity.y
+        )
+        min_y = displacement(
+            min_y, new_scale.y, self.process_material.gravity.y
+        )
+        # Z
+        max_z = displacement(
+            max_z, new_scale.z, self.process_material.gravity.z
+        )
+        min_z = displacement(
+            min_z, new_scale.z, self.process_material.gravity.z
+        )
     
     # Now, the MAX values need to be the MAX possible, and the MIN values need
     # to be the MIN possible - so we'll ensure that all MAX >= 0 & all MIN <= 0.
@@ -482,10 +540,16 @@ func calculate_maxi_angles(unit : Vector2):
     # we add 360 and then modulus out that same 360.
     var base_angle = fmod( rad2deg( unit.angle() ) + 360, 360 )
     
-    # The spread is a plus-or-minus value, so add in and remove the spread from
-    # the base angle to calculate our angular extents
-    var spread_minus = base_angle - self.process_material.spread
-    var spread_plus = base_angle + self.process_material.spread
+    # We need to calculate a plus-or-minus angle spread.
+    var spread_minus = 0
+    var spread_plus = 0
+    
+    # If this is a process material...
+    if process_material is ParticlesMaterial:
+        # The spread is a plus-or-minus value, so add in and remove the spread
+        # from the base angle to calculate our angular extents
+        spread_minus = base_angle - self.process_material.spread
+        spread_plus = base_angle + self.process_material.spread
     
     # The smallest distance from the spread_minus & spread_plus angles to our
     # target MAXI angles.
@@ -550,10 +614,16 @@ func calculate_mini_angles(unit : Vector2):
     # we add 360 and then modulus out that same 360.
     var base_angle = fmod( rad2deg( unit.angle() ) + 360, 360 )
     
-    # The spread is a plus-or-minus value, so add in and remove the spread from
-    # the base angle to calculate our angular extents
-    var spread_minus = base_angle - self.process_material.spread
-    var spread_plus = base_angle + self.process_material.spread
+    # We need to calculate a plus-or-minus angle spread.
+    var spread_minus = 0
+    var spread_plus = 0
+    
+    # If this is a process material...
+    if process_material is ParticlesMaterial:
+        # The spread is a plus-or-minus value, so add in and remove the spread
+        # from the base angle to calculate our angular extents
+        spread_minus = base_angle - self.process_material.spread
+        spread_plus = base_angle + self.process_material.spread
     
     # The smallest distance from the spread_minus & spread_plus angles to our
     # target MAXI angles.
