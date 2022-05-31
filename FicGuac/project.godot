@@ -39,6 +39,11 @@ _global_script_classes=[ {
 "language": "GDScript",
 "path": "res://addons/todot/model/Model.gd"
 }, {
+"base": "ShaderMaterial",
+"class": "ParticleReadyShaderMaterial",
+"language": "GDScript",
+"path": "res://special_effects/particles/ParticleReadyShaderMaterial.gd"
+}, {
 "base": "SpatialMaterial",
 "class": "ParticleReadySpatialMaterial",
 "language": "GDScript",
@@ -216,6 +221,7 @@ _global_script_class_icons={
 "List": "",
 "MasterItem": "",
 "Model": "",
+"ParticleReadyShaderMaterial": "",
 "ParticleReadySpatialMaterial": "",
 "PhysicsEntity": "",
 "QodotDependencies": "",

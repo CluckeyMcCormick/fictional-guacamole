@@ -3,7 +3,7 @@ class_name ScalableParticleBlueprint
 
 # What's the ParticleReadySpatialMaterial that we'll use as the override
 # material for this system?
-export(SpatialMaterial) var prsm = null setget set_prsm
+export(Material) var prsm = null setget set_prsm
 # What's the particle material for this system?
 export(Material) var particle_material = null setget set_particle_material
 
@@ -25,11 +25,12 @@ export(int) var rcmnd_fixed_fps = 0
 export(bool) var rcmnd_fract_delta = true
 
 func set_prsm(new_material):
-    if new_material is ParticleReadySpatialMaterial:
+    if (new_material is ParticleReadySpatialMaterial) or \
+        (new_material is ParticleReadyShaderMaterial):
         prsm = new_material
     else:
         push_warning("Attempted to give non-PRSM resource to scalable blueprint.")
-        push_warning("Please use a ParticleReadySpatialMaterial.")
+        push_warning("Please use a ParticleReady(Spatial/Shader)Material.")
 
 func set_particle_material(new_material):
     if (new_material is ParticlesMaterial) or (new_material is ShaderMaterial):

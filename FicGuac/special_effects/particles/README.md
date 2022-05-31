@@ -1,5 +1,5 @@
 # Particles
-The *Particles* directory is for any particle related special effects - their textures, their code, and their scenes.
+The *Particles* directory is for any particle related special effects - their textures, their code, and their scenes. And, because I may have been a bit... *ambitious*, it's also one of the more possibly confusing or over-engineered directories (my bad).
 
 Each particle effect in Godot is essentially made up of three components: the emitter (which is an actual node in the scene), The Override Material that textures the particle, and the Particle Material that describes the behavior of the particles (and sometimes the appearance!). The settings for the particle effect are thus spread across these three components.
 
@@ -9,19 +9,22 @@ While this divide is actually structurally sound and very good from an engineeri
 
 To maximize the reusage of material resources, we have a few custom resources and a scene.
 
-First, we have `ParticleReadySpatialMaterial`, which is a `SpatialMaterial` extended with extra fields. These extra fields allow us to group the visual information - the pass meshes and particle size hints - with the visual information in the `SpatialMaterial` resource.
+First, we have `ParticleReadySpatialMaterial`, which is a `SpatialMaterial` extended with extra fields. These extra fields allow us to group the visual information - the pass meshes and particle size hints - with the visual information in the `SpatialMaterial` resource. The `ParticleReadyShaderMaterial` provides a shader-based alternative, for those so inclined.
 
-Next, we need to bind the `ParticleReadySpatialMaterial` together with a behavior-describing `ParticleMaterial` or `ShaderMaterial`. For that, we have the `ScalableParticleBlueprint`. It also includes some extra fields that control both overall particle system visuals and behavior.
+Next, we need to bind the `ParticleReady(Spatial/Shader)Material` together with a behavior-describing `ParticleMaterial` or `ShaderMaterial`. For that, we have the `ScalableParticleBlueprint`. It also includes some extra fields that control both overall particle system visuals and behavior.
 
 Finally, the `ScalableParticleBlueprint` is used to instantiate a `ScalableParticleEmitter`. This particle emitter can then be scaled to emit particles over a given area.
 
 ## Directories
 
+### Complete Systems
+Home directory for complete particle system scenes, which exist outside of this whole scalable-particle architecture.
+
 ### Particle Materials
 Home directory for our `ParticleMaterial` resources.
 
 ### Particle Ready
-Home directory for our `ParticleReadySpatialMaterial` custom resources.
+Home directory for our `ParticleReadySpatialMaterial` and `ParticleReadyShaderMaterial` custom resources.
 
 ### Scalable Blueprints
 Home directory for our `ScalableParticleBlueprint` custom resources.
@@ -48,13 +51,16 @@ Keep in mind that the size of these meshes is considered the base size of the pa
 When calculating the *AABB* for a given system, we need to factor in the particle
 size. To avoid actually having to do that manually, we'll instead use this size hint to approximate the particle size, and assume it's a box. This is technically over-generous (and imprecise) but that ensures that the particle systems LOOK right.
 
+## Particle Ready Shader Material
+An exact duplicate of the `ParticleReadySpatialMaterial`, except that this one is `ShaderMaterial` with a few extra fields. Provided for those who prefer `ShaderMaterial` to Godot's default `SpatialMaterial`.
+
 ## Scalable Particle Blueprint
-This custom resource ties together a `ParticleReadySpatialMaterial` with a `ParticleMaterial` (or `ShaderMaterial`) and some extra instructions for instantiating a *Scalable Particle Emitter* - hence the *blueprint* designation.
+This custom resource ties together a `ParticleReadySpatialMaterial` or `ParticleReadyShaderMaterial` with a `ParticleMaterial` (or `ShaderMaterial`) and some extra instructions for instantiating a *Scalable Particle Emitter* - hence the *blueprint* designation.
 
 ### Configurables
 
 #### PRSM
-The  `ParticleReadySpatialMaterial` for this blueprint. I had to make the variable name an acronym because I failed to be concise when devising a class name (whoopsie, hehe). The blueprint should reject any resources that are not `ParticleReadySpatialMaterial` resources.
+The  `ParticleReadySpatialMaterial`/`ParticleReadyShaderMaterial` for this blueprint. I had to make the variable name an acronym because I failed to be concise when devising a class name (whoopsie, hehe). The blueprint should reject any resources that are not `ParticleReadySpatialMaterial` or `ParticleReadyShaderMaterial` resources.
 
 #### Particle Material
 
@@ -111,7 +117,7 @@ This function takes in a new `ScalableParticleBlueprint` and transfers over the 
 For this function to work:
 
 - The `new_blueprint` must be a `ScalableParticleBlueprint`.
-- The new blueprint's `prsm` variable must be a `ParticleReadySpatialMaterial`.
+- The new blueprint's `prsm` variable must be either a `ParticleReadySpatialMaterial` or a `ParticleReadyShaderMaterial`.
 - The new blueprint's `prsm` draw passes must either be `QuadMesh` or `CubeMesh`.
 - The new blueprint's `particle_material` variable must be either a `ParticlesMaterial` or a `ShaderMaterial`.
 - If the new blueprint's `particle_material` is a `ParticlesMaterial`, the *emission shape* must be a Point, Sphere, or Box.
@@ -123,7 +129,7 @@ This function takes in a new `Vector3` scale and performs all the number crunchi
 For this function to work:
 
 - The `blueprint` must not be null.
-- The `particle_material` must not be null.
-- The `material_override` must be a `ParticleReadySpatialMaterial` or a `ShaderMaterial`.
+- The `material_override` must be a `ParticlesMaterial` or a `ShaderMaterial`.
+- The `process_material` must be a `ParticleReadySpatialMaterial` or a `ParticleReadyShaderMaterial`.
 - If the `process_material` is a `ParticlesMaterial`, the *emission shape* must be a Point, Sphere, or Box.
 - The `material_override`'s particle-ready draw passes must all either be `QuadMesh` or `CubeMesh`.

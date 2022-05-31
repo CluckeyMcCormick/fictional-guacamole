@@ -37,17 +37,6 @@ func _process(_delta):
         d_origin + (Vector3(d_position.x, d_end.y, d_position.z) * self.scale),
         Color.white
     )
-    
-    dd.draw_box(
-        d_origin - (self.process_material.emission_box_extents / 2),
-        self.process_material.emission_box_extents,
-        Color.springgreen
-    )
-    dd.draw_box(
-        d_origin - ((self.process_material.emission_box_extents * self.scale) / 2),
-        self.process_material.emission_box_extents * self.scale,
-        Color.crimson
-    )
 
 func set_blueprint(new_blueprint : ScalableParticleBlueprint):
     # Used to count the number of passes (drawn meshes). Saves us from having to
@@ -67,9 +56,10 @@ func set_blueprint(new_blueprint : ScalableParticleBlueprint):
 
     # Now we can check the prsm field to verify that it is a
     # ParticleReadySpatialMaterial.
-    if not new_blueprint.prsm is ParticleReadySpatialMaterial:
+    if (not new_blueprint.prsm is ParticleReadySpatialMaterial) and \
+        (not new_blueprint.prsm is ParticleReadyShaderMaterial):
         printerr("Scaleable emitter's blueprint had a non-PSRM override material!")
-        printerr("Please use a ParticleReadySpatialMaterial.")
+        printerr("Please use a ParticleReady(Spatial/Shader)Material.")
         return
 
     # Also verify that it has an appropriate particle material
@@ -173,7 +163,8 @@ func scale_emitter(new_scale : Vector3):
         printerr("Error with scaleable emitter's particle material!")
         printerr("The material is neither a ParticlesMaterial nor a ShaderMaterial.")
         return
-    if not self.material_override is ParticleReadySpatialMaterial:
+    if (not self.material_override is ParticleReadySpatialMaterial) and \
+        (not self.material_override is ParticleReadyShaderMaterial):
         printerr("Current override material is not a Partical Ready Material!!!")
         return
     
