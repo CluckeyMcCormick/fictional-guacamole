@@ -1,0 +1,28 @@
+[gd_scene load_steps=5 format=2]
+
+[ext_resource path="res://special_effects/particles/particle_ready/prsm_fusil_fire.tres" type="Material" id=1]
+[ext_resource path="res://special_effects/particles/particle_materials/helix_cyan.material" type="Material" id=2]
+[ext_resource path="res://special_effects/particles/particle_materials/helix_red.material" type="Material" id=3]
+
+[sub_resource type="QuadMesh" id=5]
+size = Vector2( 0.25, 0.25 )
+
+[node name="ParticleDNA" type="Spatial"]
+
+[node name="RedHelix" type="Particles" parent="."]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -2.12193e-05, -0.00682724, 0.000441551 )
+material_override = ExtResource( 1 )
+amount = 30
+lifetime = 5.0
+visibility_aabb = AABB( -1.25, -1.25, -1.25, 2.5, 2.49995, 2.5 )
+process_material = ExtResource( 3 )
+draw_pass_1 = SubResource( 5 )
+
+[node name="BlueHelix" type="Particles" parent="."]
+transform = Transform( -1, 0, -8.74228e-08, 0, 1, 0, 8.74228e-08, 0, -1, 0, 0, 0 )
+material_override = ExtResource( 1 )
+amount = 30
+lifetime = 5.0
+visibility_aabb = AABB( -1.25, -1.24944, -1.25, 2.5, 2.49909, 2.5 )
+process_material = ExtResource( 2 )
+draw_pass_1 = SubResource( 5 )

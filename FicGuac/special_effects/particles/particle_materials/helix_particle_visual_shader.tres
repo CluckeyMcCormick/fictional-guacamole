@@ -1,0 +1,273 @@
+[gd_resource type="VisualShader" load_steps=28 format=2]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=21]
+
+[sub_resource type="VisualShaderNodeVectorCompose" id=22]
+
+[sub_resource type="VisualShaderNodeScalarConstant" id=26]
+constant = 6.284
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=27]
+uniform_name = "revolutions"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=28]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=29]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=30]
+function = 0
+
+[sub_resource type="VisualShaderNodeScalarFunc" id=31]
+function = 1
+
+[sub_resource type="VisualShaderNodeInput" id=16]
+input_name = "lifetime"
+
+[sub_resource type="VisualShaderNodeTransformCompose" id=42]
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=43]
+uniform_name = "height"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=44]
+default_input_values = [ 0, 0.0, 1, -2.0 ]
+operator = 3
+
+[sub_resource type="VisualShaderNodeScalarOp" id=45]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=46]
+
+[sub_resource type="VisualShaderNodeTextureUniform" id=53]
+uniform_name = "ColorRamp"
+texture_type = 1
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=54]
+uniform_name = "x_length"
+
+[sub_resource type="VisualShaderNodeScalarUniform" id=55]
+uniform_name = "z_length"
+
+[sub_resource type="VisualShaderNodeScalarOp" id=56]
+default_input_values = [ 0, 0.0, 1, 0.5 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=57]
+default_input_values = [ 0, 0.0, 1, 0.5 ]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=58]
+operator = 2
+
+[sub_resource type="VisualShaderNodeScalarOp" id=59]
+operator = 2
+
+[sub_resource type="VisualShaderNodeTextureUniform" id=60]
+uniform_name = "ScaleTexture"
+texture_type = 3
+
+[sub_resource type="VisualShaderNodeVectorCompose" id=18]
+
+[sub_resource type="VisualShaderNodeScalarOp" id=19]
+operator = 3
+
+[sub_resource type="VisualShaderNodeInput" id=20]
+input_name = "delta"
+
+[sub_resource type="VisualShaderNodeInput" id=23]
+input_name = "custom"
+
+[sub_resource type="VisualShaderNodeVectorDecompose" id=24]
+
+[resource]
+code = "shader_type particles;
+uniform sampler2D ColorRamp : hint_albedo;
+uniform sampler2D ScaleTexture : hint_aniso;
+uniform float revolutions;
+uniform float x_length;
+uniform float height;
+uniform float z_length;
+
+
+
+void vertex() {
+// Input:8
+	vec3 n_out8p0 = CUSTOM.rgb;
+
+// VectorDecompose:9
+	float n_out9p0 = n_out8p0.x;
+	float n_out9p1 = n_out8p0.y;
+	float n_out9p2 = n_out8p0.z;
+
+// Input:7
+	float n_out7p0 = DELTA;
+
+// ScalarOp:10
+	float n_out10p0 = n_out9p2 + n_out7p0;
+
+// Input:2
+	float n_out2p0 = LIFETIME;
+
+// ScalarOp:6
+	float n_out6p0 = n_out10p0 / n_out2p0;
+
+// TextureUniform:41
+	vec3 n_out41p0;
+	float n_out41p1;
+	{
+		vec4 n_tex_read = texture(ColorRamp, vec3(n_out6p0).xy);
+		n_out41p0 = n_tex_read.rgb;
+		n_out41p1 = n_tex_read.a;
+	}
+
+// VectorCompose:11
+	vec3 n_out11p0 = vec3(n_out9p0, n_out9p1, n_out10p0);
+
+// TextureUniform:49
+	vec3 n_out49p0;
+	float n_out49p1;
+	{
+		vec4 n_tex_read = texture(ScaleTexture, vec3(n_out6p0).xy);
+		n_out49p0 = n_tex_read.rgb;
+		n_out49p1 = n_tex_read.a;
+	}
+
+// Scalar:13
+	float n_out13p0 = 6.284000;
+
+// ScalarUniform:14
+	float n_out14p0 = revolutions;
+
+// ScalarOp:15
+	float n_out15p0 = n_out13p0 * n_out14p0;
+
+// ScalarOp:16
+	float n_out16p0 = n_out6p0 * n_out15p0;
+
+// ScalarFunc:18
+	float n_out18p0 = cos(n_out16p0);
+
+// ScalarUniform:42
+	float n_out42p0 = x_length;
+
+// ScalarOp:44
+	float n_in44p1 = 0.50000;
+	float n_out44p0 = n_out42p0 * n_in44p1;
+
+// ScalarOp:46
+	float n_out46p0 = n_out18p0 * n_out44p0;
+
+// ScalarUniform:30
+	float n_out30p0 = height;
+
+// ScalarOp:31
+	float n_in31p1 = -2.00000;
+	float n_out31p0 = n_out30p0 / n_in31p1;
+
+// ScalarOp:32
+	float n_out32p0 = n_out30p0 * n_out6p0;
+
+// ScalarOp:33
+	float n_out33p0 = n_out31p0 + n_out32p0;
+
+// ScalarFunc:17
+	float n_out17p0 = sin(n_out16p0);
+
+// ScalarUniform:43
+	float n_out43p0 = z_length;
+
+// ScalarOp:45
+	float n_in45p1 = 0.50000;
+	float n_out45p0 = n_out43p0 * n_in45p1;
+
+// ScalarOp:47
+	float n_out47p0 = n_out17p0 * n_out45p0;
+
+// VectorCompose:5
+	vec3 n_out5p0 = vec3(n_out46p0, n_out33p0, n_out47p0);
+
+// TransformCompose:29
+	vec3 n_in29p1 = vec3(0.00000, 0.00000, 0.00000);
+	vec3 n_in29p2 = vec3(0.00000, 0.00000, 0.00000);
+	mat4 n_out29p0 = mat4(vec4(n_out49p0, 0.0), vec4(n_in29p1, 0.0), vec4(n_in29p2, 0.0), vec4(n_out5p0, 1.0));
+
+// Output:0
+	COLOR.rgb = n_out41p0;
+	COLOR.a = n_out41p1;
+	CUSTOM.rgb = n_out11p0;
+	TRANSFORM = n_out29p0;
+
+}
+
+void fragment() {
+// Output:0
+
+}
+
+void light() {
+// Output:0
+
+}
+"
+graph_offset = Vector2( -103.007, -411.893 )
+mode = 2
+flags/disable_force = false
+flags/disable_velocity = false
+flags/keep_data = false
+nodes/vertex/0/position = Vector2( 1640, -180 )
+nodes/vertex/2/node = SubResource( 16 )
+nodes/vertex/2/position = Vector2( -340, 120 )
+nodes/vertex/5/node = SubResource( 18 )
+nodes/vertex/5/position = Vector2( 1120, -40 )
+nodes/vertex/6/node = SubResource( 19 )
+nodes/vertex/6/position = Vector2( -140, 40 )
+nodes/vertex/7/node = SubResource( 20 )
+nodes/vertex/7/position = Vector2( -560, 20 )
+nodes/vertex/8/node = SubResource( 23 )
+nodes/vertex/8/position = Vector2( -820, -80 )
+nodes/vertex/9/node = SubResource( 24 )
+nodes/vertex/9/position = Vector2( -600, -100 )
+nodes/vertex/10/node = SubResource( 21 )
+nodes/vertex/10/position = Vector2( -340, 0 )
+nodes/vertex/11/node = SubResource( 22 )
+nodes/vertex/11/position = Vector2( -140, -100 )
+nodes/vertex/13/node = SubResource( 26 )
+nodes/vertex/13/position = Vector2( -100, 180 )
+nodes/vertex/14/node = SubResource( 27 )
+nodes/vertex/14/position = Vector2( -120, 260 )
+nodes/vertex/15/node = SubResource( 28 )
+nodes/vertex/15/position = Vector2( 80, 200 )
+nodes/vertex/16/node = SubResource( 29 )
+nodes/vertex/16/position = Vector2( 380, 180 )
+nodes/vertex/17/node = SubResource( 30 )
+nodes/vertex/17/position = Vector2( 620, 160 )
+nodes/vertex/18/node = SubResource( 31 )
+nodes/vertex/18/position = Vector2( 620, 80 )
+nodes/vertex/29/node = SubResource( 42 )
+nodes/vertex/29/position = Vector2( 1360, -300 )
+nodes/vertex/30/node = SubResource( 43 )
+nodes/vertex/30/position = Vector2( 160, 40 )
+nodes/vertex/31/node = SubResource( 44 )
+nodes/vertex/31/position = Vector2( 380, -60 )
+nodes/vertex/32/node = SubResource( 45 )
+nodes/vertex/32/position = Vector2( 380, 60 )
+nodes/vertex/33/node = SubResource( 46 )
+nodes/vertex/33/position = Vector2( 620, -60 )
+nodes/vertex/41/node = SubResource( 53 )
+nodes/vertex/41/position = Vector2( 360, -260 )
+nodes/vertex/42/node = SubResource( 54 )
+nodes/vertex/42/position = Vector2( 420, 300 )
+nodes/vertex/43/node = SubResource( 55 )
+nodes/vertex/43/position = Vector2( 420, 360 )
+nodes/vertex/44/node = SubResource( 56 )
+nodes/vertex/44/position = Vector2( 620, 240 )
+nodes/vertex/45/node = SubResource( 57 )
+nodes/vertex/45/position = Vector2( 620, 360 )
+nodes/vertex/46/node = SubResource( 58 )
+nodes/vertex/46/position = Vector2( 860, 100 )
+nodes/vertex/47/node = SubResource( 59 )
+nodes/vertex/47/position = Vector2( 860, 220 )
+nodes/vertex/49/node = SubResource( 60 )
+nodes/vertex/49/position = Vector2( 360, -460 )
+nodes/vertex/connections = PoolIntArray( 2, 0, 6, 1, 8, 0, 9, 0, 9, 0, 11, 0, 11, 0, 0, 3, 10, 0, 6, 0, 7, 0, 10, 1, 9, 2, 10, 0, 9, 1, 11, 1, 10, 0, 11, 2, 13, 0, 15, 0, 14, 0, 15, 1, 15, 0, 16, 1, 6, 0, 16, 0, 16, 0, 17, 0, 16, 0, 18, 0, 29, 0, 0, 5, 5, 0, 29, 3, 30, 0, 31, 0, 30, 0, 32, 0, 6, 0, 32, 1, 31, 0, 33, 0, 32, 0, 33, 1, 33, 0, 5, 1, 41, 0, 0, 0, 6, 0, 41, 0, 41, 1, 0, 1, 42, 0, 44, 0, 43, 0, 45, 0, 46, 0, 5, 0, 47, 0, 5, 2, 18, 0, 46, 0, 17, 0, 47, 0, 44, 0, 46, 1, 45, 0, 47, 1, 49, 0, 29, 0, 6, 0, 49, 0 )
