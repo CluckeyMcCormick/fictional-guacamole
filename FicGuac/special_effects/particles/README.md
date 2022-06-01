@@ -97,6 +97,14 @@ We also have a series of variables that are passed one-to-one to an emitter. The
 - RCMND Fixed FPS
 - RCMND Fract Delta
 
+### Functions
+
+#### `set_prsm`
+This function takes in a new `ParticleReadySpatialMaterial` or `ParticleReadyShaderMaterial` and verifies it before updating the *PRSM* configurable.
+
+#### `set_particle_material`
+This function takes in a new `ParticlesMaterial` or `ShaderMaterial` and verifies it before updating the *Particle Material* configurable.
+
 ## Scalable Particle Emitter
 This scene is a single-node scene; it's just a regular `ParticleEmitter` node that's been amped up with a few functions to take advantage of the *Scalable Particle Blueprint*.
 
