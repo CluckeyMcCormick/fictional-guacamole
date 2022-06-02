@@ -1,46 +1,49 @@
 extends Spatial
 
-# Each status condition has any number of modifiers, each of which behave in a
-# different way. The modifiers are described as arrays/lists, where each element
-# is a different value. These Modifier Field Indicies (MFIs) are the indicies to
-# access those different values.
-# The target field is the string name of the field we're targeting. In other
-# words, it's the actual field that is BEING dynamically modified. Using a
-# string allows us to dynamically apply the modifiers.
-const MFI_TARGET = 0
-# The source field is the string name of the field we're deriving our
-# calculation from - this is the field that gets used by ADD_SCALE_MOD type
-# operations. It is effectively ignored for FLAT_MOD type operations.
-const MFI_SOURCE = 1
-# The operation field determines what kind of operation we're performing with
-# the modifier. Check the StatOp enum for more.
-const MFI_OP = 2
-# The modifier field is the actual modifying value. This should be an int or a
-# float of some sort.
-const MFI_MODI = 3
-
 # This enum defines the different types of stat operations that each
 # modification can do. That way, we know how to modify the stats in question.
 enum StatOp {
     # This is just a flat modification: +10, -7, etc.
     FLAT_MOD,
-    # This adds a scaled version of the base value back as a modification - i.e
-    # 1.5 or -0.7 or 200.
+    # This adds a scaled version of the base value back as a modification -
+    # i.e 1.5 or -0.7 or 200.
     ADD_SCALE_MOD
 }
 
-# This function returns the modifiers for this status condition, as an array.
-# Each entry should also be an array/list, with the appropriate indices
-# (MFI_TARGET, MFI_OP, etc.) corresponding to the appropriate entries in those
-# sub arrays. Since this is the base, it goes blank.
+# Each status condition has any number of modifiers, each of which behave in a
+# different way. These modifiers are described by this class.
+class StatMod:
+    # The string name of the field we're targeting. In other words, it's the
+    # actual field that is BEING dynamically modified. Using a string allows us
+    # to dynamically apply the modifiers.
+    var target_var = ""
+    # The string name of the field we derive scale-based calculations from; this
+    # is the field that gets used by ADD_SCALE_MOD type operations. It is
+    # effectively ignored for FLAT_MOD type operations.
+    var scale_base_var = ""
+    # This determines what kind of operation we're performing with the modifier.
+    # Check the StatOp enum for more.
+    var operation = StatOp.FLAT_MOD
+    # The actual modifying value - This should be an int or a float of some
+    # sort.
+    var mod_value = 0
+    
+    func _init(targ_var, scale_var, op, mod):
+        target_var = targ_var
+        scale_base_var = scale_var
+        operation = op
+        mod_value = mod
+
+# This function returns the modifiers for this status condition, as an array of
+# class StatMod objects.
 func get_modifiers():
     pass
 
 # This function returns the particles for this status condition, as an array. It
 # should be overloaded by any deriving status conditions. Each status condition
-# can have many, or absolutely zero, particle systems. These can either be
-# preconstructed particle systems or Rich Particle Materials.
-func get_particles():
+# can have many, or absolutely zero, particle systems. These must be Scalable
+# Particle Blueprints. If you wish to
+func get_scalable_particles():
     pass
 
 # How long does this status effect last for? <= 0 means never-ending. Note that

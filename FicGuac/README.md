@@ -169,9 +169,6 @@ The buildings in this game are fairly complex - most are glued together using as
 
 This is differentiated from `Terrain` in that it is artificial, rather than natural. It's a very slim distinction. 
 
-### Common Mix
-This directory is for things that are common across scenes and scripts across multiple categories but didn't cleanly fit into their own category - it is a mix of common things, hence "Common Mix".
-
 ### GUI
 To ensure consistency across scenes, we build common GUI elements and store them here - like pause menus or loading screens. This allows us to do weird stuff, like rendering the loading screen over the pause screen. That doesn't sound that weird but trust me, that's a big thing in Godot.
 
@@ -188,6 +185,9 @@ We used to keep all scenes in this folder. Now, it's a directory for scenes and 
 
 ### Special Effects
 This is a directory of special effects, very much in the movie sense - these scenes and assets are intended purely to create visual effects. Most of our shaders reside here.
+
+### Status
+This directory is for resources, scenes, and scripts associated with object/motion AI status - health, being on fire, etc. It's something that doesn't quite belong to the Motion AI, nor do it belong to objects. It's really a category all it's own.
 
 ### Terrain
 Anything the characters will climb over, on, under, and through is considered terrain. At present I think this category may be overly broad. We may, over time, migrate assets out of this directory into their own directory. In a way, the *Buildings* directory is already an example of that. For now, it suits our purposes well enough.

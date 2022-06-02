@@ -42,12 +42,16 @@ signal object_died(final_damage_type)
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 func add_status_effect(sfx):
     # Each status effect comes with two array's worth of processing we need to
-    # perform
+    # perform - one for modifiers, one for particles.
     var modifiers
     var particles
     
+    # These are used in value modifier calculations.
     var target_value
     var add_value
+    
+    # A new particle effects node that we're gonna add to the scene tree.
+    var particle_fx_node
     
     # If we already have this status effect, skip it!
     if sfx.keyname in active_effects:
@@ -61,29 +65,30 @@ func add_status_effect(sfx):
     
     # Now we need to apply the modifiers.
     modifiers = sfx.get_modifiers()
-    for mod_arr in modifiers:
-        match mod_arr[sfx.MFI_OP]:
+    for mod in modifiers:
+        match mod.operation:
             sfx.StatOp.FLAT_MOD:
-                target_value = self.get( mod_arr[sfx.MFI_TARGET] )
-                add_value = mod_arr[sfx.MFI_MODI]
-                self.set( mod_arr[sfx.MFI_TARGET], target_value + add_value )
+                target_value = self.get( mod.target_var )
+                add_value = mod.mod_value
+                self.set( mod.target_var, target_value + add_value )
             sfx.StatOp.ADD_SCALE_MOD:
-                target_value = self.get( mod_arr[sfx.MFI_TARGET] )
-                add_value = self.get( mod_arr[sfx.MFI_SOURCE] )
-                add_value = add_value * mod_arr[sfx.MFI_MODI]
-                self.set( mod_arr[sfx.MFI_TARGET], target_value + add_value )
+                target_value = self.get( mod.target_var )
+                add_value = self.get( mod.scale_base_var )
+                add_value *=  mod.mod_value
+                self.set( mod.target_var, target_value + add_value )
             _:
-                printerr("Invalid OP code: ", mod_arr[sfx.MFI_OP])
+                printerr("Invalid OP code: ", mod.operation)
 
-    # Now we need to add the status effects.
-    particles = sfx.get_particles()
+    # Now we need to add the scalable/dynamic particle effects.
+    particles = sfx.get_scalable_particles()
     for particle_item in particles:
-        var new_spe = SPE.instance()
-        
-        sfx.add_child(new_spe)
-        
-        new_spe.set_blueprint( particle_item )
-        new_spe.scale_emitter( Vector3(1, 1, 1) )
+        if particle_item is ScalableParticleBlueprint:
+            particle_fx_node = SPE.instance()
+            particle_fx_node.set_blueprint( particle_item )
+            particle_fx_node.scale_emitter( Vector3(1, 1, 1) )
+            sfx.add_child(particle_fx_node)
+        else:
+            pass
     
 func remove_status_effect(status_effect):
     if not status_effect.keyname in status_effect:
