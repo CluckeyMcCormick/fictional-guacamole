@@ -1,38 +1,9 @@
 extends Spatial
 
-# This enum defines the different types of stat operations that each
-# modification can do. That way, we know how to modify the stats in question.
-enum StatOp {
-    # This is just a flat modification: +10, -7, etc.
-    FLAT_MOD,
-    # This adds a scaled version of the base value back as a modification -
-    # i.e 1.5 or -0.7 or 200.
-    ADD_SCALE_MOD
-}
-
-# Each status condition has any number of modifiers, each of which behave in a
-# different way. These modifiers are described by this class.
-class StatMod:
-    # The string name of the field we're targeting. In other words, it's the
-    # actual field that is BEING dynamically modified. Using a string allows us
-    # to dynamically apply the modifiers.
-    var target_var = ""
-    # The string name of the field we derive scale-based calculations from; this
-    # is the field that gets used by ADD_SCALE_MOD type operations. It is
-    # effectively ignored for FLAT_MOD type operations.
-    var scale_base_var = ""
-    # This determines what kind of operation we're performing with the modifier.
-    # Check the StatOp enum for more.
-    var operation = StatOp.FLAT_MOD
-    # The actual modifying value - This should be an int or a float of some
-    # sort.
-    var mod_value = 0
-    
-    func _init(targ_var, scale_var, op, mod):
-        target_var = targ_var
-        scale_base_var = scale_var
-        operation = op
-        mod_value = mod
+# Load the StatMod class resources so all our deriving status conditions have
+# access to it.
+const STAT_MOD_SCRIPT = preload("res://status/StatMod.gd")
+const STAT_MOD_BASE_SCALE_SCRIPT = preload("res://status/StatModBaseScale.gd")
 
 # This function returns the modifiers for this status condition, as an array of
 # class StatMod objects.

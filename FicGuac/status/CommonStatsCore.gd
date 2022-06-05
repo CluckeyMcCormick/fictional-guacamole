@@ -30,7 +30,7 @@ var dead = false
 
 # Our different, ongoing status effects; the keys are each ongoing status
 # condition's keyname, while the values are the effect nodes themselves.
-var active_effects = {}
+var _active_effects = {}
 
 # This signal indicates that we've lost all our hitpoints 
 signal object_died(final_damage_type)
@@ -54,11 +54,11 @@ func add_status_effect(sfx):
     var particle_fx_node
     
     # If we already have this status effect, skip it!
-    if sfx.keyname in active_effects:
+    if sfx.keyname in _active_effects:
         return
     
     # Okay, first we're gonna add in the status effect.
-    active_effects[sfx.keyname] = sfx
+    _active_effects[sfx.keyname] = sfx
     
     # Attach it as a child of this Stats Core node
     self.add_child(sfx)
@@ -66,18 +66,7 @@ func add_status_effect(sfx):
     # Now we need to apply the modifiers.
     modifiers = sfx.get_modifiers()
     for mod in modifiers:
-        match mod.operation:
-            sfx.StatOp.FLAT_MOD:
-                target_value = self.get( mod.target_var )
-                add_value = mod.mod_value
-                self.set( mod.target_var, target_value + add_value )
-            sfx.StatOp.ADD_SCALE_MOD:
-                target_value = self.get( mod.target_var )
-                add_value = self.get( mod.scale_base_var )
-                add_value *=  mod.mod_value
-                self.set( mod.target_var, target_value + add_value )
-            _:
-                printerr("Invalid OP code: ", mod.operation)
+        mod.apply( self, 1 )
 
     # Now we need to add the scalable/dynamic particle effects.
     particles = sfx.get_scalable_particles()

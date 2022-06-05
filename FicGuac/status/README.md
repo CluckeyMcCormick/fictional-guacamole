@@ -30,6 +30,13 @@ The current hitpoints for the object. This is not modified by buffs or debuffs; 
 A boolean value indicating whether the core is currently dead or not. This should not be altered directly.
 
 ### Functions
+
+##### `add_status_effect`
+Takes in a `BaseStatusCondition`-derived/inherited class and applies it to the core.
+
+##### `remove_status_effect`
+Takes in a string and removes the corresponding status effect. The string should correspond to a `BaseStatusCondition`'s `keyname` field, which is how we track the ongoing status conditions.
+
 ##### `take_damage`
 Takes in an amount of damage and a damage type, dealing the specified amount of damage to the core (allowing for different resistances, of course). Emits the `object_died` signal if the core bottoms out on hitpoints. Also spawns *Damage Floats* if that's enabled.
 
@@ -57,46 +64,6 @@ Sometimes, you have to modify some of the stats temporarily, or apply damage at 
 
 Each status condition has both a series of modifiers and scalable particle effects. Preconstructed particle effects can also be added into derived status condition scenes - the status condition is a spatial node centered on the status core. You can thus translate the preconstructed particle effect as you see fit.
 
-### Inner Classes
-The `BaseStatusCondition` has some inner classes that are integral to how we define status conditions:
-
-#### StatOp
-This is an `enum` that's actually a bit tricky to explain. See there's all sorts of stat modifications - for example, a stat could go up by a flat +10, or it could go up by 10%. That's two different sorts of operations on a single stat. This `enum` exists to differentiate between these *stat operation* types (hence `StatOp`).
-
-The current values for this `enum` are:
-
-- `FLAT_MOD`
-    + This modifier just adds a given value to stat. This value is not interpreted in any extra way, it's just straight-added.
-- `ADD_SCALE_MOD`
-    + This modifier adds to a target stat the product of a given value and another (not necessarily different) base stat. For example, if the target stat is `max_hits`, the base stat is `hit_potential` and the modifier is `.10`, then the result would be `max_hits += hit_potential * .10`. This is meant for percentage gains, like 23% gain or loss to some stat. Again, it could be the same stat for both base and target, though this is discouraged.
-
-#### StatMod
-This is a custom inner class used to define a single modification against a stat. There are fields for base-and-target stats, in case calculating the modification is derived from a base stat (i.e. `StatOp.ADD_SCALE_MOD` operations).
-
-##### (Public) Variables
-
-###### `target_var`
-The string name of the field we're targeting. In other words, it's the actual field that is BEING dynamically modified. Using a string allows us to dynamically apply the modifiers - for example, we can check if a status core actually has a variable before applying the status effect. This means the game won't crash, even if an invalid side effect gets on an object.
-
-###### `scale_base_var`
-The string name of the field we derive scale-based calculations from; this is the field that gets used by `StatOp.ADD_SCALE_MOD` type operations. It is effectively ignored for `StatOp.FLAT_MOD` type operations, and can be left blank for those modifiers.
-
-###### `operation`
-This determines what kind of operation we're performing with the modifier. Needs to be a `StatOp` value. Check the `StatOp` `enum` for more.
-
-###### `mod_value`
-This is the actual modification value - the -.25 or +23 or whatever you need it to be. This should be an int or a float of some sort.
-
-##### Functions
-
-###### `_init`
-This is what gets called when building the class - i.e. when calling `StatMod.new()`. It takes five arguments, which are basically just pass-throughs to what I outlined above:
-
-1. `targ_var`: value for `target_var`.
-1. `scale_var`: value for `scale_base_var`.
-1. `op`: value for `operation`.
-1. `mod`: value for `mod_value`.
-
 ### Configurables
 
 #### Lifetime
@@ -121,7 +88,57 @@ This is the name of the status effect that is displayed to the player - i.e. *On
 Now, if it were up to me, the `BaseStatusCondition` wouldn't have any functions. But there's one problem - we need a consistent way to get a status' modifiers and particles. Godot doesn't let us overwrite a variable declared in a parent scene/class outside of a function, so we can't do this with variables. Instead, we need to define these variables per-status-effect and return them through some common functions.
 
 ##### `get_modifiers`
-Returns an array of `StatMod` objects - these are the actual modifiers to be applied.
+Returns an array of `StatMod` objects (see below) - these are the actual modifiers to be applied.
 
 ##### `get_scalable_particles`
 Returns an array of particle effects for this status effect. These must be loaded `ScalableParticleBlueprint` resources. If you wish to use a preconstructed particle effect, do not add it to this array - add it as a child of the deriving scene's node.
+
+## StatMod
+An individual `StatMod` instance defines a single modification against a stat. The different types of `StatMod` classes have different behaviors - i.e. they modify values using different calculations. This is the base `StatMod` class, and defines a modifier that just adds a given value to stat. This value is not interpreted in any extra way, it's just straight-added.
+
+### (Public) Variables
+
+#### `target_var`
+The string name of the field we're targeting. In other words, it's the actual field that is BEING dynamically modified. Using a string allows us to dynamically apply the modifiers - for example, we can check if a status core actually has a variable before applying the status effect. This means the game won't crash, even if an invalid side effect gets on an object.
+
+#### `mod_value`
+This is the actual modification value - the -.25 or +23 or whatever you need it to be. This should be an int or a float of some sort.
+
+#### `_applied_value`
+This modification value that was applied to the `target_var` - we use this to keep track of what value was last applied to a stat. Ergo, it's recommended that you don't mess with this.
+
+### Functions
+
+#### `_init`
+This is what gets called when building the class - i.e. when calling `StatModFlat.new()`. It takes two arguments, which are basically just pass-throughs to what I outlined above:
+
+1. `targ_var`: value for `target_var`.
+1. `mod`: value for `mod_value`.
+
+#### `apply`
+This function takes in a `CommonStatsCore` (or derivative/inheriting class) and a *scalar*. It applies the stat change to the core (unapplying any previous changes). The *scalar* is there if, for whatever reason, the `mod_value` needs to be scaled - this is intended for stacking status effects.
+
+#### `unapply`
+This function takes in a `CommonStatsCore` (or derivative/inheriting class) and removes the previously applied stat change. Keep in mind that this is tracked as dumbly as possible - the modifier just assumes the given core had the change applied and reverses it. Defaults the `_applied_value` to 0
+
+## StatModBaseScale
+This `StatMod`-derived class adds to a target stat the product of a given value and another (not necessarily different) base stat. For example, if the target stat is `max_hits`, and the base stat is `hit_potential`, and the modifier is `.10`, then the result would be `max_hits += hit_potential * .10`. This is meant for percentage gains, like 23% gain or loss to some stat. Again, it could be the same stat for both base and target, though this is discouraged.
+
+### (Public) Variables
+In addition to the variables inherited from `StatMod`, this class has the following variables.
+
+#### `base_var`
+The string name of the field we derive scale-based calculations from. This two-field system exists to ensure modifiers are not stacked; or rather, that they are only stacked in the appropriate way. If we used only one field for scaling operations, then applying this mod ahead of or after a `StatModBaseScale` would have two completely different results. 
+
+## Functions
+In addition to the functions inherited from `StatMod`, this class has the following functions.
+
+#### `_init`
+This overwrites the `StatMod` class' `_init` function. This is what gets called when building the class - i.e. when calling `StatModBaseScale.new()`. It takes three arguments, which are basically just pass-throughs to what I outlined above:
+
+1. `targ_var`: value for `target_var`.
+1. `base`: value for `base_var`.
+1. `mod`: value for `mod_value`.
+
+#### `apply`
+This function overwrites the `StatMod` class' `apply` function. The only thing notable here is the redefined stat modifying algorithm.
