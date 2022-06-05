@@ -247,6 +247,7 @@ func scale_emitter(new_scale : Vector3):
                 self.amount += int(
                     pow(temp, 1.0/3.0) * self.blueprint.root_particle_slope
                 )
+                
                 # Finally, double the spawn lengths (since we want the
                 # diameters)
                 spawn_len_x *= 2
@@ -286,6 +287,14 @@ func scale_emitter(new_scale : Vector3):
         spawn_len_x = new_scale.x
         spawn_len_y = new_scale.y
         spawn_len_z = new_scale.z
+        # Calculate the volume - this is the formula for a standard cube/box
+        temp = spawn_len_x * spawn_len_y * spawn_len_z
+        # The amount of particles to spawn is is our base...
+        self.amount = self.blueprint.base_particle_count
+        # ... PLUS the cubic root of the volume * the density.
+        self.amount += int(
+            pow(temp, 1.0/3.0) * self.blueprint.root_particle_slope
+        )
     
     # Now, technically, the max we can over-extend on a side is by half of the
     # size hint. However, since we'd do that at both sides, that adds up to the
