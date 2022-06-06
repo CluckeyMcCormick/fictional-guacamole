@@ -243,10 +243,13 @@ func scale_emitter(new_scale : Vector3):
                     * (spawn_len_z * new_scale.z)
                 # The amount of particles to spawn is our base...
                 self.amount = self.blueprint.base_particle_count
-                # ... PLUS the cubic root of the volume * the density.
+                # ... PLUS the cubic root of the volume * the density, MINUS
+                # the slope. See, at a volume of 1, the result of this formula
+                # should add 0. That way, we subtract particles when under 1,
+                # and add particles when over 1.
                 self.amount += int(
                     pow(temp, 1.0/3.0) * self.blueprint.root_particle_slope
-                )
+                ) - self.blueprint.root_particle_slope
                 
                 # Finally, double the spawn lengths (since we want the
                 # diameters)
@@ -268,10 +271,13 @@ func scale_emitter(new_scale : Vector3):
                     * (spawn_len_z * new_scale.z)
                 # The amount of particles to spawn is is our base...
                 self.amount = self.blueprint.base_particle_count
-                # ... PLUS the cubic root of the volume * the density.
+                # ... PLUS the cubic root of the volume * the density, MINUS
+                # the slope. See, at a volume of 1, the result of this formula
+                # should add 0. That way, we subtract particles when under 1,
+                # and add particles when over 1.
                 self.amount += int(
                     pow(temp, 1.0/3.0) * self.blueprint.root_particle_slope
-                )
+                ) - self.blueprint.root_particle_slope
             _:
                 printerr(
                     "Invalid Particle Material EmissionShape: ", 
@@ -291,10 +297,13 @@ func scale_emitter(new_scale : Vector3):
         temp = spawn_len_x * spawn_len_y * spawn_len_z
         # The amount of particles to spawn is is our base...
         self.amount = self.blueprint.base_particle_count
-        # ... PLUS the cubic root of the volume * the density.
+        # ... PLUS the cubic root of the volume * the density, MINUS the slope.
+        # See, at a volume of 1, the result of this formula should add 0. That
+        # way, we subtract particles when under 1, and add particles when over
+        # 1.
         self.amount += int(
             pow(temp, 1.0/3.0) * self.blueprint.root_particle_slope
-        )
+        ) - self.blueprint.root_particle_slope
     
     # Now, technically, the max we can over-extend on a side is by half of the
     # size hint. However, since we'd do that at both sides, that adds up to the

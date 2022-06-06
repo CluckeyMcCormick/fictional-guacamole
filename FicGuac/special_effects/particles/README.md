@@ -81,9 +81,11 @@ The basic number of particles for the emitter. If a given emitter somehow ends u
 #### Root Particle Slope
 This is the slope we use to scale the number of particles based on the volume of a given emitter. I'll explain the math but I really recommend **just playing with this value** to see what you can get out of it.
 
-Okay, now for the actual math - we start by calculating the volume of a given emitter-area. We then take the *cubic root* and multiply by this value the *root particle slope*. We then add this sloped cubic-root value to the *base particle count* to calculate the total number of particles.
+Okay, now for the actual math - we start by calculating the volume of a given emitter-area. We then take the *cubic root* and multiply by this value the *root particle slope*. We then subtract out the *root particle slope*, and then add the final value to the *base particle count* to calculate the total number of particles.
 
-This works because taking the cubic root of the volume turns the value from a *cubic, exponential* system into a *linear* one, thus allowing us to scale the particle count at a normal rate. At least I think so. This idea was kind of a wake-up-in-a-cold-sweat-after-midnight idea so who knows, maybe it was just given to me by some sort wretched math goblin (though is there truthfully any sort of math goblin that isn't wretched?).
+This works because taking the cubic root of the volume turns the value from a *cubic, exponential* system into a *linear* one, thus allowing us to scale the particle count at a normal rate. Subtracting out the *root particle slope* makes it so that, when the volume equals one, no extra particles are added or removed.
+
+At least I think that's how it works. This idea was kind of a wake-up-in-a-cold-sweat-after-midnight idea so who knows, maybe it was just given to me by some sort wretched math goblin (though is there truthfully any sort of math goblin that isn't wretched?).
 
 #### Recommended (RCMND) Values
 We also have a series of variables that are passed one-to-one to an emitter. These are prepended with a *rcmnd* (recommended) prefix. They are:
