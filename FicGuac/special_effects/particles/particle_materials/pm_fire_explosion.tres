@@ -2,21 +2,23 @@
 
 [ext_resource path="res://special_effects/particles/particle_materials/gradients/fire_classic.tres" type="Texture" id=1]
 
-[sub_resource type="Curve" id=4]
+[sub_resource type="Curve" id=9]
 _data = [ Vector2( 0, 1 ), 0.0, -0.0248847, 0, 0, Vector2( 1, 0 ), -3.28593, 0.0, 0, 0 ]
 
-[sub_resource type="CurveTexture" id=5]
-curve = SubResource( 4 )
+[sub_resource type="CurveTexture" id=10]
+curve = SubResource( 9 )
 
 [resource]
 lifetime_randomness = 0.5
-emission_shape = 2
-emission_box_extents = Vector3( 0.5, 0.5, 0.5 )
+emission_shape = 1
+emission_sphere_radius = 0.5
 direction = Vector3( 0, 1, 0 )
-spread = 0.0
-gravity = Vector3( 0, 9.8, 0 )
-initial_velocity = 0.01
-initial_velocity_random = 1.0
+spread = 90.0
+gravity = Vector3( 0, 2.45, 0 )
+initial_velocity = 10.0
+initial_velocity_random = 0.25
+damping = 20.0
+damping_random = 1.0
 scale_random = 1.0
-scale_curve = SubResource( 5 )
+scale_curve = SubResource( 10 )
 color_ramp = ExtResource( 1 )

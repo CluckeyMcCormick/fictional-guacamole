@@ -233,9 +233,9 @@ func scale_emitter(new_scale : Vector3):
                 # Grab the radius
                 temp = self.process_material.emission_sphere_radius
                 # Set the spawn lengths
-                spawn_len_x = self.temp
-                spawn_len_y = self.temp
-                spawn_len_z = self.temp
+                spawn_len_x = temp
+                spawn_len_y = temp
+                spawn_len_z = temp
                 # Now, calculate the volume
                 temp = (4/3) * PI \
                     * (spawn_len_x * new_scale.x) \

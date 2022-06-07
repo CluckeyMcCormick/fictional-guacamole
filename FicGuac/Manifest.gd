@@ -26,6 +26,8 @@ var TEST_SCENES = {
 # dynamically created ScalableParticleEmitter nodes
 var PARTICLE_BLUEPRINTS = {
     "SPB Fire, Fusil32" : "res://special_effects/particles/scalable_blueprints/spb_fire.tres",
+    "SPB Fire Explosion" : "res://special_effects/particles/scalable_blueprints/spb_fire_explosion.tres",
+    "SPB Smoke Explosion" : "res://special_effects/particles/scalable_blueprints/spb_smoke_explosion.tres",
     "SPB Poison, Bubble32" : "res://special_effects/particles/scalable_blueprints/spb_poison_bubbles.tres",
     "SPB Red Hit, Cross64" : "res://special_effects/particles/scalable_blueprints/spb_hit_cross.tres",
     "SPB Red Hit, DiagonalA64" : "res://special_effects/particles/scalable_blueprints/spb_hit_diag_a.tres",
