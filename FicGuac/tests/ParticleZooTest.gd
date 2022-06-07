@@ -1,5 +1,6 @@
 extends Spatial
 
+# Preload the Scalable Particle Emitter (SPE)
 const SPE = preload("res://special_effects/particles/ScalableParticleEmitter.tscn")
 
 # Our global manifest node that holds all of the tests paths in a dictionary.
@@ -16,17 +17,21 @@ var x = START_VALUE
 var y = 0.5
 var z = START_VALUE
 
-var material_list = []
-var material_index = 0
+var particle_list = []
+var particle_index = 0
 var scale_vector = Vector3.ZERO
 
-var particle_count = 0
-var systems_count = 0
+var spe_particles = 0
+var spe_systems = 0
+var prebuilt_systems = 0
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-    # We need to update the Item List using our particle material paths
+    # We need to update the Item List using our particle blueprints
     for mat_name in MANIFEST.PARTICLE_BLUEPRINTS.keys():
+        $GUI/ItemList.add_item(mat_name)
+    # We also need to update the Item List using our prebuilt particle scenes 
+    for mat_name in MANIFEST.PARTICLE_SCENES.keys():
         $GUI/ItemList.add_item(mat_name)
 
 func _on_Go_pressed():
@@ -34,10 +39,11 @@ func _on_Go_pressed():
     var scalar
     var temp
     
-    particle_count = 0
-    systems_count = 0
+    spe_particles = 0
+    spe_systems = 0
+    prebuilt_systems = 0
     
-    material_list = []
+    particle_list = []
     
     x = START_VALUE
     y = 0.5
@@ -61,9 +67,12 @@ func _on_Go_pressed():
     scale_vector = scalar
     for index in selected:
         temp = $GUI/ItemList.get_item_text(index)
-        material_list.append(load(MANIFEST.PARTICLE_BLUEPRINTS[temp]))
+        if temp in MANIFEST.PARTICLE_BLUEPRINTS:
+            particle_list.append( load(MANIFEST.PARTICLE_BLUEPRINTS[temp]) )
+        elif temp in MANIFEST.PARTICLE_SCENES:
+            particle_list.append( load(MANIFEST.PARTICLE_SCENES[temp]) )
     
-    material_index = 0
+    particle_index = 0
     
     $GUI/Controls/Go.disabled = true
     $GUI/Controls/Stop.disabled = false
@@ -71,25 +80,37 @@ func _on_Go_pressed():
     $Timer.start()
 
 func _on_Timer_timeout():
-    var new_spe = SPE.instance()
+    var new_node
     
-    $MeshInstance/ParticleMount.add_child(new_spe)
-    new_spe.translation = Vector3(x, y, z)
-    
-    new_spe.set_blueprint(material_list[material_index])
-    new_spe.scale_emitter(scale_vector)
-    # Just for this test, we ignore "one shot" particle materials.
-    new_spe.one_shot = false
-    
-    particle_count += new_spe.amount
-    systems_count += 1
-    $GUI/Stats/ParticleCount.text = str(particle_count)
-    $GUI/Stats/SystemsCount.text = str(systems_count)
-    $GUI/Stats/ParticleAverage.text = str(float(particle_count) / float(systems_count))
+    if particle_list[particle_index] is ScalableParticleBlueprint:
+        new_node = SPE.instance()
+        $MeshInstance/ParticleMount.add_child(new_node)
+        new_node.translation = Vector3(x, y, z)
+        
+        new_node.set_blueprint(particle_list[particle_index])
+        new_node.scale_emitter(scale_vector)
+        # Just for this test, we ignore "one shot" particle materials.
+        new_node.one_shot = false
+        
+        spe_particles += new_node.amount
+        spe_systems += 1
+        $GUI/Stats/ParticleCount.text = str(spe_particles)
+        $GUI/Stats/SystemsCount.text = str(spe_systems)
+        $GUI/Stats/ParticleAverage.text = str(
+            float(spe_particles) / float(spe_systems)
+        )
+    else:
+        new_node = particle_list[particle_index].instance()
+        $MeshInstance/ParticleMount.add_child(new_node)
+        new_node.translation = Vector3(x, y, z)
+        
+        # Increment the count of prebuilt systems and update the GUI
+        prebuilt_systems += 1
+        $GUI/Stats/PrebuiltCount.text = str(prebuilt_systems)
     
     x += INCREMENT
     
-    material_index = (material_index + 1) % len(material_list)
+    particle_index = (particle_index + 1) % len(particle_list)
     
     if x > END_VALUE:
         x = START_VALUE
@@ -140,12 +161,14 @@ func _on_Stop_pressed():
         $MeshInstance/ParticleMount.remove_child(particle)
 
     # Reset the stats
-    particle_count = 0
-    systems_count = 0
+    spe_particles = 0
+    spe_systems = 0
+    prebuilt_systems = 0
     
-    $GUI/Stats/ParticleCount.text = str(particle_count)
-    $GUI/Stats/SystemsCount.text = str(systems_count)
+    $GUI/Stats/ParticleCount.text = str(spe_particles)
+    $GUI/Stats/SystemsCount.text = str(spe_systems)
     $GUI/Stats/ParticleAverage.text = str(0)
-
+    $GUI/Stats/PrebuiltCount.text = str(prebuilt_systems)
+    
     $GUI/Controls/Go.disabled = false
     $GUI/Controls/Stop.disabled = true

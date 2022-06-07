@@ -32,8 +32,10 @@ var PARTICLE_BLUEPRINTS = {
     "SPB Red Hit, DiagonalB64" : "res://special_effects/particles/scalable_blueprints/spb_hit_diag_b.tres",
     "SPB Red Hit, Horizontal64" : "res://special_effects/particles/scalable_blueprints/spb_hit_horizontal.tres",
     "SPB Red Hit, Vertical64" : "res://special_effects/particles/scalable_blueprints/spb_hit_vertical.tres",
-    "SPB Helix, Bubble32" : "res://special_effects/particles/scalable_blueprints/spb_helix.tres",
+    "SPB Tropical Sample Helix" : "res://special_effects/particles/scalable_blueprints/spb_tropical_sample_helix.tres",
 }
 
 # Prebuilt particle scenes
-var PARTICLE_SCENES = {}
+var PARTICLE_SCENES = {
+    "Red-Blue Fusil Helix" : "res://special_effects/particles/complete_systems/ParticleDNA.tscn",
+}

@@ -8,8 +8,8 @@
 script = ExtResource( 1 )
 prsm = ExtResource( 3 )
 particle_material = ExtResource( 2 )
-base_particle_count = 10
-root_particle_slope = 1.0
+base_particle_count = 30
+root_particle_slope = 30.0
 rcmnd_lifetime = 5.0
 rcmnd_one_shot = false
 rcmnd_preprocess = 0.0
