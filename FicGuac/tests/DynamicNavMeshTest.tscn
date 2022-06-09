@@ -1585,12 +1585,7 @@ script = ExtResource( 3 )
 
 [node name="CameraRig" parent="." instance=ExtResource( 9 )]
 transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, 52, 64, 64 )
-basic_move_rate = 100.0
 camera_size = 20
-max_camera_size = 150
-min_camera_size = 15
-zoom_step = 15
-move_enabled = true
 zoom_enabled = false
 move_clamping_extents = Vector2( 12, 0 )
 
@@ -1967,6 +1962,7 @@ __meta__ = {
 
 [node name="StandardizedEnvironment" parent="." instance=ExtResource( 13 )]
 transform = Transform( -0.866026, 0.453154, -0.211309, 0, 0.422618, 0.906308, 0.5, 0.784886, -0.365998, 0, 5, 0 )
+
 [connection signal="timeout" from="NavUpdateTimer" to="." method="_on_NavUpdateTimer_timeout"]
 [connection signal="mouse_entered" from="GUIBox/EastButton" to="." method="_on_EastButton_mouse_entered"]
 [connection signal="mouse_exited" from="GUIBox/EastButton" to="." method="_on_EastButton_mouse_exited"]

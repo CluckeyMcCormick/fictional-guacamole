@@ -40,12 +40,7 @@ signal object_died(final_damage_type)
 # Utility Functions
 #
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-func add_status_effect(sfx):
-    # Each status effect comes with two array's worth of processing we need to
-    # perform - one for modifiers, one for particles.
-    var modifiers
-    var particles
-    
+func add_status_effect(status_effect):
     # These are used in value modifier calculations.
     var target_value
     var add_value
@@ -54,35 +49,60 @@ func add_status_effect(sfx):
     var particle_fx_node
     
     # If we already have this status effect, skip it!
-    if sfx.keyname in _active_effects:
+    if status_effect.keyname in _active_effects:
         return
     
     # Okay, first we're gonna add in the status effect.
-    _active_effects[sfx.keyname] = sfx
+    _active_effects[status_effect.keyname] = status_effect
     
     # Attach it as a child of this Stats Core node
-    self.add_child(sfx)
+    self.add_child(status_effect)
     
     # Now we need to apply the modifiers.
-    modifiers = sfx.get_modifiers()
-    for mod in modifiers:
+    for mod in status_effect.get_modifiers():
         mod.apply( self, 1 )
 
     # Now we need to add the scalable/dynamic particle effects.
-    particles = sfx.get_scalable_particles()
-    for particle_item in particles:
+    for particle_item in status_effect.get_scalable_particles():
         if particle_item is ScalableParticleBlueprint:
             particle_fx_node = SPE.instance()
             particle_fx_node.set_blueprint( particle_item )
             particle_fx_node.scale_emitter( Vector3(1, 1, 1) )
-            sfx.add_child(particle_fx_node)
-        else:
-            pass
+            status_effect.add_child(particle_fx_node)
     
-func remove_status_effect(status_effect):
-    if not status_effect.keyname in status_effect:
+func remove_status_effect(status_keyname):
+    # What's the status effect we retrieved?
+    var sfx
+    
+    # If this status effect is not present, back out!
+    if not status_keyname in _active_effects:
         return
-    pass
+    
+    # Get the status effect
+    sfx = _active_effects[status_keyname]
+    # Remove the status effect from the array.
+    _active_effects.erase(status_keyname)
+    # Remove the status effect from the scene
+    self.remove_child(sfx)
+    # For each modifier in this status effect, unapply it
+    for mod in sfx.get_modifiers():
+        mod.unapply( self )
+
+func clear_status_effects():
+    # What's the status effect we retrieved?
+    var sfx
+    
+    # For each keyname, remove the associated status effect.
+    for keyname in _active_effects.keys():
+        # Get the status effect
+        sfx = _active_effects[keyname]
+        # Remove the status effect from the array.
+        _active_effects.erase(keyname)
+        # Remove the status effect from the scene
+        self.remove_child(sfx)
+        # For each modifier in this status effect, unapply it
+        for mod in sfx.get_modifiers():
+            mod.unapply( self )
 
 func take_damage(damage, damage_type=null):
     # If we're dead, we don't take damage. No coming back from that one.

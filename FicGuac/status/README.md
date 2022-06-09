@@ -37,6 +37,9 @@ Takes in a `BaseStatusCondition`-derived/inherited class and applies it to the c
 ##### `remove_status_effect`
 Takes in a string and removes the corresponding status effect. The string should correspond to a `BaseStatusCondition`'s `keyname` field, which is how we track the ongoing status conditions.
 
+##### `clear_status_effects`
+Removes all the status effects from this core.
+
 ##### `take_damage`
 Takes in an amount of damage and a damage type, dealing the specified amount of damage to the core (allowing for different resistances, of course). Emits the `object_died` signal if the core bottoms out on hitpoints. Also spawns *Damage Floats* if that's enabled.
 

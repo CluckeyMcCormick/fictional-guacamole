@@ -20,6 +20,7 @@ var TEST_SCENES = {
     "Advanced Item Test" : "res://tests/AdvancedItemTest.tscn",
     "Attack Model Test" : "res://tests/AttackModelTest.tscn",
     "Particle Zoo Test" : "res://tests/ParticleZooTest.tscn",
+    "Condition Zoo Test" : "res://tests/ConditionZoo.tscn",
 }
 
 # Scalable Particle Blueprint (SPB) manifest - these are meant to be used with
@@ -40,4 +41,9 @@ var PARTICLE_BLUEPRINTS = {
 # Prebuilt particle scenes
 var PARTICLE_SCENES = {
     "Red-Blue Fusil Helix" : "res://special_effects/particles/complete_systems/ParticleDNA.tscn",
+}
+
+# Status Conditions
+var STATUS_CONDITIONS = {
+    "Adrenaline" : "res://status/conditions/Adrenaline.tscn",
 }

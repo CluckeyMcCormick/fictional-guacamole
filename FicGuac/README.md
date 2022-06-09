@@ -210,5 +210,11 @@ For certain reasons, we may need global lists - say, a list of all the different
 ##### `TEST_SCENES`
 A dictionary of all the different test scenes, with "proper" (human-readable) names for keys.
 
-##### `PARTICLE_MATERIALS`
-A dictionary of all the different particle materials, with "proper" (human-readable) names for keys.
+##### `PARTICLE_BLUEPRINTS`
+A dictionary of all the different particle blueprints, with "proper" (human-readable) names for keys.
+
+##### `PARTICLE_SCENES`
+A dictionary of all the different prebuilt particle systems (i.e. those in nodes), with "proper" (human-readable) names for keys.
+
+##### `STATUS_CONDITIONS`
+A dictionary of all the different status conditions, with "proper" (human-readable) names for keys.

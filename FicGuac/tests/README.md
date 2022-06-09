@@ -56,3 +56,6 @@ Particle effects are an efficient way of rendering certain phenomenon - even if 
 - Test the scaling behavior of scalable particle systems.
 
 This test auto-populates the available particle systems from `Manifest`'s `PARTICLE_BLUEPRINTS` and `PARTICLE_SCENES` dictionaries.
+
+## Condition Zoo Test
+This test allows us to view the effects of various conditions against various types of world agents.
