@@ -31,10 +31,6 @@ var current_angle = 0
 var circling_pawn
 var wandering_pawn
 
-# Since we need to load the conditions manually, we'll cache them in this
-# dictionary for easy instancing.
-var condition_cache = {}
-
 # Called when the node enters the scene tree for the first time.
 func _ready():
     
@@ -106,7 +102,7 @@ func _on_WanderingPawn_input_event(camera, event, position, normal, shape_idx):
     apply_modifiers(wandering_pawn)
 
 func apply_modifiers(agent : KinematicBody):
-    var condition_list = []
+    var condition_scene
     var selected = []
     
     var temp
@@ -126,11 +122,15 @@ func apply_modifiers(agent : KinematicBody):
         print("No conditions selected!")
         return
     
-    # For each Status Condition, ensure that it is cached, and then instance it.
+    # For each selected Status Condition...
     for index in selected:
+        # Get the Manifest Key
         temp = $ControlGUI/ItemList.get_item_text(index)
-        if not temp in condition_cache:
-            condition_cache[temp] = load(MANIFEST.STATUS_CONDITIONS[temp])
+        # Load the condition scene. Fortunately, Godot caches it's resource
+        # loads so loading this multiple times won't incur extra processing
+        # hits.
+        condition_scene = load(MANIFEST.STATUS_CONDITIONS[temp])
+        # Give the agent the status effect.
         agent.get_node("CharacterStatsCore").add_status_effect(
-            condition_cache[temp].instance()
+            condition_scene.instance()
         )

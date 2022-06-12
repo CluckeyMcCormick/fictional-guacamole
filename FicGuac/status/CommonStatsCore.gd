@@ -8,8 +8,6 @@ extends Position3D
 # This scene allows us to spawn little messages in the world, as needed. We'll
 # use this to show damage values.
 const float_away_text = preload("res://special_effects/FloatAwayText.tscn")
-# Preload the rich particle emitter so we know where it's at
-const SPE = preload("res://special_effects/particles/ScalableParticleEmitter.tscn")
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 #
@@ -45,9 +43,6 @@ func add_status_effect(status_effect):
     var target_value
     var add_value
     
-    # A new particle effects node that we're gonna add to the scene tree.
-    var particle_fx_node
-    
     # If we already have this status effect, skip it!
     if status_effect.keyname in _active_effects:
         return
@@ -60,20 +55,15 @@ func add_status_effect(status_effect):
     status_effect.connect("condition_expired", self, "_on_condition_expire")
     status_effect.connect("dot_damaged", self, "_on_condition_dot_damaged")
     
-    # Attach it as a child of this Stats Core node
-    self.add_child(status_effect)
+    # Spawn in the particle effects
+    status_effect.spawn_particles()
     
     # Now we need to apply the modifiers.
     for mod in status_effect.get_modifiers():
         mod.apply( self, 1 )
-
-    # Now we need to add the scalable/dynamic particle effects.
-    for particle_item in status_effect.get_scalable_particles():
-        if particle_item is ScalableParticleBlueprint:
-            particle_fx_node = SPE.instance()
-            particle_fx_node.set_blueprint( particle_item )
-            particle_fx_node.scale_emitter( Vector3(1, 1, 1) )
-            status_effect.add_child(particle_fx_node)
+    
+    # Finally, attach it as a child of this Stats Core node
+    self.add_child(status_effect)
     
 func remove_status_effect(status_keyname):
     # What's the status effect we retrieved?

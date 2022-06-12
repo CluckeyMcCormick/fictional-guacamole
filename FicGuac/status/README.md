@@ -96,13 +96,18 @@ When we add a status condition to the `CommonStatsCore` (or a deriving scene), w
 This is the name of the status effect that is displayed to the player - i.e. *On Fire* or *Pox Ridden* or something.
 
 ### Functions
-Now, if it were up to me, the `BaseStatusCondition` wouldn't have any functions. But there's one problem - we need a consistent way to get a status' modifiers and particles. Godot doesn't let us overwrite a variable declared in a parent scene/class outside of a function, so we can't do this with variables. Instead, we need to define these variables per-status-effect and return them through some common functions.
+The `BaseStatusCondition` was originally designed as more of a data class: not a class that actually does stuff, but one that just holds data that classes things act on. Ideally, such a class wouldn't have any functions. However, there are some instances where we just had to yield to Godot's limitations and plain good architecture. But there's one problem - we need a consistent way to get a status' modifiers and particles. 
 
 ##### `get_modifiers`
-Returns an array of `StatMod` objects (see below) - these are the actual modifiers to be applied.
+Returns an array of `StatMod` objects (see below) - these are the actual modifiers to be applied. Godot doesn't let us overwrite a variable declared in a parent scene/class outside of a function, so we can't do this with a common `modifiers` variable. Instead, we need to define these modifiers per-status-effect and return them through this function.
 
 ##### `get_scalable_particles`
 Returns an array of particle effects for this status effect. These must be loaded `ScalableParticleBlueprint` resources. If you wish to use a preconstructed particle effect, do not add it to this array - add it as a child of the deriving scene's node.
+
+##### `spawn_particles`
+Spawns in the particle effects specified by the `get_scalable_particles` function. Avoids building the particle effects twice if they have already been built and the function gets called again. Optionally takes in a `Vector3` to set the custom-scaling on the newly created particle effects.
+
+This functionality used to exist outside of the `BaseStatusCondition`, however, we would always stick the particle effects under the `BaseStatusCondition` node. It became hard to justify why the `BaseStatusCondition` shouldn't be responsible for managing it's own particle effects.
 
 ### Signals
 ##### `condition_expired`
