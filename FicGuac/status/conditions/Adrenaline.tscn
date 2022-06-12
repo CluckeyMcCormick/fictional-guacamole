@@ -10,3 +10,7 @@ keyname = "adrenaline"
 human_name = "Adrenaline"
 
 [node name="ParticleDNA" parent="." index="0" instance=ExtResource( 3 )]
+transform = Transform( 1, 0, 0, 0, 0.1, 0, 0, 0, 1, 0, 0, 0 )
+
+[node name="LifetimeTimer" parent="." index="1"]
+wait_time = 15.0

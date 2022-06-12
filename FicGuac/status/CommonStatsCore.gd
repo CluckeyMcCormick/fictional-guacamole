@@ -55,6 +55,11 @@ func add_status_effect(status_effect):
     # Okay, first we're gonna add in the status effect.
     _active_effects[status_effect.keyname] = status_effect
     
+    # Connect the status effect's expiration and damage-over-time signals to the
+    # common core's functions.
+    status_effect.connect("condition_expired", self, "_on_condition_expire")
+    status_effect.connect("dot_damaged", self, "_on_condition_dot_damaged")
+    
     # Attach it as a child of this Stats Core node
     self.add_child(status_effect)
     
@@ -87,6 +92,8 @@ func remove_status_effect(status_keyname):
     # For each modifier in this status effect, unapply it
     for mod in sfx.get_modifiers():
         mod.unapply( self )
+    # Finally, delete the status effect
+    sfx.queue_free()
 
 func clear_status_effects():
     # What's the status effect we retrieved?
@@ -103,6 +110,8 @@ func clear_status_effects():
         # For each modifier in this status effect, unapply it
         for mod in sfx.get_modifiers():
             mod.unapply( self )
+        # Finally, delete the status effect
+        sfx.queue_free()
 
 func take_damage(damage, damage_type=null):
     # If we're dead, we don't take damage. No coming back from that one.
@@ -142,3 +151,9 @@ func heal_damage(damage_healed):
     
     # Clamp it
     curr_hp = clamp(curr_hp, 0, base_hp)
+
+func _on_condition_expire(condition):
+    remove_status_effect(condition.keyname)
+
+func _on_condition_dot_damaged(_condition, damage):
+    take_damage(damage)

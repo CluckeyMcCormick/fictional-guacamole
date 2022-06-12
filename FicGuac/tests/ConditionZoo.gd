@@ -73,6 +73,7 @@ func _on_CirclingPawn_pawn_died():
     # Connect ourselves to it's inner workings
     circling_pawn.connect("path_complete", self, "_on_CirclingPawn_path_complete")
     circling_pawn.connect("pawn_died", self, "_on_CirclingPawn_pawn_died")
+    circling_pawn.connect("input_event", self, "_on_CirclingPawn_input_event")
     # Pass it the navigation node-path
     circling_pawn.navigation = $Floor.get_path_to($Navigation)
     # Add it to the scene. This will call all the _ready functions and stuff
@@ -89,14 +90,15 @@ func _on_CirclingPawn_input_event(camera, event, position, normal, shape_idx):
 
 func _on_WanderingPawn_pawn_died():
     # Spawn in a new target pawn
-    circling_pawn = TCPAWN_PRELOAD.instance()
+    wandering_pawn = TCPAWN_PRELOAD.instance()
     
     # Connect ourselves to it's inner workings
     wandering_pawn.connect("pawn_died", self, "_on_WanderingPawn_pawn_died")
+    wandering_pawn.connect("input_event", self, "_on_WanderingPawn_input_event")
     # Pass it the navigation node-path
     wandering_pawn.navigation = $Floor.get_path_to($Navigation)
     # Add it to the scene. This will call all the _ready functions and stuff
-    self.add_child(circling_pawn)
+    self.add_child(wandering_pawn)
 
 func _on_WanderingPawn_input_event(camera, event, position, normal, shape_idx):
     if !event.is_action_pressed("formation_order"):

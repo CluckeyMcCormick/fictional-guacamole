@@ -46,4 +46,5 @@ var PARTICLE_SCENES = {
 # Status Conditions
 var STATUS_CONDITIONS = {
     "Adrenaline" : "res://status/conditions/Adrenaline.tscn",
+    "On Fire" : "res://status/conditions/OnFire.tscn",
 }

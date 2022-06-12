@@ -65,18 +65,26 @@ Emitted when the hitpoints reach zero - in other words, when we die.
 ## BaseStatusCondition
 Sometimes, you have to modify some of the stats temporarily, or apply damage at a fixed interval, or so-on-and-so-on. That's where status effects come in! All status effects are separate scenes, and this class is the base class/scene that they all derive from. This base class defines the structure of the status conditions, while the actual content is defined in the derived status condition scenes.
 
-Each status condition has both a series of modifiers and scalable particle effects. Preconstructed particle effects can also be added into derived status condition scenes - the status condition is a spatial node centered on the status core. You can thus translate the preconstructed particle effect as you see fit.
+Each status condition has both a series of modifiers and scalable particle effects. Preconstructed particle effects can also be added into derived status condition scenes - the status condition is a spatial node centered on the status core. You can thus translate, scale, and rotate the preconstructed particle effect as you see fit.
 
 ### Configurables
 
-#### Lifetime
-The time, in seconds, that this status effect lasts for. A negative value, or zero value, means never-ending. Note that this doesn't mean the status effect can't be reversed by other means, just that it doesn't naturally go away.
+#### Limited Lifespan
+Does this condition have a limited lifespan - i.e. does it persist for a fixed amount of time before naturally dissipating? Defaults to true.
+
+If true, the lifetime is specified by the "wait time" field on the `LifetimeTimer` node - this timer is automatically started once the condition enters the scene. Once the timer expires, the `condition_expired` signal fires.
+
+The "wait time" field should be adjusted appropriately on the `LifetimeTimer` in each deriving scene.
+
+#### Damage Over Time
+Does this condition deal damage over time - i.e. does the condition deal a fixed amount of damage at fixed intervals for the duration of it's existence?
+
+If true, the damage interval is specified by the "wait time" field on the `DamageIntervalTimer` node - this timer is automatically started once the condition enters the scene, and restarted once it completes. Every time the timer expires, the `dot_damaged` signal is fired.
+
+The "wait time" field should be adjusted appropriately on the `DamageIntervalTimer` in each deriving scene.
 
 #### DOT Damage
-This variable is the damage applied every time the damage-over-time (DOT) interval (see below) occurs.  
-
-#### DOT Interval
-This is the frequency, in seconds, that the damage-over-time (DOT) occurs. In other words, every `dot_interval` seconds, the status effect inflicts `dot_damage` damage.
+This variable is the damage applied at every damage-over-time (DOT) interval. Ideally an *int* of some kind.
 
 #### Icon
 The icon used to represent this status effect. Though currently unused, we may use it for some sort of health-bar or other status-display.
@@ -95,6 +103,13 @@ Returns an array of `StatMod` objects (see below) - these are the actual modifie
 
 ##### `get_scalable_particles`
 Returns an array of particle effects for this status effect. These must be loaded `ScalableParticleBlueprint` resources. If you wish to use a preconstructed particle effect, do not add it to this array - add it as a child of the deriving scene's node.
+
+### Signals
+##### `condition_expired`
+Emitted when the `LifetimeTimer` expires/finishes/runs out of time. Indicates that the status effect has run it's course and should be removed. Emits with the corresponding status effect.
+
+##### `dot_damaged`
+Emitted when the `DamageIntervalTimer` expires/finishes/runs out of time. Indicates that the status effect is dealing damage. Emits with the corresponding status effect and the damage value (which will be *DOT Damage*).
 
 ## StatMod
 An individual `StatMod` instance defines a single modification against a stat. The different types of `StatMod` classes have different behaviors - i.e. they modify values using different calculations. This is the base `StatMod` class, and defines a modifier that just adds a given value to stat. This value is not interpreted in any extra way, it's just straight-added.
@@ -122,7 +137,7 @@ This is what gets called when building the class - i.e. when calling `StatModFla
 This function takes in a `CommonStatsCore` (or derivative/inheriting class) and a *scalar*. It applies the stat change to the core (unapplying any previous changes). The *scalar* is there if, for whatever reason, the `mod_value` needs to be scaled - this is intended for stacking status effects.
 
 #### `unapply`
-This function takes in a `CommonStatsCore` (or derivative/inheriting class) and removes the previously applied stat change. Keep in mind that this is tracked as dumbly as possible - the modifier just assumes the given core had the change applied and reverses it. Defaults the `_applied_value` to 0
+This function takes in a `CommonStatsCore` (or derivative/inheriting class) and removes the previously applied stat change. Keep in mind that this is tracked as dumbly as possible - the modifier just assumes the given core had the change applied and reverses it. Defaults the `_applied_value` to 0.
 
 ## StatModBaseScale
 This `StatMod`-derived class adds to a target stat the product of a given value and another (not necessarily different) base stat. For example, if the target stat is `max_hits`, and the base stat is `hit_potential`, and the modifier is `.10`, then the result would be `max_hits += hit_potential * .10`. This is meant for percentage gains, like 23% gain or loss to some stat. Again, it could be the same stat for both base and target, though this is discouraged.
@@ -133,7 +148,7 @@ In addition to the variables inherited from `StatMod`, this class has the follow
 #### `base_var`
 The string name of the field we derive scale-based calculations from. This two-field system exists to ensure modifiers are not stacked; or rather, that they are only stacked in the appropriate way. If we used only one field for scaling operations, then applying this mod ahead of or after a `StatModBaseScale` would have two completely different results. 
 
-## Functions
+### Functions
 In addition to the functions inherited from `StatMod`, this class has the following functions.
 
 #### `_init`

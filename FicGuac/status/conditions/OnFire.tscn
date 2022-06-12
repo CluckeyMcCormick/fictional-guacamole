@@ -1,0 +1,18 @@
+[gd_scene load_steps=3 format=2]
+
+[ext_resource path="res://status/conditions/OnFire.gd" type="Script" id=2]
+[ext_resource path="res://status/BaseStatusCondition.tscn" type="PackedScene" id=3]
+
+[node name="OnFire" instance=ExtResource( 3 )]
+script = ExtResource( 2 )
+damage_over_time = true
+dot_damage = 1
+icon = null
+keyname = "on_fire"
+human_name = "On Fire"
+
+[node name="LifetimeTimer" parent="." index="0"]
+wait_time = 15.0
+
+[node name="DamageIntervalTimer" parent="." index="1"]
+wait_time = 0.5
