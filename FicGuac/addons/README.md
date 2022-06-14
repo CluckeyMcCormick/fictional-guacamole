@@ -25,6 +25,13 @@ This addon, by **GarysTrousers**, adds a to-do list widget into the Godot editor
 ## Debug Draw
 Sometimes, we just need to display some sort of visual information. A label on the screen, or a box, or a line. This Debug Draw script by **Marc Gilleron** allows to do just that. It's a bit limited in scope - it can only do text, boxes, or lines. Other than that it works well enough.
 
+## Trails
+A *trail* is a pretty common video game effect where-in a moving object leaves behind some sort of visible trail as it moves through space. It's hard to think of a video game example, but when done right it perfectly apes visual effects from other visual media: perhaps the most iconic example of trail-effect in media is the trailing motorcycle lights in the first ten some-odd minutes of Akira.
+
+Some engines come with this built-in, and I think a lot of developers also use particles or sprites to accomplish similar effects. I am not that fancy, so I need someone to help me build trails for certain visual effects. For example: the travel-path of a sword swipe.
+
+Enter this add-on by **Oussama BOUKHELF**, also known as **obkf**. Firstly, we can easily generate a trail by simply dropping his `Trail3D` node under a moving node. This node then offers fine grained control over the appearance of the trail, including size curves, color gradient, and a fancy smoothing algorithm. There were different trail plugins available, but the complete control available was too enticing to pass up.
+
 ## XSM Extended State Machine
 This library, created by **Etienne Blanc**, provides us with a solid foundation for making a state machine in Godot. It provides a pretty solid basis and, better yet, it's written entirely in GDScript - that means it should be compatible with all platforms and with Godot 4.0.
 

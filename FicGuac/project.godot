@@ -290,7 +290,7 @@ gdscript/warnings/return_value_discarded=false
 
 [editor_plugins]
 
-enabled=PoolStringArray( "res://addons/godot-navigation-lite/plugin.cfg", "res://addons/qodot/plugin.cfg", "res://addons/todot/plugin.cfg", "res://addons/xsm/plugin.cfg" )
+enabled=PoolStringArray( "res://addons/Trail/plugin.cfg", "res://addons/godot-navigation-lite/plugin.cfg", "res://addons/qodot/plugin.cfg", "res://addons/todot/plugin.cfg", "res://addons/xsm/plugin.cfg" )
 
 [input]
 
